@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Book SYSTEM "gapdoc.dtd">
+
+<Book Name="SgpDec">
+
+<TitlePage>
+  <Title>The <Package>SgpDec</Package> Package</Title>
+  <Version>Version 0.6.7</Version>
+  <Author>Attila Egri-Nagy <Email>A.Egri-Nagy@herts.ac.uk</Email></Author>
+  <Author>Chrystopher L. Nehaniv<Email>C.L.Nehaniv@herts.ac.uk</Email></Author>
+  <Author>James Mitchell<Email>jdm3@st-and.ac.uk</Email></Author>
+ 
+<TitleComment>
+Hierarchical composition and decomposition of finite permutation groups and transformation semigroups.
+</TitleComment>
+
+<Abstract>
+This  <Package>GAP4</Package> package contains a computational implementation of hierarchical decompositions of transformation semigroups (Krohn-Rhodes theory) and permutation groups. Cascaded structures (substructures of the wreath product) can be constructed by explicitly giving the dependency functions between the components or can be obtained by the decomposition algorithms (holonomy for semigroups, Lagrange decompositon for groups).
+</Abstract>
+
+  <Copyright>&copyright; Attila Egri-Nagy, Chrystopher L. Nehaniv, James Mitchell.
+  </Copyright>
+
+</TitlePage>
+
+<TableOfContents/>
+
+
+<Body>
+<!--##### Chapters/sections are in individual xml files. -->
+
+ <#Include SYSTEM "intro.xml"> 
+ <#Include SYSTEM "cascadedstructs.xml">  
+ <#Include SYSTEM "decomposition.xml">  
+
+<Chapter> <Heading>Technical Bits</Heading>
+The following functions are needed to work with decompositions on a low level or as a utility but they are not closely related to the decomposition algorithm. Eventually these functionalities may go to different packages.  
+ <#Include SYSTEM "words.xml">  
+ <#Include SYSTEM "storage.xml">  
+</Chapter>
+</Body>
+
+
+
+<Bibliography Databases="SGPDEC" />
+
+
+
+</Book>

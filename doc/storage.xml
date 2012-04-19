@@ -1,0 +1,25 @@
+
+ <Section Label="sec:storage"> <Heading>Storage structures for search algorithm</Heading>
+
+
+ <#Include Label="Store">
+ <#Include Label="Retrieve">
+ <#Include Label="Peek">
+
+
+
+ <#Include Label="Stack">
+ <#Include Label="Queue">
+ </Section>
+
+
+    <Section Label="sec:lazy lists"> <Heading>Lazy Lists</Heading>
+
+Large collections may not fit into memory, but we still want to access their elements in a convenient way, i.e. as members of a list. In case, when a bijection between indices [1..n] and the elements of the collection could be established, we can emulate the behaviour of a fully stored list. According to the bijection, the following methods needs to be implemented:
+
+<List>
+<Item>Constructing elements corresponding to an index (Accessing through []).</Item>
+<Item>Calculating the index of an element of the collection (PositionCanonical).</Item>
+<Item>Calculating the size of the collection.</Item>
+</List>
+ </Section>

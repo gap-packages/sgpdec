@@ -1,0 +1,13 @@
+SGPDEC
+
+This package provide tools to put coordinate systems on groups and semigroups by decomposing them hierarchically.
+
+
+ACKNOWLEDGEMENTS
+
+During the development we have recieved help from members of the GAP Support Team, namely: 
+
+Alexander Hulpke
+Marco Constantini
+Stefan Kohl
+Robert F. Morse
