@@ -73,7 +73,8 @@ end
 );
 
 #if the keyset is the same then we can combine the values
-CombinedAssociativeList := function(l1,l2)
+InstallGlobalFunction(CombinedAssociativeList,
+function(l1,l2)
 local k, l;
   if Keys(l1) <> Keys(l2) then 
       Print("#W Different keysets cannot be combined!\n");      
@@ -84,10 +85,11 @@ local k, l;
     Assign(l, k, [l1[k],l2[k]]);
   od;
   return l;
-end;
+end);
 
 #values -> keys, but obviously list valued
-ReversedAssociativeList := function(al)
+InstallGlobalFunction(ReversedAssociativeList,
+function(al)
 local nl,k,val,l;
   nl := AssociativeList();
   for k in Keys(al) do
@@ -100,9 +102,7 @@ local nl,k,val,l;
       fi;
   od;  
   return nl;  
-end;
-
-
+end);
 
 InstallMethod( PrintObj,"for an associative list",
         [ IsAssociativeList ],
