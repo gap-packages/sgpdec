@@ -76,9 +76,7 @@ PackageWWWHome := "http://sgpdec.sf.net",
 
 PackageDoc := rec(
   BookName  := "SgpDec",
-  Archive :=  "http://sgpdec.sf.net",
-
-  ArchiveURLSubset := ["htm"],
+  ArchiveURLSubset := ["doc","htm"],
   HTMLStart := "doc/manual.htm",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
@@ -90,9 +88,9 @@ PackageDoc := rec(
 Dependencies := rec(
  GAP := ">=4.5",
  NeededOtherPackages := [["GAPDoc", ">= 1.2"],  #StringPrint
-                         ["citrus", ">= 0.1"], #orbit algorithms
+                   ["citrus", ">= 0.1"], #orbit algorithms
                    ["orb", ">= 3.7"], #hashtable functionalities
-                                           ["viz", ">= 0.1"] #Draw, Splash
+                   ["viz", ">= 0.1"] #Draw, Splash
                          ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [["Graphviz","http://www.graphviz.org/"]] #for creating PDF figures                      

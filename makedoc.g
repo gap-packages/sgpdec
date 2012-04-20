@@ -11,7 +11,7 @@ SgpDecMakeDoc := function()
                     "../gap/lagrangecoords.gd",
                     "../gap/cascadedstate.gd",
                     "../gap/cascadedoperation.gd",
-                    "../gap/finiteset.gd",
+                    "../gap/finiteset.xml",
                     "../gap/subgroupchains.gd",
                     "../gap/skeleton.xml",
                     "../gap/holonomy.gd",
