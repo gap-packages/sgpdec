@@ -28,10 +28,24 @@ local vals,k,s;
   k := 1;
   while vals[k] = 0 do k := k+1; od;
   while k <= Length(SGPDEC_util_durations) do
-    s := Concatenation(s, StringPrint(vals[k]),SGPDEC_util_timeunits[k]);                  
+    s := Concatenation(s, StringPrint(vals[k]),SGPDEC_util_timeunits[k]);
     k := k+1;
   od;
 
   return s;
 end;
 
+#returns the readable string representation of the number of bytes
+FormattedMemoryInfo := function(mem)
+  if mem < 1024 then
+    return Concatenation(StringPrint(mem),"b");
+  elif mem >= 1024 and mem < 1024^2 then
+    return Concatenation(StringPrint(Round(Float(mem/1024))),"KB");
+  elif mem >= 1024^2 and mem < 1024^3 then
+    return Concatenation(StringPrint(
+                   Float(Round(Float(mem/(1024^2))*10)/10)),"MB");
+  elif mem >= 1024^3 and mem < 1024^4 then
+    return Concatenation(StringPrint(
+                   Float(Round(Float(mem/(1024^3))*100)/100)),"GB");
+  fi;
+end;
