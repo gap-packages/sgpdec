@@ -104,6 +104,14 @@ local nl,k,val,l;
   return nl;  
 end);
 
+InstallOtherMethod(\=, "for two associative lists", IsIdenticalObj,
+        [IsAssociativeList, 
+         IsAssociativeList], 0, 
+    function(A, B) 
+        return  A!.keys = B!.keys and A!.values = B!.values;
+    end);
+
+
 InstallMethod( PrintObj,"for an associative list",
         [ IsAssociativeList ],
 function( al )

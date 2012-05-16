@@ -4,9 +4,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.6.33",
+Version := "0.6.34",
 
-Date := "30/04/2012",
+Date := "16/05/2012",
 
 ArchiveURL := "http://sgpdec.sf.net",
 
