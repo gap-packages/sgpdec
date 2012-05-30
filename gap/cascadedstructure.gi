@@ -184,7 +184,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes, or
 
   for depth in [1..Length(cstr)] do
     #getting the component generators
-    gens := Generators(cstr[depth]);
+    gens := GeneratorsOfSemigroup(cstr[depth]);
     isgroup := IsGroup(cstr[depth]);
 
     #adding the entries to the current coordinate fragments
