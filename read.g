@@ -3,11 +3,6 @@
 ReadPackage("SgpDec","/gap/io.g");
 ReadPackage("SgpDec","/makedoc.g");
 
-#storage
-ReadPackage("SgpDec","/gap/storage/stack.gi");
-ReadPackage("SgpDec","/gap/storage/queue.gi");
-ReadPackage("SgpDec","/gap/storage/lazycartesian.gi");
-ReadPackage("SgpDec","/gap/storage/assoclist.gi");
 ReadPackage("SgpDec","/gap/depfunctable.gi");
 ReadPackage("SgpDec","/gap/linearnotation.gi");
 ReadPackage("SgpDec","/gap/words.gi");

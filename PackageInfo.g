@@ -4,9 +4,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.6.35",
+Version := "0.6.36",
 
-Date := "30/05/2012",
+Date := "23/06/2012",
 
 ArchiveURL := "http://sgpdec.sf.net",
 
@@ -86,11 +86,12 @@ PackageDoc := rec(
 
 
 Dependencies := rec(
- GAP := ">=4.5",
- NeededOtherPackages := [["GAPDoc", ">= 1.2"],  #StringPrint
-                   ["citrus", ">= 0.1"], #orbit algorithms
-                   ["orb", ">= 3.7"], #hashtable functionalities
-                   ["viz", ">= 0.1"] #Draw, Splash
+ GAP := ">= 4.5",
+ NeededOtherPackages := [["GAPDoc", ">=1.4"],  #StringPrint
+                   ["citrus", ">=0.8"], #orbit algorithms
+                   ["dust", ">=0.1"], #fancy data structures
+                   ["orb", ">=4.5"], #hashtable functionalities
+                   ["viz", ">=0.2"] #Draw, Splash
                          ],
  SuggestedOtherPackages := [ ],
  ExternalConditions := [["Graphviz","http://www.graphviz.org/"]] #for creating PDF figures                      
@@ -105,5 +106,3 @@ TestFile := "test/test.g",
 Keywords := ["Krohn-Rhodes Theory","transformation semigroup","permutation group","hierarchical decomposition"]
 
 ));
-
-
