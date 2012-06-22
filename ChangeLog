@@ -1,3 +1,5 @@
+0.6.36
+	Moving technical code to the dust package.
 0.6.35
 	Fixing MonomialGenerators which was broken due to upstream changes in Citrus.
 0.6.34
