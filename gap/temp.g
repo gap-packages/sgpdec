@@ -10,9 +10,6 @@ local max,i;
   return [1..max];
 end;
 
-# just returns the last element
-LastElementOfList := function(list) return list[Length(list)];end;
-
 # returning true in case the name denotes a valid member of the record
 ExistsFieldInRecord :=function(record, name)
     return name in RecNames(record);
