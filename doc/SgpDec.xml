@@ -36,7 +36,6 @@ This  <Package>GAP4</Package> package contains a computational implementation of
 <Chapter> <Heading>Technical Bits</Heading>
 The following functions are needed to work with decompositions on a low level or as a utility but they are not closely related to the decomposition algorithm. Eventually these functionalities may go to different packages.  
  <#Include SYSTEM "words.xml">  
- <#Include SYSTEM "storage.xml">  
 </Chapter>
 </Body>
 

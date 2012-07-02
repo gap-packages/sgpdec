@@ -1,9 +1,6 @@
 SgpDecMakeDoc := function()
     MakeGAPDocDoc(Concatenation( PackageInfo( "sgpdec" )[1]!.InstallationPath, "/doc" ),
             "SgpDec",[
-                    "../gap/storage/storage.gd",
-                    "../gap/storage/stack.gd",
-                    "../gap/storage/queue.gd",
                     "../gap/linearnotation.gd",
                     "../gap/words.xml",
                     "../gap/decomposition.gd",
@@ -14,7 +11,7 @@ SgpDecMakeDoc := function()
                     "../gap/finiteset.xml",
                     "../gap/subgroupchains.gd",
                     "../gap/skeleton.xml",
-                    "../gap/holonomy.gd",
+                    "../gap/holonomy.xml",
                     "../config"
                     ],"SgpDec");
 end;
