@@ -4,7 +4,7 @@ SgpDecMakeDoc := function()
             "SgpDec",[
                     "../gap/linearnotation.gd",
                     "../gap/words.xml",
-                    "../gap/decomposition.gd",
+                    "../gap/decomposition.xml",
                     "../gap/cascadedstructure.xml",
                     "../gap/lagrangecoords.gd",
                     "../gap/cascadedstate.xml",
