@@ -1,5 +1,6 @@
 SgpDecMakeDoc := function()
-    MakeGAPDocDoc(Concatenation( PackageInfo( "sgpdec" )[1]!.InstallationPath, "/doc" ),
+    MakeGAPDocDoc(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
+                                            "/doc"),
             "SgpDec",[
                     "../gap/linearnotation.gd",
                     "../gap/words.xml",
