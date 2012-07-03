@@ -1,15 +1,15 @@
 #############################################################################
 ##
-##  subgroupchains.gi           GAP library         Attila Egri-Nagy
+##  subgroupchains.gi           SgpDec Library
 ##
-##  Copyright (C)  2003-2009, Attila Egri-Nagy, Chrystopher L. Nehaniv
-##  University of Hertfordshire, Hatfield, UK
+##  Copyright (C)  2003-2012, Attila Egri-Nagy, Chrystopher L. Nehaniv
+##
 ##
 ## Subgroup chains of permutation groups.
 ##
 
 SGPDEC_AddToSubgroupChain := function(chain, group)
-    local preceding;    
+    local preceding;
     if IsEmpty(chain) then Add(chain, group); fi;
     preceding := LastElementOfList(chain);
     if not (IsSubgroup(preceding, group)) then Print("# W Tried to add a nonsubgroup to a subgroup chain.\n\c"); return; fi;
@@ -138,6 +138,3 @@ local maxsubgroups, nchain,str,i,widths,level, nhom, F, gens;
   return nchain;
 end
 );
-
-
-
