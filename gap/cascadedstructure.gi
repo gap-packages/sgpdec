@@ -1,12 +1,12 @@
 #############################################################################
 ##
-## cascadedstructure.gi           SgpDec package  
+## cascadedstructure.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C) Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2008 University of Hertfordshire, Hatfield, UK
+## 2008-2012
 ##
-## Each cascaded product needs a detailed type structure. Here are the tools 
+## Each cascaded product needs a detailed type structure. Here are the tools
 ## needed for that task.
 
 #just the identity function
@@ -56,13 +56,13 @@ end;
 InstallOtherMethod(CascadedStructure,[IsList],
 function(components)
 local statesym, opsym, comp,gid;
-  
+
   statesym := [];
   opsym := [];
-  for comp in components do 
+  for comp in components do
      Add(statesym, SGPDEC_idfunct);
      Add(opsym, function(x) if IsTransformation(x) then return SimplerLinearNotation(x); else return x; fi;end);#SGPDEC_idfunct);
-  od;  
+  od;
   return CascadedStructure(components,statesym,opsym);
 end
 );
@@ -106,7 +106,7 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
   cascprodinfo.state_sets := [];
   for i in components do
     if IsGroup(i) then 
-	Add(cascprodinfo.state_sets,SetOfPermutationGroupToActOn(i));
+	Add(cascprodinfo.state_sets,MovedPoints(i));
     else
 	Add(cascprodinfo.state_sets,[1..DegreeOfTransformation(Representative(i))]);
     fi;

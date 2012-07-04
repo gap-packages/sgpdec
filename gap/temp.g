@@ -1,15 +1,3 @@
-# figuring out the set on which permutation group generators act on
-# (i.e. looking for the maximal moved point)
-# ??? Can it return smaller set, when it is the identity on the largest point???
-SetOfPermutationGroupToActOn := function(G)
-local max,i;
-  max := 0;
-  for i in GeneratorsOfGroup(G) do
-    if LargestMovedPoint(i) > max then max := LargestMovedPoint(i); fi;
-  od;
-  return [1..max];
-end;
-
 # returning true in case the name denotes a valid member of the record
 ExistsFieldInRecord :=function(record, name)
     return name in RecNames(record);

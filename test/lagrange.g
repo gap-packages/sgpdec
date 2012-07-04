@@ -30,9 +30,9 @@ local s,n,c;
  Print("p = Flatten(Raise(p)) for all points p of the original group:\n");
   #for providing count info
   c := 0;
-  n := Size(SetOfPermutationGroupToActOn(OriginalStructureOf(decomp))); 
+  n := Size(MovedPoints(OriginalStructureOf(decomp))); 
   #do a full check for tof the state set
-  for s in SetOfPermutationGroupToActOn(OriginalStructureOf(decomp)) do
+  for s in MovedPoints(OriginalStructureOf(decomp)) do
     if s <> Flatten(decomp, Raise(decomp,s)) then 
       Print("FAIL\n");Error("Lagrange test1b YEAST problem!\n");
     else 
@@ -52,11 +52,11 @@ local s,g,s_,g_,n,c;
   Print("p ^ g = Flatten( Raise(p) ^ Raise(g) ) for all points p and permutations g:\n");
   #for providing count info
   c := 0;
-  n := Size(SetOfPermutationGroupToActOn(OriginalStructureOf(decomp))) *  Order(OriginalStructureOf(decomp)); 
+  n := Size(MovedPoints(OriginalStructureOf(decomp))) *  Order(OriginalStructureOf(decomp)); 
 
   for g in OriginalStructureOf(decomp) do
     g_ := Raise(decomp,g);  
-    for s in SetOfPermutationGroupToActOn(OriginalStructureOf(decomp)) do
+    for s in MovedPoints(OriginalStructureOf(decomp)) do
       s_ := Raise(decomp,s);
       if s^g <> Flatten(decomp, s_ ^ g_) then 
         Print("FAIL\n");Error("Lagrange test1c YEAST problem!\n");  
@@ -179,10 +179,10 @@ local states,x,y,x_,y_,taxi,c,n;
 
   Print("Test 5: x2y check\n");
   c := 0;
-  n := Size(SetOfPermutationGroupToActOn(OriginalStructureOf(decomp))) ^ 2;
+  n := Size(MovedPoints(OriginalStructureOf(decomp))) ^ 2;
 
 
-states := SetOfPermutationGroupToActOn(OriginalStructureOf(decomp));
+states := MovedPoints(OriginalStructureOf(decomp));
 
 for x in states do
   for y in states do

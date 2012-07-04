@@ -128,7 +128,7 @@ local series,i,j,comps,result,point2coset,coset2reprs,transversals,point2repr,re
                 repr2point := repr2point,
                 cascadedstruct := cstr,
                 stabilizertransversalreps := stabrtreps,
-                originalstateset := SetOfPermutationGroupToActOn(G));
+                originalstateset := MovedPoints(G));
   return Objectify(LagrangeDecompositionType, result);
 end);
 

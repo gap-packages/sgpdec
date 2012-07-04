@@ -1,10 +1,10 @@
 #############################################################################
 ##
-## holonomy.gi           SgpDec package  
+## holonomy.gi           SgpDec package
 ##
 ## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
 ##
-## 2010 University of Hertfordshire, Hatfield, UK
+## 2010-2012
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
