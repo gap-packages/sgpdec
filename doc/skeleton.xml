@@ -1,0 +1,55 @@
+
+<Section Label="The FiniteSet type">
+For reducing memory consumption and for usability (dedicated display) we introduce a new datatype for finite sets (of integers).
+Internally,  these finite sets are implemented as list of bits, as (<Code>Blist</Code>)s. 
+<Heading> Data type for finite sets </Heading>
+
+This data type has all the usual set operations and they work as expected. The only thing to keep in mind is that all finite sets in a given context are considered to be a subset of a universal set (also due to performance considerations). The set theoretical operations work only between the subsets of the same universe. 
+<#Include Label="FiniteSet">
+<#Include Label="SizeOfUniverse">
+<#Include Label="IsProperFiniteSubset">
+<#Include Label="UnionFiniteSet">
+<#Include Label="IsSingleton">
+</Section>
+
+<!--
+<Section Label="ActionRelated">
+<Heading> Functions related to acting on finite sets </Heading>
+<#Include Label="IsIdentityOnFiniteSet">
+<#Include Label="Transf2PermOnSet">
+</Section>
+-->
+
+<Section Label="Skeleton">
+<Heading>Skeleton</Heading>
+<#Include Label="Skeleton">
+<#Include Label="CoveringSetsOf">
+<#Include Label="DepthOfSet">
+<#Include Label="TopSet">
+<#Include Label="InfoOnSet">
+<#Include Label="SkeletonClasses">
+<#Include Label="DisplaySkeletonRepresentatives">
+<#Include Label="IsEquivalent">
+<#Include Label="RepresentativeSet">
+<#Include Label="ActionMatrix">
+</Section>
+
+
+<Section Label="Permutators">
+<Heading>Permutators: Transformations acting as permutations on subsets</Heading>
+The subsemigroup stabilizing a subset X of the state set is called the permutator subsemigroup (to avoid name clash). Restricting this permutator to $X$ gives the permutator group (Generalized Schützenberger group, see  <Cite Key="permutator"/> )
+<#Include Label="PermutatorSemigroup">
+<#Include Label="PermutatorGenerators">
+<#Include Label="AllPermutators">
+<#Include Label="PermutatorGroup">
+<#Include Label="CoverGroup">
+</Section>
+
+
+<Section Label="LinearNotation">
+<Heading> Linear Notation for Transformations</Heading>
+Following the notation described in <Cite Key="ClassicalTransSemigroups2009"/> we use a one-line compact notation for finite transformations. 
+<#Include Label="LinearNotation">
+</Section>
+
+

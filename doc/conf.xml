@@ -1,0 +1,10 @@
+
+<Section Label="sec:global variables"> <Heading>Configuration</Heading>
+The values of the following global variables can change the behavior of the package. Their value can be modified any time. The default values are stored in the file named <F>config</F>.
+<#Include Label="LINEAR_NOTATION">
+<#Include Label="STRAIGHTWORD_REDUCTION">
+<#Include Label="SMALLER_GENERATOR_SET">
+<#Include Label="PARANOID">
+<#Include Label="SMALL_GROUPS">
+<#Include Label="PDF_VIEWER">
+</Section>
