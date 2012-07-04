@@ -37,98 +37,114 @@ function(G)
 end
 );
 
-
 ##################################################################
-# Creates the record containing the info for the lagrange decomposition of permutation groups: series, transversals, components, coset representatives, mapping from points to coset reprs and backwards.
-InstallMethod(LagrangeDecomposition,[IsPermGroup,IsList],
-function(G,subgroupchain)
-local series,i,j,comps,result,point2coset,coset2reprs,transversals,point2repr,repr2point,cstr,stabrt,stabrtreps,gen,compgens, t;
+# Creates the record containing the info for the lagrange decomposition of
+# permutation groups: series, transversals, components, coset representatives,
+# mapping from points to coset reprs and backwards.
+
+InstallMethod(LagrangeDecomposition, "for a perm group and list",
+[IsPermGroup, IsList],
+function(G, subgroupchain)
+  local series, t, transversals, comps, compgens, point2repr, repr2point, cstr,
+   stabrt, stabrtreps, result, i, gen;
 
   #############sanity check##################################
-  if G <> subgroupchain[1] then Error("Supplied chain and the original group is not compatible!"); fi;
+  if G <> subgroupchain[1] then 
+    Error("Supplied chain and the original group is not compatible!"); 
+  fi;
 
   ###############SERIES########################################
   series := ShallowCopy(subgroupchain); #to make it mutable
-  
-  Info(LagrangeDecompositionInfoClass, 2, "LAGRANGEDECOMPOSITION ");t := Runtime();
+
+  Info(LagrangeDecompositionInfoClass, 2, "LAGRANGEDECOMPOSITION ");
+  t := Runtime();
   if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
-      #reducing the numbers of generators if possible
-      series := List(series, x->SGPDEC_ReduceNumOfGenerators(x));
-      Info(LagrangeDecompositionInfoClass, 2, "Reducing the number of generators in the series ",
-           SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+    #reducing the numbers of generators if possible
+    series := List(series, x->SGPDEC_ReduceNumOfGenerators(x));
+    Info(LagrangeDecompositionInfoClass, 2, 
+    "Reducing the number of generators in the series ",
+    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
   fi;
 
-  #####################TRANSVERSALS & COMPONENTS###########################################
+  #############TRANSVERSALS & COMPONENTS##############################
   transversals := [];
   comps := [];
   for i in [1..Length(series)-1] do
-      #first the transversals
-      transversals[i] := RightTransversal(series[i],series[i+1]);
+    #first the transversals
+    transversals[i] := RightTransversal(series[i],series[i+1]);
 
-      #then the generators of the component by the canonical action on the transversals
-      compgens := [];
-      for gen in GeneratorsOfGroup(series[i]) do
-        Add(compgens, SGPDEC_CanonicalPermutationAction(transversals[i], gen,\*));
-      od;        
-      Add(comps,Group(AsSet(compgens)));
+    # then the generators of the component by the canonical action on the
+    # transversals
+    compgens := [];
+    for gen in GeneratorsOfGroup(series[i]) do
+      Add(compgens, SGPDEC_CanonicalPermutationAction(transversals[i], 
+       gen,\*));
+    od;        
+    Add(comps,Group(AsSet(compgens)));
   od;
-  Info(LagrangeDecompositionInfoClass, 2, "Calculating transversals and components ", 
-       SGPDEC_TimeString(Runtime()-t)); t := Runtime();
-  
-  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
-      #reducing the numbers of generators if possible
-      comps := List(comps, x->SGPDEC_ReduceNumOfGenerators(x));
-      Info(LagrangeDecompositionInfoClass, 2, "Reducing the number of generators in components ",
-           SGPDEC_TimeString(Runtime()-t)); t := Runtime();
-  fi;
-  
-  #####MAPPINGS#######################################################################
+  Info(LagrangeDecompositionInfoClass, 2, 
+   "Calculating transversals and components ", 
+   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
-  #moving between the abstracted point representation and the original action on the transversal
+  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
+    #reducing the numbers of generators if possible
+    comps := List(comps, x->SGPDEC_ReduceNumOfGenerators(x));
+    Info(LagrangeDecompositionInfoClass, 2, 
+    "Reducing the number of generators in components ",
+       SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+  fi;
+  ####MAPPINGS##############################################################
+
+  # moving between the abstracted point representation and the original action
+  # on the transversal
   point2repr := [];
   repr2point := [];
   for i in [1..Length(transversals)] do
-      #from a point in the tree representation to a coset representative
-      Add(point2repr, transversals[i]);
-      #just taking the inverse of the former
-      Add(repr2point, AssociativeList(transversals[i]) );
+    #from a point in the tree representation to a coset representative
+    Add(point2repr, transversals[i]);
+    #just taking the inverse of the former
+    Add(repr2point, AssociativeList(transversals[i]) );
   od;
-  Info(LagrangeDecompositionInfoClass, 2, "Calculating codec ", SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+  
+  Info(LagrangeDecompositionInfoClass, 2, "Calculating codec ",
+   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
-  ###############################################################################################
   cstr := CascadedStructure(comps);
 
-  #############CONSTRUCTING THE CONTAINER RECORD##################################################
+  #############CONSTRUCTING THE CONTAINER RECORD#########################
 
   #when the group is small we can ask for these extra info
   if SgpDecOptionsRec.SMALL_GROUPS then 
-      Info(LagrangeDecompositionInfoClass, 2, "Small group identification started...\c");
-      Perform(comps, StructureDescription);
-      Perform(series, StructureDescription);
-      Perform([G],StructureDescription);
-      Info(LagrangeDecompositionInfoClass, 2, "DONE ", SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+    Info(LagrangeDecompositionInfoClass, 2, 
+     "Small group identification started...\c");
+    Perform(comps, StructureDescription);
+    Perform(series, StructureDescription);
+    Perform([G],StructureDescription);
+    Info(LagrangeDecompositionInfoClass, 2, "DONE ",
+    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
   fi;
 
   #calculating the cosetaction map (needed for raising a state)
   stabrt := RightTransversal(G,Stabilizer(G,1));
   stabrtreps := [];
   for i in [1..Length(stabrt)] do
-      stabrtreps[1^stabrt[i]] := stabrt[i];      
+    stabrtreps[1^stabrt[i]] := stabrt[i];      
   od;
-  Info(LagrangeDecompositionInfoClass, 2, "Coset reps for the original group action ", 
-       SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+  Info(LagrangeDecompositionInfoClass, 2, 
+  "Coset reps for the original group action ", 
+   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
-  #the record containing the information about the components
+#the record containing the information about the components
   result := rec(
-                original := G,
-                series := series,
-                components := comps,
-                transversals := transversals,
-                point2repr := point2repr,
-                repr2point := repr2point,
-                cascadedstruct := cstr,
-                stabilizertransversalreps := stabrtreps,
-                originalstateset := MovedPoints(G));
+              original := G,
+              series := series,
+              components := comps,
+              transversals := transversals,
+              point2repr := point2repr,
+              repr2point := repr2point,
+              cascadedstruct := cstr,
+              stabilizertransversalreps := stabrtreps,
+              originalstateset := MovedPoints(G));
   return Objectify(LagrangeDecompositionType, result);
 end);
 
@@ -159,7 +175,6 @@ function(decomp,g,s)
   end
 );
 
-
 # getting the representative of an element
 InstallGlobalFunction(Perm2CosetRepr,
 function(g,transversal)
@@ -167,12 +182,12 @@ function(g,transversal)
 end
 );
 
-
 #coding to the cascaded format
 InstallGlobalFunction(EncodeCosetReprs,
 function(decomp,list) local i,l; l := []; 
   for i in [1..Size(list)] do 
-    Add(l,ConvertersToCanonicalOf(decomp)[i][Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])]);
+    Add(l, ConvertersToCanonicalOf(decomp)[i][Perm2CosetRepr(list[i],
+     TransversalsOf(decomp)[i])]);
   od;
   return l;
 end
@@ -189,7 +204,6 @@ local i,l;
     return l;
   end
 );
-
 
 # Each cascaded state corresponds to one element (in the regular representation) of the group. This function gives the path corresponding to a group element (through the Lagrange-Frobenius map). 
 InstallGlobalFunction(Perm2CascadedState,
@@ -407,7 +421,6 @@ function(decomp)
   return decomp!.repr2point;
 end
 );
-
 
 InstallGlobalFunction(ConvertersFromCanonicalOf,
 function(decomp)
