@@ -76,8 +76,8 @@ PackageWWWHome := "http://sgpdec.sf.net",
 
 PackageDoc := rec(
   BookName  := "SgpDec",
-  ArchiveURLSubset := ["doc","htm"],
-  HTMLStart := "doc/manual.htm",
+  ArchiveURLSubset := ["doc"],
+  HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Hierarchical Decompositions of Finite Permutation Groups and Transformation Semigroups",
