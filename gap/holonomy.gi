@@ -9,18 +9,6 @@
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
 
-# calculating the action on the covers
-# list - the covering sets on a given level, range - holonomy slot range, t is the action
-_holonomy_TransformationAction := function(list,range,t)
-local l, i;
-  l := [1..Length(list)];
-  for i in range  do
-    l[i] :=  Position(list,OnFiniteSets(list[i] , t), range[1]-1 );
-  od;
-  return Transformation(l);
-end;
-
-
 #slots are the positions of the parallel components on a hierarchical level
 #returns the range of indices for the component's states
 _holonomy_slot_range := function(hd, set)
@@ -31,7 +19,6 @@ local slot, depth, skeleton;
   return [hd!.shifts[depth][slot]+1..hd!.shifts[depth][slot+1]];
 end;
 
-
 # INTEGERS <--> SETS
 # CODEC - though the coordinate values are elements of the cover of representative, it still
 # has to be converted to integers, so  a cascaded structure can be built
@@ -40,13 +27,13 @@ _holonomy_decode_coords := function(hd, ints)
 local sets, level;
   sets := [];
   for level in [1..Length(ints)] do
-      if ints[level] = 0 then 
+      if ints[level] = 0 then
           Add(sets,0); #zero if the level is jumped over
-      else 
+      else
           Add(sets,hd!.flat_coordinates[level][ints[level]]); # the position of the set    
-      fi;      
+      fi;
   od;
-  return sets;  
+  return sets;
 end;
 
 # encoding: sets -> integers
@@ -302,51 +289,66 @@ end
 );
 
 
-InstallMethod(ComponentActions, 
+InstallMethod(ComponentActions,
     "component actions of an original transformation in holonomy decomposition",
     true,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
 function(decomp,s,tiles)
-local action,pos,actions,i, P, Q,Ps,Qs, skeleton;
-    skeleton := SkeletonOf(decomp); # it is used frequently so it's better to have the reference
-    #initializing actions to identity
-    actions := List([1..Length(decomp)], i -> One(decomp[i]));
-    #initial successive approximation are the same for both
-    P := TopSet(skeleton);
-    Q := P;
-    for i in [1..Length(decomp)] do
-      if DepthOfSet(skeleton, Q) = i then # we are on the right level
-        Ps := OnFiniteSets(P , s);
-        if Ps = Q then #permutation
-          action := GetIN(skeleton,P)
-              * s 
-              * GetOUT(skeleton,Q);
-          Qs := OnFiniteSets(tiles[i], action);
-          #encode the action    
-          actions[i] := _holonomy_TransformationAction(decomp!.flat_coordinates[i],
-                                                         _holonomy_slot_range(decomp, Q), 
-                                                         action); 
-          # paranoid check whether the action is in the component
-          if SgpDecOptionsRec.PARANOID then 
-            if not actions[i] in decomp[i] then Error("Alien component action!"); fi;
-          fi;
-        elif IsSubset(Q,Ps)  then #constant
-          #look for a tile of Q that contains
-          pos := _holonomy_find_containing_set(decomp, i,_holonomy_slot_range(decomp, Q), 
-                                                OnFiniteSets(Ps , GetOUT(skeleton,Q)));
-          actions[i] := Transformation(List([1..Length(decomp!.flat_coordinates[i])],x->pos));      
-          Qs :=  decomp!.flat_coordinates[i][pos];
-        else
-          Print(i, "~~HEY~~ ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );      
-        fi;   
-        Q :=  OnFiniteSets(Qs , GetIN(skeleton,Q));
-      fi; #if we are on the right level for Q
+local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
+  skeleton := SkeletonOf(decomp); # it is used frequently so it's better to have the reference
+  #initializing actions to identity
+  actions := List([1..Length(decomp)], i -> One(decomp[i]));
+  #initial successive approximation are the same for both
+  P := TopSet(skeleton);
+  Q := P;
+  for i in [1..Length(decomp)] do
+    if DepthOfSet(skeleton, Q) = i then # we are on the right level
+      Ps := OnFiniteSets(P , s);
+      if Ps = Q then #permutation
+        action := GetIN(skeleton,P)
+                  * s
+                  * GetOUT(skeleton,Q);
+        Qs := OnFiniteSets(tiles[i], action);
+        # calculating the action on the covers
+        # list - the covering sets on a given level,
+        # range - holonomy slot range, t is the action
+        range := _holonomy_slot_range(decomp, Q);
+        list := decomp!.flat_coordinates[i];
+        l := [1..Length(list)];
+        for j in range  do
+          l[j] :=  Position(list,
+                           OnFiniteSets(list[j],action),
+                           range[1]-1);
+        od;
+        actions[i] :=Transformation(l);
 
-      if DepthOfSet(skeleton,P) = i then
-         P:= OnFiniteSets(tiles[i] , GetIN(skeleton, P));
+        # paranoid check whether the action is in the component
+        if SgpDecOptionsRec.PARANOID then
+          if not actions[i] in decomp[i] then
+            Error("Alien component action!");
+          fi;
+        fi;
+      elif IsSubset(Q,Ps)  then #constant
+        #look for a tile of Q that contains
+        pos := _holonomy_find_containing_set(decomp,
+                       i,
+                       _holonomy_slot_range(decomp, Q),
+                       OnFiniteSets(Ps , GetOUT(skeleton,Q)));
+        actions[i] := Transformation(
+                              List([1..Length(decomp!.flat_coordinates[i])],
+                                   x->pos));
+        Qs :=  decomp!.flat_coordinates[i][pos];
+      else
+        Print(i, "~~HEY~~ ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
       fi;
-    od;
-    return actions;          
+      Q :=  OnFiniteSets(Qs , GetIN(skeleton,Q));
+    fi; #if we are on the right level for Q
+
+    if DepthOfSet(skeleton,P) = i then
+      P:= OnFiniteSets(tiles[i] , GetIN(skeleton, P));
+    fi;
+  od;
+  return actions;
 end
 );
 
