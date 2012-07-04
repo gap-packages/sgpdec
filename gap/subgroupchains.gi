@@ -56,7 +56,7 @@ local i,ngs,str,l;
     #otherwise do the interactive selection
     else
       for i in [1..Size(ngs)] do
-          if SMALL_GROUPS then 
+          if SgpDecOptionsRec.SMALL_GROUPS then 
               
               Print(i,". ",StructureDescription(ngs[i])," index ", Size(LastElementOfList(l))/Size(ngs[i]));
               if IsNormal(LastElementOfList(l), ngs[i]) then 
@@ -129,7 +129,7 @@ local maxsubgroups, nchain,str,i,widths,level, nhom, F, gens;
 
       str := ReadLine(InputTextUser());
       RemoveCharacters(str,WHITESPACE); 
-      if (SMALLER_GENERATOR_SET) then
+      if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
           Add(nchain, Group(PreImages(nhom, SmallGeneratingSet(maxsubgroups[Int(str)]))) , level + 1);
       else
           Add(nchain, Group(PreImages(nhom, maxsubgroups[Int(str)])), level + 1);

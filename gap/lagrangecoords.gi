@@ -51,7 +51,7 @@ local series,i,j,comps,result,point2coset,coset2reprs,transversals,point2repr,re
   series := ShallowCopy(subgroupchain); #to make it mutable
   
   Info(LagrangeDecompositionInfoClass, 2, "LAGRANGEDECOMPOSITION ");t := Runtime();
-  if (SMALLER_GENERATOR_SET) then 
+  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
       #reducing the numbers of generators if possible
       series := List(series, x->SGPDEC_ReduceNumOfGenerators(x));
       Info(LagrangeDecompositionInfoClass, 2, "Reducing the number of generators in the series ",
@@ -75,7 +75,7 @@ local series,i,j,comps,result,point2coset,coset2reprs,transversals,point2repr,re
   Info(LagrangeDecompositionInfoClass, 2, "Calculating transversals and components ", 
        SGPDEC_TimeString(Runtime()-t)); t := Runtime();
   
-  if (SMALLER_GENERATOR_SET) then 
+  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
       #reducing the numbers of generators if possible
       comps := List(comps, x->SGPDEC_ReduceNumOfGenerators(x));
       Info(LagrangeDecompositionInfoClass, 2, "Reducing the number of generators in components ",
@@ -101,7 +101,7 @@ local series,i,j,comps,result,point2coset,coset2reprs,transversals,point2repr,re
   #############CONSTRUCTING THE CONTAINER RECORD##################################################
 
   #when the group is small we can ask for these extra info
-  if (SMALL_GROUPS) then 
+  if SgpDecOptionsRec.SMALL_GROUPS then 
       Info(LagrangeDecompositionInfoClass, 2, "Small group identification started...\c");
       Perform(comps, StructureDescription);
       Perform(series, StructureDescription);

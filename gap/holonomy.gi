@@ -327,7 +327,7 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton;
                                                          _holonomy_slot_range(decomp, Q), 
                                                          action); 
           # paranoid check whether the action is in the component
-          if PARANOID then 
+          if SgpDecOptionsRec.PARANOID then 
             if not actions[i] in decomp[i] then Error("Alien component action!"); fi;
           fi;
         elif IsSubset(Q,Ps)  then #constant
@@ -447,8 +447,9 @@ InstallMethod( PrintObj,"for a holonomy decomposition",
                [ IsHolonomyDecomposition ],
 function( hd )
 local groupindicators,i;
-   if (SMALL_GROUPS) then 
-     groupindicators := List(List([1..Length(hd)], x-> List(GroupComponentsOnDepth(hd,x))), 
+   if SgpDecOptionsRec.SMALL_GROUPS then 
+     groupindicators := List(List([1..Length(hd)], x->
+     List(GroupComponentsOnDepth(hd,x))), 
                            y -> List(y, z -> StructureDescription(z)));
    else
      groupindicators := List(List([1..Length(hd)], x-> List(GroupComponentsOnDepth(hd,x))), 

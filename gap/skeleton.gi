@@ -314,7 +314,7 @@ local permutators,i,j,nset,scc,word;
   od;
   #conjugation here
   permutators := List(permutators, x -> Concatenation(GetOUTw(sk,set), x, GetINw(sk,set)));
-  if STRAIGHTWORD_REDUCTION then 
+  if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then 
     permutators := List(permutators, x -> Reduce2StraightWord(x, sk.gens, sk.id)); #reducing on sets yield alien actions
     permutators := DuplicateFreeList(permutators); # straightening may introduce duplicates
   fi;
@@ -420,7 +420,11 @@ local  str, i,label,node,out,class,classes,set,states,G;
       G := CoverGroup(sk, node);
       if not IsTrivial(G) then 
         AppendTo(out,"style=\"filled\";fillcolor=\"lightgrey\";");
-        if SMALL_GROUPS then label := StructureDescription(G); else label:= "";fi;       
+        if SgpDecOptionsRec.SMALL_GROUPS then 
+          label := StructureDescription(G); 
+        else 
+          label:= ""
+        ;fi;       
         AppendTo(out,"label=\"",label,"\"  }\n");
       else
         AppendTo(out,"  }\n");

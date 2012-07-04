@@ -7,9 +7,7 @@ BindGlobal("SgpDecOptionsRec",
         SMALLER_GENERATOR_SET:=false,
         LINEAR_NOTATION:=false,
         SMALL_GROUPS:=true,
-        SGPDEC_RND:=324,
-        SGPDEC_RANDOM_SEED:=RandomSource(IsMersenneTwister,
-         SGPDEC_RANDOM_SEED)));
+        SGPDEC_RND:=324));
 
 MakeReadWriteGlobal("SgpDecOptionsRec");
 
