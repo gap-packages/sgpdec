@@ -70,7 +70,7 @@ local deps,i,tmp, level,arg,action;
   deps := [];
   #some tricekry is needed as random may return the same element
   while Length(deps) <> numofdeps do
-    level := Random(SGPDEC_RND, 1, Length(cstr));
+    level := Random(SgpDecOptionsRec.SGPDEC_RND, 1, Length(cstr));
     arg := Random(LazyCartesian(StateSets(cstr){[1..level-1]}));
     if not (arg in deps) then Add(deps,arg); fi;
   od;

@@ -23,7 +23,7 @@ local names,comp;
   #if VERBOSE then Print("Getting component names");fi;
   for comp in components do 
     if IsGroup(comp) then
-        if SMALL_GROUPS then
+        if SgpDecOptionsRec.SMALL_GROUPS then
             Add(names,StructureDescription(comp));
         else
             Add(names,Concatenation("G",StringPrint(Order(comp))));

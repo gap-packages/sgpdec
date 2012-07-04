@@ -128,7 +128,7 @@ InstallGlobalFunction(SimplerLinearNotation,
 end
 );
 
-if LINEAR_NOTATION then
+if SgpDecOptionsRec.LINEAR_NOTATION then
   #redefining display for transformations 
   InstallMethod( ViewObj,
     "linear notation for transformations",

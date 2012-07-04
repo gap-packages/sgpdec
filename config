@@ -1,79 +1,14 @@
 # configuration variables with default values, 
 # .gaprc is a good place to override these values 
 
-# <#GAPDoc Label="PARANOID">
-# <ManSection>
-# <Var Name="PARANOID"/>
-# <Description>
-# Thorough checks are performed if this is set true. 
-# Used for establishing correctness but can have significant performance penalties.
-# Default value is <C>false</C>.
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-PARANOID := true;
+BindGlobal("SgpDecOptionsRec", 
+  rec(  PARANOID:=true,
+        STRAIGHTWORD_REDUCTION:=true,
+        SMALLER_GENERATOR_SET:=false,
+        LINEAR_NOTATION:=false,
+        SMALL_GROUPS:=true,
+        SGPDEC_RND:=324));
+
+MakeReadWriteGlobal("SgpDecOptionsRec");
 
 
-# <#GAPDoc Label="STRAIGHTWORD_REDUCTION">
-# <ManSection>
-# <Var Name="STRAIGHTWORD_REDUCTION"/>
-# <Description>
-# Some algorithms can do on the fly reduction of words to straight words if this 
-# variable is set true. This gives smaller footprint for decompositions but needs
-# more processing time. Default value is <C>true</C>.
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-STRAIGHTWORD_REDUCTION := true;
-
-# <#GAPDoc Label="SMALLER_GENERATOR_SET">
-# <ManSection>
-# <Var Name="SMALLER_GENERATOR_SET"/>
-# <Description>
-# <C>SgpDec</C> can try to reduce the number of generators of a permutation group 
-# by calling <C>SmallGeneratingSet</C> if this 
-# variable is set true. 
-# Default value is <C>false</C>.
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-SMALLER_GENERATOR_SET := false;
-
-
-# <#GAPDoc Label="LINEAR_NOTATION">
-# <ManSection>
-# <Var Name="LINEAR_NOTATION"/>
-# <Description>
-# Transformations are displayed in linear notation (see <Ref Subsect="LinearNotation" Style="Number"/>
-#) if this is set to true. Default is <C>false</C>,
-# as it can be confusing for someone not familiar with linear notation. 
-# Also, setting this parameter has its effect only when loading the <C>SgpDec</C> package. Default value is <C>false</C>.
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-LINEAR_NOTATION := false;
-
-
-# <#GAPDoc Label="SMALL_GROUPS">
-# <ManSection>
-# <Var Name="SMALL_GROUPS"/>
-# <Description>
-# Information on small groups can be retrieved on the fly during calculations using <Code>StructureDescription</Code>, 
-# however this could die on bigger groups and there is an overhead in all cases. Default is <C>true</C>.
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-SMALL_GROUPS := true;
-
-# <#GAPDoc Label="PDF_VIEWER">
-# <ManSection>
-# <Var Name="PDF_VIEWER"/>
-# <Description>
-# External executable for a PDF viewer needed for online drawing (splashing).
-# </Description>
-# </ManSection>
-# <#/GAPDoc>
-PDF_VIEWER := " evince "; # the current Gnome document viewer on desktop UNIX machines
-
-SGPDEC_RANDOM_SEED := 324;
-SGPDEC_RND := RandomSource(IsMersenneTwister, SGPDEC_RANDOM_SEED);
