@@ -371,8 +371,7 @@ end
 );
 
 InstallOtherMethod(x2y,
-        "finds an original operation taking original state x to y
-        (working in the decomposition)",
+        "finds an original operation taking original state x to y",
     true,
     [IsLagrangeDecomposition,IsInt,IsInt], 0,
 function(decomp,x,y)
