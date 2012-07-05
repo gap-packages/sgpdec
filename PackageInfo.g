@@ -4,7 +4,7 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.6.39",
+Version := "0.6.40",
 
 Date := "05/07/2012",
 
@@ -67,10 +67,10 @@ README_URL := "http://sgpdec.sf.net",
 
 PackageInfoURL := "http://sgpdec.sf.net",
 
-
-AbstractHTML :=
-  "<span class=\"pkgname\">SgpDec</span> is  a <span class=\"pkgname\">GAP</span> package \
-   for hierarchical decompositions of finite permutation groups and transformation semigroups.",
+AbstractHTML := "<span class=\"pkgname\">SgpDec</span> is  a <span class=\
+                   \"pkgname\">GAP</span> \
+                   package for hierarchical decompositions of finite \
+                   permutation groups and transformation semigroups.",
 
 PackageWWWHome := "http://sgpdec.sf.net",
 
@@ -80,29 +80,32 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Hierarchical Decompositions of Finite Permutation Groups and Transformation Semigroups",
+  LongTitle := "Hierarchical Decompositions of Finite Permutation Groups and \
+Transformation Semigroups",
   Autoload  := true
 ),
 
 
 Dependencies := rec(
  GAP := ">= 4.5",
- NeededOtherPackages := [["GAPDoc", ">=1.4"],  #StringPrint
-                   ["citrus", ">=0.8"], #orbit algorithms
+ NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
+                   ["citrus", ">=0.9"], #orbit algorithms
                    ["dust", ">=0.1"], #fancy data structures
                    ["orb", ">=4.5"], #hashtable functionalities
                    ["viz", ">=0.2"] #Draw, Splash
                          ],
  SuggestedOtherPackages := [ ],
- ExternalConditions := [["Graphviz","http://www.graphviz.org/"]] #for creating PDF figures                      
+ ExternalConditions := [ ]
 ),
 
 AvailabilityTest := ReturnTrue,
 
 Autoload := false,
 
-TestFile := "test/test.g",
+TestFile := "tst/testinstall.tst",
 
-Keywords := ["Krohn-Rhodes Theory","transformation semigroup","permutation group","hierarchical decomposition"]
-
+Keywords := ["Krohn-Rhodes Theory",
+             "transformation semigroup",
+             "permutation group",
+             "hierarchical decomposition"]
 ));

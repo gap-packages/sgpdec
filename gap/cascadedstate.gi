@@ -1,13 +1,14 @@
 #############################################################################
 ##
-## cascadedstate.gi           SgpDec package  
+## cascadedstate.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2008 University of Hertfordshire, Hatfield, UK
+## 2008-2012
 ##
 ## Dealing with cascaded states.
 ##
+
 
 # CONSTRUCTOR
 # The actual cascaded states are reused. So the constructor just checks whether
@@ -18,41 +19,45 @@ function(cstr,coords)
 local i;
   #if the length is bigger then we fail (overspecialized!)
   if Length(coords) > Length(cstr)  then
-     Print("Overspecialized! Too many levels!\n");
-     return fail;
+    Print("Overspecialized! Too many levels!\n");
+    return fail;
   fi;
 
   # checking whether the values are in range #TODO!! possibly a noncheck version
   # for speedup
 
   for i in [1..Length(coords)] do
-    if coords[i] > Length(cstr!.state_sets[i]) or coords[i]<0 then 
+    if coords[i] > Length(cstr!.state_sets[i]) or coords[i]<0 then
       Print(i,"th coordinate value out of range!\n");
       return fail;
     fi;
   od;
 
   # just a normal state not an abstract one  #TODO this one misses the zero
-  # entries 
+  # entries
   if Length(coords) =  Length(cstr) then
     return Objectify(cstr!.state_type,rec(coords:=coords));
-    #in the case of an  abstract state we need to check the coordinates    
-  fi;    
+
+
+    #in the case of an  abstract state we need to check the coordinates
+  fi;
   return Objectify(cstr!.abstract_state_type,rec(coords:=coords));
 end);
 
+
 ####LOWLEVEL YEAST#####################################
 # Collapsing for states - just returning the index as the states are stored in
-# order. 
+# order.
 
 InstallMethod(Collapse, "for a cascaded state",
 [IsCascadedState],
 function( cs )
   local cstr;
-  
+
   cstr := CascadedStructureOf(cs);
   return PositionCanonical(States(cstr),cs);
 end);
+
 
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
@@ -70,7 +75,7 @@ end);
 InstallGlobalFunction(Concretize,
 function(abstract_state)
 local l, cstr;
-  cstr := CascadedStructureOf(abstract_state);                    
+  cstr := CascadedStructureOf(abstract_state);
   l := ShallowCopy(AsList(abstract_state));
   #just putting 1s as a safe bet JDM ???
   Append(l, List([Size(abstract_state)+1..Length(cstr)], x -> 1));
@@ -100,12 +105,12 @@ function( cs )
   cstr := CascadedStructureOf(cs);
   Print("C(");
   for i in [1..Length(cstr)] do
-    if i <= Length(cs) and cs[i] > 0 then 
+    if i <= Length(cs) and cs[i] > 0 then
       Print(cstr!.state_symbol_functions[i](cs[i]));
     else
       Print("*");
     fi;
-    if i < Length(cs) then 
+    if i < Length(cs) then
       Print(",");
     fi;
   od;
@@ -114,7 +119,6 @@ function( cs )
 end);
 
 # for accessing the list elements
-
 InstallOtherMethod( \[\], "for an abstract cascaded state and pos int",
 [ IsAbstractCascadedState, IsPosInt ],
 function( cs, pos )
@@ -132,8 +136,7 @@ end);
 #################ACCESS FUNCTIONS######################
 
 InstallMethod(CascadedStructureOf, "for an abstract cascaded state",
-[IsAbstractCascadedState], 
+[IsAbstractCascadedState],
 function(cs)
   return FamilyObj(cs)!.cstr;
 end);
-
