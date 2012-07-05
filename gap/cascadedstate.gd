@@ -11,7 +11,7 @@
 
 DeclareGlobalFunction("CascadedState");
 # returns a representative concrete cascaded state corresponding
-#to an abstract state
+# to an abstract state
 DeclareGlobalFunction("Concretize");
 
 DeclareCategory("IsAbstractCascadedState",IsDenseList);
