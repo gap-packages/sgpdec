@@ -1,5 +1,5 @@
 0.6.40
-	SgpDec 2012 Code Camp changes. Removing GroupsOnly.
+	SgpDec 2012 Code Camp changes. Removing GroupsOnly. Removing converters from Lagrange coordinates. Further reformatting.
 0.6.39
 	SgpDec 2012 Code Camp changes. Config parameters are in a record now. Reformatting. Moving scripts folder to dev folder. Validating PackageInfo.g. Inlining function used only once. etc.
 0.6.38
