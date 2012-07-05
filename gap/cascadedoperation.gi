@@ -567,7 +567,7 @@ end);
 # returning parent cascaded structure
 
 InstallMethod(CascadedStructureOf, "for a cascaded operation",
-IsCascadedOperation], 
+[IsCascadedOperation], 
 function(cascop)
   return FamilyObj(cascop)!.cstr;
 end);
