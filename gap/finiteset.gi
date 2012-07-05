@@ -239,7 +239,7 @@ local l, lc, result,n, bl,tmp;
   l := AsList(A);
   result := [];
   n := SizeOfUniverse(A);
-  lc := LazyCartesian(ListWithIdenticalEntries(Size(l), [true, false]));
+  lc := EnumeratorOfCartesianProduct(ListWithIdenticalEntries(Size(l), [true, false]));
   for bl in lc do
     tmp := [];
     Perform([1..Size(bl)], function(x) if bl[x] then Add(tmp,l[x]);fi;end );

@@ -71,7 +71,7 @@ local deps,i,tmp, level,arg,action;
   #some tricekry is needed as random may return the same element
   while Length(deps) <> numofdeps do
     level := Random(SgpDecOptionsRec.SGPDEC_RND, 1, Length(cstr));
-    arg := Random(LazyCartesian(StateSets(cstr){[1..level-1]}));
+    arg := Random(EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]}));
     if not (arg in deps) then Add(deps,arg); fi;
   od;
 
@@ -134,7 +134,7 @@ local pairs,i,coords,cstr,identity, value;
   pairs := [];
   for i in [1..Length(cstr)] do
     identity := One(cstr[i]); 
-    for coords in  (LazyCartesian( StateSets(cstr){[1..(i-1)]} )) do
+    for coords in  (EnumeratorOfCartesianProduct( StateSets(cstr){[1..(i-1)]} )) do
        value := cascop![i](coords);               
        #if it is not the identity of the component
        if identity <> value then
@@ -169,7 +169,7 @@ local coords,i,cstr;
   cstr := CascadedStructureOf(p);
   
   for i in [1..Length(cstr)] do
-    for coords in  (LazyCartesian( StateSets(cstr){[1..(i-1)]} )) do
+    for coords in  (EnumeratorOfCartesianProduct( StateSets(cstr){[1..(i-1)]} )) do
        if p![i](coords) <> q![i](coords) then return false; fi;               
     od;
   od;
@@ -271,7 +271,7 @@ local i,j,cstr,comps;
   fi;
   for i in [1..Length(cstr)] do
     Print("Level ",i,": ", cstr!.argument_names[i]," -> ",cstr!.names_of_components[i],"\n");
-    for j in  (LazyCartesian( cstr!.state_sets{[1..(i-1)]} )) do
+    for j in  (EnumeratorOfCartesianProduct( cstr!.state_sets{[1..(i-1)]} )) do
       if not IsOne(co![i](j)) then 
         Print("[",ConvertCascade2String(j,cstr!.state_symbol_functions),
               "] -> ",
@@ -377,7 +377,7 @@ local flatoplist,i,dependencies,level,prefix,prefixes,identity,action;
   #enumerate prefixes
   #for all levels
   for level in [1..Length(cstr)] do
-    prefixes := LazyCartesian(StateSets(cstr){[1..level-1]});
+    prefixes := EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]});
     for prefix in prefixes do
       action := ComponentActionForPrefix(cstr, flatoplist, prefix);
       if ( action <> One(cstr[level]) ) then
@@ -418,7 +418,7 @@ local cstr,arg,arguments,value,coord;
   cstr := CascadedStructureOf(cascop);
 
   #all possible arguments up to targetlevel-1
-  arguments := LazyCartesian(StateSets(cstr){[1..(targetlevel-1)]});
+  arguments := EnumeratorOfCartesianProduct(StateSets(cstr){[1..(targetlevel-1)]});
 
   #so we test for all arguments
   for arg in arguments do  #TODO some optimization may be possible here, not to check any twice
@@ -463,7 +463,7 @@ local pscope,level,prefix,cstr;
   #we suppose there is no action
   pscope := FiniteSet([],Length(cstr));
   for level in [1..Length(cstr)] do
-   for prefix in  (LazyCartesian( cstr!.state_sets{[1..(level-1)]} )) do
+   for prefix in  (EnumeratorOfCartesianProduct( cstr!.state_sets{[1..(level-1)]} )) do
        #if it is not the identity of the component
        if One(cstr[level]) <> (cascop![level](prefix)) then
 	   #then we have at least one here
@@ -495,7 +495,7 @@ local states, src_int,dest_cs, dest_prefix, coords,postfix;
     dest_prefix := dest_cs{[1..Length(prefix)]};    
     #now checking: any image should have the same prefix 
     #for all possible concretization
-    for postfix in LazyCartesian(StateSets(cstr){[Length(prefix)+1..Length(cstr)]}) do
+    for postfix in EnumeratorOfCartesianProduct(StateSets(cstr){[Length(prefix)+1..Length(cstr)]}) do
       coords := ShallowCopy(prefix);
       Append(coords,postfix);
       if not SGPDEC_IsPrefixList(dest_prefix, 
@@ -521,7 +521,7 @@ local  prefix, prefixes, level,flatoplist;
   #enumerate prefixes
   #for all levels
   for level in [1..Length(cstr)] do
-    prefixes := LazyCartesian(StateSets(cstr){[1..level-1]});
+    prefixes := EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]});
     for prefix in prefixes do
       if not IsDependencyCompatibleOnPrefix(cstr, flatoplist, prefix) then 
         return false;
