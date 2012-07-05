@@ -3,6 +3,7 @@
 ReadPackage("SgpDec","/gap/io.g");
 ReadPackage("SgpDec","/makedoc.g");
 
+ReadPackage("SgpDec","/gap/temp.gi");
 ReadPackage("SgpDec","/gap/depfunctable.gi");
 ReadPackage("SgpDec","/gap/linearnotation.gi");
 ReadPackage("SgpDec","/gap/words.gi");

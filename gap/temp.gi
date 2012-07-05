@@ -1,3 +1,18 @@
+
+
+
+
+
+InstallGlobalFunction(EnumeratorOfCartesianProduct, 
+function(arg)
+
+  if Length(arg)=1 then 
+    return CallFuncList(LazyCartesian, arg);
+  fi;
+
+  return LazyCartesian(arg);
+end);
+
 # returning true in case the name denotes a valid member of the record
 ExistsFieldInRecord :=function(record, name)
     return name in RecNames(record);

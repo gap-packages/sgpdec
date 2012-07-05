@@ -1,6 +1,7 @@
 #just loading group information
 
 LoadPackage("sgpdec");
+LogTo("~/Desktop/sgpdec.tst");
 SMALL_GROUPS := true;;
 test_groups := [D8,C4,C5,S4];;
 test_semigroups := [MICROBUG,HEYBUG,SMLBUG,BECKS, BEX,T4, ALIFEX, NONISOMPERM];

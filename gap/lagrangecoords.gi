@@ -148,7 +148,6 @@ function(G, subgroupchain)
   return Objectify(LagrangeDecompositionType, result);
 end);
 
-
   # former _FudgeFactors, s - state (list), g - group element to be lifted,
 InstallMethod(ComponentActions, 
     "componentactions of an original permutation in Lagrange decomposition",
@@ -205,7 +204,9 @@ local i,l;
   end
 );
 
-# Each cascaded state corresponds to one element (in the regular representation) of the group. This function gives the path corresponding to a group element (through the Lagrange-Frobenius map). 
+# Each cascaded state corresponds to one element (in the regular
+# representation) of the group. This function gives the path corresponding to a
+# group element (through the Lagrange-Frobenius map). 
 InstallGlobalFunction(Perm2CascadedState,
 function(decomp,g)
 local coords,i;

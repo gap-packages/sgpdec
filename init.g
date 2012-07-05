@@ -1,7 +1,7 @@
 ReadPackage("SgpDec","config");
 
 ReadPackage("SgpDec","/gap/finiteset.gd");
-ReadPackage("SgpDec","/gap/temp.g");
+ReadPackage("SgpDec","/gap/temp.gd");
 
 ReadPackage("SgpDec","/gap/depfunctable.gd");
 ReadPackage("SgpDec","/gap/linearnotation.gd");

@@ -1,0 +1,4 @@
+
+
+DeclareGlobalFunction("EnumeratorOfCartesianProduct");
+
