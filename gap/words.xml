@@ -1,0 +1,96 @@
+<#GAPDoc Label="Construct">
+<ManSection>
+  <Oper Arg="word, generators, start, action" Name="Construct" />
+  <Oper Arg="word, generators, start, action" Name="ConstructWithInverses" />
+  <Oper Arg="word, generators, start, action" Name="Trajectory" />
+  <Oper Arg="word, generators, start, action" Name="TrajectoryWithInverses" />
+  <Description>
+    General purpose function for constructing some structure by applying generators in the order
+    coded defined by a sequence of integers (words).  
+    The integers should be between 1 and the size of the generator set, or
+    in case the generators are invertible, they can be negative values, meaning the 
+    inverse of the generator coded by the corresponding positive value.
+    The construction starts at the given element, and the action should be a function
+    describing how the generators act on the starting and the subsequent points.
+    For an empty word the starting point is returned.
+    Trajectory is the same but it returns the whole calculation. 
+    
+    Calculating a transformation represented by a word (element of the free semigroup): 
+    <Example>
+      gap> gens := [Transformation([2,3,4,1]),
+      Transformation([2,1,3,4]),
+      Transformation([1,1,3,4])];;
+      gap> Construct([1,2,1,2,3],gens,One(gens[1]),\*);
+      Transformation( [ 1, 4, 1, 3 ] )
+    </Example>
+    Or acting on some set:
+    <Example>
+      gap> Construct([1,2,1,2,3],gens,[1,2],OnSets);
+      [ 1, 4 ]
+    </Example>
+    For invertible generators (e.g. permutations), negative integers can be used for coding inverses:
+    <Example>
+      gap> ConstructWithInverses([1,-1],[(1,2)],(),\*);
+      ()
+    </Example>
+    For displaying words really as a string, the following trick can be used:
+    <Example>
+      gap> Construct([3,5,9,9,4,6,2,4,8,9,7,1], 
+      ["!","W","H","o","e"," ","d","r","l"], 
+      "",
+      Concatenation);
+      "Hello World!"
+    </Example>
+    Or we can have the intermediate elements of the construction.
+    <Example>
+      gap> Trajectory([3,2,1],["c","b","a"],"",Concatenation);
+      [ "", "a", "ab", "abc" ]
+    </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="IsStraightWord">
+<ManSection >
+  <Oper Arg="word, gens, start" Name="IsStraightWord" />
+  <Description>
+    Returns true if the word generates a trajectory that is straight starting from the given point, 
+    i.e. there are no repeated visited nodes.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="Reduce2StraightWord">
+<ManSection >
+  <Func Arg="word, gens, start" Name="Reduce2StraightWord" />
+  <Description>
+    Returns the straight word yielded by the reduction (cutting out identities and repetitions). The algorithm 
+    takes the trajectory and compares the elements from the beginning and from the end. 
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="InvertPermutationWord">
+<ManSection>
+  <Oper Arg="word" Name="InvertPermutationWord" />
+  <Description>
+    Inverts the word as a product of permutations. 
+    The order is reversed  and the indices are multiplied by -1, corresponding to the way
+    encoding inverse permutations.
+    <Example>
+    </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ReducePermutationWord">
+<ManSection>
+  <Oper Arg="word" Name="ReducePermutationWord" />
+  <Description>
+    Symbolically reduces the word, i.e. cancelling neighbouring inverses. 
+    <Example>
+    </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

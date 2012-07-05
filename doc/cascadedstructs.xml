@@ -1,0 +1,44 @@
+<Chapter Label="ch:CascadedStructures"> <Heading>Cascaded Structures</Heading>
+
+Cascaded structures can be built from a list of permutation groups and transformation semigroups  (the order of course does matter: the first one is the top level, least-dependent component). The cascaded structure should be thought only as a framework in which we can coordinatize states and transformations. 
+
+<P/>
+
+The result of an algebraic hierarchical decomposition is also a cascaded structure, i.e. simpler components connected via unidirectional dependency functions. The decomposition algorithm takes care of finding the components and coordinatizing the generators so it adds more things  and actually hides the cascaded structure, so it is safe to skip to the <Ref Chap="HierarchicalDecompositions" Style="Text"/> chapter, and refer back if some low-level manipulation is needed. 
+<P/>
+In sum, cascaded structures are containers for permutation groups and transformation semigroups that act on coordinate tuples (cascaded states) connected by a set of dependency functions (cascaded operations).
+    <Section Label="sec:cstr construct"> <Heading>Creating Cascaded Structures</Heading>
+      <#Include Label="CascadedStructure">
+    </Section>
+
+    <Section Label="sec:cascaded state"> <Heading>Cascaded States</Heading>
+      Cascaded states are the elements of the direct product of the components in the hierarchical order. In other words, cascaded states are tuples having values for each coordinate level from the corresponding components.
+      <#Include Label="IsCascadedState">
+      <#Include Label="CascadedState">
+    </Section>
+
+    <Section Label="sec:cascaded operation"> <Heading>Cascaded Operations</Heading>
+Cascaded operations are lot more complicated objects than cascaded states. They are NOT elements of the direct product of the components' operations, but they contain dependecy functions by which the required component actions can be obtained.
+             <#Include Label="IsCascadedOperation">
+
+   <#Include Label="IdentityCascadedOperation"> 
+   <#Include Label="RandomCascadedOperation"> 
+   <#Include Label="DefineCascadedOperation"> 
+
+   <#Include Label="DependencyMapsFromCascadedOperation"> 
+   <#Include Label="DependencyCompatible"> 
+   <#Include Label="MonomialGenerators"> 
+   <#Include Label="ProjectedScope"> 
+   <#Include Label="DependsOn"> 
+   <#Include Label="DependencyGraph"> 
+   </Section>
+
+    <Section Label="sec:construct cascaded operation"> 
+    <Heading>Cascaded and Flat</Heading>
+   <#Include Label="CascadedYEAST"> 
+   </Section>
+
+
+</Chapter>
+
+
