@@ -1,26 +1,20 @@
-####################################################################################
-##
-## cascadedoperation.gi           SgpDec package  
-##
-## Copyright (C)  2011 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
-##
-## Cascaded permutations and transformations.
-##
-
-# returns true if list1 is the 'prefix' of list2
-SGPDEC_IsPrefixList := function(list1,list2)
-local i;
-  if Length(list1) > Length(list2) then return false;fi; 
-  for i in [1..Size(list1)] do
-    if (list1[i] <> list2[i]) then return false;fi;
-  od;
-  return true;
-end;
+#############################################################################
+###
+##W  cascadeoperation.gi
+##Y  Copyright (C) 2011-12  Attila Egri-Nagy, Chrystopher L. Nehaniv, and 
+##   James D. Mitchell
+###
+###  Licensing information can be found in the README file of this package.
+###
+##############################################################################
+###
+### Cascaded permutations and transformations.
 
 #getting  the images in a list ( i -> flatoplist[i] )
+
 SGPDEC_AsListOfMaps := function(flatop,size) 
   if IsPerm(flatop) then 
-    return ImageListOfTransformation(AsTransformation(flatop,size));
+    return OnTuples([1..size], flatop);
   else 
     return ImageListOfTransformation(flatop);
   fi; 
@@ -362,34 +356,30 @@ local states, src_int,dest_cs,coordval,actionlist,level;
 end;
 
 #raising a permutation/transformation to its cascaded format
-InstallOtherMethod(BuildNC,
-    "gives the coordinatized format of a permutation/transformation (no check)",
-    true,
-    [IsCascadedStructure,IsObject], 0,
+InstallOtherMethod(BuildNC, "for a cascaded structure and object",
+[IsCascadedStructure, IsObject],
 function(cstr,flatop)
-local flatoplist,i,dependencies,level,prefix,prefixes,identity,action;
+  local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
-  flatoplist := SGPDEC_AsListOfMaps(flatop,Size(States(cstr)));
+  flatoplist := SGPDEC_AsListOfMaps(flatop, Size(States(cstr)));
 
   dependencies := [];
 
-  #enumerate prefixes
-  #for all levels
+  #enumerate prefixes for all levels
   for level in [1..Length(cstr)] do
     prefixes := EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]});
     for prefix in prefixes do
       action := ComponentActionForPrefix(cstr, flatoplist, prefix);
-      if ( action <> One(cstr[level]) ) then
+      if action <> One(cstr[level]) then
          Add(dependencies,[prefix,action]);
       fi;
-    od;#prefixes
-  od;#levels
+    od;
+  od;
 
   #after the recursion done we have the defining elementary dependencies
   return DefineCascadedOperation(cstr,dependencies);
-end
-);
+end);
 
 #raising a permutation/transformation to its cascaded format
 InstallOtherMethod(Build,
@@ -405,8 +395,7 @@ function(cstr,flatop)
 
   #after all the checks we just call BuildNC
   return BuildNC(cstr,flatop);
-end
-);
+end);
 
 #checks whether the target level depends on onlevel in cascop.
 #simply follows the definition and varies one level 
@@ -479,38 +468,47 @@ end
 
 #DEPENDENCY COMPATIBILITY##
 
-# a permutation/transformation is compatible with the dependency frame of
-# a cascaded structure if the dependency relation is well-defined/single-valued, a function 
-# (i.e. there is a unique action for an abstract state (a prefix))
+# a permutation/transformation is compatible with the dependency frame of a
+# cascaded structure if the dependency relation is well-defined/single-valued,
+# a function (i.e. there is a unique action for an abstract state (a prefix))
 # the action is not checked here though
+
 InstallGlobalFunction(IsDependencyCompatibleOnPrefix,
 function(cstr, flatoplist, prefix)
-local states, src_int,dest_cs, dest_prefix, coords,postfix;  
+  local states, src_int, dest_cs, dest_prefix, coords, postfix, i;
+
   states := States(cstr);
-    #pick one source cascaded state (the first in the interval may do)
-    src_int := PositionCanonical(states,Concretize(CascadedState(cstr, prefix)));
-    #as a cascaded state the image is
-    dest_cs := states[flatoplist[src_int]];
-    #get the prefix out of it 
-    dest_prefix := dest_cs{[1..Length(prefix)]};    
-    #now checking: any image should have the same prefix 
-    #for all possible concretization
-    for postfix in EnumeratorOfCartesianProduct(StateSets(cstr){[Length(prefix)+1..Length(cstr)]}) do
+  
+  #pick one source cascaded state (the first in the interval may do)
+  src_int := PositionCanonical(states,Concretize(CascadedState(cstr, prefix)));
+ 
+  #as a cascaded state the image is
+  dest_cs := states[flatoplist[src_int]];
+  
+  #get the prefix out of it 
+  dest_prefix := dest_cs{[1..Length(prefix)]};   
+
+  #now checking: any image should have the same prefix 
+  #for all possible concretization
+  for postfix in EnumeratorOfCartesianProduct(
+    StateSets(cstr){[Length(prefix)+1..Length(cstr)]}) do
       coords := ShallowCopy(prefix);
       Append(coords,postfix);
-      if not SGPDEC_IsPrefixList(dest_prefix, 
-             states[flatoplist[PositionCanonical(states,CascadedState(cstr,coords))]]) then
-        return false;
-      fi;
+      for i in [1..Length(dest_prefix)] do 
+        if dest_prefix[i]<>states[flatoplist[PositionCanonical(states,
+         CascadedState(cstr,coords))]][i] then 
+          return false;
+        fi;
+      od;
     od;
   return true;
-end
-);
+end);
 
-#this function checks whether a permutation or a transformation is dependency compatible 
-# with a cascaded structure
-# this checks all prefixes (abstract states)
-# the flat operation should have degree equal to the number of cascaded states
+# this function checks whether a permutation or a transformation is dependency
+# compatible with a cascaded structure this checks all prefixes (abstract
+# states) the flat operation should have degree equal to the number of cascaded
+# states
+
 InstallGlobalFunction(IsDependencyCompatible,
  function(cstr,flatop)
 local  prefix, prefixes, level,flatoplist;

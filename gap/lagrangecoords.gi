@@ -102,7 +102,6 @@ function(G, subgroupchain)
   for i in [1..Length(transversals)] do
     #from a point in the tree representation to a coset representative
     Add(point2repr, transversals[i]);
-    Error();
     #just taking the inverse of the former
     Add(repr2point, AssociativeList(transversals[i]) );
   od;
