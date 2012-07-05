@@ -166,11 +166,7 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
   #creating cascade state typed states
   #GENERATING STATES
   #if VERBOSE then Print("Generating states...");fi;
-<<<<<<< local
-  cascprodinfo.states := LazyCartesian(cascprodinfo.state_sets);
-=======
-  cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);            
->>>>>>> other
+  cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
   #if VERBOSE then Print("DONE\n");fi;
 
   result :=  Objectify(CascadedStructureType,cascprodinfo);
