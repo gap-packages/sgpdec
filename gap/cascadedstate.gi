@@ -29,10 +29,10 @@ local i;
   od;
   #just a normal state not an abstract one  #TODO this misses the zero entries
   if Length(coords) =  Length(cstr) then
-      return Objectify(cstr!.state_type,rec(coords:=coords));
+    return Objectify(cstr!.state_type,rec(coords:=coords));
   #in the case of an  abstract state we need to check the coordinates
   else
-      return Objectify(cstr!.abstract_state_type,rec(coords:=coords));
+    return Objectify(cstr!.abstract_state_type,rec(coords:=coords));
   fi;
 end
 );
@@ -45,11 +45,7 @@ InstallMethod(Collapse,
     true,
     [IsCascadedState], 0,
 function(cs)
-local states,i,l,cstr,cslist;
-  #we get the cascaded structure
-  cstr := CascadedStructureOf(cs);
-  #then just look for its index
-  return PositionCanonical(States(cstr),cs);
+  return PositionCanonical(States(CascadedStructureOf(cs)),cs);
 end
 );
 
@@ -58,7 +54,7 @@ InstallOtherMethod(Build,
     "gives the cascade state representation of state",
     true,
     [IsCascadedStructure,IsInt], 0,
-function( cstr, state )
+function(cstr, state)
   return States(cstr)[state];
 end
 );
@@ -67,7 +63,8 @@ end
 InstallGlobalFunction(Concretize,
 function(abstract_state)
 local l,cstr;
-  cstr := CascadedStructureOf(abstract_state);  l := ShallowCopy(AsList(abstract_state));
+  cstr := CascadedStructureOf(abstract_state);
+  l := ShallowCopy(AsList(abstract_state));
   #just putting 1s as a safe bet
   Append(l, List([Size(abstract_state)+1..Length(cstr)], x -> 1));
   return CascadedState(cstr, l);
@@ -110,14 +107,13 @@ local i,cstr;
     if i < Length(cs) then Print(",");fi;
   od;
   Print(")\n");
-end
-);
+end);
 
 # for accessing the list elements
 InstallOtherMethod( \[\],
     "for (abstract) cascaded states",
     [ IsAbstractCascadedState, IsPosInt ],
-function( cs, pos )
+function(cs, pos)
   return cs!.coords[pos];
 end
 );
