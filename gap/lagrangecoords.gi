@@ -319,7 +319,7 @@ local j,state,states,fudges,depfunctable,arg;
   if g = () then return IdentityCascadedOperation(CascadedStructureOf(decomp)); fi;
 
   #the states already coded as coset representatives
-  states := LazyCartesian(TransversalsOf(decomp));
+  states := EnumeratorOfCartesianProduct(TransversalsOf(decomp));
 
   #the lookup for the new dependencies
   depfunctable := [];
