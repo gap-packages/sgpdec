@@ -1,0 +1,24 @@
+syntax: glob
+*.tex
+*.aux
+*.log
+*.out
+*.blg
+*.bbl
+*.top
+*.pdf
+*.tui
+*.swp
+*.txt
+*.html
+*.brf
+*.idx
+*.ilg
+*.ind
+*.pnr
+*.toc
+*.six
+*.orig
+*.DS_Store
+*.swo
+*.swp

@@ -1,0 +1,82 @@
+##  <#GAPDoc Label="FiniteSet">
+##  <ManSection >
+##  <Func Arg="list" Name="FiniteSet" />
+##  <Func Arg="list,int" Name="FiniteSet" />
+##  <Description>
+##  Creates a FiniteSet from a list of integers. The maximal element determines the size of the universe. 
+##  <Example>
+##  gap> A := FiniteSet([3,2,7,4,5,]);
+##  {2,3,4,5,7}
+##  </Example>
+## The alternative way is to give the size of the universe. This way the empty set (of a given universe) can be constructed.
+##  <Example>
+##  gap> empty := FiniteSet([],7);
+##  {}
+##  </Example>
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+##  <#GAPDoc Label="SizeOfUniverse">
+##  <ManSection >
+##  <Func Arg="finiteset" Name="SizeOfUniverse" />
+##  <Description>
+##   Returns the size of the set of which this is a subset. Size() returns the number of elements contained in the set.
+##  <Example>
+##  gap> A := FiniteSet([3,2,7,4,5,]);
+##  gap> SizeOfUniverse(A);
+##  7
+##  gap> Size(A);
+##  5
+##  </Example>
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+##  <#GAPDoc Label="IsProperFiniteSubset">
+##  <ManSection >
+##  <Func Arg="A, B" Name="IsProperFiniteSubset" />
+##  <Description>
+##   Returns true if B is properly contained in A. A and B should have the same universal set.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+##  <#GAPDoc Label="UnionFiniteSet">
+##  <ManSection >
+##  <Func Arg="list" Name="UnionFiniteSet" />
+##  <Description>
+##   Returns the union of the finite sets contained in the list.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+###action related
+##  <#GAPDoc Label="IsIdentityOnFiniteSet">
+##  <ManSection >
+##  <Func Arg="trans, finset" Name="IsIdentityOnFiniteSet" />
+##  <Description>
+##  Returns true if  the transformation acts  as the identity restricted to  the given set.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+###action related
+##  <#GAPDoc Label="Transf2PermOnSet">
+##  <ManSection >
+##  <Func Arg="trans, finset" Name="Transf2PermOnSet" />
+##  <Description>
+##  If the transformation acts as a permutation on the set, 
+##  then the corresponding permutation is returned. 
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>
+
+##  <#GAPDoc Label="IsSingleton">
+##  <ManSection >
+##  <Func Arg="finset" Name="IsSingleton" />
+##  <Description>
+##   Returns true if the finite set contains only one element.
+##  </Description>
+##  </ManSection>
+##  <#/GAPDoc>

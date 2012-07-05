@@ -1,0 +1,52 @@
+#############################################################################
+##
+## cascadedstructure.gd           SgpDec package
+##
+## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## 2008-2012
+##
+## Putting algebraic structures into hierarchical structures.
+##
+
+DeclareOperation("CascadedStructure",[IsList,IsList,IsList]);
+DeclareOperation("Collapse",[IsObject]);
+DeclareOperation("Build",[IsObject]);
+DeclareOperation("BuildNC",[IsObject]);
+DeclareGlobalFunction("MonomialGenerators");
+DeclareGlobalFunction("SizeOfWreathProduct");
+
+#ACCESS FUNCTIONS
+DeclareGlobalFunction("States");
+DeclareGlobalFunction("StateSets");
+DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
+DeclareGlobalFunction("NameOf"); #TODO! this may be just standard Name?!?
+
+
+DeclareCategory("IsCascadedStructure", IsDenseList);
+DeclareRepresentation(
+        "IsCascadedStructureRep",
+        IsComponentObjectRep,
+        [ "components", #the building blocks
+          "name_of_product", #the name of the whole product structure
+          "state_symbol_functions", #the symbols for printing the the states
+          "operation_symbol_functions", #the symbols for printing the operations
+          "names_of_components", #names of the components
+          "argument_names", #the names argument domains
+          "state_sets", #the original statesets
+          "states", #states as cascaded states with correct type
+          "maxnum_of_dependency_entries", #the maximum number of elementary deps
+          "operation_family", #family for the operations
+          "operation_type", #type for operations
+          "state_family", #family for the states
+          "state_type", #type for states
+          "state_representation", #representation for states
+          "abstract_state_family", #family for the states
+          "abstract_state_type", #type for states
+          "abstract_state_representation" #representation for states
+          ]);
+
+CascadedStructureType  := NewType(
+                            NewFamily("CascadedStructureFamily",
+                                       IsCascadedStructure),
+                            IsCascadedStructure and IsCascadedStructureRep);
