@@ -3,3 +3,15 @@ syntax: glob
 *.swo
 *.swp
 *.orig
+*.toc
+*.pnr
+*.out
+*~
+*.log
+*.idx
+*.ilg
+*.ind
+*.aux
+*.bbl
+*.blg
+*.brf
