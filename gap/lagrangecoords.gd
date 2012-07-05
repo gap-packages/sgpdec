@@ -21,9 +21,10 @@ DeclareGlobalFunction("CascadedState2Perm");
 DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");
 #access functions
+DeclareGlobalFunction("OriginalStateSet");
 DeclareGlobalFunction("TransversalsOf");
 DeclareGlobalFunction("SeriesOf");
-DeclareGlobalFunction("OriginalStateSet");
+
 
 #TYPE INFO
 DeclareCategory("IsLagrangeDecomposition", IsHierarchicalDecomposition);
