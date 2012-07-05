@@ -37,14 +37,16 @@ This data type has all the usual set operations and they work as expected. The o
 
 <Section Label="Permutators">
 <Heading>Permutators: Transformations acting as permutations on subsets</Heading>
-The subsemigroup stabilizing a subset X of the state set is called the permutator subsemigroup (to avoid name clash). Restricting this permutator to $X$ gives the permutator group (Generalized Schützenberger group, see  <Cite Key="permutator"/> )
+The subsemigroup stabilizing a subset X of the state set is called the
+permutator subsemigroup (to avoid name clash). Restricting this permutator to
+$X$ gives the permutator group (Generalized Schützenberger group, see  
+<Cite Key="permutator"/> )
 <#Include Label="PermutatorSemigroup">
 <#Include Label="PermutatorGenerators">
 <#Include Label="AllPermutators">
 <#Include Label="PermutatorGroup">
 <#Include Label="CoverGroup">
 </Section>
-
 
 <Section Label="LinearNotation">
 <Heading> Linear Notation for Transformations</Heading>

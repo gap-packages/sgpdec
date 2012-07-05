@@ -102,6 +102,7 @@ function(G, subgroupchain)
   for i in [1..Length(transversals)] do
     #from a point in the tree representation to a coset representative
     Add(point2repr, transversals[i]);
+    Error();
     #just taking the inverse of the former
     Add(repr2point, AssociativeList(transversals[i]) );
   od;
@@ -175,6 +176,8 @@ function(decomp,g,s)
 );
 
 # getting the representative of an element
+# JDM CanonicalRightCosetElement should be used instead of this...
+
 InstallGlobalFunction(Perm2CosetRepr,
 function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
@@ -417,19 +420,25 @@ end
 );
 
 
+#JDM this can be removed altogether...
 InstallGlobalFunction(ConvertersToCanonicalOf,
 function(decomp)
   return decomp!.repr2point;
 end
 );
 
+#JDM remove
 InstallGlobalFunction(ConvertersFromCanonicalOf,
 function(decomp)
   return decomp!.point2repr;
 end
 );
 
-InstallGlobalFunction(OriginalStateSet, function(decomp) return decomp!.originalstateset;end);
+#JDM why not make this an attribute?
+InstallGlobalFunction(OriginalStateSet, 
+function(decomp) 
+  return decomp!.originalstateset;
+end);
 
 ####################OLD FUNCTIONS#################################
 # The size of the cascaded structure is the number components.

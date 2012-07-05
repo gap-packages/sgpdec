@@ -1,9 +1,18 @@
 <Section Label="basic"><Heading>Basic Usage of <Package>SgpDec</Package>: Compositions and Decompositions</Heading>
 
- We consider hierarchical decompositions of finite transformation semigroups and permutation groups, where hierarchical means that there are only unidirectional connections among the components, or saying it algebraically, we study substructures of wreath products. The novelty of this approach is that we can explicitly represent and therefore we can examine directly the elements of the wreath product with their full structure, i.e. dependency functions from the state sets of components of the levels above in the hierarchy. 
+ We consider hierarchical decompositions of finite transformation semigroups
+ and permutation groups, where hierarchical means that there are only
+ unidirectional connections among the components, or saying it algebraically,
+ we study substructures of wreath products. The novelty of this approach is
+ that we can explicitly represent and therefore we can examine directly the
+ elements of the wreath product with their full structure, i.e. dependency
+ functions from the state sets of components of the levels above in the
+ hierarchy. 
 
 <P/>
-Ultimately these decompositions are expected to have importnat applications outside mathematics (biology could be the prime example) as semigroups can be considered as dynamic models of many different processes.
+Ultimately these decompositions are expected to have importnat applications
+outside mathematics (biology could be the prime example) as semigroups can be
+considered as dynamic models of many different processes.
 
 <P/>
 Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a complex structure or a set of simple(r) building blocks, we can do decomposition or composition.
