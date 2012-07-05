@@ -12,7 +12,6 @@ SgpDecMakeDoc := function()
                     "../gap/finiteset.xml",
                     "../gap/subgroupchains.xml",
                     "../gap/skeleton.xml",
-                    "../gap/holonomy.xml",
-                    "../config"
+                    "../gap/holonomy.xml"
                     ],"SgpDec");
 end;

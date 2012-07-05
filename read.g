@@ -16,7 +16,3 @@ ReadPackage("SgpDec","/gap/subgroupchains.gi");
 ReadPackage("SgpDec","/gap/lagrangecoords.gi");
 ReadPackage("SgpDec","/gap/skeleton.gi");
 ReadPackage("SgpDec","/gap/holonomy.gi");
-
-#just aliases
-ReadPackage("SgpDec","/gap/namedgroups.g");
-ReadPackage("SgpDec","/gap/namedsemigroups.g");
