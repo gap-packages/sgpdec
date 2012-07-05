@@ -20,13 +20,15 @@ SGPDEC_AsListOfMaps := function(flatop,size)
   fi; 
 end;
 
+#gives the value of the action on the last coordinate by the given cascaded
+#operation (the trick is that we give prefix coords)
 
-#gives the value of the action on the last coordinate by the given cascaded operation 
-# (the trick is that we give prefix coords)
 SGPDEC_ActionOnLastCoord := function(coords, cascop)
 local depfuncval;
-  #getting the value of the dependency function that acts on the last coordinate  
-  depfuncval := cascop![Length(coords)](coords{[1..(Length(coords)-1)]});
+  #getting the value of the dependency function that acts on the last
+  #coordinate  
+
+depfuncval := cascop![Length(coords)](coords{[1..(Length(coords)-1)]});
   #if it is a constant map (required for permutation reset automata)
   if IsTransformation(depfuncval) and RankOfTransformation(depfuncval)=1 then
     return depfuncval![1][1];#the value of the constant transformation
@@ -362,7 +364,7 @@ function(cstr,flatop)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
-  flatoplist := SGPDEC_AsListOfMaps(flatop, Size(States(cstr)));
+  flatoplist := OnTuples([1..Size(States(cstr))], flatop);
 
   dependencies := [];
 
@@ -514,10 +516,9 @@ InstallGlobalFunction(IsDependencyCompatible,
 local  prefix, prefixes, level,flatoplist;
 
   #converting the flat operation to a transformation list
-  flatoplist := SGPDEC_AsListOfMaps(flatop, Size(States(cstr))); 
+  flatoplist := OnTuples([1..Size(States(cstr))], flatop); 
  
-  #enumerate prefixes
-  #for all levels
+  #enumerate prefixes for all levels
   for level in [1..Length(cstr)] do
     prefixes := EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]});
     for prefix in prefixes do
@@ -527,9 +528,7 @@ local  prefix, prefixes, level,flatoplist;
     od;
   od;
   return true;
-end
-);
-
+end);
 
 ###########ACCESS FUNCTION##############
 
