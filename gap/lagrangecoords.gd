@@ -1,12 +1,12 @@
 #############################################################################
 ##
-## lagrangecoords.gd           SgpDec package  
+## lagrangecoords.gd           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2008 University of Hertfordshire, Hatfield, UK
+## 2008-2012
 ##
-## A hierarchical decomposition: Lagrange coordinatization of groups. 
+## A hierarchical decomposition: Lagrange coordinatization of groups.
 ##
 
 DeclareInfoClass("LagrangeDecompositionInfoClass");
@@ -23,8 +23,6 @@ DeclareGlobalFunction("LevelBuilders");
 #access functions
 DeclareGlobalFunction("TransversalsOf");
 DeclareGlobalFunction("SeriesOf");
-DeclareGlobalFunction("ConvertersToCanonicalOf");
-DeclareGlobalFunction("ConvertersFromCanonicalOf");
 DeclareGlobalFunction("OriginalStateSet");
 
 #TYPE INFO

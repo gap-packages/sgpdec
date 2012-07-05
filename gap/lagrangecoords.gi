@@ -1,10 +1,10 @@
 #############################################################################
 ##
-## lagrangecoords.gi           SgpDec package  
+## lagrangecoords.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2008 University of Hertfordshire, Hatfield, UK
+## 2008-2012
 ##
 ## Lagrange coordinatization of groups.
 ##
@@ -21,11 +21,11 @@ end;
 
 #just to avoid trying to reduce the trivial group
 SGPDEC_ReduceNumOfGenerators := function(G)
-    if IsTrivial(G) then 
-        return G; 
+    if IsTrivial(G) then
+        return G;
     else
         return Group(SmallGeneratingSet(G));
-    fi;    
+    fi;
 end;
 
 ##################################################################
@@ -49,8 +49,8 @@ function(G, subgroupchain)
    stabrt, stabrtreps, result, i, gen;
 
   #############sanity check##################################
-  if G <> subgroupchain[1] then 
-    Error("Supplied chain and the original group is not compatible!"); 
+  if G <> subgroupchain[1] then
+    Error("Supplied chain and the original group is not compatible!");
   fi;
 
   ###############SERIES########################################
@@ -58,10 +58,10 @@ function(G, subgroupchain)
 
   Info(LagrangeDecompositionInfoClass, 2, "LAGRANGEDECOMPOSITION ");
   t := Runtime();
-  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
+  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
     #reducing the numbers of generators if possible
     series := List(series, x->SGPDEC_ReduceNumOfGenerators(x));
-    Info(LagrangeDecompositionInfoClass, 2, 
+    Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in the series ",
     SGPDEC_TimeString(Runtime()-t)); t := Runtime();
   fi;
@@ -77,35 +77,23 @@ function(G, subgroupchain)
     # transversals
     compgens := [];
     for gen in GeneratorsOfGroup(series[i]) do
-      Add(compgens, SGPDEC_CanonicalPermutationAction(transversals[i], 
+      Add(compgens, SGPDEC_CanonicalPermutationAction(transversals[i],
        gen,\*));
-    od;        
+    od;
     Add(comps,Group(AsSet(compgens)));
   od;
-  Info(LagrangeDecompositionInfoClass, 2, 
-   "Calculating transversals and components ", 
+  Info(LagrangeDecompositionInfoClass, 2,
+   "Calculating transversals and components ",
    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
-  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then 
+  if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
     #reducing the numbers of generators if possible
     comps := List(comps, x->SGPDEC_ReduceNumOfGenerators(x));
-    Info(LagrangeDecompositionInfoClass, 2, 
+    Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in components ",
        SGPDEC_TimeString(Runtime()-t)); t := Runtime();
   fi;
-  ####MAPPINGS##############################################################
 
-  # moving between the abstracted point representation and the original action
-  # on the transversal
-  point2repr := [];
-  repr2point := [];
-  for i in [1..Length(transversals)] do
-    #from a point in the tree representation to a coset representative
-    Add(point2repr, transversals[i]);
-    #just taking the inverse of the former
-    Add(repr2point, AssociativeList(transversals[i]) );
-  od;
-  
   Info(LagrangeDecompositionInfoClass, 2, "Calculating codec ",
    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
@@ -114,8 +102,8 @@ function(G, subgroupchain)
   #############CONSTRUCTING THE CONTAINER RECORD#########################
 
   #when the group is small we can ask for these extra info
-  if SgpDecOptionsRec.SMALL_GROUPS then 
-    Info(LagrangeDecompositionInfoClass, 2, 
+  if SgpDecOptionsRec.SMALL_GROUPS then
+    Info(LagrangeDecompositionInfoClass, 2,
      "Small group identification started...\c");
     Perform(comps, StructureDescription);
     Perform(series, StructureDescription);
@@ -128,10 +116,10 @@ function(G, subgroupchain)
   stabrt := RightTransversal(G,Stabilizer(G,1));
   stabrtreps := [];
   for i in [1..Length(stabrt)] do
-    stabrtreps[1^stabrt[i]] := stabrt[i];      
+    stabrtreps[1^stabrt[i]] := stabrt[i];
   od;
-  Info(LagrangeDecompositionInfoClass, 2, 
-  "Coset reps for the original group action ", 
+  Info(LagrangeDecompositionInfoClass, 2,
+  "Coset reps for the original group action ",
    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
 #the record containing the information about the components
@@ -140,8 +128,6 @@ function(G, subgroupchain)
               series := series,
               components := comps,
               transversals := transversals,
-              point2repr := point2repr,
-              repr2point := repr2point,
               cascadedstruct := cstr,
               stabilizertransversalreps := stabrtreps,
               originalstateset := MovedPoints(G));
@@ -149,63 +135,66 @@ function(G, subgroupchain)
 end);
 
 
-  # former _FudgeFactors, s - state (list), g - group element to be lifted,
-InstallMethod(ComponentActions, 
-    "componentactions of an original permutation in Lagrange decomposition",
-    true,
-    [IsLagrangeDecomposition,IsPerm, IsList], 0,
+#former _FudgeFactors, s - state (list), g - group element to be lifted,
+InstallMethod(ComponentActions,
+        "componentactions of an original permutation in Lagrange decomposition",
+        true,
+        [IsLagrangeDecomposition,IsPerm, IsList], 0,
 function(decomp,g,s)
-  local fudges,i; 
+local fudges,i;
 
-    #on the top level we have simply g
-    fudges := [];
-    Add(fudges,g);
-    #then going down to deeper levels
-    for i in [2..Length(s)] do
-	Add(fudges,
-            s[i-1] * #this is already a representative!
-            fudges[i-1] * 
-            Inverse(Perm2CosetRepr(s[i-1] * fudges[i-1], TransversalsOf(decomp)[i-1])));
-    od;
-    #converting to canonical 
-    for i in [1..Length(fudges)] do 
-      fudges[i] := SGPDEC_CanonicalPermutationAction(TransversalsOf(decomp)[i], fudges[i],\*); 
-    od;
-    return fudges;
-  end
-);
+  #on the top level we have simply g
+  fudges := [];
+  Add(fudges,g);
+  #then going down to deeper levels
+  for i in [2..Length(s)] do
+    Add(fudges,
+        s[i-1] * #this is already a representative!
+        fudges[i-1] *
+        Inverse(Perm2CosetRepr(s[i-1] * fudges[i-1],
+                TransversalsOf(decomp)[i-1])));
+  od;
+  #converting to canonical
+  for i in [1..Length(fudges)] do
+    fudges[i] := SGPDEC_CanonicalPermutationAction(TransversalsOf(decomp)[i],
+                         fudges[i],\*);
+  od;
+  return fudges;
+end);
 
 # getting the representative of an element
 InstallGlobalFunction(Perm2CosetRepr,
 function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
-end
-);
+end);
 
 #coding to the cascaded format
 InstallGlobalFunction(EncodeCosetReprs,
-function(decomp,list) local i,l; l := []; 
-  for i in [1..Size(list)] do 
-    Add(l, ConvertersToCanonicalOf(decomp)[i][Perm2CosetRepr(list[i],
-     TransversalsOf(decomp)[i])]);
+function(decomp,list) local i,l; l := [];
+  for i in [1..Size(list)] do
+    #Add(l, ConvertersToCanonicalOf(decomp)[i]
+    #    [Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])]);
+    Add(l, PositionCanonical(TransversalsOf(decomp)[i],
+        Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])));
   od;
   return l;
-end
-);
+end);
 
 #coding from the cascaded format
 InstallGlobalFunction(DecodeCosetReprs,
-function(decomp,cascstate) 
-local i,l; 
-    l := []; 
-    for i in [1..Size(cascstate)] do 
-      Add(l,ConvertersFromCanonicalOf(decomp)[i][cascstate[i]]);
-    od;
-    return l;
-  end
-);
+function(decomp,cascstate)
+local i,l;
+  l := [];
+  for i in [1..Size(cascstate)] do
+    #Add(l,ConvertersFromCanonicalOf(decomp)[i][cascstate[i]]);
+    Add(l, TransversalsOf(decomp)[i][cascstate[i]]);
+  od;
+  return l;
+end);
 
-# Each cascaded state corresponds to one element (in the regular representation) of the group. This function gives the path corresponding to a group element (through the Lagrange-Frobenius map). 
+# Each cascaded state corresponds to one element (in the regular representation)
+#of the group. This function gives the path corresponding to a group element
+#(through the Lagrange-Frobenius map).
 InstallGlobalFunction(Perm2CascadedState,
 function(decomp,g)
 local coords,i;
@@ -216,10 +205,10 @@ local coords,i;
   #then going down to deeper levels
   for i in [2..Length(decomp)] do
     Add(coords,
-        coords[i-1] 
+        coords[i-1]
         * Inverse(Perm2CosetRepr(coords[i-1], TransversalsOf(decomp)[i-1])) );
   od;
-  
+
   #taking the representative elements
   for i in [1..Length(coords)] do
     coords[i] := Perm2CosetRepr(coords[i], TransversalsOf(decomp)[i]);
@@ -236,17 +225,18 @@ end
 
 InstallGlobalFunction(CascadedState2Perm,
 function(decomp,cs)
-    return Product(Reversed(DecodeCosetReprs(decomp,cs)),()); 
+    return Product(Reversed(DecodeCosetReprs(decomp,cs)),());
 end);
 
 
-#given a cascaded state it returns an array of flat cascops that - applied in order - kills of levels top-down.
+#given a cascaded state it returns an array of flat cascops that -
+#applied in order - kills of levels top-down.
 InstallGlobalFunction(LevelKillers,
 function(decomp,cs)
 local decoded, cosetrepr, killers;
   decoded := DecodeCosetReprs(decomp,cs);
   killers := [];
-  for cosetrepr in decoded do 
+  for cosetrepr in decoded do
     Add(killers,Inverse(cosetrepr));
   od;
   return killers;
@@ -258,7 +248,7 @@ function(decomp,cs)
 local decoded, cosetrepr, builders;
   decoded := DecodeCosetReprs(decomp,cs);
   builders := [];
-  for cosetrepr in decoded do 
+  for cosetrepr in decoded do
     Add(builders,cosetrepr);
   od;
   return builders;
@@ -283,9 +273,9 @@ InstallMethod(Flatten,
     true,
     [IsLagrangeDecomposition,IsCascadedState], 1,
 function(decomp,cs)
-    return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),()); # the Frobenius-Lagrange map TODO transitivity
-end
-);
+  #the Frobenius-Lagrange map TODO transitivity
+  return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),());
+end);
 
 InstallMethod(Flatten,
     "flatten an abstract cascaded state",
@@ -295,15 +285,13 @@ function(decomp,cs) #TODO!! replace  this with the more efficient one
 local state, flattened,point;
   flattened := [];
   for state in States(CascadedStructureOf(decomp)) do
-    if state < cs then 
-        point := Flatten(decomp,state);
-	if not (point in flattened) then Add(flattened, point); fi;
+    if state < cs then
+      point := Flatten(decomp,state);
+      if not (point in flattened) then Add(flattened, point); fi;
     fi;
   od;
-      return flattened;
-end
-);
-
+  return flattened;
+end);
 
 #####################permutations###############################
 
@@ -314,8 +302,8 @@ InstallMethod(Raise,
     [IsLagrangeDecomposition,IsPerm], 0,
 function(decomp,g)
 local j,state,states,fudges,depfunctable,arg;
- 
-  if g = () then return IdentityCascadedOperation(CascadedStructureOf(decomp)); fi;
+
+  if g=() then return IdentityCascadedOperation(CascadedStructureOf(decomp));fi;
 
   #the states already coded as coset representatives
   states := LazyCartesian(TransversalsOf(decomp));
@@ -328,10 +316,10 @@ local j,state,states,fudges,depfunctable,arg;
     #get the component actions on a state
     fudges := ComponentActions(decomp,g,state);
 
-    #examine whether there is a nontrivial action, then add          
+    #examine whether there is a nontrivial action, then add
     for j in [1..Length(fudges)] do
       if fudges[j] <> () then
-	arg := EncodeCosetReprs(decomp,state{[1..(j-1)]}); 
+        arg := EncodeCosetReprs(decomp,state{[1..(j-1)]});
         RegisterNewDependency(depfunctable, arg, fudges[j]);
       fi;
     od;
@@ -359,7 +347,7 @@ InstallMethod(Interpret,
     [IsLagrangeDecomposition,IsInt,IsInt], 0,
 function(decomp,level,state)
   #return RightCoset(decomp!.series[level+1], decomp!.point2repr[level][state]);
-  return  decomp!.point2repr[level][state];   
+  return  decomp!.point2repr[level][state];
 end
 );
 
@@ -372,18 +360,19 @@ InstallOtherMethod(x2y,
 function(decomp,x,y)
 local tobase, frombase, id;
     # we need the identity in the cascaded structure for the product
-    #id := IdentityCascadedOperation(CascadedStructureOf(decomp));   
-    # going to the leftmost branch            
+    #id := IdentityCascadedOperation(CascadedStructureOf(decomp));
+    # going to the leftmost branch
     tobase :=  Product(LevelKillers(decomp,x),());
-    #then to y  
-    frombase := Product(Reversed(LevelBuilders(decomp,y)),());  
+    #then to y
+    frombase := Product(Reversed(LevelBuilders(decomp,y)),());
     #combining the two legs of the journey
     return tobase * frombase;
 end
 );
 
 InstallOtherMethod(x2y,
-    "finds an original operation taking original state x to y (working in the decomposition)",
+        "finds an original operation taking original state x to y
+        (working in the decomposition)",
     true,
     [IsLagrangeDecomposition,IsInt,IsInt], 0,
 function(decomp,x,y)
@@ -397,9 +386,10 @@ InstallOtherMethod(x2y,
     true,
     [IsLagrangeDecomposition,IsCascadedPermutation,IsCascadedPermutation], 0,
 function(decomp,x,y)
-    return x2y(decomp,Perm2CascadedState(decomp,Flatten(decomp,x)), Perm2CascadedState(decomp,Flatten(decomp,y))); #this flattening is stupid but Perm2CascadedState expects flat permutation for the time being.
-end
-);
+  return x2y(decomp,Perm2CascadedState(decomp,Flatten(decomp,x)),
+             Perm2CascadedState(decomp,Flatten(decomp,y)));
+  #this flattening is stupid but Perm2CascadedState expects flat permutation.
+end);
 
 
 #ACCESS FUNCTIONS !!TODO these should be operations?!?
@@ -412,21 +402,7 @@ end
 InstallGlobalFunction(SeriesOf,
 function(decomp)
   return decomp!.series;
-end
-);
-
-
-InstallGlobalFunction(ConvertersToCanonicalOf,
-function(decomp)
-  return decomp!.repr2point;
-end
-);
-
-InstallGlobalFunction(ConvertersFromCanonicalOf,
-function(decomp)
-  return decomp!.point2repr;
-end
-);
+end);
 
 InstallGlobalFunction(OriginalStateSet, function(decomp) return decomp!.originalstateset;end);
 
@@ -436,8 +412,7 @@ InstallMethod(Length,"for Lagrange decompositions",true,[IsLagrangeDecomposition
 function(ld)
   # just delegating the task to the cascaded structure
   return Length(ld!.cascadedstruct);
-end
-);
+end);
 
 # for accessing the list elements
 InstallOtherMethod( \[\],
@@ -446,8 +421,7 @@ InstallOtherMethod( \[\],
 function( ld, pos )
   # just delegating the task to the cascaded structure
   return ld!.cascadedstruct[pos];
-end
-);
+end);
 
 
 #############################################################################
@@ -457,7 +431,7 @@ InstallMethod( ViewObj,
     true,
     [IsLagrangeDecomposition], 0,
 function( ld )
-  Print("Lagrange decomposition of:"); ViewObj(OriginalStructureOf(ld));Print("\n");
-  ViewObj(ld!.cascadedstruct);             
-end
-);
+  Print("Lagrange decomposition of:");
+  ViewObj(OriginalStructureOf(ld));Print("\n");
+  ViewObj(ld!.cascadedstruct);
+end);
