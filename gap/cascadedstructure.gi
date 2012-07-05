@@ -15,40 +15,32 @@ SGPDEC_idfunct := function(x) return x; end;
 
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
-#Getting the names for the families, returns the names in a list, for semigroups we expect them to have names 
+#Getting the names for the families, returns the names in a list,
+#for semigroups we expect them to have names
 GetNames4CascadeProductComponents := function(components)
 local names,comp;
-  names := [];  
+  names := [];
   #the name of the family from the component names
   #if VERBOSE then Print("Getting component names");fi;
-  for comp in components do 
+  for comp in components do
     if IsGroup(comp) then
-        if SgpDecOptionsRec.SMALL_GROUPS then
-            Add(names,StructureDescription(comp));
-        else
-            Add(names,Concatenation("G",StringPrint(Order(comp))));
-        fi;
+      if SgpDecOptionsRec.SMALL_GROUPS then
+        Add(names,StructureDescription(comp));
+      else
+        Add(names,Concatenation("G",StringPrint(Order(comp))));
+      fi;
     else
-	#if it has a name attached, then use it	
-        if HasName(comp) then 
-          Add(names,Name(comp));
-        else
-          Add(names,Concatenation("Sg",StringPrint(Size(comp))));
-        fi;
+      #if it has a name attached, then use it
+      if HasName(comp) then
+        Add(names,Name(comp));
+      else
+        Add(names,Concatenation("Sg",StringPrint(Size(comp))));
+      fi;
     fi;
     #if VERBOSE then Print(".");fi;
   od;
   #if VERBOSE then Print("DONE\n");fi;
   return names;
-end;
-
-# checking whether we have a group or semigroup product, it says true when we have groups only in the list of components
-GroupsOnly := function(components)
-local comp;
-  for comp in components do
-    if not IsGroup(comp) then return false; fi;
-  od;
-  return true;
 end;
 
 # SIMPLIFIED CONSTRUCTOR
@@ -79,7 +71,7 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
   compnames := GetNames4CascadeProductComponents(components);
 
   #deciding whether it is a group or not and set the name accordingly
-  if  GroupsOnly(components) then
+  if  ForAll(components, IsGroup) then
     prodname := "GroupCascade";
   else
     prodname := "MonoidCascade";
@@ -131,7 +123,7 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
 
   #CREATING TYPE INFO
   #creating family for operations
-  if GroupsOnly(components) then
+  if ForAll(components, IsGroup) then
     cascprodinfo.operation_family := NewFamily(Concatenation(prodname,"_OperationsFamily"), IsCascadedPermutation);
     cascprodinfo.operation_type := NewType(cascprodinfo.operation_family, IsCascadedPermutation);
   else
