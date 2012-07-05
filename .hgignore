@@ -22,3 +22,18 @@ syntax: glob
 *.DS_Store
 *.swo
 *.swp
+<<<<<<< local
+*.orig
+*.toc
+*.pnr
+*.out
+*~
+*.log
+*.idx
+*.ilg
+*.ind
+*.aux
+*.bbl
+*.blg
+*.brf=======
+>>>>>>> other

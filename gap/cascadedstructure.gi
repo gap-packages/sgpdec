@@ -15,40 +15,32 @@ SGPDEC_idfunct := function(x) return x; end;
 
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
-#Getting the names for the families, returns the names in a list, for semigroups we expect them to have names 
+#Getting the names for the families, returns the names in a list,
+#for semigroups we expect them to have names
 GetNames4CascadeProductComponents := function(components)
 local names,comp;
-  names := [];  
+  names := [];
   #the name of the family from the component names
   #if VERBOSE then Print("Getting component names");fi;
-  for comp in components do 
+  for comp in components do
     if IsGroup(comp) then
-        if SgpDecOptionsRec.SMALL_GROUPS then
-            Add(names,StructureDescription(comp));
-        else
-            Add(names,Concatenation("G",StringPrint(Order(comp))));
-        fi;
+      if SgpDecOptionsRec.SMALL_GROUPS then
+        Add(names,StructureDescription(comp));
+      else
+        Add(names,Concatenation("G",StringPrint(Order(comp))));
+      fi;
     else
-	#if it has a name attached, then use it	
-        if HasName(comp) then 
-          Add(names,Name(comp));
-        else
-          Add(names,Concatenation("Sg",StringPrint(Size(comp))));
-        fi;
+      #if it has a name attached, then use it
+      if HasName(comp) then
+        Add(names,Name(comp));
+      else
+        Add(names,Concatenation("Sg",StringPrint(Size(comp))));
+      fi;
     fi;
     #if VERBOSE then Print(".");fi;
   od;
   #if VERBOSE then Print("DONE\n");fi;
   return names;
-end;
-
-# checking whether we have a group or semigroup product, it says true when we have groups only in the list of components
-GroupsOnly := function(components)
-local comp;
-  for comp in components do
-    if not IsGroup(comp) then return false; fi;
-  od;
-  return true;
 end;
 
 # SIMPLIFIED CONSTRUCTOR
@@ -61,25 +53,26 @@ local statesym, opsym, comp,gid;
   opsym := [];
   for comp in components do
      Add(statesym, SGPDEC_idfunct);
-     Add(opsym, function(x) if IsTransformation(x) then return SimplerLinearNotation(x); else return x; fi;end);#SGPDEC_idfunct);
+     Add(opsym, function(x)
+       if IsTransformation(x) then
+         return SimplerLinearNotation(x);
+       else
+         return x; fi;end);
   od;
   return CascadedStructure(components,statesym,opsym);
-end
-);
-
+end);
 
 #THE MAIN CONSTRUCTOR with all the possible arguments
 InstallMethod(CascadedStructure,[IsList,IsList,IsList],
 function(components,statesymbolfunctions,operationsymbolfunctions)
-
-local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,state_set_sizes;
+local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
 
   #GENERATING THE NAME
   #getting component names
   compnames := GetNames4CascadeProductComponents(components);
 
   #deciding whether it is a group or not and set the name accordingly
-  if  GroupsOnly(components) then
+  if  ForAll(components, IsGroup) then
     prodname := "GroupCascade";
   else
     prodname := "MonoidCascade";
@@ -88,9 +81,9 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
   #concatenating component names
   for i in compnames do prodname := Concatenation(prodname,"_",i); od;
 
-
   #BUILDING THE INFO RECORD
-  #this is the main record containing information about the cascade product, the initial values do not matter
+  #this is the main record containing information about the cascade product,
+  #the initial values do not matter
   cascprodinfo := rec(
   name_of_product := prodname,
   state_symbol_functions := statesymbolfunctions,
@@ -105,19 +98,20 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
   #if VERBOSE then Print("Guessing state sets");fi;
   cascprodinfo.state_sets := [];
   for i in components do
-    if IsGroup(i) then 
-	Add(cascprodinfo.state_sets,MovedPoints(i));
+    if IsGroup(i) then
+      Add(cascprodinfo.state_sets,MovedPoints(i));
     else
-	Add(cascprodinfo.state_sets,[1..DegreeOfTransformation(Representative(i))]);
+      Add(cascprodinfo.state_sets,
+          [1..DegreeOfTransformation(Representative(i))]);
     fi;
     #if VERBOSE then Print(".\c");fi;
   od;
   #if VERBOSE then Print("DONE\n");fi;
-  
+
   state_set_sizes := List(cascprodinfo.state_sets, x-> Size(x));
-  tmpl := List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]}));  
-  cascprodinfo.maxnum_of_dependency_entries := Sum(tmpl);
-  
+  cascprodinfo.maxnum_of_dependency_entries :=
+    Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
+
   #constructing argumentnames (for display purposes)
   cascprodinfo.argument_names := [];
   cascprodinfo.argument_names[1] := "{}"; #the empty set
@@ -127,39 +121,62 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
       str := Concatenation(str,StringPrint(Size(cascprodinfo.state_sets[i-1])));
       cascprodinfo.argument_names[i] := str;
   od;
-  
 
   #CREATING TYPE INFO
   #creating family for operations
-  if GroupsOnly(components) then
-    cascprodinfo.operation_family := NewFamily(Concatenation(prodname,"_OperationsFamily"), IsCascadedPermutation);
-    cascprodinfo.operation_type := NewType(cascprodinfo.operation_family, IsCascadedPermutation);
+  if ForAll(components, IsGroup) then
+    cascprodinfo.operation_family :=
+      NewFamily(Concatenation(prodname,"_OperationsFamily"),
+              IsCascadedPermutation);
+    cascprodinfo.operation_type :=
+      NewType(cascprodinfo.operation_family,
+              IsCascadedPermutation);
   else
-    cascprodinfo.operation_family := NewFamily(Concatenation(prodname,"_OperationsFamily"), IsCascadedTransformation);
-    cascprodinfo.operation_type := NewType(cascprodinfo.operation_family, IsCascadedTransformation);
+    cascprodinfo.operation_family :=
+      NewFamily(Concatenation(prodname,"_OperationsFamily"),
+              IsCascadedTransformation);
+    cascprodinfo.operation_type :=
+      NewType(cascprodinfo.operation_family,
+              IsCascadedTransformation);
   fi;
 
-
   #creating type info for states
-  cascprodinfo.state_family := NewFamily(Concatenation(prodname,"_StatesFamily"), IsCascadedState);
-  cascprodinfo.state_representation := NewRepresentation(Concatenation(prodname,"_StateRepresentation"),IsComponentObjectRep,["coords"]);
-  cascprodinfo.state_type := NewType(cascprodinfo.state_family, IsCascadedState and cascprodinfo.state_representation );
+  cascprodinfo.state_family :=
+    NewFamily(Concatenation(prodname,"_StatesFamily"),
+            IsCascadedState);
+  cascprodinfo.state_representation :=
+    NewRepresentation(Concatenation(prodname,"_StateRepresentation"),
+            IsComponentObjectRep,["coords"]);
+  cascprodinfo.state_type :=
+    NewType(cascprodinfo.state_family,
+            IsCascadedState and cascprodinfo.state_representation );
 
   #creating type info for abstract states
-  cascprodinfo.abstract_state_family := NewFamily(Concatenation(prodname,"_StatesFamily"), IsAbstractCascadedState);
-  cascprodinfo.abstract_state_representation := NewRepresentation(Concatenation(prodname,"_StateRepresentation"),IsComponentObjectRep,["coords"]);
-  cascprodinfo.abstract_state_type := NewType(cascprodinfo.abstract_state_family, IsAbstractCascadedState and cascprodinfo.abstract_state_representation );
-
+  cascprodinfo.abstract_state_family :=
+    NewFamily(Concatenation(prodname,"_StatesFamily"),
+            IsAbstractCascadedState);
+  cascprodinfo.abstract_state_representation :=
+    NewRepresentation(Concatenation(prodname,"_StateRepresentation"),
+            IsComponentObjectRep,["coords"]);
+  cascprodinfo.abstract_state_type :=
+    NewType(cascprodinfo.abstract_state_family,
+            IsAbstractCascadedState and
+            cascprodinfo.abstract_state_representation);
 
   #creating cascade state typed states
   #GENERATING STATES
   #if VERBOSE then Print("Generating states...");fi;
+<<<<<<< local
+  cascprodinfo.states := LazyCartesian(cascprodinfo.state_sets);
+=======
   cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);            
+>>>>>>> other
   #if VERBOSE then Print("DONE\n");fi;
 
   result :=  Objectify(CascadedStructureType,cascprodinfo);
 
-  #linking from the family object to the product info, thus we can get from any state/operation to this info struct
+  #linking from the family object to the product info,
+  #thus we can get from any state/operation to this info struct
   result!.operation_family!.cstr := result;
   result!.state_family!.cstr := result;
   result!.abstract_state_family!.cstr := result;
@@ -167,11 +184,8 @@ local cascprodinfo,compnames,prodname,i,j,str,tmpl,sorter,groupsonly,result,stat
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);
 
-
   return result;
-
-end
-);
+end);
 
 #constructing monomial generators
 InstallGlobalFunction(MonomialGenerators,
