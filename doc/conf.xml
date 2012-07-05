@@ -3,7 +3,6 @@
 The values of the following global variables can change the behavior of the
 package. Their value can be modified any time. The default values are stored in
 the file named <F>config</F>.
- <GAPDoc Label="PARANOID">
    
  <ManSection>
  <Var Name="PARANOID"/>
