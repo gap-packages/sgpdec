@@ -65,7 +65,7 @@ end);
 #THE MAIN CONSTRUCTOR with all the possible arguments
 InstallMethod(CascadedStructure,[IsList,IsList,IsList],
 function(components,statesymbolfunctions,operationsymbolfunctions)
-local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
+local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
 
   #GENERATING THE NAME
   #getting component names
@@ -73,8 +73,10 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
 
   #deciding whether it is a group or not and set the name accordingly
   if  ForAll(components, IsGroup) then
+    groupsonly := true;
     prodname := "GroupCascade";
   else
+    groupsonly := false;
     prodname := "MonoidCascade";
   fi;
 
@@ -90,8 +92,8 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
   operation_symbol_functions := operationsymbolfunctions,
   components := components,
   names_of_components := compnames,
-  name_of_product := prodname
-  );
+  name_of_product := prodname,
+  groupsonly := groupsonly);
 
 
   #guessing the statesets of the original components
@@ -143,8 +145,6 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
   #linking from the family object to the product info,
   #thus we can get from any state/operation to this info struct
   result!.operation_family!.cstr := result;
-  #result!.state_family!.cstr := result;
-  #result!.abstract_state_family!.cstr := result;
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);
