@@ -16,3 +16,21 @@ DeclareGlobalFunction("Concretize");
 
 DeclareCategory("IsAbstractCascadedState",IsDenseList);
 DeclareCategory("IsCascadedState",IsAbstractCascadedState);
+
+#creating type info for states
+CascadedStateFamily := NewFamily("CascadedStatesFamily",IsCascadedState);
+CascadedStateRepresentation := NewRepresentation(
+                                       "CascadedStateRepresentation",
+                                       IsComponentObjectRep,["coords","cstr"]);
+CascadedStateType := NewType(CascadedStateFamily,
+                             IsCascadedState and CascadedStateRepresentation);
+
+#creating type info for abstract states
+AbstractCascadedStateFamily := NewFamily("AbstractCascadedStateFamily",
+                                       IsAbstractCascadedState);
+AbstractCascadedStateRepresentation :=
+    NewRepresentation("AbstractCascadedStateRepresentation",
+    IsComponentObjectRep,["coords","cstr"]);
+AbstractCascadedStateType := NewType(AbstractCascadedStateFamily,
+                             IsAbstractCascadedState and
+                             AbstractCascadedStateRepresentation);

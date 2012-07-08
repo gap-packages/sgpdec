@@ -273,7 +273,7 @@ end
 InstallMethod(Flatten,
     "flatten a cascaded state",
     true,
-    [IsHolonomyDecomposition,IsCascadedState], 1,
+    [IsHolonomyDecomposition,IsAbstractCascadedState], 1,
 function(hd,cs)
   return AsList(LastElementOfList(
                  CoverChain(hd, _holonomy_decode_coords(hd,cs))))[1];

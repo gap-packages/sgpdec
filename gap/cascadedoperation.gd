@@ -22,6 +22,6 @@ DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
 DeclareGlobalFunction("DotCascadedOperation");
 
 DeclareCategory("IsCascadedOperation", IsMultiplicativeElement);
-DeclareCategory("IsCascadedPermutation",
-        IsCascadedOperation and IsMultiplicativeElementWithInverse);
-DeclareCategory("IsCascadedTransformation", IsCascadedOperation);
+#DeclareCategory("IsCascadedPermutation",
+#        IsCascadedOperation and IsMultiplicativeElementWithInverse);
+#DeclareCategory("IsCascadedTransformation", IsCascadedOperation);

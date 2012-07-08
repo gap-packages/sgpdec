@@ -312,12 +312,6 @@ function( co )
   #getting the info record
   cstr := CascadedStructureOf(co);
 
-  if IsCascadedPermutation(co) then
-    Print("\nCascaded  Permutation\n");
-  else
-    Print("\nCascaded  Transformation\n");
-  fi;
-
   for i in [1..Length(cstr)] do
     Print("Level ",i,": ", cstr!.argument_names[i]," -> ",
      cstr!.names_of_components[i],"\n");

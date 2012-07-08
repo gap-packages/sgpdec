@@ -36,12 +36,10 @@ local i;
   # just a normal state not an abstract one  #TODO this one misses the zero
   # entries
   if Length(coords) =  Length(cstr) then
-    return Objectify(cstr!.state_type,rec(coords:=coords));
-
-
-    #in the case of an  abstract state we need to check the coordinates
+    return Objectify(CascadedStateType,rec(coords:=coords,cstr:=cstr));
+  else
+    return Objectify(AbstractCascadedStateType,rec(coords:=coords,cstr:=cstr));
   fi;
-  return Objectify(cstr!.abstract_state_type,rec(coords:=coords));
 end);
 
 
@@ -138,5 +136,5 @@ end);
 InstallMethod(CascadedStructureOf, "for an abstract cascaded state",
 [IsAbstractCascadedState],
 function(cs)
-  return FamilyObj(cs)!.cstr;
+  return cs!.cstr;
 end);
