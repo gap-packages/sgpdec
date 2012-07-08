@@ -124,44 +124,13 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
 
   #CREATING TYPE INFO
   #creating family for operations
-  if ForAll(components, IsGroup) then
-    cascprodinfo.operation_family :=
-      NewFamily(Concatenation(prodname,"_OperationsFamily"),
-              IsCascadedPermutation);
-    cascprodinfo.operation_type :=
-      NewType(cascprodinfo.operation_family,
-              IsCascadedPermutation);
-  else
-    cascprodinfo.operation_family :=
-      NewFamily(Concatenation(prodname,"_OperationsFamily"),
-              IsCascadedTransformation);
-    cascprodinfo.operation_type :=
-      NewType(cascprodinfo.operation_family,
-              IsCascadedTransformation);
-  fi;
+  cascprodinfo.operation_family :=
+    NewFamily(Concatenation(prodname,"_OperationsFamily"),
+            IsCascadedOperation);
+  cascprodinfo.operation_type :=
+    NewType(cascprodinfo.operation_family,
+            IsCascadedOperation);
 
-  #creating type info for states
-  cascprodinfo.state_family :=
-    NewFamily(Concatenation(prodname,"_StatesFamily"),
-            IsCascadedState);
-  cascprodinfo.state_representation :=
-    NewRepresentation(Concatenation(prodname,"_StateRepresentation"),
-            IsComponentObjectRep,["coords"]);
-  cascprodinfo.state_type :=
-    NewType(cascprodinfo.state_family,
-            IsCascadedState and cascprodinfo.state_representation );
-
-  #creating type info for abstract states
-  cascprodinfo.abstract_state_family :=
-    NewFamily(Concatenation(prodname,"_StatesFamily"),
-            IsAbstractCascadedState);
-  cascprodinfo.abstract_state_representation :=
-    NewRepresentation(Concatenation(prodname,"_StateRepresentation"),
-            IsComponentObjectRep,["coords"]);
-  cascprodinfo.abstract_state_type :=
-    NewType(cascprodinfo.abstract_state_family,
-            IsAbstractCascadedState and
-            cascprodinfo.abstract_state_representation);
 
   #creating cascade state typed states
   #GENERATING STATES
@@ -174,8 +143,8 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes;
   #linking from the family object to the product info,
   #thus we can get from any state/operation to this info struct
   result!.operation_family!.cstr := result;
-  result!.state_family!.cstr := result;
-  result!.abstract_state_family!.cstr := result;
+  #result!.state_family!.cstr := result;
+  #result!.abstract_state_family!.cstr := result;
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);
@@ -186,8 +155,10 @@ end);
 #constructing monomial generators
 InstallGlobalFunction(MonomialGenerators,
 function(cstr)
-local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes, orbitreprs, orbits, orbit, orbrep, isgroup;
-  #if not GroupsOnly(cstr) then Error("MonomialGenerators: currently only groups are supported.");fi;
+local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
+      orbitreprs, orbits, orbit, orbrep, isgroup;
+  #if not GroupsOnly(cstr) then Error("MonomialGenerators:
+  #currently only groups are supported.");fi;
   prefixes := [ [] ]; #the top level
   mongens := [];
   orbitreprs := [];
@@ -212,41 +183,41 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes, or
         orbits := SGPDEC_SingletonOrbits(cstr[depth]);
     fi;
     for orbit in orbits do
-        if isgroup then 
+        if isgroup then
             Add(orbitreprs, orbit[1]);
         else
-            Append(orbitreprs, orbit); #this needs further tuning TODO if the semigroup is a group then the representative is enough
+          Append(orbitreprs, orbit);
+          #this needs further tuning TODO if the semigroup is a group then the
+          #representative is enough
         fi;
     od;
-    
+
     newprefixes := [];
     #extending all prefixes with the orbitreprs
     for prefix in prefixes do
       for orbrep in orbitreprs do
         #the extension
         newprefix := ShallowCopy(prefix);
-        Add(newprefix, orbrep);       
- 
+        Add(newprefix, orbrep);
         Add(newprefixes, newprefix);
       od;
     od;
     prefixes := newprefixes;
   od;
   return mongens;
-end
-);
- 
+end);
+
 #######################ACCESS METHODS#######################
-InstallGlobalFunction(States, 
+InstallGlobalFunction(States,
 function(castruct) return castruct!.states; end);
 
-InstallGlobalFunction(StateSets, 
+InstallGlobalFunction(StateSets,
 function(castruct) return castruct!.state_sets; end);
 
-InstallGlobalFunction(MaximumNumberOfElementaryDependencies, 
+InstallGlobalFunction(MaximumNumberOfElementaryDependencies,
 function(castruct) return castruct!.maxnum_of_dependency_entries; end);
 
-InstallGlobalFunction(NameOf, 
+InstallGlobalFunction(NameOf,
 function(castruct) return castruct!.name_of_product; end);
 
 #this is a huge number even in small cases
@@ -262,9 +233,7 @@ local order,j,i;
     j := j * Size(StateSets(castruct)[i]);
   od;
   return order;
-end
-);
-
+end);
 
 #######################OLD METHODS#############################
 # The size of the cascaded structure is the number components.
@@ -283,7 +252,6 @@ return castruct!.components[pos];
 end
 );
 
-
 #############################################################################
 # Implementing Display, printing nice, human readable format.
 InstallMethod( ViewObj,
@@ -294,10 +262,9 @@ function( castr )
 local s,i;
   s := "";
   for i in [1..Length(castr)] do
-    Print(i," ", s, Size(StateSets(castr)[i])," ");ViewObj(castr[i]);Print("\n"); #instead of printing the generators
+    Print(i," ", s, Size(StateSets(castr)[i])," ");
+    ViewObj(castr[i]);
+    Print("\n");
     s := Concatenation(s,"|-");
-  od;  
-end
-);
-
-
+  od;
+end);
