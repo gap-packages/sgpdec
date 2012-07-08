@@ -332,7 +332,7 @@ end
 InstallMethod(Flatten,
     "flatten a cascaded permutation",
     true,
-    [IsLagrangeDecomposition,IsCascadedPermutation], 0,
+    [IsLagrangeDecomposition,IsCascadedOperation], 0,
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
                    x-> Flatten(decomp, Raise(decomp,x) ^ co))
@@ -385,7 +385,7 @@ end
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded operation x to y",
     true,
-    [IsLagrangeDecomposition,IsCascadedPermutation,IsCascadedPermutation], 0,
+    [IsLagrangeDecomposition,IsCascadedOperation,IsCascadedOperation], 0,
 function(decomp,x,y)
   return x2y(decomp,Perm2CascadedState(decomp,Flatten(decomp,x)),
              Perm2CascadedState(decomp,Flatten(decomp,y)));
