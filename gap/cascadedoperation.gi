@@ -214,9 +214,11 @@ end);
 # calculation
 
 InstallOtherMethod(InverseOp, "for a cascaded perm",
-[IsCascadedPermutation],
+[IsCascadedOperation],
 function(cascperm)
-  return BuildNC(CascadedStructureOf(cascperm),Inverse(Collapse(cascperm)));
+  return BuildNC(CascadedStructureOf(cascperm),
+                 Inverse(PermList(
+                         ImageListOfTransformation(Collapse(cascperm)))));
 end);
 
 # equality the worst case is when p and q are indeed equal, as every value is
@@ -371,9 +373,9 @@ function( co )
   od;
 
   #now creating a permutation or transformation out of l
-  if IsCascadedPermutation(co) then
-    return PermList(l);
-  fi;
+  #if IsCascadedPermutation(co) then
+  #  return PermList(l);
+  #fi;
   return Transformation(l);
 end);
 
