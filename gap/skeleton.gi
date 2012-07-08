@@ -455,11 +455,4 @@ local  str, i,label,node,out,class,classes,set,states,G;
     AppendTo(out,"}\n");
     CloseStream(out);
     return str;
-end
-);
-
-InstallGlobalFunction(SplashSkeleton,
-function(sk)
-    Splash(DotSkeleton(sk, rec()));    
-end
-);
+end);
