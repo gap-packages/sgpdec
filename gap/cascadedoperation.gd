@@ -21,7 +21,6 @@ DeclareGlobalFunction("IsDependencyCompatible");
 DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
 DeclareGlobalFunction("DotCascadedOperation");
 
-DeclareCategory("IsCascadedOperation", IsMultiplicativeElement);
-#DeclareCategory("IsCascadedPermutation",
-#        IsCascadedOperation and IsMultiplicativeElementWithInverse);
-#DeclareCategory("IsCascadedTransformation", IsCascadedOperation);
+#we need the 'WithInverse' property to build groups of cascaded
+#transformation though not all of them have inverses
+DeclareCategory("IsCascadedOperation", IsMultiplicativeElementWithInverse);
