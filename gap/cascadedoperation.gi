@@ -104,7 +104,7 @@ end;
 
 InstallGlobalFunction(IdentityCascadedOperation,
 function(cstr)
-  return DefineCascadedOperation(cstr,[]);
+  return CascadedOperation(cstr,DependencyTable([]));
 end);
 
 # just creating random dependency functions
@@ -133,27 +133,8 @@ function(cstr,numofdeps)
   # number of dependencies
   deps := List(deps, arg -> [arg, Random(cstr[Length(arg)+1])]);
 
-  return  DefineCascadedOperation(cstr,deps);
+  return CascadedOperation(cstr,DependencyTable(deps));
 end);
-
-# for creating cascade permutations by giving dependency function maps in a list
-# of argument-value pairs (the default dependency function value is () )
-# CAUTION! This uses the new DepFuncTable functionality!
-
-InstallOtherMethod(DefineCascadedOperation, "for a cascaded structure and list",
-[IsCascadedStructure, IsList],
-function(cstr,pairs) local  pair, depfunctable;
-
-  #creating new dependency function table
-  depfunctable := [];
-  #and just registering these new dependencies
-  for pair in pairs do
-    RegisterNewDependency(depfunctable,pair[1],pair[2]);
-  od;
-
-  return  CascadedOperation(cstr,depfunctable);
-end
-);
 
 #for creating cascade permutations by giving dependency function maps in a
 #dependency function table
@@ -179,7 +160,7 @@ function(cstr,depfunctable)
                     rec(cstr:=cstr, depfunc:=depfunc));
 end);
 
-# the inverse of DefineCascadedOperation : returns a list containing
+# returns a list containing
 # coordinateprefixes - component element pairs (when it is not the identity of
 # the component) note that this returns concrete states now
 
@@ -384,7 +365,7 @@ RaiseNC := function(cstr,flatop)
   od;
 
   #after the recursion done we have the defining elementary dependencies
-  return DefineCascadedOperation(cstr,dependencies);
+  return CascadedOperation(cstr,DependencyTable(dependencies));
 end;
 
 #raising a permutation/transformation to its cascaded format

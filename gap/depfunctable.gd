@@ -18,6 +18,7 @@
 ## The dependency table is finally a list containing the ith level dependencies in its ith slot.
 ##  <#/GAPDoc>
 
+DeclareGlobalFunction("DependencyTable");
 DeclareGlobalFunction("IsStrictlyMoreAbstract");
 DeclareGlobalFunction("IsOverlapping");
 DeclareGlobalFunction("RegisterNewDependency");

@@ -157,7 +157,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
     #adding the entries to the current coordinate fragments
     for prefix in prefixes do
       for compgen in gens do
-        Add(mongens, DefineCascadedOperation(cstr,[[prefix,compgen]]));
+        Add(mongens, CascadedOperation(cstr,DependencyTable([[prefix,compgen]])));
       od;
     od;
 

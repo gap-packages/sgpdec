@@ -1,4 +1,20 @@
-#classifying the elements in the list according to the 
+# for creating dependency table by giving dependency function maps in a list
+# of argument-value pairs (the default dependency function value is () )
+InstallGlobalFunction(DependencyTable,
+function(pairs) 
+  local  pair, depfunctable;
+
+  #creating new dependency function table
+  depfunctable := [];
+  #and just registering these new dependencies
+  for pair in pairs do
+    RegisterNewDependency(depfunctable,pair[1],pair[2]);
+  od;
+
+  return  depfunctable;
+end);
+
+# classifying the elements in the list according to the 
 # value returned by a function
 #WARNING though this does sorting it is definitely not an optimized implementation! 
 SGPDEC_Classify := function(l, funct)
