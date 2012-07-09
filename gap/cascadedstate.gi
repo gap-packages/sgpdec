@@ -50,21 +50,15 @@ end);
 InstallMethod(Collapse, "for a cascaded state",
 [IsCascadedState],
 function( cs )
-  local cstr;
-
-  cstr := CascadedStructureOf(cs);
-  return PositionCanonical(States(cstr),cs);
+  return PositionCanonical(States(CascadedStructureOf(cs)),cs);
 end);
 
 
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
 
-# JDM IsInt should be changd to IsPosInt, since States(cstr)[0],[-1]
-# can never be returned.
-
 InstallOtherMethod(Build, "for cascaded structure and integer",
-[IsCascadedStructure, IsInt],
+[IsCascadedStructure, IsPosInt],
 function( cstr, state )
   return States(cstr)[state];
 end);
