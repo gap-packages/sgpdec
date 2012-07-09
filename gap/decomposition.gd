@@ -2,7 +2,7 @@
 ##
 ## decomposition.gd           SgpDec package
 ##
-## Copyright (C) Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## (C) Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## 2008-2012
 ##
@@ -23,4 +23,3 @@ DeclareOperation("Interpret",[IsHierarchicalDecomposition,IsInt,IsInt]);
 DeclareOperation("ComponentActions",
         [IsHierarchicalDecomposition,IsObject,IsObject]);
 DeclareOperation("x2y",[IsHierarchicalDecomposition,IsObject,IsObject]);
-DeclareGlobalFunction("DependencyClassesOfDecomposition");
