@@ -448,15 +448,11 @@ end);
 
 InstallGlobalFunction(DependencyGraph,
 function(cascop)
-  local cstr, graph, i, j;
-
-  # getting the info record as it contains the componentinfo
-  cstr := CascadedStructureOf(cascop);
+  local graph, i, j;
 
   graph := [];
-
   # checking all directed pairs systematically
-  for i in [2..Length(cstr)] do
+  for i in [2..Length(CascadedStructureOf(cascop))] do
     for j in [1..i-1] do
       if DependsOn(cascop,i,j) then
         Add(graph,[i,j]);
@@ -481,9 +477,9 @@ local pscope,level,prefix,cstr;
 
   for level in [1..Length(cstr)] do
     for prefix in
-     EnumeratorOfCartesianProduct(cstr!.state_sets{[1..(level-1)]} ) do
+     EnumeratorOfCartesianProduct(StateSets(cstr){[1..(level-1)]} ) do
       #if it is not the identity of the component
-      if One(cstr[level]) <> (cascop![level](prefix)) then
+      if One(cstr[level]) <> (cascop!.depfunc(prefix)) then
         #then we have at least one here
         Add(pscope,level);
         #so we can leave the loop
