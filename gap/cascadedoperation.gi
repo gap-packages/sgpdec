@@ -21,7 +21,7 @@ SGPDEC_ActionOnLastCoord := function(coords, cascop)
   local depfuncval;
   # getting the value of the dependency function that acts on the last
   # coordinate
-  depfuncval := cascop![Length(coords)](coords{[1..(Length(coords)-1)]});
+  depfuncval := cascop!.depfunc(coords{[1..(Length(coords)-1)]});
 
   #if it is a constant map (required for permutation reset automata)
   if IsTransformation(depfuncval) and RankOfTransformation(depfuncval)=1 then
@@ -80,7 +80,7 @@ ComponentActionForPrefix := function(cstr, flatoplist, prefix)
 
     #pick one source cascaded state (the first in the interval may do)
     src_int := PositionCanonical(states,
-     Concretize(CascadedState(cstr, prefix)));
+                       Concretize(CascadedState(cstr, prefix)));
 
     #we find the cascaded state corresponding to the flatop image
     dest_cs := states[flatoplist[src_int]];
@@ -162,7 +162,7 @@ end
 
 InstallGlobalFunction(CascadedOperation,
 function(cstr,depfunctable)
-  local  depfunc;
+  local  depfunc, object;
 
   # a function that returns the value corresponding to the argument if found,
   # otherwise the identity - embedded function
@@ -177,8 +177,8 @@ function(cstr,depfunctable)
     return One(cstr[Length(args)+1]);
   end;
 
-  return  Objectify(cstr!.operation_type,
-                    ListWithIdenticalEntries(Length(cstr), depfunc));
+  return Objectify(CascadedOperationType,
+                    rec(cstr:=cstr, depfunc:=depfunc));
 end);
 
 # the inverse of DefineCascadedOperation : returns a list containing
@@ -197,7 +197,7 @@ function(cascop)
   for i in [1..Length(cstr)] do
     identity := One(cstr[i]);
     for coords in EnumeratorOfCartesianProduct(StateSets(cstr){[1..(i-1)]}) do
-      value := cascop![i](coords);
+      value := cascop!.depfunc(coords);
 
       #if it is not the identity of the component
       if identity <> value then
@@ -233,7 +233,7 @@ function(p,q)
 
   for i in [1..Length(cstr)] do
     for coords in EnumeratorOfCartesianProduct(StateSets(cstr){[1..(i-1)]}) do
-      if p![i](coords) <> q![i](coords) then
+      if p!.depfunc(coords) <> q!.depfunc(coords) then
         return false;
       fi;
     od;
@@ -276,11 +276,11 @@ function(p,q)
 
     # the product operation is the action of p on the arguments multiplied by
     # the action of q on the p-moved args
-    return p![Length(args)+1](args) * q![Length(args)+1](newargs);
+    return p!.depfunc(args) * q!.depfunc(newargs);
   end;
 
-  return Objectify(cstr!.operation_type,
-                   ListWithIdenticalEntries(Length(cstr), depfunct));
+  return Objectify(CascadedOperationType,
+                   rec(cstr:=cstr, depfunc:= depfunct));
 end);
 
 InstallOtherMethod(\^, "for cascaded operation and int",
@@ -564,7 +564,7 @@ end);
 InstallMethod(CascadedStructureOf, "for a cascaded operation",
 [IsCascadedOperation],
 function(cascop)
-  return FamilyObj(cascop)!.cstr;
+  return cascop!.cstr;
 end);
 
 # drawing

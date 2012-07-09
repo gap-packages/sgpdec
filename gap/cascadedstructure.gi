@@ -124,16 +124,6 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
       cascprodinfo.argument_names[i] := str;
   od;
 
-  #CREATING TYPE INFO
-  #creating family for operations
-  cascprodinfo.operation_family :=
-    NewFamily(Concatenation(prodname,"_OperationsFamily"),
-            IsCascadedOperation);
-  cascprodinfo.operation_type :=
-    NewType(cascprodinfo.operation_family,
-            IsCascadedOperation);
-
-
   #creating cascade state typed states
   #GENERATING STATES
   #if VERBOSE then Print("Generating states...");fi;
@@ -141,10 +131,6 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
   #if VERBOSE then Print("DONE\n");fi;
 
   result :=  Objectify(CascadedStructureType,cascprodinfo);
-
-  #linking from the family object to the product info,
-  #thus we can get from any state/operation to this info struct
-  result!.operation_family!.cstr := result;
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);
