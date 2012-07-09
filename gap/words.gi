@@ -34,7 +34,7 @@ function(word, gens, start)
 local i,t,trajectory;
   trajectory := Trajectory(word, gens, start,\*);
   #if the first element is also at the end, we remove the last
-  if (trajectory[1] = LastElementOfList(trajectory)) then
+  if (trajectory[1] = trajectory[Length(trajectory)]) then
     Remove(trajectory);
   fi;
   return IsDuplicateFreeList(trajectory);
@@ -43,7 +43,7 @@ end);
 SGPDEC_straightenWord := function(word, trajectory)
 local reduced, pointer, duplicate, i, shift;
   shift:=1; #there is an extra element in the trajectory (the starting point)
-  if (trajectory[1] = LastElementOfList(trajectory)) then
+  if (trajectory[1] = trajectory[Length(trajectory)]) then
     Remove(trajectory,1); #otherwise we cut out the whole thing as one big loop
     shift := 0;
   fi;
@@ -96,7 +96,7 @@ local recursion;
   recursion := function(word, trajectory)
     local t,i;
 
-    if (trajectory[1] = LastElementOfList(trajectory)) then
+    if (trajectory[1] = trajectory[Length(trajectory)]) then
       t := trajectory{[1..Length(trajectory)-1]};
     else
       t := trajectory;
@@ -105,7 +105,7 @@ local recursion;
     if not IsDuplicateFreeList(t) and (not IsEmpty(word)) then
       return;
     fi;
-    processor(word, LastElementOfList(trajectory));
+    processor(word, trajectory[Length(trajectory)]);
     ####################################################
     if (Length(word) < limit) then
       #do the recursion bit - no new list is allocated
