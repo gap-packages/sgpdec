@@ -225,7 +225,7 @@ function(co)
 end);
 
 #multiplication of cascaded operations - it is a tricky one, since it just
-#combines together the functions
+#combines together the functions without building a dependency table
 
 InstallOtherMethod(\*, "multiplying cascaded operations", IsIdenticalObj,
 [IsCascadedOperation, IsCascadedOperation],
@@ -383,15 +383,30 @@ function(cstr, flatop)
   return RaiseNC(cstr,flatop);
 end);
 
+##############ALGORITHMS TO GET THE INVERSE####################################
 # simple trick for getting the inverse #TODO to be replaced by a real
 # calculation
 
-InstallOtherMethod(InverseOp, "for a cascaded perm",
-[IsCascadedOperation],
-function(cascperm)
+InvCascadedOperationByYeast := function(cascperm)
   return RaiseNC(CascadedStructureOf(cascperm),
                  Inverse(Flatten(cascperm)));
-end);
+end;
+
+#this is of course very slow
+InvCascadedOperationByPowers := function(cascperm)
+local pow, id, prevpow;
+  pow := cascperm;
+  id := IdentityCascadedOperation(CascadedStructureOf(cascperm));
+  repeat
+    prevpow := pow;
+    pow := pow * cascperm;
+  until id = pow;
+  return prevpow;
+end;
+
+#here we just plug one algorithm in
+InstallOtherMethod(InverseOp, "for a cascaded perm",
+        [IsCascadedOperation],InvCascadedOperationByYeast);
 
 # checks whether the target level depends on onlevel in cascop.  simply follows
 # the definition and varies one level
