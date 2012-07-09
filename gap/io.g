@@ -2,7 +2,7 @@
 ##
 ##  io.g  SgpDec package
 ##
-##  Copyright (C)  2011 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##  (C)  2011-2012 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ##  Some utility methods.
 ##
@@ -22,7 +22,7 @@ local vals,k,s;
   vals := [];
   for k in SGPDEC_util_durations do
     Add(vals, Int(t/k));
-    t := t - LastElementOfList(vals) * k;
+    t := t - vals[Length(vals)] * k;
   od;
   s := "";
   k := 1;
