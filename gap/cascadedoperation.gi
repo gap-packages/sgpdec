@@ -25,13 +25,11 @@ SGPDEC_ActionOnLastCoord := function(coords, cascop)
 
   #if it is a constant map (required for permutation reset automata)
   if IsTransformation(depfuncval) and RankOfTransformation(depfuncval)=1 then
-
     #the value of the constant transformation
     return depfuncval![1][1];
   fi;
 
   if coords[Length(coords)] = 0 then
-
     # TODO potential problem here when acting on 0 as a general transformation
     # may reduce the set
     return 0;
@@ -431,14 +429,14 @@ function(cascop, targetlevel, onlevel)
   for arg in args do
 
     #remember the value
-    value := cascop![targetlevel](arg);
+    value := cascop!.depfunc(arg);
 
     #now do the variations
     for coord in StateSets(cstr)[onlevel] do
       arg[onlevel] := coord;
 
       #if there is a change then we are done!
-      if value <>  cascop![targetlevel](arg) then
+      if value <>  cascop!.depfunc(arg) then
         return true;
       fi;
     od;
