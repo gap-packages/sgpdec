@@ -30,7 +30,7 @@ AbstractCascadedStateFamily := NewFamily("AbstractCascadedStateFamily",
                                        IsAbstractCascadedState);
 AbstractCascadedStateRepresentation :=
     NewRepresentation("AbstractCascadedStateRepresentation",
-    IsComponentObjectRep,["coords","cstr"]);
+    CascadedStateRepresentation,[]);
 AbstractCascadedStateType := NewType(AbstractCascadedStateFamily,
                              IsAbstractCascadedState and
                              AbstractCascadedStateRepresentation);
