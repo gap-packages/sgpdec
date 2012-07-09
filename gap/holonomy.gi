@@ -385,7 +385,7 @@ end
 );
 
 # Collapsing the whole cascaded structure (as Flatten gives back the original structure)
-InstallOtherMethod(Collapse,
+InstallOtherMethod(Flatten,
     "collapsing a hierarchical decomposition",
     true,
     [IsHolonomyDecomposition], 0,
@@ -393,7 +393,7 @@ function( hd )
     local g,gens;
     gens := [];
     for g in GeneratorsOfSemigroup(OriginalStructureOf((hd))) do
-        Add(gens,Collapse(Raise(hd,g)));
+        Add(gens,Flatten(Raise(hd,g)));
     od;
     return Semigroup(gens);
 end

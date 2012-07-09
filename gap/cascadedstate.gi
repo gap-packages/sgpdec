@@ -47,7 +47,7 @@ end);
 # Collapsing for states - just returning the index as the states are stored in
 # order.
 
-InstallMethod(Collapse, "for a cascaded state",
+InstallOtherMethod(Flatten, "for a cascaded state",
 [IsCascadedState],
 function( cs )
   return PositionCanonical(States(CascadedStructureOf(cs)),cs);
@@ -57,7 +57,7 @@ end);
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
 
-InstallOtherMethod(Build, "for cascaded structure and integer",
+InstallOtherMethod(Raise, "for cascaded structure and integer",
 [IsCascadedStructure, IsPosInt],
 function( cstr, state )
   return States(cstr)[state];
