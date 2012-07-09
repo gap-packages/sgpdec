@@ -241,7 +241,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
       Add(reps,rep);
       Add(coords,coversets);
       Info(HolonomyInfoClass, 2, "  ",
-           StructureDescription(LastElementOfList(groups))," ",
+           StructureDescription(groups[Length(groups)])," ",
            SGPDEC_TimeString(Runtime() -t));t := Runtime();
     od;
     Add(holrec.shifts, shifts);
@@ -275,10 +275,10 @@ InstallMethod(Flatten,
     true,
     [IsHolonomyDecomposition,IsAbstractCascadedState], 1,
 function(hd,cs)
-  return AsList(LastElementOfList(
-                 CoverChain(hd, _holonomy_decode_coords(hd,cs))))[1];
-end
-);
+  local coverchain;
+  coverchain := CoverChain(hd, _holonomy_decode_coords(hd,cs));
+  return AsList(coverchain[Length(coverchain)])[1];
+end);
 
 InstallMethod(Raise,
     "raise a flat state into holonomy decomposition",
