@@ -208,16 +208,6 @@ function(cascop)
   return pairs;
 end);
 
-# simple trick for getting the inverse #TODO to be replaced by a real
-# calculation
-
-InstallOtherMethod(InverseOp, "for a cascaded perm",
-[IsCascadedOperation],
-function(cascperm)
-  return BuildNC(CascadedStructureOf(cascperm),
-                 Inverse(Collapse(cascperm)));
-end);
-
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
 
@@ -244,7 +234,7 @@ end);
 InstallOtherMethod(\<, "for cascaded op and cascaded op",
 [IsCascadedOperation, IsCascadedOperation],
 function(p,q)
-  return Collapse(p) < Collapse(q);
+  return Flatten(p) < Flatten(q);
 end);
 
 InstallOtherMethod(OneOp, "for cascaded op",
@@ -345,7 +335,7 @@ end);
 # GAP convention that operations changing representations should be called
 # AsSomething.
 
-InstallMethod(Collapse, "flattens a cascaded operation",
+InstallOtherMethod(Flatten, "for cascaded operation with no decomposition info",
 [IsCascadedOperation],
 function( co )
   local cstr, states, l, nstate, i;
@@ -371,9 +361,10 @@ function( co )
 end);
 
 #raising a permutation/transformation to its cascaded format
-InstallOtherMethod(BuildNC, "for a cascaded structure and object",
-[IsCascadedStructure, IsObject],
-function(cstr,flatop)
+#InstallOtherMethod(RaiseNC, "for a cascaded structure and object",
+#[IsCascadedStructure, IsObject],
+# for the time being just a function
+RaiseNC := function(cstr,flatop)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
@@ -394,12 +385,12 @@ function(cstr,flatop)
 
   #after the recursion done we have the defining elementary dependencies
   return DefineCascadedOperation(cstr,dependencies);
-end);
+end;
 
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
 
-InstallOtherMethod(Build, "for a cascaded structure and obj",
+InstallOtherMethod(Raise, "for a flat transformation with no decomposition",
 [IsCascadedStructure,IsObject],
 function(cstr, flatop)
 
@@ -408,7 +399,17 @@ function(cstr, flatop)
     Error("usage: the second argument does not belong to the wreath product");
     return;
   fi;
-  return BuildNC(cstr,flatop);
+  return RaiseNC(cstr,flatop);
+end);
+
+# simple trick for getting the inverse #TODO to be replaced by a real
+# calculation
+
+InstallOtherMethod(InverseOp, "for a cascaded perm",
+[IsCascadedOperation],
+function(cascperm)
+  return RaiseNC(CascadedStructureOf(cascperm),
+                 Inverse(Flatten(cascperm)));
 end);
 
 # checks whether the target level depends on onlevel in cascop.  simply follows

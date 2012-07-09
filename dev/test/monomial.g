@@ -3,7 +3,7 @@ local cstr, mgs, gens,S;
   cstr := CascadedStructure(components);
   mgs := MonomialGenerators(cstr);
   Print(Size(mgs), " monomial generators.\n"); 
-  gens := List(mgs, x-> Collapse(x)); 
+  gens := List(mgs, x-> Flatten(x)); 
   S := Semigroup(gens); 
   if (Size(S) <> SizeOfWreathProduct(cstr)) then 
       Print("FAIL\n");Error("Monomial generators do not generate the wreath product!\n");

@@ -10,9 +10,6 @@
 ##
 
 DeclareOperation("CascadedStructure",[IsList,IsList,IsList]);
-DeclareOperation("Collapse",[IsObject]);
-DeclareOperation("Build",[IsObject]);
-DeclareOperation("BuildNC",[IsObject]);
 DeclareGlobalFunction("MonomialGenerators");
 DeclareGlobalFunction("SizeOfWreathProduct");
 
