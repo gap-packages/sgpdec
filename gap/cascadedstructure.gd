@@ -35,8 +35,6 @@ DeclareRepresentation(
           "state_sets", #the original statesets
           "states", #states as cascaded states with correct type
           "maxnum_of_dependency_entries", #the maximum number of elementary deps
-          "operation_family", #family for the operations
-          "operation_type", #type for operations
           "groupsonly"
           ]);
 

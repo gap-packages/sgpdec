@@ -24,3 +24,13 @@ DeclareGlobalFunction("DotCascadedOperation");
 #we need the 'WithInverse' property to build groups of cascaded
 #transformation though not all of them have inverses
 DeclareCategory("IsCascadedOperation", IsMultiplicativeElementWithInverse);
+
+CascadedOperationFamily := NewFamily("CascadedOperationFamily",
+                                   IsCascadedOperation);
+CascadedOperationRepresentation :=
+    NewRepresentation("CascadedOperationRepresentation",
+    IsComponentObjectRep,["depfunc","cstr"]);
+
+CascadedOperationType := NewType(CascadedOperationFamily,
+                                 IsCascadedOperation and
+                                 CascadedOperationRepresentation);
