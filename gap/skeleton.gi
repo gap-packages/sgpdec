@@ -255,7 +255,7 @@ end);
 
 rec_AllCoverChainsToSet := function(sk,chain ,coll, relation)
 local set,preimg, l;
-  set := LastElementOfList(chain);
+  set := chain[Length(chain)];
   if set = sk.stateset then
     l :=  ShallowCopy(chain);
     Remove(l);# we don't need the top
@@ -263,7 +263,7 @@ local set,preimg, l;
     return;
   fi;
   for preimg in  PreImages(relation, set) do
-    if preimg <> LastElementOfList(chain) then
+    if preimg <> chain[Length(chain)] then
       Add(chain, preimg);
       rec_AllCoverChainsToSet(sk, chain, coll,relation);
       Remove(chain);
