@@ -1,10 +1,10 @@
 ##########################################################################
 ##
-## linearnotation.gi           SgpDec package  
+## linearnotation.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2009 University of Hertfordshire, Hatfield, UK
+## 2009-2012
 ## One line notation for transformations.
 
 SGPDEC_LinearNotation_Transformation2Mapping := function(t)
@@ -24,15 +24,14 @@ local visited,comps, i,actualcomp,comp;
     #...but skipping those that are already in some component
     if not (i in visited) then
       Add(comps,[i]);    #let's start with a fresh new component
-      actualcomp := LastElementOfList(comps);
+      actualcomp := comps[Length(comps)];
       Add(visited,i);
-      i := i ^ t;        #keep going with the orbit till we bump into something known
+      i := i ^ t;   #keep going with the orbit till we bump into something known
       while not (i in  visited) do
         Add(actualcomp,i);
         Add(visited,i);
         i := i ^ t;
       od;
-      #if we found an element that is another components then we need to merge components
       if not (i in actualcomp) then
         #merging to actual component to a previous one
         for comp in comps do
@@ -41,14 +40,14 @@ local visited,comps, i,actualcomp,comp;
             Remove(comps);
             break;
           fi;
-        od; 
+        od;
       fi;
     fi;
   od;
   return comps;
 end;
 
-#Find the points in the cycle in a component containing the initial point.  
+#Find the points in the cycle in a component containing the initial point.
 CycleOfTransformationFromPoint := function(t,p)
 local orbit;
   orbit := []; #we generate the orbit
@@ -61,11 +60,13 @@ local orbit;
 end;
 
 ##############################################
-# point - the root of the tree, mapping the whole transformation as Mapping, the list of the cycle elements, the string
+# point - the root of the tree, mapping the whole transformation as Mapping,
+#the list of the cycle elements, the string
 SGPDEC_LinearNotation_TreePrint := function(point, mapping,cycle, str)
     local preimgs,p;
 
-    preimgs := PreImages(mapping, point); #we reverse the arrows in the graph for the recursion
+    #we reverse the arrows in the graph for the recursion
+    preimgs := PreImages(mapping, point);
     if IsEmpty(preimgs) then   #if it is a terminal point, just print it
       str := Concatenation(str,StringPrint(point));
       return str;
@@ -73,37 +74,38 @@ SGPDEC_LinearNotation_TreePrint := function(point, mapping,cycle, str)
 
     str := Concatenation(str,"["); #starting the tree notation
     for p in preimgs do
-      if point <> p and (not p in cycle)then #if we are tracing the tree, not the cycle the recursion
+      #if we are tracing the tree, not the cycle the recursion
+      if point <> p and (not p in cycle)then
         str := SGPDEC_LinearNotation_TreePrint(p,mapping,cycle,str);
         str := Concatenation(str,",");
       fi;
     od;
-  if LastElementOfList(str) = ',' then Remove(str); fi; #removing unnecessary coma
-  if (Size(preimgs) > 1) or (preimgs[1] <> point and not (preimgs[1] in cycle)) then 
-    str := Concatenation(str,";"); 
+  if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
+  if (Size(preimgs) > 1)
+     or (preimgs[1] <> point and not (preimgs[1] in cycle)) then
+    str := Concatenation(str,";");
   fi;
   str := Concatenation(str,StringPrint(point),"]"); # ending the tree notation
   return str;
 end;
 
-
-
-
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
- function(transformation)
-local mapping,components,comp,cycle,point,str;
-  if IsOne(transformation) then return "()";fi; #this special case would be difficult to handle
+function(transformation)
+  local mapping,components,comp,cycle,point,str;
+  #this special case would be difficult to handle
+  if IsOne(transformation) then return "()";fi;
   #for the preimages
-  mapping := SGPDEC_LinearNotation_Transformation2Mapping(transformation); 
+  mapping := SGPDEC_LinearNotation_Transformation2Mapping(transformation);
   str := "";
   components := TransformationComponents(transformation);
   for comp in components do
-    if Size(comp) = 1 then continue; fi;      #fixed points are not displayed
-    cycle := CycleOfTransformationFromPoint(transformation,comp[1]); #1-cycles are not displayed as cycles (but it can be a tree)
+    if Size(comp) = 1 then continue; fi;#fixed points are not displayed
+    #1-cycles are not displayed as cycles (but it can be a tree)
+    cycle := CycleOfTransformationFromPoint(transformation,comp[1]);
     if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
     for point in cycle do
-      if IsSubset(AsSet(cycle), AsSet(PreImages(mapping, point))) then 
+      if IsSubset(AsSet(cycle), AsSet(PreImages(mapping, point))) then
         str := Concatenation(str,StringPrint(point));
       else
         str := SGPDEC_LinearNotation_TreePrint(point,mapping,cycle,str);
@@ -124,18 +126,17 @@ InstallGlobalFunction(SimplerLinearNotation,
   return Concatenation("[->", StringPrint(transformation![1][1]),"]");
  else
   return LinearNotation(transformation);
- fi; 
+ fi;
 end
 );
 
 if SgpDecOptionsRec.LINEAR_NOTATION then
-  #redefining display for transformations 
+  #redefining display for transformations
   InstallMethod( ViewObj,
     "linear notation for transformations",
     true,
     [IsTransformation], 0,
   function( t )
     Print(SimplerLinearNotation(t));
-  end
-  );
+  end);
 fi;
