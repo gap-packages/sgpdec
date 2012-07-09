@@ -111,7 +111,7 @@ local recursion;
       #do the recursion bit - no new list is allocated
       for i in [1..Length(gens)] do
         Add(word,i);
-        Add(trajectory, action(LastElementOfList(trajectory),gens[i]));
+        Add(trajectory, action(trajectory[Length(trajectory)],gens[i]));
         recursion(word,trajectory);
         Remove(trajectory);
         Remove(word);
