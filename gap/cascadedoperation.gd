@@ -12,7 +12,6 @@
 DeclareGlobalFunction("IdentityCascadedOperation");
 DeclareGlobalFunction("CascadedOperation");
 DeclareGlobalFunction("RandomCascadedOperation");
-DeclareOperation("DefineCascadedOperation",[IsObject,IsListOrCollection]);
 DeclareGlobalFunction("DependencyMapsFromCascadedOperation");
 DeclareGlobalFunction("DependsOn");
 DeclareGlobalFunction("DependencyGraph");
