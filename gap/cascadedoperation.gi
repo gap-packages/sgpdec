@@ -283,10 +283,10 @@ function( co )
   for i in [1..Length(cstr)] do
     Print("Level ",i,": ", cstr!.argument_names[i]," -> ",
      cstr!.names_of_components[i],"\n");
-    for j in  (EnumeratorOfCartesianProduct( cstr!.state_sets{[1..(i-1)]} )) do
-      if not IsOne(co![i](j)) then
+    for j in EnumeratorOfCartesianProduct(StateSets(cstr){[1..(i-1)]}) do
+      if not IsOne(co!.depfunc(j)) then
         Print("[",ConvertCascade2String(j,cstr!.state_symbol_functions),
-         "] -> ", cstr!.operation_symbol_functions[i](co![i](j)), "\n");
+         "] -> ", cstr!.operation_symbol_functions[i](co!.depfunc(j)), "\n");
       fi;
     od;
     Print("\n");
