@@ -13,6 +13,7 @@ DeclareGlobalFunction("CascadedState");
 # returns a representative concrete cascaded state corresponding
 # to an abstract state
 DeclareGlobalFunction("Concretize");
+DeclareGlobalFunction("AllConcreteCascadedStates");
 
 DeclareCategory("IsAbstractCascadedState",IsDenseList);
 DeclareCategory("IsCascadedState",IsAbstractCascadedState);
