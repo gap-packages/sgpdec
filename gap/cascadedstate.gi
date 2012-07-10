@@ -54,14 +54,14 @@ InstallOtherMethod(Raise, "for cascaded structure and integer",
 [IsCascadedStructure, IsPosInt],
 function( cstr, state ) return States(cstr)[state]; end);
 
-#it works only with prefixes
+#for abstract positions we put 1 (a surely valid coordinate value) replacing 0
 InstallGlobalFunction(Concretize,
 function(abstract_state)
 local l, cstr;
   cstr := CascadedStructureOf(abstract_state);
-  l := ShallowCopy(AsList(abstract_state));
-  #just putting 1s as a safe bet JDM ???
-  Append(l, List([Size(abstract_state)+1..Length(cstr)], x -> 1));
+  l := List(abstract_state, function(x) if x>0 then return x; else return 1;fi;end);
+  #then append the list with 1s
+  Append(l, ListWithIdenticalEntries(Length(cstr) - Size(abstract_state), 1));
   return CascadedState(cstr, l);
 end);
 
