@@ -48,6 +48,16 @@ function( cs )
   return PositionCanonical(States(CascadedStructureOf(cs)),cs);
 end);
 
+InstallOtherMethod(Flatten, "for an abstract cascaded state",
+[IsAbstractCascadedState],
+function( acs )
+local l;     
+  l := [];
+  Perform(AllConcreteCascadedStates(acs), function(x) AddSet(l,Flatten(x));end);
+  return  l;
+end);
+
+
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
 InstallOtherMethod(Raise, "for cascaded structure and integer",
@@ -63,6 +73,22 @@ local l, cstr;
   #then append the list with 1s
   Append(l, ListWithIdenticalEntries(Length(cstr) - Size(abstract_state), 1));
   return CascadedState(cstr, l);
+end);
+
+InstallGlobalFunction(AllConcreteCascadedStates,
+function(abstract_state)
+local cstr, concretestates;
+  cstr := CascadedStructureOf(abstract_state);    
+  concretestates :=  EnumeratorOfCartesianProduct(
+                             List([1..Size(cstr)],
+    function(x) 
+      if IsBound(abstract_state[x]) and abstract_state[x]>0 then 
+        return [abstract_state[x]]; 
+      else
+        return StateSets(cstr)[x];
+      fi;
+    end));
+  return List(concretestates, x -> CascadedState(cstr,x));
 end);
 
 ###############################################################
