@@ -384,15 +384,16 @@ function(cstr, flatop)
 end);
 
 ##############ALGORITHMS TO GET THE INVERSE####################################
-# simple trick for getting the inverse #TODO to be replaced by a real
-# calculation
+# We have different algorithms here, but the fastest is plugged in the real Inverse. 
 
+#simple trick for getting the inverse: take the flat inverse instead 
 InvCascadedOperationByYeast := function(cascperm)
   return RaiseNC(CascadedStructureOf(cascperm),
                  Inverse(Flatten(cascperm)));
 end;
+MakeReadOnlyGlobal("InvCascadedOperationByYeast");
 
-#this is of course very slow
+# calculating the powers until inverse found, this is of course very slow
 InvCascadedOperationByPowers := function(cascperm)
 local pow, id, prevpow;
   pow := cascperm;
@@ -403,10 +404,26 @@ local pow, id, prevpow;
   until id = pow;
   return prevpow;
 end;
+MakeReadOnlyGlobal("InvCascadedOperationByPowers");
+
+# transform the argument of the dependency and invert the value
+InvCascadedOperationByDependencies := function(cascperm)
+local invmaps, dep;    
+ 
+  invmaps := [];
+  for dep in DependencyMapsFromCascadedOperation(cascperm) do
+    Add(invmaps,
+        [List([1..Size(dep[1])], x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
+         Inverse(dep[2])
+         ]);
+  od;
+  return CascadedOperation(CascadedStructureOf(cascperm), DependencyTable(invmaps));
+end;
+MakeReadOnlyGlobal("InvCascadedOperationByDependencies");
 
 #here we just plug one algorithm in
 InstallOtherMethod(InverseOp, "for a cascaded perm",
-        [IsCascadedOperation],InvCascadedOperationByYeast);
+        [IsCascadedOperation],InvCascadedOperationByDependencies);
 
 # checks whether the target level depends on onlevel in cascop.  simply follows
 # the definition and varies one level
