@@ -35,19 +35,6 @@
 ## <#/GAPDoc>
 
 #############################################################################
-##
-##      <#GAPDoc Label="DefineCascadedOperation">
-##      <ManSection><Heading>Creating a Cascaded Operation from Dependencies</Heading>
-##      <Func Name="DefineCascadedOperation" Arg="cascadedstruct, dependencies"/>
-##      <Description>
-##      Creates a  cascaded operation from a set of dependencies.
-##      The argument <C>dependencies</C> contains a list of pairs, where one abstract state 
-##      (as a plain list)  -  component action pair is an elementary dependence. 
-##      </Description>
-##      </ManSection>
-##      <#/GAPDoc>
-
-#############################################################################
 ## <#GAPDoc Label="DependencyMapsFromCascadedOperation">
 ## <ManSection><Heading>Extracting Dependencies</Heading>
 ## <Func Name="DependencyMapsFromCascadedOperation" Arg="cascadedop"/>

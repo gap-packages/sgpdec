@@ -23,7 +23,6 @@ Cascaded operations are lot more complicated objects than cascaded states. They 
 
    <#Include Label="IdentityCascadedOperation"> 
    <#Include Label="RandomCascadedOperation"> 
-   <#Include Label="DefineCascadedOperation"> 
 
    <#Include Label="DependencyMapsFromCascadedOperation"> 
    <#Include Label="DependencyCompatible"> 
