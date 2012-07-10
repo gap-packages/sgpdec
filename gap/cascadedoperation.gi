@@ -90,7 +90,7 @@ ComponentActionForPrefix := function(cstr, flatoplist, prefix)
     Remove(prefix);
   od;
 
-  if IsCascadedGroup(cstr) then
+  if IsGroup(cstr!.components[Size(prefix)+1]) then
     return PermList(actionlist);
   fi;
   return Transformation(actionlist);
