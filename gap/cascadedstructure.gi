@@ -43,6 +43,12 @@ local names,comp;
   return names;
 end;
 
+InstallGlobalFunction(IsCascadedGroup,#[IsCascadedStructure],
+        function(cstr)
+  return ForAll(cstr!.components, IsGroup);
+end);
+
+
 # SIMPLIFIED CONSTRUCTOR
 # calling the main with default identity functions
 InstallOtherMethod(CascadedStructure,[IsList],
@@ -128,11 +134,11 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
   cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
   #if VERBOSE then Print("DONE\n");fi;
 
-  if groupsonly then 
-    result :=  Objectify(CascadedGroupType,cascprodinfo);
-  else
+  #if groupsonly then 
+  #  result :=  Objectify(CascadedGroupType,cascprodinfo);
+  #else
     result :=  Objectify(CascadedStructureType,cascprodinfo);
-  fi;
+  #fi;
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);

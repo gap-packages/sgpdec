@@ -20,7 +20,8 @@ DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 DeclareGlobalFunction("NameOf"); #TODO! this may be just standard Name?!?
 
 DeclareCategory("IsCascadedStructure", IsDenseList);
-DeclareCategory("IsCascadedGroup", IsCascadedStructure);
+DeclareGlobalFunction("IsCascadedGroup");#TODO this must be a filter
+
 DeclareRepresentation(
         "IsCascadedStructureRep",
         IsComponentObjectRep,
@@ -35,7 +36,8 @@ DeclareRepresentation(
           "maxnum_of_dependency_entries" #the maximum number of elementary deps
           ]);
 
-CascadedStructureType := NewType(NewFamily("CascadedStructureFamily",IsCascadedStructure),
-                                  IsCascadedStructure and IsCascadedStructureRep);
-CascadedGroupType := NewType(NewFamily("CascadedGroupFamily",IsCascadedGroup),
-                             IsCascadedGroup and IsCascadedStructureRep);
+CascadedStructureType :=
+  NewType(NewFamily("CascadedStructureFamily",IsCascadedStructure),
+          IsCascadedStructure and IsCascadedStructureRep);
+#CascadedGroupType := NewType(NewFamily("CascadedGroupFamily",IsCascadedGroup),
+#                             IsCascadedGroup and IsCascadedStructureRep);
