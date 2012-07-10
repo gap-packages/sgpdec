@@ -61,7 +61,7 @@ Print(GRP!.name_of_product,"\n\n");
 
 TestMultiplicationByIdentity(GRP);
 TestYEAST4Operations(GRP);
-TestInverses(GRP);
+TestCascadedInverses(GRP);
 TestDependencyExtraction(GRP);
 
 Print("\nTesting a semigroup cascade ");
