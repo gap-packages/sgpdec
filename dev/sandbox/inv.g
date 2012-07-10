@@ -4,9 +4,9 @@ local maps, invmaps, dep, arg, i;
   maps := DependencyMapsFromCascadedOperation(cascperm);
   invmaps := [];
   for dep in maps do
-      arg := ShallowCopy(dep[1]);
+      arg := [];#ShallowCopy(dep[1]);
       for i in [1..Size(dep[1])] do
-          arg[i] := arg[i]^Inverse( cascperm!.depfunc(arg{[1..i-1]}));
+          arg[i] := dep[1][i]^(cascperm!.depfunc(dep[1]{[1..i-1]}));
       od;     
       Add(invmaps, [arg, Inverse(dep[2])]);
   od;
