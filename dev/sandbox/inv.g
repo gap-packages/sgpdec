@@ -1,14 +1,13 @@
-InvCascadedOperationByCraft := function(cascperm)
-local maps, invmaps, dep, arg, i;    
+# transform the argument of the dependency and invert the value
+InvCascadedOperationByDependencies := function(cascperm)
+local invmaps, dep;    
  
-  maps := DependencyMapsFromCascadedOperation(cascperm);
   invmaps := [];
-  for dep in maps do
-      arg := [];#ShallowCopy(dep[1]);
-      for i in [1..Size(dep[1])] do
-          arg[i] := dep[1][i]^(cascperm!.depfunc(dep[1]{[1..i-1]}));
-      od;     
-      Add(invmaps, [arg, Inverse(dep[2])]);
+  for dep in DependencyMapsFromCascadedOperation(cascperm) do
+    Add(invmaps,
+        [List([1..Size(dep[1])], x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
+         Inverse(dep[2])
+         ]);
   od;
   return CascadedOperation(CascadedStructureOf(cascperm), DependencyTable(invmaps));
 end;
