@@ -89,7 +89,7 @@ function( cs )
     else
       Print("*");
     fi;
-    if i < Length(cs) then
+    if i < Length(cstr) then
       Print(",");
     fi;
   od;
