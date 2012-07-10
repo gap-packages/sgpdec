@@ -92,9 +92,7 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
   operation_symbol_functions := operationsymbolfunctions,
   components := components,
   names_of_components := compnames,
-  name_of_product := prodname,
-  groupsonly := groupsonly);
-
+  name_of_product := prodname);
 
   #guessing the statesets of the original components
   #if VERBOSE then Print("Guessing state sets");fi;
@@ -130,7 +128,11 @@ local cascprodinfo,compnames,prodname,i,str,result,state_set_sizes, groupsonly;
   cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
   #if VERBOSE then Print("DONE\n");fi;
 
-  result :=  Objectify(CascadedStructureType,cascprodinfo);
+  if groupsonly then 
+    result :=  Objectify(CascadedGroupType,cascprodinfo);
+  else
+    result :=  Objectify(CascadedStructureType,cascprodinfo);
+  fi;
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);

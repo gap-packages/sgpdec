@@ -90,7 +90,7 @@ ComponentActionForPrefix := function(cstr, flatoplist, prefix)
     Remove(prefix);
   od;
 
-  if IsGroup(cstr[level]) then
+  if IsCascadedGroup(cstr) then
     return PermList(actionlist);
   fi;
   return Transformation(actionlist);
@@ -203,6 +203,7 @@ function(p,q)
   for i in [1..Length(cstr)] do
     for coords in EnumeratorOfCartesianProduct(StateSets(cstr){[1..(i-1)]}) do
       if p!.depfunc(coords) <> q!.depfunc(coords) then
+        #Print(coords," ",p!.depfunc(coords)," ",q!.depfunc(coords),"\n");
         return false;
       fi;
     od;
@@ -335,7 +336,7 @@ function( co )
   od;
 
   #now creating a permutation or transformation out of l
-  if cstr!.groupsonly then
+  if IsCascadedGroup(cstr) then
     return PermList(l);
   fi;
   return Transformation(l);

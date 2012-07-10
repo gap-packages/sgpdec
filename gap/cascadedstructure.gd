@@ -20,6 +20,7 @@ DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 DeclareGlobalFunction("NameOf"); #TODO! this may be just standard Name?!?
 
 DeclareCategory("IsCascadedStructure", IsDenseList);
+DeclareCategory("IsCascadedGroup", IsCascadedStructure);
 DeclareRepresentation(
         "IsCascadedStructureRep",
         IsComponentObjectRep,
@@ -31,11 +32,10 @@ DeclareRepresentation(
           "argument_names", #the names argument domains
           "state_sets", #the original statesets
           "states", #states as cascaded states with correct type
-          "maxnum_of_dependency_entries", #the maximum number of elementary deps
-          "groupsonly"
+          "maxnum_of_dependency_entries" #the maximum number of elementary deps
           ]);
 
-CascadedStructureType  := NewType(
-                            NewFamily("CascadedStructureFamily",
-                                       IsCascadedStructure),
-                            IsCascadedStructure and IsCascadedStructureRep);
+CascadedStructureType := NewType(NewFamily("CascadedStructureFamily",IsCascadedStructure),
+                                  IsCascadedStructure and IsCascadedStructureRep);
+CascadedGroupType := NewType(NewFamily("CascadedGroupFamily",IsCascadedGroup),
+                             IsCascadedGroup and IsCascadedStructureRep);
