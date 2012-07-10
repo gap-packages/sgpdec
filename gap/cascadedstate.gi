@@ -9,11 +9,9 @@
 ## Dealing with cascaded states.
 ##
 
-
 # CONSTRUCTOR
 # The actual cascaded states are reused. So the constructor just checks whether
 # it is a valid list of coordinate values.
-
 InstallGlobalFunction(CascadedState,
 function(cstr,coords)
 local i;
@@ -25,7 +23,6 @@ local i;
 
   # checking whether the values are in range #TODO!! possibly a noncheck version
   # for speedup
-
   for i in [1..Length(coords)] do
     if coords[i] > Length(cstr!.state_sets[i]) or coords[i]<0 then
       Print(i,"th coordinate value out of range!\n");
@@ -35,33 +32,27 @@ local i;
 
   # just a normal state not an abstract one  #TODO this one misses the zero
   # entries
-  if Length(coords) =  Length(cstr) then
+  if Length(coords) = Length(cstr) then
     return Objectify(CascadedStateType,rec(coords:=coords,cstr:=cstr));
   else
     return Objectify(AbstractCascadedStateType,rec(coords:=coords,cstr:=cstr));
   fi;
 end);
 
-
 ####LOWLEVEL YEAST#####################################
 # Collapsing for states - just returning the index as the states are stored in
 # order.
-
 InstallOtherMethod(Flatten, "for a cascaded state",
 [IsCascadedState],
 function( cs )
   return PositionCanonical(States(CascadedStructureOf(cs)),cs);
 end);
 
-
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
-
 InstallOtherMethod(Raise, "for cascaded structure and integer",
 [IsCascadedStructure, IsPosInt],
-function( cstr, state )
-  return States(cstr)[state];
-end);
+function( cstr, state ) return States(cstr)[state]; end);
 
 #it works only with prefixes
 InstallGlobalFunction(Concretize,
@@ -80,15 +71,11 @@ end);
 
 # equality - just check the equality of the underlying lists, thus it works for
 # abstract states as well
-
 InstallOtherMethod(\=, "deciding equality of cascaded states", IsIdenticalObj,
 [IsAbstractCascadedState, IsAbstractCascadedState],
-function(p,q)
-  return p!.coords = q!.coords;
-end);
+function(p,q) return p!.coords = q!.coords; end);
 
 #############################################################################
-
 InstallMethod( ViewObj, "for an abstract cascaded state",
 [IsAbstractCascadedState],
 function( cs )
@@ -113,22 +100,14 @@ end);
 # for accessing the list elements
 InstallOtherMethod( \[\], "for an abstract cascaded state and pos int",
 [ IsAbstractCascadedState, IsPosInt ],
-function( cs, pos )
-  return cs!.coords[pos];
-end);
+function( cs, pos ) return cs!.coords[pos]; end);
 
 #################################################################
-
 InstallMethod(Length,"for an abstract cascaded state",
 [IsAbstractCascadedState],
-function(cs)
-  return Length(cs!.coords);
-end);
+function(cs) return Length(cs!.coords); end);
 
 #################ACCESS FUNCTIONS######################
-
 InstallMethod(CascadedStructureOf, "for an abstract cascaded state",
 [IsAbstractCascadedState],
-function(cs)
-  return cs!.cstr;
-end);
+function(cs) return cs!.cstr; end);

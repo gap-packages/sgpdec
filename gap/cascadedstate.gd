@@ -19,18 +19,18 @@ DeclareCategory("IsCascadedState",IsAbstractCascadedState);
 
 #creating type info for states
 CascadedStateFamily := NewFamily("CascadedStatesFamily",IsCascadedState);
-CascadedStateRepresentation := NewRepresentation(
-                                       "CascadedStateRepresentation",
+IsCascadedStateRep := NewRepresentation(
+                                       "IsCascadedStateRep",
                                        IsComponentObjectRep,["coords","cstr"]);
 CascadedStateType := NewType(CascadedStateFamily,
-                             IsCascadedState and CascadedStateRepresentation);
+                             IsCascadedState and IsCascadedStateRep);
 
 #creating type info for abstract states
 AbstractCascadedStateFamily := NewFamily("AbstractCascadedStateFamily",
                                        IsAbstractCascadedState);
-AbstractCascadedStateRepresentation :=
-    NewRepresentation("AbstractCascadedStateRepresentation",
-    CascadedStateRepresentation,[]);
+IsAbstractCascadedStateRep :=
+    NewRepresentation("IsAbstractCascadedStateRep",
+    IsCascadedStateRep,[]);
 AbstractCascadedStateType := NewType(AbstractCascadedStateFamily,
                              IsAbstractCascadedState and
-                             AbstractCascadedStateRepresentation);
+                             IsAbstractCascadedStateRep);
