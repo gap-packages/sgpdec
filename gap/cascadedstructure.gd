@@ -20,7 +20,7 @@ DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 DeclareGlobalFunction("NameOf"); #TODO! this may be just standard Name?!?
 
 DeclareCategory("IsCascadedStructure", IsDenseList);
-DeclareGlobalFunction("IsCascadedGroup");#TODO this must be a filter
+DeclareProperty("IsCascadedGroup", IsCascadedStructure);
 
 DeclareRepresentation(
         "IsCascadedStructureRep",
@@ -39,5 +39,3 @@ DeclareRepresentation(
 CascadedStructureType :=
   NewType(NewFamily("CascadedStructureFamily",IsCascadedStructure),
           IsCascadedStructure and IsCascadedStructureRep);
-#CascadedGroupType := NewType(NewFamily("CascadedGroupFamily",IsCascadedGroup),
-#                             IsCascadedGroup and IsCascadedStructureRep);
