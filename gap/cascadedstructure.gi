@@ -43,10 +43,8 @@ local names,comp;
   return names;
 end;
 
-InstallGlobalFunction(IsCascadedGroup,#[IsCascadedStructure],
-        function(cstr)
-  return ForAll(cstr!.components, IsGroup);
-end);
+InstallMethod(IsCascadedGroup,[IsCascadedStructure],
+cstr -> ForAll(cstr!.components, IsGroup));
 
 
 # SIMPLIFIED CONSTRUCTOR
