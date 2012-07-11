@@ -11,6 +11,7 @@
 
 DeclareGlobalFunction("IdentityCascadedOperation");
 DeclareGlobalFunction("CascadedOperation");
+DeclareGlobalFunction("OnCascadedStates");
 DeclareGlobalFunction("RandomCascadedOperation");
 DeclareGlobalFunction("DependencyMapsFromCascadedOperation");
 DeclareGlobalFunction("DependsOn");
