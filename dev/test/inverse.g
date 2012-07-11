@@ -5,9 +5,11 @@ local i,id,rnd,irnd;
     Print("# Not a group cascade! no test done!\n"); return;
   fi;
   id := IdentityCascadedOperation(cascprodinfo);
-  Print("Random cascaed permutations inversed and checked against the product identity\n");
+  Print("Cascaded permutations inverted and ");
+  Print("checked whether the inverse is really the inverse.\n");
   for i in [1..ITER] do
-    rnd := RandomCascadedOperation(cascprodinfo,MaximumNumberOfElementaryDependencies(cascprodinfo));
+    rnd := RandomCascadedOperation(cascprodinfo,
+                   MaximumNumberOfElementaryDependencies(cascprodinfo));
     irnd := Inverse(rnd);
     if ((rnd*irnd) <> id) or (id <> (irnd*rnd)) then
       Print("FAIL\n");Error("Inverses do not give identity!\n");
