@@ -303,11 +303,14 @@ function( co )
 end);
 
 #applying a cascade operation to a cascade state
-InstallOtherMethod(\^, "acting on cascaded states",
-[IsAbstractCascadedState, IsCascadedOperation],
+InstallGlobalFunction(OnCascadedStates,
 function(cs,co)
   return CascadedState(CascadedStructureOf(cs),SGPDEC_CascadedAction(cs,co));
 end);
+
+InstallOtherMethod(\^, "acting on cascaded states",
+[IsAbstractCascadedState, IsCascadedOperation], OnCascadedStates);
+
 
 # YEAST for operations flattening - making an ordinary permutation out of the
 # cascaded one the components are or dered then we do the enumeration then
