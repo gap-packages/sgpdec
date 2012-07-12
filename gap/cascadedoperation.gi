@@ -299,7 +299,7 @@ end);
 InstallMethod(ViewObj, "displays a cascaded product operation",
 [IsCascadedOperation],
 function( co )
-  Print("Cascaded operation in ", NameOf(CascadedStructureOf(co)));
+  Print("Cascaded operation in ", Name(CascadedStructureOf(co)));
 end);
 
 #applying a cascade operation to a cascade state

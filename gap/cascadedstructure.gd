@@ -11,12 +11,11 @@
 
 DeclareOperation("CascadedStructure",[IsList,IsList,IsList]);
 DeclareGlobalFunction("SizeOfWreathProduct");
+DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 
 #ACCESS FUNCTIONS
 DeclareGlobalFunction("States");
 DeclareGlobalFunction("StateSets");
-DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
-DeclareGlobalFunction("NameOf"); #TODO! this may be just standard Name?!?
 
 DeclareCategory("IsCascadedStructure", IsDenseList);
 DeclareProperty("IsCascadedGroup", IsCascadedStructure);

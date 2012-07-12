@@ -128,7 +128,7 @@ function(castruct) return castruct!.state_sets; end);
 InstallGlobalFunction(MaximumNumberOfElementaryDependencies,
 function(castruct) return castruct!.maxnum_of_dependency_entries; end);
 
-InstallGlobalFunction(NameOf,
+InstallOtherMethod(Name,"for cascaded structures",[IsCascadedStructure],
 function(castruct) return castruct!.name_of_product; end);
 
 #this is a huge number even in small cases
