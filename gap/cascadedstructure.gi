@@ -34,7 +34,6 @@ end;
 InstallMethod(IsCascadedGroup,[IsCascadedStructure],
 cstr -> ForAll(cstr!.components, IsGroup));
 
-
 # SIMPLIFIED CONSTRUCTOR
 # calling the main with default identity functions
 InstallOtherMethod(CascadedStructure,[IsList],
@@ -57,12 +56,11 @@ end);
 #THE MAIN CONSTRUCTOR with all the possible arguments
 InstallMethod(CascadedStructure,[IsList,IsList,IsList],
 function(components,statesymbolfunctions,operationsymbolfunctions)
-local cascprodinfo,prodname,i,str,result,state_set_sizes, groupsonly;
+local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
   #GENERATING THE NAME
   #deciding whether it is a group or not and set the name accordingly
-  groupsonly :=  ForAll(components, IsGroup);
-  if groupsonly then
+  if ForAll(components, IsGroup) then
     prodname := "G";
   else
     prodname := "S";
