@@ -1,0 +1,130 @@
+<Section Label="basic"><Heading>Basic Usage of <Package>SgpDec</Package>: Compositions and Decompositions</Heading>
+
+ We consider hierarchical decompositions of finite transformation semigroups
+ and permutation groups, where hierarchical means that there are only
+ unidirectional connections among the components, or saying it algebraically,
+ we study substructures of wreath products. The novelty of this approach is
+ that we can explicitly represent and therefore we can examine directly the
+ elements of the wreath product with their full structure, i.e. dependency
+ functions from the state sets of components of the levels above in the
+ hierarchy. 
+
+<P/>
+Ultimately these decompositions are expected to have importnat applications
+outside mathematics (biology could be the prime example) as semigroups can be
+considered as dynamic models of many different processes.
+
+<P/>
+Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a complex structure or a set of simple(r) building blocks, we can do decomposition or composition.
+<List>
+<Item><B>Composition, construction.</B> Building cascaded structures (substructures of the wreath product) out of several building blocks. See Chapter <Ref Chap="ch:CascadedStructures" Style="Text"/>.
+<Br/>
+ Typical question is <E>'What can be built from a given set of simple(r) components?'</E>. The emphasis here is on the wiring between the components. The usual scenario is that for a list of components we give some cascaded generators that may have some restrictions on their dependencies.
+<P/>
+As a short example let's create two small components, a modulo 3 counter (cyclic group) and flip-flop (a semigroup with two right zeros and the identity, or the smallest automata capable of retrieving and storing one bit of information destructively):
+<Log>
+gap> C3 := CyclicGroup(IsPermGroup,3);          
+Group([ (1,2,3) ])
+gap> SetName(C3,"C3");
+gap> FlipFlop := SemigroupByGenerators([Transformation([1,1]),
+                                        Transformation([2,2]),
+                                        Transformation([1,2])]);
+<![CDATA[<]]>semigroup with 3 generators<![CDATA[>]]>
+gap> SetName(FlipFlop,"FF");
+</Log>
+Then we fix a list of components where the order does matter. The top of the hierarchy is the first element of the list, while to bottom is the last element. 
+<Log>
+gap> cstr := CascadedStructure([C3,FlipFlop,C3]);
+1 3 C3
+2 |-2 FF
+3 |-|-3 C3
+</Log>
+The hierarchical levels are indicated on the left while the next number shows that how many points the component acts on. The lines show the information flow/ direction of dependence top-down.
+<P/>
+It is important to note that this cascaded structure is like a placeholder for elements from the wreath product, but it does not contain any. It gives a frame in which coordinatized operations can be constructed.
+Let's create a random element:
+<Log>
+gap> cascop := RandomCascadedOperation(cstr,5);  
+Cascaded operation in MonoidCascade_G3_FF_G3
+</Log>
+The second parameter determines number of non-identity entries in the dependency function table.
+Now we can have a look on the dependency structure of this element of the wreath product. The states of the components are coded as integers so e.g. on level 3 if the states on the levels above are 1 and 2 respectively, then the component action is the cycle (1,3,2) otherwise it is the identity map. The top level does not depend on any component (so its dependency function is a constant function). 
+<Log>
+gap> Display(cascop);
+Cascaded Transformation
+Level 1: {} -> C3
+[] -> (1,2,3)
+
+Level 2: 3 -> FF
+[2] -> [2;1]
+[3] -> [1;2]
+
+Level 3: 3 x 2 -> C3
+[2,1] -> (1,3,2)
+</Log>
+Component actions are displayed in the usual cyclic notation for permutations and in linear notation  ( <Cite Key="ClassicalTransSemigroups2009"/> 
+) for transformations. 
+<P/>
+To see that it is a real operation, we can apply to some coordinatized state (tuple of states of the levels):
+<Log>
+gap> cs := CascadedState(cstr,[1,1,1]);
+C(1,1,1)
+gap> Display(cs * cascop);
+C(2,1,1)
+</Log>
+</Item>
+<Item><B>Decomposition</B>: finding components and the hierarchical connections between the components for  a nonsimple semigroup/group, establishing homo/isomorphims between the original structure and the cascaded product. See Chapter <Ref Chap="HierarchicalDecompositions" Style="Text"/>. 
+<Br/>
+A typical scenario is that for a given composite semigroup or group we choose a decomposition algorithm which returns a cascaded product. For permutation groups the Lagrange coordinatization  (see Section <Ref Sect="sec:lagrange decomposition" Style="Number"/>)is used. For transformation semigroups the holonomy method will be  used (see Section <Ref Sect="sec:holonomy decomposition" Style="Number"/>).
+
+Decomposition creates a cascaded structure as above, but also finds the components:
+<Log>
+gap> ld := LagrangeDecomposition(SymmetricGroup(IsPermGroup,4));
+Lagrange decomposition of:S4
+1 2 C2
+2 |-3 C3
+3 |-|-4 C2 x C2
+</Log>
+We can access the components by using the levels as indices:
+<Log>
+gap> StructureDescription(ld[1]);
+"C2"
+</Log>
+The algorithm builds a cascaded structure, so we can `raise' elements into a coordinatized format:
+<Log>
+gap> Display(Raise(ld, (1,2)(3,4)));
+
+Cascaded  Permutation
+Level 1: 0 -> G2
+
+Level 2: 2 -> G3
+
+Level 3: 2 x 3 -> G4
+[1,1] -> (1,2)(3,4)
+[2,1] -> (1,2)(3,4)
+[1,2] -> (1,4)(2,3)
+[2,2] -> (1,4)(2,3)
+[1,3] -> (1,3)(2,4)
+[2,3] -> (1,3)(2,4)
+</Log>
+Transformation semigroups can be decomposed similarly by the holonomy method  <Cite Key="zeiger67a"/> <Cite Key="zeiger67b"/><Cite Key="eilenberg"/> <Cite Key="holcombe_textbook"/>  <Cite Key="automatanetworks2005"/>.
+<Log>
+gap> gens :=[ Transformation( [ 3, 2, 4, 6, 1, 6, 5 ] ),
+              Transformation( [ 5, 2, 7, 5, 3, 5, 3 ] ), 
+              Transformation( [ 4, 1, 2, 6, 2, 1, 4 ] ),
+              Transformation( [ 6, 4, 3, 7, 3, 3, 6 ] ) ];
+gap> S := Semigroup(gens);
+gap> hd := HolonomyDecomposition(S);
+1
+1
+1
+1 1
+1
+C2 1
+S3
+C2
+</Log>
+
+</Item> 
+</List>
+</Section>

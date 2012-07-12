@@ -1,0 +1,14 @@
+# configuration variables with default values, 
+# .gaprc is a good place to override these values 
+
+BindGlobal("SgpDecOptionsRec", 
+  rec(  PARANOID:=true,
+        STRAIGHTWORD_REDUCTION:=true,
+        SMALLER_GENERATOR_SET:=false,
+        LINEAR_NOTATION:=false,
+        SMALL_GROUPS:=true,
+        SGPDEC_RND:=RandomSource(IsMersenneTwister, 324)));
+
+MakeReadWriteGlobal("SgpDecOptionsRec");
+
+
