@@ -9,18 +9,6 @@ function(arg)
   return LazyCartesian(arg);
 end);
 
-SGPDEC_SingletonOrbits := function(T)
-local orbits,i, sets,n,o;
-    n := DegreeOfTransformationSemigroup(T);
-    sets := [];
-    for i in [1..n] do
-      o := Orb(T,i, OnPoints);
-      Enumerate(o);
-      Add(sets,ShallowCopy(AsList(o)));
-    od;
-    Perform(sets, Sort);
-    return DuplicateFreeList(sets);
-end;
 
 # creating partial order modified from the library code
 PartialOrderByOrderingFunctionNC := function(d,of)

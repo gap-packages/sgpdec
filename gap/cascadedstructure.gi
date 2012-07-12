@@ -120,6 +120,19 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes, groupsonly;
   return result;
 end);
 
+# MonomialGenerators require the orbits of singletons under semigroup action
+SingletonOrbits := function(T)
+local i, sets,o;
+    sets := [];
+    for i in [1..DegreeOfTransformationSemigroup(T)] do
+      o := Orb(T,i, OnPoints);
+      Enumerate(o);
+      AddSet(sets,AsSortedList(o));
+    od;
+    return sets;
+end;
+MakeReadOnlyGlobal("SingletonOrbits");
+
 #constructing monomial generators
 InstallGlobalFunction(MonomialGenerators,
 function(cstr)
@@ -150,7 +163,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
               function(o) Add(orbitreprs,o[1]);end
               );
     else
-      Perform(SGPDEC_SingletonOrbits(cstr[depth]),
+      Perform(SingletonOrbits(cstr[depth]),
               function(o) Append(orbitreprs,o);end
               );
     fi;
