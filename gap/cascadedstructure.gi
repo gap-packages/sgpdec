@@ -2,9 +2,9 @@
 ##
 ## cascadedstructure.gi           SgpDec package
 ##
-## Copyright (C) Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2012
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Each cascaded product needs a detailed type structure. Here are the tools
 ## needed for that task.
@@ -125,8 +125,7 @@ InstallGlobalFunction(MonomialGenerators,
 function(cstr)
 local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       orbitreprs, orbits, orbit, orbrep, isgroup;
-  #if not GroupsOnly(cstr) then Error("MonomialGenerators:
-  #currently only groups are supported.");fi;
+
   prefixes := [ [] ]; #the top level
   mongens := [];
   orbitreprs := [];
@@ -139,7 +138,8 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
     #adding the entries to the current coordinate fragments
     for prefix in prefixes do
       for compgen in gens do
-        Add(mongens, CascadedOperation(cstr,DependencyTable([[prefix,compgen]])));
+        Add(mongens,
+            CascadedOperation(cstr,DependencyTable([[prefix,compgen]])));
       od;
     od;
 
