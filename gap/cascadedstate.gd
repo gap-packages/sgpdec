@@ -2,9 +2,9 @@
 ##
 ## cascadedstate.gd           SgpDec package
 ##
-## Copyright (C) Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2012
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Declarations for  cascaded states.
 ##

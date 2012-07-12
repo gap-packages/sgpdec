@@ -1,3 +1,5 @@
+0.6.51
+	Slimming CascadedStructure source code. MonomialGenerators -> MonomialWreathProductGenerators. Moving and deleting functions from temp.gi.
 0.6.50
 	OnCascadedSets added. IsCascadedGroup property added.
 0.6.49

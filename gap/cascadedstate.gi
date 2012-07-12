@@ -2,9 +2,9 @@
 ##
 ## cascadedstate.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2012
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Dealing with cascaded states.
 ##
@@ -24,14 +24,13 @@ local i;
   # checking whether the values are in range #TODO!! possibly a noncheck version
   # for speedup
   for i in [1..Length(coords)] do
-    if coords[i] > Length(cstr!.state_sets[i]) or coords[i]<0 then
+    if coords[i] > Length(StateSets(cstr)[i]) or coords[i]<0 then
       Print(i,"th coordinate value out of range!\n");
       return fail;
     fi;
   od;
 
-  # just a normal state not an abstract one  #TODO this one misses the zero
-  # entries
+  # just a normal state not an abstract one
   if Length(coords) = Length(cstr) then
     return Objectify(CascadedStateType,rec(coords:=coords,cstr:=cstr));
   else
@@ -51,7 +50,7 @@ end);
 InstallOtherMethod(Flatten, "for an abstract cascaded state",
 [IsAbstractCascadedState],
 function( acs )
-local l;     
+local l;
   l := [];
   Perform(AllConcreteCascadedStates(acs), function(x) AddSet(l,Flatten(x));end);
   return  l;
@@ -69,7 +68,8 @@ InstallGlobalFunction(Concretize,
 function(abstract_state)
 local l, cstr;
   cstr := CascadedStructureOf(abstract_state);
-  l := List(abstract_state, function(x) if x>0 then return x; else return 1;fi;end);
+  l := List(abstract_state,
+            function(x) if x>0 then return x; else return 1;fi;end);
   #then append the list with 1s
   Append(l, ListWithIdenticalEntries(Length(cstr) - Size(abstract_state), 1));
   return CascadedState(cstr, l);
@@ -78,12 +78,12 @@ end);
 InstallGlobalFunction(AllConcreteCascadedStates,
 function(abstract_state)
 local cstr, concretestates;
-  cstr := CascadedStructureOf(abstract_state);    
+  cstr := CascadedStructureOf(abstract_state);
   concretestates :=  EnumeratorOfCartesianProduct(
                              List([1..Size(cstr)],
-    function(x) 
-      if IsBound(abstract_state[x]) and abstract_state[x]>0 then 
-        return [abstract_state[x]]; 
+    function(x)
+      if IsBound(abstract_state[x]) and abstract_state[x]>0 then
+        return [abstract_state[x]];
       else
         return StateSets(cstr)[x];
       fi;
