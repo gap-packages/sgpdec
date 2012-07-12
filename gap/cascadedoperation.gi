@@ -11,31 +11,6 @@
 ### Cascaded permutations and transformations.
 
 ##############################################################################
-# gives the value of the action on the last coordinate by the given cascaded
-# operation (the trick is that we give prefix coords)
-SGPDEC_ActionOnLastCoord := function(coords, cascop)
-  local depfuncval;
-  # getting the value of the dependency function that acts on the last
-  # coordinate
-  depfuncval := cascop!.depfunc(coords{[1..(Length(coords)-1)]});
-
-  #if it is a constant map (required for permutation reset automata)
-  if IsTransformation(depfuncval) and RankOfTransformation(depfuncval)=1 then
-    #the value of the constant transformation
-    return depfuncval![1][1];
-  fi;
-
-  if coords[Length(coords)] = 0 then
-    # TODO potential problem here when acting on 0 as a general transformation
-    # may reduce the set
-    return 0;
-  fi;
-
-  # ^ should be the right action
-  return coords[Length(coords)] ^ depfuncval;
-end;
-
-##############################################################################
 # for symbol printing prefixes
 ConvertCascade2String := function(coordsprefix, converter)
 local i,str;
@@ -49,7 +24,6 @@ end;
 
 ##############################################################################
 # this constructs the component action based on the flat action
-
 ComponentActionForPrefix := function(cstr, flatoplist, prefix)
   local states, actionlist, level, src_int, dest_cs, coordval;
 
@@ -190,7 +164,6 @@ function(p,q)
   for i in [1..Length(cstr)] do
     for coords in EnumeratorOfCartesianProduct(StateSets(cstr){[1..(i-1)]}) do
       if p!.depfunc(coords) <> q!.depfunc(coords) then
-        #Print(coords," ",p!.depfunc(coords)," ",q!.depfunc(coords),"\n");
         return false;
       fi;
     od;
@@ -199,7 +172,6 @@ function(p,q)
 end);
 
 # comparison, less than, just a trick flattening and do the comparison there
-
 InstallOtherMethod(\<, "for cascaded op and cascaded op",
 [IsCascadedOperation, IsCascadedOperation],
 function(p,q)
@@ -228,9 +200,7 @@ function(p,q)
 
   depfunct := function(args)
   local  newargs;
-    newargs := List([1..Length(args)],
-     x-> SGPDEC_ActionOnLastCoord(args{[1..x]},p));
-
+    newargs := OnCoordinates(args,p);
     # the product operation is the action of p on the arguments multiplied by
     # the action of q on the p-moved args
     return p!.depfunc(args) * q!.depfunc(newargs);
@@ -259,7 +229,6 @@ function(p, n)
 end);
 
 # Implementing display, printing nice, human readable format.
-
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedOperation],
 function( co )
@@ -292,17 +261,32 @@ end);
 #applying a cascade operation to a cascade state
 InstallGlobalFunction(OnCascadedStates,
 function(cs,co)
-  return CascadedState(CascadedStructureOf(cs),
-                 List([1..Size(cs)], x ->
-                      SGPDEC_ActionOnLastCoord(cs{[1..x]},co)));
+  return CascadedState(CascadedStructureOf(cs), OnCoordinates(cs,co));
 end);
 
 InstallGlobalFunction(OnCoordinates,
-function(cs,co)
-  return List([1..Size(cs)], x ->
-              SGPDEC_ActionOnLastCoord(cs{[1..x]},co));
-end);
+function(coords, cascop)
+local depfuncvalues,i, ncoords;
 
+  depfuncvalues := List([1..Size(coords)],
+                        x->cascop!.depfunc(coords{[1..x-1]}));
+  ncoords := [];
+  for i in [1..Size(coords)] do
+    #if it is a constant map (required for permutation reset automata)
+    if IsTransformation(depfuncvalues[i])
+       and RankOfTransformation(depfuncvalues[i])=1 then
+      #the value of the constant transformation
+      ncoords[i] :=  depfuncvalues[i]![1][1];
+    elif coords[i] = 0 then
+      #TODO potential problem here when acting on 0, i.e. the set of all states
+      # since a general transformation may reduce the set
+      ncoords[i] :=  0;
+    else
+      ncoords[i] := OnPoints(coords[i], depfuncvalues[i]);
+    fi;
+  od;
+  return ncoords;
+end);
 
 InstallOtherMethod(\^, "acting on cascaded states",
 [IsAbstractCascadedState, IsCascadedOperation], OnCascadedStates);
@@ -408,8 +392,8 @@ MakeReadOnlyGlobal("InvCascadedOperationByPowers");
 
 # transform the argument of the dependency and invert the value
 InvCascadedOperationByDependencies := function(cascperm)
-local invmaps, dep;    
- 
+local invmaps, dep;
+
   invmaps := [];
   for dep in DependencyMapsFromCascadedOperation(cascperm) do
     Add(invmaps,
