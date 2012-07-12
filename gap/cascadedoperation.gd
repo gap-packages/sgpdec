@@ -12,6 +12,7 @@
 DeclareGlobalFunction("IdentityCascadedOperation");
 DeclareGlobalFunction("CascadedOperation");
 DeclareGlobalFunction("OnCascadedStates");
+DeclareGlobalFunction("OnCoordinates");
 DeclareGlobalFunction("RandomCascadedOperation");
 DeclareGlobalFunction("DependencyMapsFromCascadedOperation");
 DeclareGlobalFunction("DependsOn");
