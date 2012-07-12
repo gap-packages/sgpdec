@@ -378,9 +378,6 @@ function(sk, depth)
               x->List(x, y->sk.orb[y]));
 end);
 
-
-
-
 # viz
 # creating graphviz file for drawing the 
 InstallGlobalFunction(DotSkeleton,
