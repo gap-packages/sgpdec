@@ -579,8 +579,76 @@ function(cascop)
   return cascop!.cstr;
 end);
 
-# drawing
 
+################################################################################
+######MONOMIAL GENERATORS#######################################################
+
+# MonomialGenerators require the orbits of singletons under semigroup action
+SingletonOrbits := function(T)
+local i, sets,o;
+    sets := [];
+    for i in [1..DegreeOfTransformationSemigroup(T)] do
+      o := Orb(T,i, OnPoints);
+      Enumerate(o);
+      AddSet(sets,AsSortedList(o));
+    od;
+    return sets;
+end;
+MakeReadOnlyGlobal("SingletonOrbits");
+
+#constructing monomial generators for the wreath product
+#on each level for each path of a component orbit representative we
+#put the component generators
+InstallGlobalFunction(MonomialWreathProductGenerators,
+function(cstr)
+local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
+      orbitreprs, orbits, orbit, orbrep;
+
+  prefixes := [ [] ]; #the top level
+  mongens := [];
+
+  for depth in [1..Length(cstr)] do
+    #getting the component generators
+    gens := GeneratorsOfSemigroup(cstr[depth]);
+
+    #adding dependencies to coordinate fragments (prefixes) on current level
+    for prefix in prefixes do
+      Perform(gens,
+              function(g)
+                 Add(mongens,
+                     CascadedOperation(cstr,DependencyTable([[prefix,g]])));
+               end);
+    od;
+
+    #getting the orbit reprs on level
+    orbitreprs := [];
+    if IsGroup(cstr[depth]) then
+      Perform(Orbits(cstr[depth]),
+              function(o) Add(orbitreprs,o[1]);end
+              );
+    else
+      Perform(SingletonOrbits(cstr[depth]),
+              function(o) Append(orbitreprs,o);end
+              );
+    fi;
+
+    #extending all prefixes with the orbitreprs on level
+    newprefixes := [];
+    for prefix in prefixes do
+      for orbrep in orbitreprs do
+        #the extension
+        newprefix := ShallowCopy(prefix);
+        Add(newprefix, orbrep);
+        Add(newprefixes, newprefix);
+      od;
+    od;
+    prefixes := newprefixes;
+  od;
+  return mongens;
+end);
+
+################################################################################
+########### DRAWING ############################################################
 InstallGlobalFunction(DotCascadedOperation,
 function(co)
   local castruct, str, out, vertices, vertexlabels, edges, deps, coordsname,

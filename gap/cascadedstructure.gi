@@ -120,69 +120,6 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes, groupsonly;
   return result;
 end);
 
-# MonomialGenerators require the orbits of singletons under semigroup action
-SingletonOrbits := function(T)
-local i, sets,o;
-    sets := [];
-    for i in [1..DegreeOfTransformationSemigroup(T)] do
-      o := Orb(T,i, OnPoints);
-      Enumerate(o);
-      AddSet(sets,AsSortedList(o));
-    od;
-    return sets;
-end;
-MakeReadOnlyGlobal("SingletonOrbits");
-
-#constructing monomial generators
-InstallGlobalFunction(MonomialGenerators,
-function(cstr)
-local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
-      orbitreprs, orbits, orbit, orbrep, isgroup;
-
-  prefixes := [ [] ]; #the top level
-  mongens := [];
-  orbitreprs := [];
-
-  for depth in [1..Length(cstr)] do
-    #getting the component generators
-    gens := GeneratorsOfSemigroup(cstr[depth]);
-    isgroup := IsGroup(cstr[depth]);
-
-    #adding the entries to the current coordinate fragments
-    for prefix in prefixes do
-      for compgen in gens do
-        Add(mongens,
-            CascadedOperation(cstr,DependencyTable([[prefix,compgen]])));
-      od;
-    od;
-
-    #getting the orbit reprs
-    orbitreprs := [];
-    if isgroup then
-      Perform(Orbits(cstr[depth]),
-              function(o) Add(orbitreprs,o[1]);end
-              );
-    else
-      Perform(SingletonOrbits(cstr[depth]),
-              function(o) Append(orbitreprs,o);end
-              );
-    fi;
-
-    newprefixes := [];
-    #extending all prefixes with the orbitreprs
-    for prefix in prefixes do
-      for orbrep in orbitreprs do
-        #the extension
-        newprefix := ShallowCopy(prefix);
-        Add(newprefix, orbrep);
-        Add(newprefixes, newprefix);
-      od;
-    od;
-    prefixes := newprefixes;
-  od;
-  return mongens;
-end);
-
 #######################ACCESS METHODS#######################
 InstallGlobalFunction(States,
 function(castruct) return castruct!.states; end);
