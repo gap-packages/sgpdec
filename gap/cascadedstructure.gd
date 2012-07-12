@@ -29,7 +29,6 @@ DeclareRepresentation(
           "name_of_product", #the name of the whole product structure
           "state_symbol_functions", #the symbols for printing the the states
           "operation_symbol_functions", #the symbols for printing the operations
-          "names_of_components", #names of the components
           "argument_names", #the names argument domains
           "state_sets", #the original statesets
           "states", #states as cascaded states with correct type
