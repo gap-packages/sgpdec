@@ -1,23 +1,13 @@
-
-
-
-
-
-InstallGlobalFunction(EnumeratorOfCartesianProduct, 
+#just a wrapper of dust's LazyCartesian until the enumerator is implemented
+InstallGlobalFunction(EnumeratorOfCartesianProduct,
 function(arg)
 
-  if Length(arg)=1 then 
+  if Length(arg)=1 then
     return CallFuncList(LazyCartesian, arg);
   fi;
 
   return LazyCartesian(arg);
 end);
-
-# returning true in case the name denotes a valid member of the record
-ExistsFieldInRecord :=function(record, name)
-    return name in RecNames(record);
-end;
-
 
 SGPDEC_SingletonOrbits := function(T)
 local orbits,i, sets,n,o;

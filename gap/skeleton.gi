@@ -391,7 +391,7 @@ local  str, i,label,node,out,class,classes,set,states,G;
   out := OutputTextString(str,true);  
   PrintTo(out,"digraph skeleton{\n");
 
-  if ExistsFieldInRecord(params, "states") then
+  if "states" in RecNames(params) then
     states := params.states;
   else
     states := [1..999];
