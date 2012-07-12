@@ -14,14 +14,13 @@ local orbits,i, sets,n,o;
     n := DegreeOfTransformationSemigroup(T);
     sets := [];
     for i in [1..n] do
-      o := Orb(T,FiniteSet([i],n), OnFiniteSets);
-      Enumerate(o); 
-      orbits := StrongOrbitsInForwardOrbit(o);
-      Perform(orbits, function(x) AddSet(sets,UnionFiniteSet(x));end);
+      o := Orb(T,i, OnPoints);
+      Enumerate(o);
+      Add(sets,ShallowCopy(AsList(o)));
     od;
-    return List(sets, x -> AsList(x));
+    Perform(sets, Sort);
+    return DuplicateFreeList(sets);
 end;
-
 
 # creating partial order modified from the library code
 PartialOrderByOrderingFunctionNC := function(d,of)
@@ -39,7 +38,6 @@ local i,j,        # iterators
   od;
   return  BinaryRelationByElements(d,tup);
 end;
-
 
 HasseDiagramOfSubsets := function(orderedsubsets)
 local i, j,           # iterators

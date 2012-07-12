@@ -146,19 +146,14 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
     #getting the orbit reprs
     orbitreprs := [];
     if isgroup then
-        orbits := Orbits(cstr[depth]);
+      Perform(Orbits(cstr[depth]),
+              function(o) Add(orbitreprs,o[1]);end
+              );
     else
-        orbits := SGPDEC_SingletonOrbits(cstr[depth]);
+      Perform(SGPDEC_SingletonOrbits(cstr[depth]),
+              function(o) Append(orbitreprs,o);end
+              );
     fi;
-    for orbit in orbits do
-        if isgroup then
-            Add(orbitreprs, orbit[1]);
-        else
-          Append(orbitreprs, orbit);
-          #this needs further tuning TODO if the semigroup is a group then the
-          #representative is enough
-        fi;
-    od;
 
     newprefixes := [];
     #extending all prefixes with the orbitreprs
