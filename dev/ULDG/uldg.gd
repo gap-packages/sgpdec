@@ -62,5 +62,7 @@ DeclareGlobalFunction("GammaGraph");
 ##  </ManSection>
 ##   <#/GAPDoc>
 DeclareGlobalFunction("DeltaGraph");
-
+DeclareGlobalFunction("OldBetaGraph");
 DeclareGlobalFunction("BetaGraph");
+DeclareGlobalFunction("MyBetaGraph");
+

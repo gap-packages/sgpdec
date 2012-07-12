@@ -68,7 +68,7 @@ local collapsings,i,k;
   return collapsings;
 end);
 
-InstallGlobalFunction(BetaGraph,
+InstallGlobalFunction(OldBetaGraph,
 function(k,l,m)
 local collapsings,i;
   collapsings := [];
@@ -91,3 +91,42 @@ local collapsings,i;
 
   return collapsings;
 end);
+
+InstallGlobalFunction(BetaGraph,
+function(k,l,m)
+#shared part not be longer than cycles being glued together
+ if (m >= Minimum(k,l) or Minimum(k,l) < 2) then return fail; fi;
+ # m is the number of shared EDGES , so add one since OldBetaGraph takes nodes
+ return OldBetaGraph(m+1, k-m-1, l-m-1);
+end);
+
+InstallGlobalFunction(MyBetaGraph,
+function(k,l,m) # cycle of length k and l, sharing m edges.
+local collapsings,cycle1,cycle2,i,shift;
+  collapsings := [];
+  cycle1 := [];
+  cycle2 := [];
+
+
+  if m > Minimum(k,l) then return fail; fi; 
+  shift := k-m-1;
+  if shift < 0 then return fail; fi;
+
+  #the 1st cycle
+  for i in [1..k-1] do
+    Add(cycle1, [i,i+1]);
+  od;
+  Add(cycle1,[k,1]);
+
+  #the 2nd cycle -- start it at k-m
+
+  for i in [1..l-1] do
+    Add(cycle2, [i,i+1]+[shift,shift]);
+  od;
+  Add(cycle2,[l,1]+[shift,shift]);
+
+  collapsings := Union(cycle1,cycle2);
+
+  return collapsings;
+end);
+
