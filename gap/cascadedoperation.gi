@@ -1,8 +1,8 @@
 #############################################################################
 ###
 ##W  cascadeoperation.gi
-##Y  Copyright (C) 2011-12  Attila Egri-Nagy, Chrystopher L. Nehaniv, and
-##   James D. Mitchell
+##Y  Copyright (C) 2011-12
+##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
 ###  Licensing information can be found in the README file of this package.
 ###
@@ -11,12 +11,8 @@
 ### Cascaded permutations and transformations.
 
 ##############################################################################
-##############################################################################
-
-##############################################################################
 # gives the value of the action on the last coordinate by the given cascaded
 # operation (the trick is that we give prefix coords)
-
 SGPDEC_ActionOnLastCoord := function(coords, cascop)
   local depfuncval;
   # getting the value of the dependency function that acts on the last
@@ -40,16 +36,7 @@ SGPDEC_ActionOnLastCoord := function(coords, cascop)
 end;
 
 ##############################################################################
-#applying the action for all the coordinate values
-
-SGPDEC_CascadedAction := function(coords, cascop)
-  return List([1..Size(coords)], x ->
-   SGPDEC_ActionOnLastCoord(coords{[1..x]},cascop));
-end;
-
-##############################################################################
 # for symbol printing prefixes
-
 ConvertCascade2String := function(coordsprefix, converter)
 local i,str;
   str := "";
@@ -299,14 +286,23 @@ end);
 InstallMethod(ViewObj, "displays a cascaded product operation",
 [IsCascadedOperation],
 function( co )
-  Print("Cascaded operation in ", NameOf(CascadedStructureOf(co)));
+  Print("Cascaded operation in ", Name(CascadedStructureOf(co)));
 end);
 
 #applying a cascade operation to a cascade state
 InstallGlobalFunction(OnCascadedStates,
 function(cs,co)
-  return CascadedState(CascadedStructureOf(cs),SGPDEC_CascadedAction(cs,co));
+  return CascadedState(CascadedStructureOf(cs),
+                 List([1..Size(cs)], x ->
+                      SGPDEC_ActionOnLastCoord(cs{[1..x]},co)));
 end);
+
+InstallGlobalFunction(OnCoordinates,
+function(cs,co)
+  return List([1..Size(cs)], x ->
+              SGPDEC_ActionOnLastCoord(cs{[1..x]},co));
+end);
+
 
 InstallOtherMethod(\^, "acting on cascaded states",
 [IsAbstractCascadedState, IsCascadedOperation], OnCascadedStates);
@@ -334,7 +330,7 @@ function( co )
   #going through all possible coordinates and see where they go
   for i in [1..Size(states)] do
     #getting the new state
-    nstate := SGPDEC_CascadedAction(states[i], co);
+    nstate := OnCoordinates(states[i],co);
     Add(l, Position(states,nstate));
   od;
 
@@ -579,8 +575,76 @@ function(cascop)
   return cascop!.cstr;
 end);
 
-# drawing
 
+################################################################################
+######MONOMIAL GENERATORS#######################################################
+
+# MonomialGenerators require the orbits of singletons under semigroup action
+SingletonOrbits := function(T)
+local i, sets,o;
+    sets := [];
+    for i in [1..DegreeOfTransformationSemigroup(T)] do
+      o := Orb(T,i, OnPoints);
+      Enumerate(o);
+      AddSet(sets,AsSortedList(o));
+    od;
+    return sets;
+end;
+MakeReadOnlyGlobal("SingletonOrbits");
+
+#constructing monomial generators for the wreath product
+#on each level for each path of a component orbit representative we
+#put the component generators
+InstallGlobalFunction(MonomialWreathProductGenerators,
+function(cstr)
+local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
+      orbitreprs, orbits, orbit, orbrep;
+
+  prefixes := [ [] ]; #the top level
+  mongens := [];
+
+  for depth in [1..Length(cstr)] do
+    #getting the component generators
+    gens := GeneratorsOfSemigroup(cstr[depth]);
+
+    #adding dependencies to coordinate fragments (prefixes) on current level
+    for prefix in prefixes do
+      Perform(gens,
+              function(g)
+                 Add(mongens,
+                     CascadedOperation(cstr,DependencyTable([[prefix,g]])));
+               end);
+    od;
+
+    #getting the orbit reprs on level
+    orbitreprs := [];
+    if IsGroup(cstr[depth]) then
+      Perform(Orbits(cstr[depth]),
+              function(o) Add(orbitreprs,o[1]);end
+              );
+    else
+      Perform(SingletonOrbits(cstr[depth]),
+              function(o) Append(orbitreprs,o);end
+              );
+    fi;
+
+    #extending all prefixes with the orbitreprs on level
+    newprefixes := [];
+    for prefix in prefixes do
+      for orbrep in orbitreprs do
+        #the extension
+        newprefix := ShallowCopy(prefix);
+        Add(newprefix, orbrep);
+        Add(newprefixes, newprefix);
+      od;
+    od;
+    prefixes := newprefixes;
+  od;
+  return mongens;
+end);
+
+################################################################################
+########### DRAWING ############################################################
 InstallGlobalFunction(DotCascadedOperation,
 function(co)
   local castruct, str, out, vertices, vertexlabels, edges, deps, coordsname,

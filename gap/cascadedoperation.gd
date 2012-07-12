@@ -12,6 +12,7 @@
 DeclareGlobalFunction("IdentityCascadedOperation");
 DeclareGlobalFunction("CascadedOperation");
 DeclareGlobalFunction("OnCascadedStates");
+DeclareGlobalFunction("OnCoordinates");
 DeclareGlobalFunction("RandomCascadedOperation");
 DeclareGlobalFunction("DependencyMapsFromCascadedOperation");
 DeclareGlobalFunction("DependsOn");
@@ -19,6 +20,7 @@ DeclareGlobalFunction("DependencyGraph");
 DeclareGlobalFunction("ProjectedScope");
 DeclareGlobalFunction("IsDependencyCompatible");
 DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
+DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascadedOperation");
 
 #we need the 'WithInverse' property to build groups of cascaded
