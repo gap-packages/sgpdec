@@ -9,10 +9,6 @@
 ## Each cascaded product needs a detailed type structure. Here are the tools
 ## needed for that task.
 
-#just the identity function
-SGPDEC_idfunct := function(x) return x; end;
-
-
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
 #Getting the names for the families, returns the names in a list,
@@ -56,7 +52,7 @@ local statesym, opsym, comp,gid;
   statesym := [];
   opsym := [];
   for comp in components do
-     Add(statesym, SGPDEC_idfunct);
+     Add(statesym, x->x);
      Add(opsym, function(x)
        if IsTransformation(x) then
          return SimplerLinearNotation(x);
