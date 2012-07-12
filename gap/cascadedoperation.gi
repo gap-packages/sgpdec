@@ -1,8 +1,8 @@
 #############################################################################
 ###
 ##W  cascadeoperation.gi
-##Y  Copyright (C) 2011-12  Attila Egri-Nagy, Chrystopher L. Nehaniv, and
-##   James D. Mitchell
+##Y  Copyright (C) 2011-12
+##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
 ###  Licensing information can be found in the README file of this package.
 ###
@@ -11,12 +11,8 @@
 ### Cascaded permutations and transformations.
 
 ##############################################################################
-##############################################################################
-
-##############################################################################
 # gives the value of the action on the last coordinate by the given cascaded
 # operation (the trick is that we give prefix coords)
-
 SGPDEC_ActionOnLastCoord := function(coords, cascop)
   local depfuncval;
   # getting the value of the dependency function that acts on the last
@@ -40,16 +36,7 @@ SGPDEC_ActionOnLastCoord := function(coords, cascop)
 end;
 
 ##############################################################################
-#applying the action for all the coordinate values
-
-SGPDEC_CascadedAction := function(coords, cascop)
-  return List([1..Size(coords)], x ->
-   SGPDEC_ActionOnLastCoord(coords{[1..x]},cascop));
-end;
-
-##############################################################################
 # for symbol printing prefixes
-
 ConvertCascade2String := function(coordsprefix, converter)
 local i,str;
   str := "";
@@ -305,8 +292,17 @@ end);
 #applying a cascade operation to a cascade state
 InstallGlobalFunction(OnCascadedStates,
 function(cs,co)
-  return CascadedState(CascadedStructureOf(cs),SGPDEC_CascadedAction(cs,co));
+  return CascadedState(CascadedStructureOf(cs),
+                 List([1..Size(cs)], x ->
+                      SGPDEC_ActionOnLastCoord(cs{[1..x]},co)));
 end);
+
+InstallGlobalFunction(OnCoordinates,
+function(cs,co)
+  return List([1..Size(cs)], x ->
+              SGPDEC_ActionOnLastCoord(cs{[1..x]},co));
+end);
+
 
 InstallOtherMethod(\^, "acting on cascaded states",
 [IsAbstractCascadedState, IsCascadedOperation], OnCascadedStates);
@@ -334,7 +330,7 @@ function( co )
   #going through all possible coordinates and see where they go
   for i in [1..Size(states)] do
     #getting the new state
-    nstate := SGPDEC_CascadedAction(states[i], co);
+    nstate := OnCoordinates(states[i],co);
     Add(l, Position(states,nstate));
   od;
 
