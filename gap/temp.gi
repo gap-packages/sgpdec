@@ -9,7 +9,6 @@ function(arg)
   return LazyCartesian(arg);
 end);
 
-
 # creating partial order modified from the library code
 PartialOrderByOrderingFunctionNC := function(d,of)
 local i,j,        # iterators

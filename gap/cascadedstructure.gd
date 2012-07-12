@@ -10,7 +10,6 @@
 ##
 
 DeclareOperation("CascadedStructure",[IsList,IsList,IsList]);
-DeclareGlobalFunction("MonomialGenerators");
 DeclareGlobalFunction("SizeOfWreathProduct");
 
 #ACCESS FUNCTIONS

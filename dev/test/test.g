@@ -77,6 +77,8 @@ SGPDEC_TestMonomialGenerators([FlipFlop]);
 SGPDEC_TestMonomialGenerators([FlipFlop,FlipFlop]);
 SGPDEC_TestMonomialGenerators([FlipFlop,Z3]);
 SGPDEC_TestMonomialGenerators([Z3,Z3]);
+SGPDEC_TestMonomialGenerators([Z2,Z3,Z4]);
+SGPDEC_TestMonomialGenerators([Z4,Z2,Z3]);
 
 Print("\nTesting Lagrange Group coordinates \n");
 for G in test_groups do

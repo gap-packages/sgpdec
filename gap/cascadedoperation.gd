@@ -19,6 +19,7 @@ DeclareGlobalFunction("DependencyGraph");
 DeclareGlobalFunction("ProjectedScope");
 DeclareGlobalFunction("IsDependencyCompatible");
 DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
+DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascadedOperation");
 
 #we need the 'WithInverse' property to build groups of cascaded
