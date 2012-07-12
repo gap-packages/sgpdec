@@ -77,14 +77,13 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes, groupsonly;
   #this is the main record containing information about the cascade product,
   #the initial values do not matter
   cascprodinfo := rec(
-  name_of_product := prodname,
-  state_symbol_functions := statesymbolfunctions,
-  operation_symbol_functions := operationsymbolfunctions,
-  components := components,
-  name_of_product := prodname);
+                      state_symbol_functions := statesymbolfunctions,
+                      operation_symbol_functions := operationsymbolfunctions,
+                      components := components,
+                      name_of_product := prodname);
 
   #guessing the statesets of the original components
-  cascprodinfo.state_sets := [];
+  cascprodinfo.state_sets := []; #TODO this will be replaced by LambdaDomain
   for i in components do
     if IsGroup(i) then
       Add(cascprodinfo.state_sets,MovedPoints(i));
@@ -94,6 +93,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes, groupsonly;
     fi;
   od;
 
+  #calculating the maximal number of elementary dependencies
   state_set_sizes := List(cascprodinfo.state_sets, x-> Size(x));
   cascprodinfo.maxnum_of_dependency_entries :=
     Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
