@@ -31,7 +31,7 @@ CascadedOperationFamily := NewFamily("CascadedOperationFamily",
                                    IsCascadedOperation);
 CascadedOperationRepresentation :=
     NewRepresentation("CascadedOperationRepresentation",
-    IsComponentObjectRep,["depfunc","cstr"]);
+    IsComponentObjectRep,["depfunc","csh"]);
 
 CascadedOperationType := NewType(CascadedOperationFamily,
                                  IsCascadedOperation and

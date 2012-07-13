@@ -13,10 +13,10 @@ DeclareCategory("IsHierarchicalDecomposition", IsDenseList);
 DeclareRepresentation( "IsHierarchicalDecompositionRep",
                        IsComponentObjectRep,
                        [ "original",
-                         "cascadedstruct"] );
+                         "cascadeshell"] );
 
 DeclareGlobalFunction("OriginalStructureOf");
-DeclareOperation("CascadedStructureOf",[IsObject]);
+DeclareOperation("CascadeShellOf",[IsObject]);
 DeclareOperation("Raise",[IsHierarchicalDecomposition,IsObject]);
 DeclareOperation("RaiseNC",[IsHierarchicalDecomposition,IsObject]);
 DeclareOperation("Flatten",[IsHierarchicalDecomposition,IsObject]);
