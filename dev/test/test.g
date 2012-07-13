@@ -90,6 +90,6 @@ for G in test_groups do
   LagrangeTest1d(decomp);
   LagrangeTest2(decomp);
   LagrangeTest3(decomp);
-  LagrangeTest4(decomp); #TODO!!! This has trouble with cyclic groups, must check the IsomorphismGroups method.
+  LagrangeTest4(decomp);
   LagrangeTest5(decomp);
 od;

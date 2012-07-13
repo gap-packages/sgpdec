@@ -29,21 +29,15 @@ local  pair, depfunctable;
   return  depfunctable;
 end);
 
-
-#returns true if l1 matches l2, l1 is more abstract then l2, 
+#returns true if l1 matches l2, l1 is more abstract then l2,
 # i.e. for all i, l1[i] = l2[i] OR l1[i]=0
 InstallGlobalFunction(IsStrictlyMoreAbstract,
 function(l1, l2)
-local i;                
-  #if size differs then they are not even comparable
+  #if size differs then they are not even comparable, if equal then not strict
   if (Length(l1) <> Length(l2)) or (l1 = l2) then return false; fi;
-  for i in [1..Length(l1)] do
-    #equality already tested for the full list so we check corresponding positions
-    if not (l1[i] = l2[i] or l1[i] = 0) then return false; fi;
-  od;
-  return true;  
-end
-);
+  #equality already tested for the list so we check corresponding positions
+  return ForAll([1..Length(l1)], i ->  (l1[i] = l2[i] or l1[i] = 0));
+end);
 
 InstallGlobalFunction(IsOverlapping,
 function(l1, l2)
