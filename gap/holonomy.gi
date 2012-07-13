@@ -251,7 +251,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   od;
 
   #building the cascade shell
-  holrec.cascadedstruct :=
+  holrec.cascadeshell :=
     CascadeShell(List([1..Length(holrec.groupcomponents)],
             x -> _holonomy_PermutationReset(holrec.groupcomponents[x],
                     Length(holrec.flat_coordinates[x]))));
@@ -441,7 +441,7 @@ InstallMethod(Length,"for holonomy decompositions",
         true,[IsHolonomyDecomposition],
 function(hd)
   # just delegating the task to the cascade shell
-  return Length(hd!.cascadedstruct);
+  return Length(hd!.cascadeshell);
 end
 );
 
@@ -451,7 +451,7 @@ InstallOtherMethod( \[\],
     [ IsHolonomyDecomposition, IsPosInt ],
 function( hd, pos )
   # just delegating the task to the cascade shell
-  return hd!.cascadedstruct[pos];
+  return hd!.cascadeshell[pos];
 end
 );
 
