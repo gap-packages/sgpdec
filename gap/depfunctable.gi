@@ -41,20 +41,13 @@ end);
 
 InstallGlobalFunction(IsOverlapping,
 function(l1, l2)
-local i;
-  if (Length(l1) <> Length(l2)) then 
+  if (Length(l1) <> Length(l2)) then
     Print("#W overlapping defined only for same-length coordinate tuples");
     return false;
   fi;
-  for i in [1..Length(l1)] do
-    #if not equal then one of them should be *  
-    if not ( (l1[i]=l2[i]) or (l1[i]=0) or (l2[i]=0)) then
-      return false;
-    fi;
-  od;
-  return true;
-end
-);
+  #if not equal then one of them should be *
+  return ForAll([1..Length(l1)], i -> (l1[i]=l2[i]) or (l1[i]=0) or (l2[i]=0));
+end);
 
 InstallGlobalFunction(RegisterNewDependency,
 function(depfunctable, newarg,newaction)
