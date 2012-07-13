@@ -111,6 +111,15 @@ local l,k;
   return DuplicateFreeList(Concatenation(l,k));  
 end;  
 
+#for sorting finitesets, first by size, then by content
+BySizeSorterAscend := function(v,w)
+if Size(v) <> Size(w) then
+  return Size(v)<Size(w);
+else
+  return v<w;
+fi;
+end;
+MakeReadOnlyGlobal("BySizeSorterAscend");
 
 InstallMethod(Skeleton,[IsTransformationSemigroup],
 function(ts)
