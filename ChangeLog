@@ -1,0 +1,543 @@
+0.6.52
+	Revising CascadedOperation: SGPDEC_ActionOnLastCoord removed. OnCoordinates and OnCascadedStates introduced.
+0.6.51
+	Slimming CascadedStructure source code. MonomialGenerators -> MonomialWreathProductGenerators. Moving and deleting functions from temp.gi.
+0.6.50
+	OnCascadedSets added. IsCascadedGroup property added.
+0.6.49
+	Proper inverse calculation implemented for cascaded permutations. Regression fixed in displaying cascaded operations.
+0.6.48
+	Abstract cascaded states are more general now (not just prefixes). AllConcreteCascadedStates added. Flattening abstract states possible.
+0.6.47
+	LastElementOfList replaced by simple list indexing. Experimental powerbased inverse calculation added.
+0.6.46
+	DefineCascadedOperation removed. Instead, CascadedOperation only creates cascaded operation from dependency tables. DependencyTable introduced.
+0.6.45
+	Build/Collapse replaced by extended Raise/Flatten functionality.
+0.6.44
+	Cascaded operations are all based on dependency function tables. Their type system also unified.
+0.6.43
+	Cascaded state and transformation types simplified.
+0.6.42
+	Viz package is now optional.
+0.6.41
+	SgpDec 2012 Code Camp changes. Removing SGPDEC_AsListOfMaps. Further reformatting.
+0.6.40
+	SgpDec 2012 Code Camp changes. Removing GroupsOnly. Removing converters from Lagrange coordinates. Further reformatting.
+0.6.39
+	SgpDec 2012 Code Camp changes. Config parameters are in a record now. Reformatting. Moving scripts folder to dev folder. Validating PackageInfo.g. Inlining function used only once. etc.
+0.6.38
+	Replacing SetOfPermutationGroupToActOn with MovedPoints.
+0.6.37
+	Separating documentation into xml files from declaration files.
+0.6.36
+	Moving technical code to the dust package.
+0.6.35
+	Fixing MonomialGenerators which was broken due to upstream changes in Citrus.
+0.6.34
+	Associative lists can now be tested for equality.
+0.6.33
+	FormattedMemoryInfo added.
+0.6.32
+	New functions: CombinedAssociativeList, ReversedAssociativeList.
+0.6.31
+	Many changes and extended functionality for finite sets: they are now mutable and enumerable. Both destructive and non-destructive set operations are implemented.
+0.6.30
+	Fixing small bug in AssociativeList's Assign. Empty list can now be assigned elements. Better PrintObj.
+0.6.29
+	Adding mor functionality to finite sets (difference, containment, intersection, remove)
+0.6.28
+	Splashing the skeleton works again.
+0.6.27
+	Replacing the skeleton code by the smaller and more memory efficient implementation using more Citrus code.
+0.6.26
+	HasseDiagramOfSubsets simplified yielding some performance gain.
+0.6.25
+	AssociativeList now uses sorted lists instead of hashtables.
+0.6.24
+	Backtrack enumeration for straight words added.
+0.6.23
+	Changes to be compatible with Viz 0.2.1. Draw removed, Dot* functions for CascadedOperation, Skeleton, Holonomy introduced.
+0.6.22
+	SgpDecMakeDoc added for compiling documentation from GAP.
+0.6.21
+	AugmentWithInverses, DecodeAugmentedInverses added to deal with inverse generators for groups.
+0.6.20
+	Generator set reduction for components as well.
+0.6.19
+	Extending functionality of AssociativeList. (This may move to some other package though.)
+0.6.18
+	Revised subgroup chain creation methods. No duplicate produced any more.
+0.6.17
+	Added new configuration variable: SMALLER_GENERATOR_SET.
+0.6.16
+	Fixed regression: Interpret for group coordinatizations works again and returns a representative, instead of he RightCoset object.
+0.6.15
+	CascadedState2Perm added.
+0.6.14
+	Code cleaning and optimizations in LagrangeDecomposition. OriginalStateSet added. Raising for does not use redundant search anymore.
+0.6.13
+	Added InvertPermutationWord and ReducePermutationWord. The latter is used in Reduce2StraightWordWithInverses.
+0.6.12
+	Reduce2StraightWordWithInverses added and both changed to global functions instead of methods.
+0.6.11
+	AssociativeList is now in use in LagrangeDecomposition removing Mapping objects.
+0.6.10
+	LagrangeDecompositionInfoClass added.
+0.6.9
+	Drawing algorithm for cascaded operations is replaced by a non-recursive one. Also, identity component actions are not drawn.
+0.6.8
+	MonomialGenerators works for semigroup cascades as well.
+0.6.7
+	Word algorithms put together in words.g* files. Code-cleaning: unused functions removed and util functions put into the files where used.
+0.6.6
+	Word algorithms for words with inverses are separated: ConstructWithInverses, TrajectoryWithInverses.
+0.6.5
+	MaximumNumberOfElementaryDependencies added, so RandomCascadedOperation cannot enter infinite loop any more.
+0.6.4
+	Bugfix: straight word reduction may have failed in certain cases. Adding more test cases for straightword reduction.
+0.6.3
+	Code-cleaning: slimming the multiplication of cascaded operations and IdentityCascadedOperation. GetAction -> SearchDepFuncTable. * -> ^ for cascaded action. Removing unnecessary CascadedState constructor call from Collapse.
+0.6.2
+	Low-level optimizing finite set functions.
+0.6.1
+	Switching to GAP 4.5 and Citrus instead of MONOID. Introducing OnFiniteSets instead of \*.
+====================================================================================================================================
+0.5.38
+	Last GAP4.4 release containing only documentation update and correction in displaying cascaded operations (1 changed to {}).
+0.5.37
+	Representatives (covered sets) can be changed on the holonomy decomposition level as well (ChangeCoveredSet).
+0.5.36
+	Representatives can now be changed in a skeleton (ChangeRepresentativeSet).
+0.5.35
+	FiniteSetPrinter added to have customizable set printing (used in splashing skeleton, holonomy).
+0.5.34
+	DisplaySkeletonRepresentatives and ActionMatrix added.
+0.5.33
+	PermutatorGenerators will not return identity permutators any more, Permutators has the previous functionality now.
+0.5.32
+	PermutatorGenerators will not return duplicates if straight word reduction is used.
+0.5.31
+	ActionInfoOnLevel added to holonomy.
+0.5.30
+	Straightword reduction brought to earlier stage in _calcOUTs.
+0.5.29
+	Separating the stages of calculating buses. Renaming SetInfoRecord to InfoOnSet. Adding holonomy components timing info. Code cleaning in skeleton and holonomy.
+0.5.28
+	DependsOn, DependencyGraph, DependencyClassesOfDecomposition added.
+0.5.27
+	Now holonomy decompositions can be collapsed as cascaded structures.
+0.5.26
+	Drawing framework improved. Now holonomy decompositions are splashable with custom state symbols.
+0.5.25
+	Nonimage covers now displayed differently in drawing/splashing HolonomyDecompositions.
+0.5.24
+	Adding PARANOID for switching on/off extra sanity checks.
+0.5.23
+	On the fly straight word reduction is now possible for skeleton calculations. STRAIGHTWORD_REDUCTION parameter added. Small fix in displaying holonomy decompositions: the depth is printed only once for a level.
+0.5.22
+	Bugfix: in some cases LinearNotation did not draw incoming trees. Transformations can be splashed now.
+0.5.21
+	Improving holonomy calculation improvement: one loop only, removing duplicated coordinate storage, adding shifts for quicker slot calculation.
+0.5.20
+	Improving profile info and holonomy decomposition textual display. Added TimeString for formatted display of duration, HolonomyInfoClass for profiling group calculations on levels..
+0.5.19
+	Reducing the number of recursive calls in height calculation.
+0.5.18
+	Using hashtables for calculating equivalence class poset.
+0.5.17
+	Getting rid of the XXX name for semigroups, using Sg<order> instead.
+0.5.16
+	Fixing holonomy bugs: problems arising from overlapping covers, and the problem that  DirectProduct recode the parallel group components.
+0.5.15
+	Updating documentation. Holonomy test functions  are now loaded by default.
+0.5.14
+	Speeding up height calculation (the list of equivalence classes was not sorted).
+0.5.13
+	Fixing a serious bug: in holonomy's ComponentActions a statement was not in the scope of the right if statement causing the homomorphism breaking down in a few cases.
+0.5.12
+	Further improvements for calculating the skeleton. GeneralizedInclusion removed.
+0.5.11
+	Replacing the stock version methods for binary relation and Hasse diagrams. (Bypassing unnecessary checks and implementing special transitive reduction for subset lattice.)
+0.5.10
+	Simpler algorithm behind DepFuncTableFromCascOp implemented.
+0.5.9
+	DepFuncTableFromCascOp added.
+0.5.8
+	LINEAR_NOTATION configuration parameter added - now linear notation can be used for all transformations.
+0.5.7
+	HammingDistance for lists added.
+0.5.6
+	SimplerLinearNotation added, short notation for constant maps.
+0.5.5
+	Removing duplicated code from CascadedOperation. The code for the action is now in an internal function called _cascop_coordinate_action.
+0.5.4
+	Restructuring the drawing framework. Splashing (instant display by an external PDF viewer) for skeletons and holonomy decompositions and automata (transformation semigroups).
+0.5.3
+	HolonomyDecomposition now has a proper PrintObj.
+0.5.2
+	TilingPicture -> Skeleton and updated documentation. EquivalenceClasses -> SkeletonClasses.
+0.5.1
+	Depth -> DepthOfTilingPicture - this removes a naming conflict with the polycyclic package.
+0.5
+	Code unchanged, documentation updated. As the holonomy decomposition is functional now, we switch to 0.5.x series.
+===============================================================================================================================
+0.4.134
+	Integrating dependency function tables, holonomy product checks work fine now.
+0.4.133
+	GetAction added.
+0.4.132
+	RegisterNewDependency and ShowDependencies added.
+0.4.131
+	Building new framework for abstract states: IsStrictlyMoreAbstract and IsOverlapping added.
+0.4.130
+	Bugfix: nonimage singletons were missing from holonomy.
+0.4.129
+	Deep structural changes in cascaded state, 0 as the star coordinate, and new coordinate view.
+0.4.128
+	Flatten for cascaded operations added + some test scripts (not comprehensive though).
+0.4.127
+	RepTiles and TileChain replace hidden internal functions.
+0.4.126
+	CascadedOperation now using linear notation by default.
+0.4.125
+	GroupComponentsOnDepth added.
+0.4.124
+	HOLONOMY ARRIVED IN SGPDEC!!!
+0.4.123
+	AllTileChains added.
+0.4.122
+	Bugfix: successive approximation now passes some exhaustive tests.
+0.4.121
+	TilingPictureOf added to HolonomyDecomposition.
+0.4.120
+	AllChainsToSet added.
+0.4.119
+	Generating and counting chains to a set (added to TilingPicture).
+0.4.118
+	GetRep, GetIN, GetOUT added to TilingPicture.
+0.4.117
+	IsEquivalent added to TilingPicture.
+0.4.116
+	Flatten and Raise are working now for holonomy.
+0.4.115
+	TopSet added to tiling picture.
+0.4.114
+	Flatten for holonomy cascaded states, DepthOfSet for tiling picture.
+0.4.113
+	HolonomyDecomposition now constructs the underlying cascaded structure.
+0.4.112
+	EquivalenceClassesOnHeight added to TilingPicture.
+0.4.111
+	PermutatorGroup implemented.
+0.4.110
+	Permutator generators can be obtained from the tiling picture.
+0.4.109
+	Chopping off many parts as they are obsolete (after St. Andrews visit).
+0.4.108
+	Hashtables from Orb now used in cascaded operations.
+0.4.107
+	Word algorithms replaced by general purpose construction function. OnFiniteSets not needed, \* can be used instead.
+0.4.106
+	Replacing sorted lists with hashtables.
+0.4.105
+	New dependency: the Orb package for the hashtable functionalities. Hash function for finite sets.
+0.4.104
+	ActionGraph replaced by methods of the MONOID package.
+0.4.103
+	OnFiniteSets introduced to get finite sets MONOID compatible.
+0.4.102
+	CanonicalActionOnTransversal renamed to CanonicalPermutationAction, as it has wider scope (e.g. can be used to calculate action on tilesets).
+0.4.101
+	Permutations can act on finite sets.
+0.4.100
+	Height of tiling picture added.
+0.4.99
+	StartPoint added.
+0.4.98
+	Bugfix and more efficient straightword reduction. Converter for free group elements.
+0.4.97
+	Trajectory, IsStraightWord now work for permutation words possibly with inverse entries.
+0.4.96
+	Replacing PermWord by simpler word data structure.
+0.4.95
+	Correct naming for permutator search algorithms. (a permutator can remain straight and give another permutator).
+0.4.94
+	Brute force permutator finder added.
+0.4.93
+	Straightness check removed from PermutatorIterator, as it is only a redundant check.
+0.4.92
+	Trajectory added, IsStraightWord simplified. Starting point more general.
+0.4.91
+	Bugfix in Permutator iterator (less words have to be checked).
+0.4.90
+	Splash added for quick display, Draw fixed for action graphs.
+0.4.89
+	ActionGraph's point parameter can be omitted for full state set action.
+0.4.88
+	IsSingleton added, new testcases for ActionGraph, TilingPicture.
+0.4.87
+	ActionGraph's DFS is replaced by a recursive backtrack in order to generate the equivalence classes on the fly.
+0.4.86
+	Equivalence class produced in ActionGraph now contains points. Obsolete images.g* removed.
+0.4.85
+	TilingPicture added.
+0.4.84
+	Simplification in ActionGraph: equivalence classes contain the nodes themselves.
+0.4.83
+	Fundamental changes in ActionGraph: dictionaries replaced by sorted lists.
+0.4.82
+	TilesOf added.
+0.4.81
+	GeneralizedSubset moved to main trunk. ActionGraph hiding technical functions.
+0.4.80
+	AsListOfMaps in helper.g (factored out from cascaded operation routines).
+0.4.79
+	Removing VL_CascadedStates as it was unnecessary duplication of the functionality of LazyCartesian.
+0.4.78
+	Simplifying IdentityCascadedOperation. Renaming VL_Cartesian -> LazyCartesian and moving source files to storage.
+0.4.77
+	Displaying only nontrivial dependency function values.
+0.4.76
+	New storage subsystem (stack, queue implementations). Fixing straight word iterator that missed several permutators.
+0.4.75
+	FiniteSet is now an operation (FiniteSetWithSizeOfUniverse removed).
+0.4.74
+	Stack implementation included. ActionGraph improvements.
+0.4.73
+	The iterator for straight permutators now does not return the identity mapping.
+0.4.72
+	Reduce2StraightWord moved to main trunk. IsMinimalPermutator behaves correctly even if the given transformation is not a permutator.
+0.4.71
+	PermutatorSplitter had a bug (order of arguments was inconsistent).
+0.4.70
+	Transf2PermOnSet goes into the proper place (finiteset).
+0.4.69
+	Permutator algorithms are based on an iterator now.
+0.4.68
+	IsStraightWord now is an operation.
+0.4.67
+	Changing PermWords to use integer list words instead of strings.
+0.4.66
+	Integrating IsMinimalPermutator and PermutatorSplitter.
+0.4.65
+	Word2String properly added (moved from the straightword code).
+0.4.64
+	Renaming intcode to word, and added documentation.
+0.4.63
+	Moving straightwords into the main trunk. Done in hurry, so no proper integration yet.
+0.4.62
+	New name IntSeq2Transf introduced for existing code. (Preparing for moving scripts into main trunk.)
+0.4.61
+	IntegerSequence2Transformation properly included now.
+0.4.60
+	Documentation update and little code cleaning. Release.
+0.4.59
+	LinearNotation moved to the main trunk.
+0.4.58
+	Uniquely labelled digraphs in the main trunk now with docs.
+0.4.57
+	ActionGraph can now be used as Cayley graph for transformation semigroups.
+0.4.56
+	Performance and memory info on info level 2 is added to  ActionGraph.
+0.4.55
+	ActionGraph extended with the original parameters (finiteset and generators).
+0.4.54
+	NodesOf added.
+0.4.53
+	ActionGarph is added to the main trunk.
+0.4.52
+	Fixing displaying finite sets.
+0.4.51
+	Percentage added.
+0.4.50
+	drawAutomaton added (quick hack for a script)
+0.4.49
+	IsIdentityOnSet added.
+0.4.48
+	Tutorial 01 works again. Negligence bug fixed in Build.
+0.4.47
+	Perm2CascadedState completely rewritten: it uses a specialized version of Lagrange component actions. Old method kept back with "old_" prefix.
+0.4.46
+	Sanity chack for Lagrange decomposition: checking whther the original group is compatible with the series.
+0.4.45
+	Tiling code back to main trunk.
+0.4.44
+	Subduction relation code moved into the main trunk.
+0.4.43
+	Moving code for handling images of transformations back from old version. Code cleanup and doc updtate for FiniteSet.
+0.4.42
+	Added permutation word algorithms: coset representatives and Schreier generators.
+0.4.41
+	Added AnalyzePermWordColl.
+0.4.40
+	Simplification: removing the groupinfo facility. It was not used and it is not a functionality for this package.
+0.4.39
+	Added PermWord, a subtype of permutation that remebers how it was generated.
+0.4.38
+	Improving display for cascaded structures: the size of the state sets are also shown.
+0.4.37
+	iStretchSubNormalChain added.
+0.4.36
+	iCreateMaximalSubgroupChain added.
+0.4.35
+	iCreateSubnormalChain replacing old iCreateSeriesForHierarchicalDecomposition.
+0.4.34
+	ImageListOfPermutation added to permgrouputils.
+0.4.33
+	PermFromIndividualMaps added. It is handy when describing Rubik's Cube's states.
+0.4.32
+	x2y now returns flat operation all the time.
+0.4.31
+	Fixing the Raise/Flatten issue with the non-right-regular decompositions. LagrangeDecomposition  now expects the series not a function.
+0.4.30
+	Checking dependency compatibility functions have been moved from scripts. Build is there now (with partial check).
+0.4.29
+	Raising permutation now using dictionary instead of list.
+0.4.28
+	BugFix: MonomialGenerators now handles multilevel intransitive group components correctly.
+0.4.27
+	SmallGeneratingSet is now applied in Lagrange decomposition, and verbose output made more compact.
+0.4.26
+	Drawing a cascaded operation now displays the collapsed operation as well.
+0.4.25
+	MonomialGenerators added.
+0.4.24
+	Simplification: groupsonly record attribute removed from CascadedStructure.
+0.4.23
+	BuildNC replaces the recursive Build (the build with checking is not yet integrated).
+0.4.22
+	Simplification: creating a transformation list in Build now uses standard GAP functions.
+0.4.21
+	StateSets access function added.
+0.4.20
+	Simplification: removing raw_states from CascadedStrucuture as cascaded states themselves behave like lists.
+0.4.19
+	CascadedStructureOf can be requested for cascaded states and operations, reducing dirty record member access.
+0.4.18
+	Functions 'States' added to provide proper access to the states of a cascaded structure.
+0.4.17
+	Improvement: The constructor of cascaded states has been rewritten to avoid unnecessary and possibly very slow search in states.
+0.4.16
+	ProjectedScope added (after updating FiniteSet).
+0.4.15
+	Regression caused by SparseIntKey method for lists (util.g) fixed.
+0.4.14
+	Finitesets reintroduced (with some unsorted util functions). ChiefSeries is now default.
+0.4.13
+	ApplyToSmallPermGroups added: systematic scan of groups with given order.
+0.4.12
+	ComponentActions introduced to replace _FudgeFactors with a more general operation.
+0.4.11
+	LevelKillers/Buiilders now work on the flat permutations (can be raised any time though), so x2y is faster now.
+0.4.10
+	Building a cascaded operation now uses the enumeration by prefix functionality introduced in 0.4.6.
+0.4.9
+	Canonical transversals action made independent from the decomposition and moved to permutils.g.
+0.4.8
+	Improvement: for Lagrange coordinates, the canonical component actions are calculated by a dedicated piece of code, instead of the generic ActionHomomorphism.
+0.4.7
+	Improvement: preparatory calculation for raising state in Lagrange decomposition is now done in constructor.
+0.4.6
+	Virtual lists now used reversed coding, thus prefix domain iteration is now possible.
+0.4.5
+	Improvement: Perm2CacadedOperation does not use Raise any more.
+0.4.4
+	RandomCascadedOperation now takes an extra argument for the number of dependencies. DefineCascadedOperation uses lookup dictionary instead of linear search.
+0.4.3
+	x2y with tests added.
+0.4.2
+	LevelBuilders for Lagrange decomposition added.
+0.4.1
+	Removing FrobeniusLagrangeMap as it is just a simple reversed product.
+0.4
+	No changes, just to make a release containing  the Lagrange decomposition. The refitting of holonomy decomposition starts here.
+=========================================================================================
+0.4rc
+	Not touching the code just adding documentation.
+0.3.38
+	Changing misleading name when displaying cascaded operations.
+0.3.37
+	Draw operation introduced (replacing specific global function).
+0.3.36
+	'Interpret' is implemented for Lagrange decomposition.
+0.3.35
+	Abstract states can now be flattened in Lagrange decomposition.
+0.3.34
+	IsAbstractedFrom replaced by implementing the strict ordering operator \< (meaning a cascaded state is less abstract).
+0.3.32
+	Decompositions now behave like lists, so ComponentsOf removed. Lagrange tutorial updated.
+0.3.31
+	New type CascadedStructure is introduced, replacing the the record. Tests and corresponding tutorials updated.
+0.3.30
+	Added IsAbstractedFrom and some name changes in record entry access functions.
+0.3.29
+	Cleaning the lagrange test cases for the new lagrange yeast.
+0.3.28
+	Major changes: new decomposition framework and yeast done for lagrange  coordinates.
+0.3.27
+	Bugfix: abstract states are constructed correctly now and behave like a list.
+0.3.26
+	Added function for removing duplicated generators. Added GAPDoc files.
+0.3.25
+	Calculating the order of the wreath product is removed. It became easily a huge number.
+0.3.24
+	Sorted components removed from CascadeProductInfoStructure - improved scalability. New global variable for setting verbosity.
+0.3.23
+	Limitations with small groups IDs removed, improving scalability.
+0.3.22
+	Virtual lists for the list of cascaded states as well. Uniform naming for virtual lists.
+0.3.21
+	Lazily evaluated list for cartesian products implemented, together with test case.
+0.3.20
+	New tutorial for Lagrange coordinates. Tutorial #01 updated.
+0.3.19
+	Added extra Lagrange functions mainly from the test suite: Perm2CascadedState and LevelKillers.
+0.3.18
+	Introducing config file with the small group switch. Cleaning up lagrangecoords code (removing rightregular remnants,action homomorphism done in one shot).
+0.3.17
+	New functions related to Lagrange coordinates: codec for coset representatives and points, Frobenius-Lagrange map.
+0.3.16
+	Modularising test scripts. Added info on symmetric groups.
+0.3.15
+	GraphVizing directed graphs.
+0.3.14
+	Acting on abstract cascaded states is now possible.
+0.3.13
+	Abstract cascaded states introduced (type, constructors, display function).
+0.3.12
+	Size works for cascaded states.
+0.3.11
+	CascadeComponentsOfGroup now accepts series function as an extra parameter. Thus the interactive method introduced in in v0.3.8 can be used.
+0.3.10
+	Test case for Lagrange coordinates included in test.g
+0.3.9
+	Lagrange coordinates calculation integrated into the package.
+0.3.8
+	Interactive function for creating subnormal series for a permutation group, iCreateSeriesForHierarchicalDecomposition.
+0.3.7
+	Function for mapping group elements of a transitive group to the points it acts via the corresponding coset action, TransitiveGroupElementsToPoints.
+0.3.6
+	Group information (names for the elements and the permutations) from the groupinfo directory is autoloaded when creating cascade structures.
+0.3.5
+	Added Rubik's cube generators to namedgroups.g.
+0.3.4
+	MappingTable for displaying Mappings added.
+0.3.3
+	Added IsEvenPerm, IsOddPerm functions.
+0.3.2
+	Size of the full wreath product is calculated.
+	Fixing name to MonoidCascade (it was SemigroupCascade before, but we add the identities).
+0.3.1
+	Dependency extraction capability added.
+
+0.3
+	Completely new direction in development. Infrastructure for cascaded operations implemented (tools for working with cascaded operations (transformations, permutations): multiplication, action, flettening and raising), the old stuff is moved to gap_0.2 directory under SHED/, and will be integrated eventually.
+
+======================================================================================================================
+0.2
+	TransWords: for keeping track what words produces a particular transformation, plus pretty print of words.
+	Subduction relation.
+	Image calculating functions now can return lists as well.
+0.1
+	Only some basic functionality for applying transformations to finite sets and efficient algorithms (using dictionaries) to calculate image sets.
