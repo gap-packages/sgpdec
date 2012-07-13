@@ -25,7 +25,6 @@ DeclareGlobalFunction("OriginalStateSet");
 DeclareGlobalFunction("TransversalsOf");
 DeclareGlobalFunction("SeriesOf");
 
-
 #TYPE INFO
 DeclareCategory("IsLagrangeDecomposition", IsHierarchicalDecomposition);
 

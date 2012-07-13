@@ -21,10 +21,10 @@ end);
 # Creates the record containing the info for the lagrange decomposition of
 # permutation groups: series, transversals, components, coset representatives,
 # mapping from points to coset reprs and backwards.
-InstallMethod(LagrangeDecomposition, "for a perm group and list",
+InstallMethod(LagrangeDecomposition, "for a group and a subnormal series",
 [IsPermGroup, IsList],
 function(G, subgroupchain)
-  local series, t, transversals, comps, compgens, point2repr, repr2point, csh,
+  local series, t, transversals, comps, compgens, csh,
    stabrt, stabrtreps, result, i, gen;
 
   #############sanity check##################################
@@ -112,7 +112,6 @@ function(G, subgroupchain)
   return Objectify(LagrangeDecompositionType, result);
 end);
 
-
 #former _FudgeFactors, s - state (list), g - group element to be lifted,
 InstallMethod(ComponentActions,
         "componentactions of an original permutation in Lagrange decomposition",
@@ -150,8 +149,6 @@ end);
 InstallGlobalFunction(EncodeCosetReprs,
 function(decomp,list) local i,l; l := [];
   for i in [1..Size(list)] do
-    #Add(l, ConvertersToCanonicalOf(decomp)[i]
-    #    [Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])]);
     Add(l, PositionCanonical(TransversalsOf(decomp)[i],
         Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])));
   od;
@@ -164,7 +161,6 @@ function(decomp,cascstate)
 local i,l;
   l := [];
   for i in [1..Size(cascstate)] do
-    #Add(l,ConvertersFromCanonicalOf(decomp)[i][cascstate[i]]);
     Add(l, TransversalsOf(decomp)[i][cascstate[i]]);
   od;
   return l;
@@ -198,8 +194,7 @@ local coords,i;
   od;
 
   return CascadedState(CascadeShellOf(decomp),coords);
-end
-);
+end);
 
 InstallGlobalFunction(CascadedState2Perm,
 function(decomp,cs)
@@ -218,8 +213,7 @@ local decoded, cosetrepr, killers;
     Add(killers,Inverse(cosetrepr));
   od;
   return killers;
-end
-);
+end);
 
 InstallGlobalFunction(LevelBuilders,
 function(decomp,cs)
@@ -230,21 +224,17 @@ local decoded, cosetrepr, builders;
     Add(builders,cosetrepr);
   od;
   return builders;
-end
-);
+end);
 
-
-###############YEAST############################################
-
-#####################states#####################################
+################################################################################
+###############YEAST STATES#####################################################
 InstallMethod(Raise,
     "raise a state",
     true,
     [IsLagrangeDecomposition,IsInt], 0,
 function(decomp,i)
     return Perm2CascadedState(decomp,decomp!.stabilizertransversalreps[i]);
-end
-);
+end);
 
 InstallMethod(Flatten,
     "flatten a cascaded state",
@@ -271,7 +261,8 @@ local state, flattened,point;
   return flattened;
 end);
 
-#####################permutations###############################
+################################################################################
+#####################YEAST PERMUTATIONS#########################################
 
 #decomp - cascade components of group, g element of the group
 InstallMethod(Raise,
@@ -304,8 +295,7 @@ local j,state,states,fudges,depfunctable,arg;
   od;
 
   return CascadedOperation(CascadeShellOf(decomp),depfunctable);
-end
-);
+end);
 
 InstallMethod(Flatten,
     "flatten a cascaded permutation",
@@ -313,51 +303,40 @@ InstallMethod(Flatten,
     [IsLagrangeDecomposition,IsCascadedOperation], 0,
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
-                   x-> Flatten(decomp, Raise(decomp,x) ^ co))
-                   );
-end
-);
-
+                   x-> Flatten(decomp, Raise(decomp,x) ^ co)));
+end);
 
 InstallMethod(Interpret,
     "interprets a component's state",
     true,
     [IsLagrangeDecomposition,IsInt,IsInt], 0,
 function(decomp,level,state)
-  #return RightCoset(decomp!.series[level+1], decomp!.point2repr[level][state]);
-  #return  decomp!.point2repr[level][state];
   return TransversalsOf(decomp)[level][state];
+end);
 
-end
-);
-
-
-########X2Y###################################
+################################################################################
+########X2Y#####################################################################
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,
     [IsLagrangeDecomposition,IsCascadedState,IsCascadedState], 0,
 function(decomp,x,y)
 local tobase, frombase, id;
-    # we need the identity in the cascade shell for the product
-    #id := IdentityCascadedOperation(CascadeShellOf(decomp));
     # going to the leftmost branch
     tobase :=  Product(LevelKillers(decomp,x),());
     #then to y
     frombase := Product(Reversed(LevelBuilders(decomp,y)),());
     #combining the two legs of the journey
     return tobase * frombase;
-end
-);
+end);
 
 InstallOtherMethod(x2y,
         "finds an original operation taking original state x to y",
-    true,
-    [IsLagrangeDecomposition,IsInt,IsInt], 0,
+        true,
+        [IsLagrangeDecomposition,IsInt,IsInt], 0,
 function(decomp,x,y)
    return x2y(decomp,Raise(decomp,x), Raise(decomp,y));
-end
-);
+end);
 
 #this is purely for checking as it is easy to do this in the flat group
 InstallOtherMethod(x2y,
@@ -370,24 +349,25 @@ function(decomp,x,y)
   #this flattening is stupid but Perm2CascadedState expects flat permutation.
 end);
 
-
-#ACCESS FUNCTIONS !!TODO these should be operations?!?
+################################################################################
+#ACCESS FUNCTIONS###############################################################
 InstallGlobalFunction(TransversalsOf,
 function(decomp)
   return decomp!.transversals;
-end
-);
+end);
 
 InstallGlobalFunction(SeriesOf,
 function(decomp)
   return decomp!.series;
 end);
 
-InstallGlobalFunction(OriginalStateSet, function(decomp) return decomp!.originalstateset;end);
+InstallGlobalFunction(OriginalStateSet,
+        function(decomp) return decomp!.originalstateset;end);
 
 ####################OLD FUNCTIONS#################################
 # The size of the cascade shell is the number components.
-InstallMethod(Length,"for Lagrange decompositions",true,[IsLagrangeDecomposition],
+InstallMethod(Length,"for Lagrange decompositions",true,
+        [IsLagrangeDecomposition],
 function(ld)
   # just delegating the task to the cascade shell
   return Length(ld!.cascadeshell);
@@ -401,7 +381,6 @@ function( ld, pos )
   # just delegating the task to the cascade shell
   return ld!.cascadeshell[pos];
 end);
-
 
 #############################################################################
 # Implementing Display, printing nice, human readable format.
