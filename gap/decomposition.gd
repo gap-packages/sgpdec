@@ -18,6 +18,7 @@ DeclareRepresentation( "IsHierarchicalDecompositionRep",
 DeclareGlobalFunction("OriginalStructureOf");
 DeclareOperation("CascadedStructureOf",[IsObject]);
 DeclareOperation("Raise",[IsHierarchicalDecomposition,IsObject]);
+DeclareOperation("RaiseNC",[IsHierarchicalDecomposition,IsObject]);
 DeclareOperation("Flatten",[IsHierarchicalDecomposition,IsObject]);
 DeclareOperation("Interpret",[IsHierarchicalDecomposition,IsInt,IsInt]);
 DeclareOperation("ComponentActions",
