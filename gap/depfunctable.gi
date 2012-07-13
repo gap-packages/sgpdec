@@ -1,7 +1,7 @@
 # for creating dependency table by giving dependency function maps in a list
 # of argument-value pairs (the default dependency function value is () )
 InstallGlobalFunction(DependencyTable,
-function(pairs) 
+function(pairs)
   local  pair, depfunctable;
 
   #creating new dependency function table
@@ -218,7 +218,7 @@ end;
 InstallGlobalFunction(DepFuncTableFromCascOp,
 function(cascop)
 local depmaps,levelled,i,j,images,depfunctable,acoord, acoords, sizevector;
-  sizevector := List(StateSets(CascadedStructureOf(cascop)), x->Size(x));
+  sizevector := List(StateSets(CascadeShellOf(cascop)), x->Size(x));
   depfunctable := [];
   #extract dependencymaps
   depmaps  := DependencyMapsFromCascadedOperation(cascop);

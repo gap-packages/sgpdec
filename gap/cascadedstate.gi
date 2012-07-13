@@ -13,10 +13,10 @@
 # The actual cascaded states are reused. So the constructor just checks whether
 # it is a valid list of coordinate values.
 InstallGlobalFunction(CascadedState,
-function(cstr,coords)
+function(csh,coords)
 local i;
   #if the length is bigger then we fail (overspecialized!)
-  if Length(coords) > Length(cstr)  then
+  if Length(coords) > Length(csh)  then
     Print("Overspecialized! Too many levels!\n");
     return fail;
   fi;
@@ -24,17 +24,17 @@ local i;
   # checking whether the values are in range #TODO!! possibly a noncheck version
   # for speedup
   for i in [1..Length(coords)] do
-    if coords[i] > Length(StateSets(cstr)[i]) or coords[i]<0 then
+    if coords[i] > Length(StateSets(csh)[i]) or coords[i]<0 then
       Print(i,"th coordinate value out of range!\n");
       return fail;
     fi;
   od;
 
   # just a normal state not an abstract one
-  if Length(coords) = Length(cstr) then
-    return Objectify(CascadedStateType,rec(coords:=coords,cstr:=cstr));
+  if Length(coords) = Length(csh) then
+    return Objectify(CascadedStateType,rec(coords:=coords,csh:=csh));
   else
-    return Objectify(AbstractCascadedStateType,rec(coords:=coords,cstr:=cstr));
+    return Objectify(AbstractCascadedStateType,rec(coords:=coords,csh:=csh));
   fi;
 end);
 
@@ -44,7 +44,7 @@ end);
 InstallOtherMethod(Flatten, "for a cascaded state",
 [IsCascadedState],
 function( cs )
-  return PositionCanonical(States(CascadedStructureOf(cs)),cs);
+  return PositionCanonical(States(CascadeShellOf(cs)),cs);
 end);
 
 InstallOtherMethod(Flatten, "for an abstract cascaded state",
@@ -59,36 +59,36 @@ end);
 
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
-InstallOtherMethod(Raise, "for cascaded structure and integer",
-[IsCascadedStructure, IsPosInt],
-function( cstr, state ) return States(cstr)[state]; end);
+InstallOtherMethod(Raise, "for cascade shell and integer",
+[IsCascadeShell, IsPosInt],
+function( csh, state ) return States(csh)[state]; end);
 
 #for abstract positions we put 1 (a surely valid coordinate value) replacing 0
 InstallGlobalFunction(Concretize,
 function(abstract_state)
-local l, cstr;
-  cstr := CascadedStructureOf(abstract_state);
+local l, csh;
+  csh := CascadeShellOf(abstract_state);
   l := List(abstract_state,
             function(x) if x>0 then return x; else return 1;fi;end);
   #then append the list with 1s
-  Append(l, ListWithIdenticalEntries(Length(cstr) - Size(abstract_state), 1));
-  return CascadedState(cstr, l);
+  Append(l, ListWithIdenticalEntries(Length(csh) - Size(abstract_state), 1));
+  return CascadedState(csh, l);
 end);
 
 InstallGlobalFunction(AllConcreteCascadedStates,
 function(abstract_state)
-local cstr, concretestates;
-  cstr := CascadedStructureOf(abstract_state);
+local csh, concretestates;
+  csh := CascadeShellOf(abstract_state);
   concretestates :=  EnumeratorOfCartesianProduct(
-                             List([1..Size(cstr)],
+                             List([1..Size(csh)],
     function(x)
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
       else
-        return StateSets(cstr)[x];
+        return StateSets(csh)[x];
       fi;
     end));
-  return List(concretestates, x -> CascadedState(cstr,x));
+  return List(concretestates, x -> CascadedState(csh,x));
 end);
 
 ###############################################################
@@ -105,17 +105,17 @@ function(p,q) return p!.coords = q!.coords; end);
 InstallMethod( ViewObj, "for an abstract cascaded state",
 [IsAbstractCascadedState],
 function( cs )
-  local i, cstr;
+  local i, csh;
 
-  cstr := CascadedStructureOf(cs);
+  csh := CascadeShellOf(cs);
   Print("C(");
-  for i in [1..Length(cstr)] do
+  for i in [1..Length(csh)] do
     if i <= Length(cs) and cs[i] > 0 then
-      Print(cstr!.state_symbol_functions[i](cs[i]));
+      Print(csh!.state_symbol_functions[i](cs[i]));
     else
       Print("*");
     fi;
-    if i < Length(cstr) then
+    if i < Length(csh) then
       Print(",");
     fi;
   od;
@@ -134,6 +134,6 @@ InstallMethod(Length,"for an abstract cascaded state",
 function(cs) return Length(cs!.coords); end);
 
 #################ACCESS FUNCTIONS######################
-InstallMethod(CascadedStructureOf, "for an abstract cascaded state",
+InstallMethod(CascadeShellOf, "for an abstract cascaded state",
 [IsAbstractCascadedState],
-function(cs) return cs!.cstr; end);
+function(cs) return cs!.csh; end);

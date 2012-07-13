@@ -31,7 +31,7 @@ DeclareRepresentation(
           #whose covering sets are the states on this level
           "coordinates", #the tile sets of the representatives
           "flat_coordinates", # all reptile sets on one level in one list
-          "cascadedstruct", #the cascaded structure built from the components
+          "cascadeshell",
           "groupcomponents" #from permutation-reset components, it may not be
           #straightforward what the group components are
           ] );

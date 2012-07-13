@@ -102,7 +102,7 @@ end;
 LagrangeTest2 := function(decomp)
 local g,path_of_g, path_of_gh,decoded,h,ghprime,n,c;
   Print("TEST 2: Paths as the Right-Regular representation.______________\n");
-  if Order(OriginalStructureOf(decomp)) <> Size(States(CascadedStructureOf(decomp))) then
+  if Order(OriginalStructureOf(decomp)) <> Size(States(CascadeShellOf(decomp))) then
     Print("NOT APPLICABLE! Order of group and number of paths do not match!\n");
     return;
   fi; 
@@ -135,12 +135,12 @@ LagrangeTest3 := function(decomp)
 local i,j,path,decoded,killers,n,c;
   Print("TEST 3: Killing by levels.______________________________________\n");
   c := 0;
-  n := Size(States(CascadedStructureOf(decomp)));
+  n := Size(States(CascadeShellOf(decomp)));
   #do a full check
-  for path in States(CascadedStructureOf(decomp)) do
+  for path in States(CascadeShellOf(decomp)) do
     killers := LevelKillers(decomp,path);
     for i in [1..Length(decomp)] do
-      path := CascadedState(CascadedStructureOf(decomp),path) ^ Raise(decomp,killers[i]);
+      path := CascadedState(CascadeShellOf(decomp),path) ^ Raise(decomp,killers[i]);
       #checking
       for j in [1..i] do
         if path[j] <> 1 then Print("FAIL\n");Error("Lagrange test3 problem!\n");

@@ -21,7 +21,7 @@ end;
 
 # INTEGERS <--> SETS
 # CODEC - though the coordinate values are elements of the cover of representative, it still
-# has to be converted to integers, so  a cascaded structure can be built
+# has to be converted to integers, so  a cascade shell can be built
 # decoding: integers -> sets
 _holonomy_decode_coords := function(hd, ints)
 local sets, level;
@@ -163,7 +163,7 @@ end;
 _holonomy_CreateDepFuncTableForFlatTransformation := function(decomp,t)
 local j,tilechain, tilechains, actions,depfunctable,arg, state;
 #TODO investigate why the identity fails below
-#  if IsOne(t) then return IdentityCascadedOperation(CascadedStructureOf(decomp)); fi;
+#  if IsOne(t) then return IdentityCascadedOperation(CascadeShellOf(decomp)); fi;
 
   #the states already coded as coset representatives
   tilechains := AllCoverChains(SkeletonOf(decomp));
@@ -250,9 +250,9 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(holrec.flat_coordinates,Flat(coords));
   od;
 
-  #building the cascaded structure
-  holrec.cascadedstruct :=
-    CascadedStructure(List([1..Length(holrec.groupcomponents)],
+  #building the cascade shell
+  holrec.cascadeshell :=
+    CascadeShell(List([1..Length(holrec.groupcomponents)],
             x -> _holonomy_PermutationReset(holrec.groupcomponents[x],
                     Length(holrec.flat_coordinates[x]))));
   #the permutation reset semigroups
@@ -285,7 +285,7 @@ InstallMethod(Raise,
     true,
     [IsHolonomyDecomposition,IsInt], 1,
 function(hd,k)
-  return CascadedState(CascadedStructureOf(hd),
+  return CascadedState(CascadeShellOf(hd),
                  _holonomy_encode_coords(hd,
                          Coordinates(hd,
                                  RandomCoverChain(hd!.skeleton,k))));
@@ -365,7 +365,7 @@ InstallMethod(Raise,
     [IsHolonomyDecomposition,IsTransformation], 1,
 function(decomp,t)
   return CascadedOperation(
-                 CascadedStructureOf(decomp),
+                 CascadeShellOf(decomp),
                  _holonomy_CreateDepFuncTableForFlatTransformation(decomp,t));
 end
 );
@@ -384,7 +384,7 @@ local l, i;
 end
 );
 
-# Collapsing the whole cascaded structure (as Flatten gives back the original structure)
+# Collapsing the whole cascade shell (as Flatten gives back the original structure)
 InstallOtherMethod(Flatten,
     "collapsing a hierarchical decomposition",
     true,
@@ -436,12 +436,12 @@ end
 
 
 ####################OLD FUNCTIONS#################################
-# The size of the cascaded structure is the number components.
+# The size of the cascade shell is the number components.
 InstallMethod(Length,"for holonomy decompositions",
         true,[IsHolonomyDecomposition],
 function(hd)
-  # just delegating the task to the cascaded structure
-  return Length(hd!.cascadedstruct);
+  # just delegating the task to the cascade shell
+  return Length(hd!.cascadeshell);
 end
 );
 
@@ -450,8 +450,8 @@ InstallOtherMethod( \[\],
     "for holonomy decompositions",
     [ IsHolonomyDecomposition, IsPosInt ],
 function( hd, pos )
-  # just delegating the task to the cascaded structure
-  return hd!.cascadedstruct[pos];
+  # just delegating the task to the cascade shell
+  return hd!.cascadeshell[pos];
 end
 );
 

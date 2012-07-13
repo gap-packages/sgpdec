@@ -1,15 +1,16 @@
 #############################################################################
 ##
-## cascadedstructure.gd           SgpDec package
+## cascadeshell.gd           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2012
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Putting algebraic structures into hierarchical structures.
+## An empty shell defined by an ordered list of components.
+## Used for defining cascaded structures.
 ##
 
-DeclareOperation("CascadedStructure",[IsList,IsList,IsList]);
+DeclareOperation("CascadeShell",[IsList,IsList,IsList]);
 DeclareGlobalFunction("SizeOfWreathProduct");
 DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 
@@ -17,14 +18,14 @@ DeclareGlobalFunction("MaximumNumberOfElementaryDependencies");
 DeclareGlobalFunction("States");
 DeclareGlobalFunction("StateSets");
 
-DeclareCategory("IsCascadedStructure", IsDenseList);
-DeclareProperty("IsCascadedGroup", IsCascadedStructure);
+DeclareCategory("IsCascadeShell", IsDenseList);
+DeclareProperty("IsCascadedGroupShell", IsCascadeShell);
 
 DeclareRepresentation(
-        "IsCascadedStructureRep",
+        "IsCascadeShellRep",
         IsComponentObjectRep,
         [ "components", #the building blocks
-          "name_of_product", #the name of the whole product structure
+          "name_of_shell",
           "state_symbol_functions", #the symbols for printing the the states
           "operation_symbol_functions", #the symbols for printing the operations
           "argument_names", #the names argument domains
@@ -33,6 +34,6 @@ DeclareRepresentation(
           "maxnum_of_dependency_entries" #the maximum number of elementary deps
           ]);
 
-CascadedStructureType :=
-  NewType(NewFamily("CascadedStructureFamily",IsCascadedStructure),
-          IsCascadedStructure and IsCascadedStructureRep);
+CascadeShellType :=
+  NewType(NewFamily("CascadeShellFamily",IsCascadeShell),
+          IsCascadeShell and IsCascadeShellRep);
