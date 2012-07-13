@@ -1,6 +1,6 @@
 #############################################################################
 ###
-##W  cascadeoperation.gi
+##W  cascadedtrans.gi
 ##Y  Copyright (C) 2011-12
 ##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
@@ -15,7 +15,7 @@
 
 #for creating cascade permutations by giving dependency function maps in a
 #dependency function table
-InstallGlobalFunction(CascadedOperation,
+InstallGlobalFunction(CascadedTransformation,
 function(csh,depfunctable)
 local  depfunc;
   # a function that returns the value corresponding to the argument if found,
@@ -30,7 +30,7 @@ local  depfunc;
     return One(csh[Length(args)+1]);
   end;
   #creating the instance
-  return Objectify(CascadedOperationType,
+  return Objectify(CascadedTransformationType,
                     rec(csh:=csh, depfunc:=depfunc));
 end);
 
@@ -38,17 +38,17 @@ end);
 # coordinateprefix-component element pairs (when it is not the identity of
 # the component) note that this returns concrete states now
 # very simple brute force algorithm
-InstallGlobalFunction(DependencyMapsFromCascadedOperation,
-function(cascop)
+InstallGlobalFunction(DependencyMapsFromCascadedTransformation,
+function(ct)
 local csh, pairs, identity, value, i, coords;
   #getting reference to the cascaded object
-  csh := CascadeShellOf(cascop);
+  csh := CascadeShellOf(ct);
   #pairs initialized
   pairs := [];
   for i in [1..Length(csh)] do
     identity := One(csh[i]);
     for coords in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
-      value := cascop!.depfunc(coords);
+      value := ct!.depfunc(coords);
       #if it is not the identity of the component
       if identity <> value then
         #then record the dependency map
@@ -61,14 +61,14 @@ end);
 
 # for creating the identity cascaded permutation in a given family of cascaded
 # product elements no dependencies, just the component's identtiy is returned
-InstallGlobalFunction(IdentityCascadedOperation,
+InstallGlobalFunction(IdentityCascadedTransformation,
 function(csh)
-  return CascadedOperation(csh,DependencyTable([]));
+  return CascadedTransformation(csh,DependencyTable([]));
 end);
 
 # creating random dependency functions
 # the number of nontrivial entries has to be specified
-InstallGlobalFunction(RandomCascadedOperation,
+InstallGlobalFunction(RandomCascadedTransformation,
 function(csh,numofdeps)
 local deps, level, arg;
 
@@ -92,52 +92,52 @@ local deps, level, arg;
   # number of dependencies
   deps := List(deps, arg -> [arg, Random(csh[Length(arg)+1])]);
 
-  return CascadedOperation(csh,DependencyTable(deps));
+  return CascadedTransformation(csh,DependencyTable(deps));
 end);
 
 ##############ALGORITHMS TO GET THE INVERSE####################################
 # We have different algorithms here. The fastest is plugged in the real Inverse.
 
 #simple trick for getting the inverse: take the flat inverse instead
-InvCascadedOperationByYeast := function(cascperm)
+InvCascadedTransformationByYeast := function(cascperm)
   return RaiseNC(CascadeShellOf(cascperm),
                  Inverse(Flatten(cascperm)));
 end;
-MakeReadOnlyGlobal("InvCascadedOperationByYeast");
+MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
 
 # calculating the powers until inverse found, this is of course very slow
-InvCascadedOperationByPowers := function(cascperm)
+InvCascadedTransformationByPowers := function(cascperm)
 local pow, id, prevpow;
   pow := cascperm;
-  id := IdentityCascadedOperation(CascadeShellOf(cascperm));
+  id := IdentityCascadedTransformation(CascadeShellOf(cascperm));
   repeat
     prevpow := pow;
     pow := pow * cascperm;
   until id = pow;
   return prevpow;
 end;
-MakeReadOnlyGlobal("InvCascadedOperationByPowers");
+MakeReadOnlyGlobal("InvCascadedTransformationByPowers");
 
 # transform the argument of the dependency and invert the value
-InvCascadedOperationByDependencies := function(cascperm)
+InvCascadedTransformationByDependencies := function(cascperm)
 local invmaps, dep;
 
   invmaps := [];
-  for dep in DependencyMapsFromCascadedOperation(cascperm) do
+  for dep in DependencyMapsFromCascadedTransformation(cascperm) do
     Add(invmaps,
         [List([1..Size(dep[1])],
               x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
          Inverse(dep[2])
          ]);
   od;
-  return CascadedOperation(CascadeShellOf(cascperm),
+  return CascadedTransformation(CascadeShellOf(cascperm),
                  DependencyTable(invmaps));
 end;
-MakeReadOnlyGlobal("InvCascadedOperationByDependencies");
+MakeReadOnlyGlobal("InvCascadedTransformationByDependencies");
 
 #here we just plug one algorithm in
 InstallOtherMethod(InverseOp, "for a cascaded perm",
-        [IsCascadedOperation],InvCascadedOperationByDependencies);
+        [IsCascadedTransformation],InvCascadedTransformationByDependencies);
 
 
 ################################################################################
@@ -145,7 +145,7 @@ InstallOtherMethod(InverseOp, "for a cascaded perm",
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
 InstallOtherMethod(\=, "for cascaded op and cascaded op", IsIdenticalObj,
-[IsCascadedOperation, IsCascadedOperation],
+[IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
   local csh, i, coords;
   #getting the family object
@@ -162,21 +162,21 @@ end);
 
 # comparison, less than, just a trick flattening and do the comparison there
 InstallOtherMethod(\<, "for cascaded op and cascaded op",
-[IsCascadedOperation, IsCascadedOperation],
+[IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
   return Flatten(p) < Flatten(q);
 end);
 
 InstallOtherMethod(OneOp, "for cascaded op",
-[IsCascadedOperation],
-function(co)
-  return IdentityCascadedOperation(CascadeShellOf(co));
+[IsCascadedTransformation],
+function(ct)
+  return IdentityCascadedTransformation(CascadeShellOf(ct));
 end);
 
 #multiplication of cascaded operations - it is a tricky one, since it just
 #combines together the functions without building a dependency table
 InstallOtherMethod(\*, "multiplying cascaded operations", IsIdenticalObj,
-[IsCascadedOperation, IsCascadedOperation],
+[IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
   local csh, depfunct;
 
@@ -193,16 +193,16 @@ function(p,q)
     return p!.depfunc(args) * q!.depfunc(newargs);
   end;
 
-  return Objectify(CascadedOperationType,
+  return Objectify(CascadedTransformationType,
                    rec(csh:=csh, depfunc:= depfunct));
 end);
 
 InstallOtherMethod(\^, "exponent for cascaded operation",
-[IsCascadedOperation, IsInt],
+[IsCascadedTransformation, IsInt],
 function(p, n)
   local result, multiplier, i;
 
-  result := IdentityCascadedOperation(CascadeShellOf(p));
+  result := IdentityCascadedTransformation(CascadeShellOf(p));
   if n < 0 then
     multiplier := Inverse(p);
   else
@@ -227,20 +227,20 @@ local i,str;
 end;
 # Implementing display, printing nice, human readable format.
 InstallMethod( Display, "for a cascaded op",
-[IsCascadedOperation],
-function( co )
+[IsCascadedTransformation],
+function( ct )
   local csh, i, j;
 
   #getting the info record
-  csh := CascadeShellOf(co);
+  csh := CascadeShellOf(ct);
 
   for i in [1..Length(csh)] do
     Print("Level ",i,": ", csh!.argument_names[i]," -> ",
      csh!.names_of_components[i],"\n");
     for j in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
-      if not IsOne(co!.depfunc(j)) then
+      if not IsOne(ct!.depfunc(j)) then
         Print("[",ConvertCascade2String(j,csh!.state_symbol_functions),
-         "] -> ", csh!.operation_symbol_functions[i](co!.depfunc(j)), "\n");
+         "] -> ", csh!.operation_symbol_functions[i](ct!.depfunc(j)), "\n");
       fi;
     od;
     Print("\n");
@@ -250,23 +250,23 @@ end);
 # Implementing viewobj, printing simple info.
 
 InstallMethod(ViewObj, "displays a cascaded product operation",
-[IsCascadedOperation],
-function( co )
-  Print("Cascaded operation in ", Name(CascadeShellOf(co)));
+[IsCascadedTransformation],
+function( ct )
+  Print("Cascaded operation in ", Name(CascadeShellOf(ct)));
 end);
 
 #applying a cascade operation to a cascade state
 InstallGlobalFunction(OnCascadedStates,
-function(cs,co)
-  return CascadedState(CascadeShellOf(cs), OnCoordinates(cs,co));
+function(cs,ct)
+  return CascadedState(CascadeShellOf(cs), OnCoordinates(cs,ct));
 end);
 
 InstallGlobalFunction(OnCoordinates,
-function(coords, cascop)
+function(coords, ct)
 local depfuncvalues,i, ncoords;
 
   depfuncvalues := List([1..Size(coords)],
-                        x->cascop!.depfunc(coords{[1..x-1]}));
+                        x->ct!.depfunc(coords{[1..x-1]}));
   ncoords := [];
   for i in [1..Size(coords)] do
     #if it is a constant map (required for permutation reset automata)
@@ -286,7 +286,7 @@ local depfuncvalues,i, ncoords;
 end);
 
 InstallOtherMethod(\^, "acting on cascaded states",
-[IsAbstractCascadedState, IsCascadedOperation], OnCascadedStates);
+[IsAbstractCascadedState, IsCascadedTransformation], OnCascadedStates);
 
 
 # YEAST for operations flattening - making an ordinary permutation out of the
@@ -298,11 +298,11 @@ InstallOtherMethod(\^, "acting on cascaded states",
 # AsSomething.
 
 InstallOtherMethod(Flatten, "for cascaded operation with no decomposition info",
-[IsCascadedOperation],
-function( co )
+[IsCascadedTransformation],
+function( ct )
   local csh, states, l, nstate, i;
 
-  csh:=CascadeShellOf(co);
+  csh:=CascadeShellOf(ct);
   states:=States(csh);
 
   #l is the big list for the action
@@ -311,7 +311,7 @@ function( co )
   #going through all possible coordinates and see where they go
   for i in [1..Size(states)] do
     #getting the new state
-    nstate := OnCoordinates(states[i],co);
+    nstate := OnCoordinates(states[i],ct);
     Add(l, Position(states,nstate));
   od;
 
@@ -382,7 +382,7 @@ function(csh, flatop)
   od;
 
   #after the recursion done we have the defining elementary dependencies
-  return CascadedOperation(csh,DependencyTable(dependencies));
+  return CascadedTransformation(csh,DependencyTable(dependencies));
 end);
 
 #raising a permutation/transformation to its cascaded format
@@ -401,26 +401,26 @@ end);
 ################################################################################
 ##########DEPENDENCIES##########################################################
 
-# checks whether the target level depends on onlevel in cascop.  simply follows
+# checks whether the target level depends on onlevel in ct.  simply follows
 # the definition and varies one level
 InstallGlobalFunction(DependsOn,
-function(cascop, targetlevel, onlevel)
+function(ct, targetlevel, onlevel)
   local csh, args, value, arg, coord;
 
   #getting the cascade shell of the operation
-  csh := CascadeShellOf(cascop);
+  csh := CascadeShellOf(ct);
   #all possible arguments up to targetlevel-1
   args:=EnumeratorOfCartesianProduct(StateSets(csh){[1..(targetlevel-1)]});
   #so we test for all arguments
   #TODO some optimization may be possible here, not to check any twice
   for arg in args do
     #remember the value
-    value := cascop!.depfunc(arg);
+    value := ct!.depfunc(arg);
     #now do the variations
     for coord in StateSets(csh)[onlevel] do
       arg[onlevel] := coord;
       #if there is a change then we are done!
-      if value <>  cascop!.depfunc(arg) then
+      if value <>  ct!.depfunc(arg) then
         return true;
       fi;
     od;
@@ -430,14 +430,14 @@ end);
 
 # it creates the graph of actual dependencies for a cascaded operation
 InstallGlobalFunction(DependencyGraph,
-function(cascop)
+function(ct)
   local graph, i, j;
 
   graph := [];
   # checking all directed pairs systematically
-  for i in [2..Length(CascadeShellOf(cascop))] do
+  for i in [2..Length(CascadeShellOf(ct))] do
     for j in [1..i-1] do
-      if DependsOn(cascop,i,j) then
+      if DependsOn(ct,i,j) then
         Add(graph,[i,j]);
       fi;
     od;
@@ -448,11 +448,11 @@ end);
 # returns a list of levels where the given cascaded operation has non-trivial
 # action(s).
 InstallGlobalFunction(ProjectedScope,
-function(cascop)
+function(ct)
 local pscope,level,prefix,csh;
 
   #getting the info object
-  csh := CascadeShellOf(cascop);
+  csh := CascadeShellOf(ct);
 
   #we suppose there is no action
   pscope := FiniteSet([],Length(csh));
@@ -461,7 +461,7 @@ local pscope,level,prefix,csh;
     for prefix in
      EnumeratorOfCartesianProduct(StateSets(csh){[1..(level-1)]} ) do
       #if it is not the identity of the component
-      if One(csh[level]) <> (cascop!.depfunc(prefix)) then
+      if One(csh[level]) <> (ct!.depfunc(prefix)) then
         #then we have at least one here
         Add(pscope,level);
         #so we can leave the loop
@@ -529,9 +529,9 @@ end);
 
 # returning parent cascade shell
 InstallMethod(CascadeShellOf, "for a cascaded operation",
-[IsCascadedOperation],
-function(cascop)
-  return cascop!.csh;
+[IsCascadedTransformation],
+function(ct)
+  return ct!.csh;
 end);
 
 
@@ -571,7 +571,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       Perform(gens,
               function(g)
                  Add(mongens,
-                     CascadedOperation(csh,DependencyTable([[prefix,g]])));
+                     CascadedTransformation(csh,DependencyTable([[prefix,g]])));
                end);
     od;
 
@@ -604,17 +604,17 @@ end);
 
 ################################################################################
 ########### DRAWING ############################################################
-InstallGlobalFunction(DotCascadedOperation,
-function(co)
+InstallGlobalFunction(DotCascadedTransformation,
+function(ct)
   local castruct, str, out, vertices, vertexlabels, edges, deps, coordsname,
   level, newnn, edge, i, dep, coord;
 
-  castruct := CascadeShellOf(co);
+  castruct := CascadeShellOf(ct);
 
   str := "";
   out := OutputTextString(str,true);
 
-  PrintTo(out,"digraph cascop{\n");
+  PrintTo(out,"digraph ct{\n");
 
   #putting an extra node on the top as the title of the graph
   #AppendTo(out,"orig [label=\"", params.title ,"\",color=\"white\"];\n");
@@ -628,7 +628,7 @@ function(co)
   edges := [];
 
   #extracting dependencies
-  deps := DependencyMapsFromCascadedOperation(co);
+  deps := DependencyMapsFromCascadedTransformation(ct);
   coordsname := "n";
   Add(vertices, coordsname);
 

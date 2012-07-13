@@ -272,7 +272,7 @@ InstallMethod(Raise,
 function(decomp,g)
 local j,state,states,fudges,depfunctable,arg;
 
-  if g=() then return IdentityCascadedOperation(CascadeShellOf(decomp));fi;
+  if g=() then return IdentityCascadedTransformation(CascadeShellOf(decomp));fi;
 
   #the states already coded as coset representatives
   states := LazyCartesian(TransversalsOf(decomp));
@@ -294,13 +294,13 @@ local j,state,states,fudges,depfunctable,arg;
     od;
   od;
 
-  return CascadedOperation(CascadeShellOf(decomp),depfunctable);
+  return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
 InstallMethod(Flatten,
     "flatten a cascaded permutation",
     true,
-    [IsLagrangeDecomposition,IsCascadedOperation], 0,
+    [IsLagrangeDecomposition,IsCascadedTransformation], 0,
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
                    x-> Flatten(decomp, Raise(decomp,x) ^ co)));
@@ -342,7 +342,8 @@ end);
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded operation x to y",
     true,
-    [IsLagrangeDecomposition,IsCascadedOperation,IsCascadedOperation], 0,
+    [IsLagrangeDecomposition,IsCascadedTransformation,IsCascadedTransformation],
+    0,
 function(decomp,x,y)
   return x2y(decomp,Perm2CascadedState(decomp,Flatten(decomp,x)),
              Perm2CascadedState(decomp,Flatten(decomp,y)));
