@@ -32,7 +32,7 @@ Name4Component := function(comp)
   fi;
 end;
 
-InstallMethod(IsCascadedGroup,[IsCascadeShell],
+InstallMethod(IsCascadedGroupShell,[IsCascadeShell],
 csh -> ForAll(csh!.components, IsGroup));
 
 # SIMPLIFIED CONSTRUCTOR

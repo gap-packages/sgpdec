@@ -45,7 +45,7 @@ end
 InstallMethod(LagrangeDecomposition, "for a perm group and list",
 [IsPermGroup, IsList],
 function(G, subgroupchain)
-  local series, t, transversals, comps, compgens, point2repr, repr2point, cstr,
+  local series, t, transversals, comps, compgens, point2repr, repr2point, csh,
    stabrt, stabrtreps, result, i, gen;
 
   #############sanity check##################################
@@ -97,7 +97,7 @@ function(G, subgroupchain)
   Info(LagrangeDecompositionInfoClass, 2, "Calculating codec ",
    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
 
-  cstr := CascadedStructure(comps);
+  csh := CascadeShell(comps);
 
   #############CONSTRUCTING THE CONTAINER RECORD#########################
 
@@ -128,7 +128,7 @@ function(G, subgroupchain)
               series := series,
               components := comps,
               transversals := transversals,
-              cascadedstruct := cstr,
+              cascadeshell := csh,
               stabilizertransversalreps := stabrtreps,
               originalstateset := MovedPoints(G));
   return Objectify(LagrangeDecompositionType, result);
@@ -219,7 +219,7 @@ local coords,i;
     coords[i] :=  PositionCanonical( TransversalsOf(decomp)[i],coords[i]);
   od;
 
-  return CascadedState(CascadedStructureOf(decomp),coords);
+  return CascadedState(CascadeShellOf(decomp),coords);
 end
 );
 
@@ -284,7 +284,7 @@ InstallMethod(Flatten,
 function(decomp,cs) #TODO!! replace  this with the more efficient one
 local state, flattened,point;
   flattened := [];
-  for state in States(CascadedStructureOf(decomp)) do
+  for state in States(CascadeShellOf(decomp)) do
     if state < cs then
       point := Flatten(decomp,state);
       if not (point in flattened) then Add(flattened, point); fi;
@@ -303,7 +303,7 @@ InstallMethod(Raise,
 function(decomp,g)
 local j,state,states,fudges,depfunctable,arg;
 
-  if g=() then return IdentityCascadedOperation(CascadedStructureOf(decomp));fi;
+  if g=() then return IdentityCascadedOperation(CascadeShellOf(decomp));fi;
 
   #the states already coded as coset representatives
   states := LazyCartesian(TransversalsOf(decomp));
@@ -325,7 +325,7 @@ local j,state,states,fudges,depfunctable,arg;
     od;
   od;
 
-  return CascadedOperation(CascadedStructureOf(decomp),depfunctable);
+  return CascadedOperation(CascadeShellOf(decomp),depfunctable);
 end
 );
 
@@ -361,8 +361,8 @@ InstallOtherMethod(x2y,
     [IsLagrangeDecomposition,IsCascadedState,IsCascadedState], 0,
 function(decomp,x,y)
 local tobase, frombase, id;
-    # we need the identity in the cascaded structure for the product
-    #id := IdentityCascadedOperation(CascadedStructureOf(decomp));
+    # we need the identity in the cascade shell for the product
+    #id := IdentityCascadedOperation(CascadeShellOf(decomp));
     # going to the leftmost branch
     tobase :=  Product(LevelKillers(decomp,x),());
     #then to y
@@ -408,11 +408,11 @@ end);
 InstallGlobalFunction(OriginalStateSet, function(decomp) return decomp!.originalstateset;end);
 
 ####################OLD FUNCTIONS#################################
-# The size of the cascaded structure is the number components.
+# The size of the cascade shell is the number components.
 InstallMethod(Length,"for Lagrange decompositions",true,[IsLagrangeDecomposition],
 function(ld)
-  # just delegating the task to the cascaded structure
-  return Length(ld!.cascadedstruct);
+  # just delegating the task to the cascade shell
+  return Length(ld!.cascadeshell);
 end);
 
 # for accessing the list elements
@@ -420,8 +420,8 @@ InstallOtherMethod( \[\],
     "for Lagrange decompositions",
     [ IsLagrangeDecomposition, IsPosInt ],
 function( ld, pos )
-  # just delegating the task to the cascaded structure
-  return ld!.cascadedstruct[pos];
+  # just delegating the task to the cascade shell
+  return ld!.cascadeshell[pos];
 end);
 
 
@@ -434,5 +434,5 @@ InstallMethod( ViewObj,
 function( ld )
   Print("Lagrange decomposition of:");
   ViewObj(OriginalStructureOf(ld));Print("\n");
-  ViewObj(ld!.cascadedstruct);
+  ViewObj(ld!.cascadeshell);
 end);
