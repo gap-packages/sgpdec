@@ -1,13 +1,14 @@
 #############################################################################
 ##
-## cascadedstructure.gi           SgpDec package
+## cascadeshell.gi           SgpDec package
 ##
 ## Copyright (C) 2008-2012
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Each cascaded product needs a detailed type structure. Here are the tools
-## needed for that task.
+## An empty shell defined by an ordered list of components.
+## Used for defining cascaded structures.
+##
 
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
@@ -31,12 +32,12 @@ Name4Component := function(comp)
   fi;
 end;
 
-InstallMethod(IsCascadedGroup,[IsCascadedStructure],
-cstr -> ForAll(cstr!.components, IsGroup));
+InstallMethod(IsCascadedGroup,[IsCascadeShell],
+csh -> ForAll(csh!.components, IsGroup));
 
 # SIMPLIFIED CONSTRUCTOR
 # calling the main with default identity functions
-InstallOtherMethod(CascadedStructure,[IsList],
+InstallOtherMethod(CascadeShell,[IsList],
 function(components)
 local statesym, opsym, comp,gid;
 
@@ -50,11 +51,11 @@ local statesym, opsym, comp,gid;
        else
          return x; fi;end);
   od;
-  return CascadedStructure(components,statesym,opsym);
+  return CascadeShell(components,statesym,opsym);
 end);
 
 #THE MAIN CONSTRUCTOR with all the possible arguments
-InstallMethod(CascadedStructure,[IsList,IsList,IsList],
+InstallMethod(CascadeShell,[IsList,IsList,IsList],
 function(components,statesymbolfunctions,operationsymbolfunctions)
 local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
@@ -110,7 +111,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   #GENERATING STATES
   cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
 
-  result :=  Objectify(CascadedStructureType,cascprodinfo);
+  result :=  Objectify(CascadeShellType,cascprodinfo);
 
   #making it immutable TODO this may not work
   cascprodinfo := Immutable(cascprodinfo);
@@ -120,61 +121,60 @@ end);
 
 #######################ACCESS METHODS#######################
 InstallGlobalFunction(States,
-function(castruct) return castruct!.states; end);
+function(csh) return csh!.states; end);
 
 InstallGlobalFunction(StateSets,
-function(castruct) return castruct!.state_sets; end);
+function(csh) return csh!.state_sets; end);
 
 InstallGlobalFunction(MaximumNumberOfElementaryDependencies,
-function(castruct) return castruct!.maxnum_of_dependency_entries; end);
+function(csh) return csh!.maxnum_of_dependency_entries; end);
 
-InstallOtherMethod(Name,"for cascaded structures",[IsCascadedStructure],
-function(castruct) return castruct!.name_of_product; end);
+InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
+function(csh) return csh!.name_of_product; end);
 
 #this is a huge number even in small cases
 InstallGlobalFunction(SizeOfWreathProduct,
-function(castruct)
+function(csh)
 local order,j,i;
   #calculating the order of the cascaded state set
   order := 1;
   #j is the number of possible arguments on a given depth, i.e.\ the exponent
   j := 1;
-  for i in [1..Size(castruct)] do
-    order := order * (Size(castruct[i])^j);
-    j := j * Size(StateSets(castruct)[i]);
+  for i in [1..Size(csh)] do
+    order := order * (Size(csh[i])^j);
+    j := j * Size(StateSets(csh)[i]);
   od;
   return order;
 end);
 
 #######################OLD METHODS#############################
-# The size of the cascaded structure is the number components.
-InstallMethod(Length,"for cascaded structures",true,[IsCascadedStructure],
-function(castruct)
-  return Length(castruct!.components);
+# The size of the cascade shell is the number components.
+InstallMethod(Length,"for cascade shells",true,[IsCascadeShell],
+function(csh)
+  return Length(csh!.components);
 end
 );
 
 # for accessing the list elements
 InstallOtherMethod( \[\],
-    "for cascaded structures",
-    [ IsCascadedStructure, IsPosInt ],
-function( castruct, pos )
-return castruct!.components[pos];
-end
-);
+    "for cascade shells",
+    [ IsCascadeShell, IsPosInt ],
+function( csh, pos )
+return csh!.components[pos];
+end);
 
 #############################################################################
 # Implementing Display, printing nice, human readable format.
 InstallMethod( ViewObj,
-    "displays a cascaded structure",
+    "displays a cascade shell",
     true,
-    [IsCascadedStructure], 0,
-function( castr )
+    [IsCascadeShell], 0,
+function(csh)
 local s,i;
   s := "";
-  for i in [1..Length(castr)] do
-    Print(i," ", s, Size(StateSets(castr)[i])," ");
-    ViewObj(castr[i]);
+  for i in [1..Length(csh)] do
+    Print(i," ", s, Size(StateSets(csh)[i])," ");
+    ViewObj(csh[i]);
     Print("\n");
     s := Concatenation(s,"|-");
   od;
