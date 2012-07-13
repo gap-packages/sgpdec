@@ -14,6 +14,7 @@
 ## The dependency table is finally a list containing the ith level dependencies
 ## in its ith slot.
 
+#TODO implement sorted lists for entries
 
 # for creating dependency table by giving dependency function maps in a list
 # of argument-value pairs (the default dependency function value is () )
@@ -52,93 +53,78 @@ end);
 InstallGlobalFunction(RegisterNewDependency,
 function(depfunctable, newarg,newaction)
 local matches,updated,i,args,actions,level;
-    #first we get the proper lists
-    level := Length(newarg) + 1;
-    if not IsBound(depfunctable[level]) then 
-      depfunctable[level] := [[],[]];
-    fi;
-    args := depfunctable[level][1];
-    actions := depfunctable[level][2];
-    #finding matching entries and check the action
-    matches := [];
-    for i in [1..Length(args)] do
-      if IsOverlapping(args[i], newarg) then
-        if newaction <> actions[i] then Error("action mismatch in registering dependency"); fi; 
-        Add(matches,i);
+  #first we get the proper lists
+  level := Length(newarg) + 1;
+  #we may not have any entry yet, then we create the empty table
+  if not IsBound(depfunctable[level]) then
+    depfunctable[level] := [[],[]];
+  fi;
+  #for convenience we have these variables
+  args := depfunctable[level][1];
+  actions := depfunctable[level][2];
+  #finding all matching entries and check the action
+  matches := [];
+  for i in [1..Length(args)] do
+    if IsOverlapping(args[i], newarg) then
+      if newaction <> actions[i] then
+        Error("action mismatch in registering dependency");
       fi;
-    od; 
-    #finding the proper entry
-    updated := false;
-    for i in matches do
-      if (newarg = args[i]) or IsStrictlyMoreAbstract(args[i],newarg) then
-        #do nothing, the stored entry is more abstract
-        updated := true;
-        break;
-      elif  IsStrictlyMoreAbstract(newarg, args[i]) then 
-        #update the arg to be more abstract
-        args[i] := newarg;
-        updated := true;
-        break;
-      fi;
-    od;
-    if not updated then 
-      Add(args,newarg);
-      Add(actions,newaction);  
+      Add(matches,i);
     fi;
-end
-);
+  od;
+  #finding the proper (the most abstract) entry
+  updated := false;
+  for i in matches do
+    if (newarg = args[i]) or IsStrictlyMoreAbstract(args[i],newarg) then
+      #do nothing, the stored entry is more abstract
+      updated := true;
+      break;
+    elif  IsStrictlyMoreAbstract(newarg, args[i]) then
+      #update the arg to be more abstract
+      args[i] := newarg;
+      updated := true;
+      break;
+    fi;
+  od;
+  #if no matching entry was found, simply add the new dependency
+  if not updated then
+    Add(args,newarg);
+    Add(actions,newaction);
+  fi;
+end);
 
 InstallGlobalFunction(SearchDepFuncTable,
 function(depfunctable, arg)
 local i, args, actions,level;
-    #first we get the proper lists
-    level := Length(arg) + 1;
-    if not IsBound(depfunctable[level]) then 
-      return fail;
-    fi;
-    args := depfunctable[level][1];
-    actions := depfunctable[level][2];
-    for i in [1..Length(args)] do
-      if args[i] = arg or IsStrictlyMoreAbstract(args[i], arg) then
-        return actions[i];
-      fi;
-    od; 
+  level := Length(arg) + 1;
+  if not IsBound(depfunctable[level]) then
     return fail;
-end
-);
-
-
-_depfunctable_Coordinates2String := function(coords)
-local str,i;
-  str := "C(";
-  for i in [1..Length(coords)] do
-    if coords[i] > 0 then 
-      str := Concatenation(str,StringPrint(coords[i]));
-    else
-      str := Concatenation(str,"*");
-    fi;
-    if i < Length(coords) then
-      str := Concatenation(str,",");
+  fi;
+  args := depfunctable[level][1];
+  actions := depfunctable[level][2];
+  for i in [1..Length(args)] do
+    if args[i] = arg or IsStrictlyMoreAbstract(args[i], arg) then
+      return actions[i];
     fi;
   od;
-  str := Concatenation(str,")");
-  return str;
-end;
+  return fail;
+end);
 
+#this is a low-level display function that is due to be replaced with
+#a more integrated one
 InstallGlobalFunction(ShowDependencies,
 function(depfunctable)
 local i,j;
   for i in [1..Length(depfunctable)] do
     if IsBound(depfunctable[i]) then
       for j in [1..Length(depfunctable[i][1])] do
-        Print(_depfunctable_Coordinates2String(depfunctable[i][1][j]), " -> ");
+        Print(depfunctable[i][1][j], " -> ");
         if IsPerm( depfunctable[i][2][j]) then
           Print(depfunctable[i][2][j], "\n");
         else
-          Print(SimplerLinearNotation(depfunctable[i][2][j]), "\n");            
-        fi;              
+          Print(SimplerLinearNotation(depfunctable[i][2][j]), "\n");
+        fi;
       od;
     fi;
   od;
-end
-);
+end);
