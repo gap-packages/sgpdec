@@ -1,3 +1,7 @@
+################################################################################
+# some technical code - likely to be replaced by GAP library calls (once found)
+################################################################################
+
 #just a wrapper of dust's LazyCartesian until the enumerator is implemented
 InstallGlobalFunction(EnumeratorOfCartesianProduct,
 function(arg)
@@ -8,6 +12,21 @@ function(arg)
 
   return LazyCartesian(arg);
 end);
+
+################################################################################
+# turning the action of a permutation on some points into a permutation
+# used for acting on cosets, finite sets
+# TODO Is there a GAP function to do this?
+PermutationAction := function(points,g,action)
+local l;
+  l := [];
+  Perform([1..Length(points)],
+          function(i)
+            Add(l, PositionCanonical(points, action(points[i],g)));
+          end);
+  return PermList(l);
+end;
+MakeReadOnlyGlobal("PermutationAction");
 
 # creating partial order modified from the library code
 PartialOrderByOrderingFunctionNC := function(d,of)
