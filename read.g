@@ -9,7 +9,7 @@ ReadPackage("SgpDec","/gap/linearnotation.gi");
 ReadPackage("SgpDec","/gap/words.gi");
 ReadPackage("SgpDec","/gap/finiteset.gi");
 ReadPackage("SgpDec","/gap/decomposition.gi");
-ReadPackage("SgpDec","/gap/cascadedoperation.gi");
+ReadPackage("SgpDec","/gap/cascadedtrans.gi");
 ReadPackage("SgpDec","/gap/cascadedstate.gi");
 ReadPackage("SgpDec","/gap/cascadeshell.gi");
 ReadPackage("SgpDec","/gap/subgroupchains.gi");

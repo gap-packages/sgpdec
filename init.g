@@ -8,7 +8,7 @@ ReadPackage("SgpDec","/gap/linearnotation.gd");
 ReadPackage("SgpDec","/gap/words.gd");
 ReadPackage("SgpDec","/gap/decomposition.gd");
 ReadPackage("SgpDec","/gap/cascadedstate.gd");
-ReadPackage("SgpDec","/gap/cascadedoperation.gd");
+ReadPackage("SgpDec","/gap/cascadedtrans.gd");
 ReadPackage("SgpDec","/gap/cascadeshell.gd");
 ReadPackage("SgpDec","/gap/subgroupchains.gd");
 ReadPackage("SgpDec","/gap/lagrangecoords.gd");
