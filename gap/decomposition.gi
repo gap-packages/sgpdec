@@ -15,11 +15,11 @@ function(decomp)
   return decomp!.original;
 end);
 
-# returning underlying cascaded structure
-InstallMethod(CascadedStructureOf,
+# returning underlying cascade shell
+InstallMethod(CascadeShellOf,
         "for hierarchical decompositions",true,[IsHierarchicalDecomposition],
 function(decomp)
-  return decomp!.cascadedstruct;
+  return decomp!.cascadeshell;
 end);
 
 #######################OLD METHODS##############################################
@@ -28,5 +28,5 @@ end);
 InstallOtherMethod(Length,"for hierarchical decompositions",
         true, [IsHierarchicalDecomposition],
 function(decomp)
-  return Length(decomp!.cascadedstruct);
+  return Length(decomp!.cascadeshell);
 end);

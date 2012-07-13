@@ -22,7 +22,7 @@ DeclareCategory("IsCascadedState",IsAbstractCascadedState);
 CascadedStateFamily := NewFamily("CascadedStatesFamily",IsCascadedState);
 IsCascadedStateRep := NewRepresentation(
                                        "IsCascadedStateRep",
-                                       IsComponentObjectRep,["coords","cstr"]);
+                                       IsComponentObjectRep,["coords","csh"]);
 CascadedStateType := NewType(CascadedStateFamily,
                              IsCascadedState and IsCascadedStateRep);
 
