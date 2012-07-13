@@ -95,6 +95,51 @@ local deps, level, arg;
   return CascadedOperation(cstr,DependencyTable(deps));
 end);
 
+##############ALGORITHMS TO GET THE INVERSE####################################
+# We have different algorithms here. The fastest is plugged in the real Inverse.
+
+#simple trick for getting the inverse: take the flat inverse instead
+InvCascadedOperationByYeast := function(cascperm)
+  return RaiseNC(CascadedStructureOf(cascperm),
+                 Inverse(Flatten(cascperm)));
+end;
+MakeReadOnlyGlobal("InvCascadedOperationByYeast");
+
+# calculating the powers until inverse found, this is of course very slow
+InvCascadedOperationByPowers := function(cascperm)
+local pow, id, prevpow;
+  pow := cascperm;
+  id := IdentityCascadedOperation(CascadedStructureOf(cascperm));
+  repeat
+    prevpow := pow;
+    pow := pow * cascperm;
+  until id = pow;
+  return prevpow;
+end;
+MakeReadOnlyGlobal("InvCascadedOperationByPowers");
+
+# transform the argument of the dependency and invert the value
+InvCascadedOperationByDependencies := function(cascperm)
+local invmaps, dep;
+
+  invmaps := [];
+  for dep in DependencyMapsFromCascadedOperation(cascperm) do
+    Add(invmaps,
+        [List([1..Size(dep[1])],
+              x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
+         Inverse(dep[2])
+         ]);
+  od;
+  return CascadedOperation(CascadedStructureOf(cascperm),
+                 DependencyTable(invmaps));
+end;
+MakeReadOnlyGlobal("InvCascadedOperationByDependencies");
+
+#here we just plug one algorithm in
+InstallOtherMethod(InverseOp, "for a cascaded perm",
+        [IsCascadedOperation],InvCascadedOperationByDependencies);
+
+
 ################################################################################
 ####REIMPLEMENTED OPERATIONS####################################################
 # equality the worst case is when p and q are indeed equal, as every value is
@@ -290,9 +335,8 @@ end;
 ##############################################################################
 # this constructs the component action based on the flat action
 ComponentActionForPrefix := function(cstr, flatoplist, prefix)
-  local states, actionlist, level, src_int, dest_cs, coordval;
+  local actionlist, level, coordval;
 
-  states := States(cstr);
   actionlist := [];
   level := Length(prefix) + 1;
 
@@ -316,7 +360,9 @@ end;
 #InstallOtherMethod(RaiseNC, "for a cascaded structure and object",
 #[IsCascadedStructure, IsObject],
 # for the time being just a function
-RaiseNC := function(cstr,flatop)
+InstallOtherMethod(RaiseNC, "for a flat transformation with no decomposition",
+[IsCascadedStructure,IsObject],
+function(cstr, flatop)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
@@ -337,7 +383,7 @@ RaiseNC := function(cstr,flatop)
 
   #after the recursion done we have the defining elementary dependencies
   return CascadedOperation(cstr,DependencyTable(dependencies));
-end;
+end);
 
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
@@ -353,50 +399,6 @@ function(cstr, flatop)
   fi;
   return RaiseNC(cstr,flatop);
 end);
-
-##############ALGORITHMS TO GET THE INVERSE####################################
-# We have different algorithms here. The fastest is plugged in the real Inverse.
-
-#simple trick for getting the inverse: take the flat inverse instead
-InvCascadedOperationByYeast := function(cascperm)
-  return RaiseNC(CascadedStructureOf(cascperm),
-                 Inverse(Flatten(cascperm)));
-end;
-MakeReadOnlyGlobal("InvCascadedOperationByYeast");
-
-# calculating the powers until inverse found, this is of course very slow
-InvCascadedOperationByPowers := function(cascperm)
-local pow, id, prevpow;
-  pow := cascperm;
-  id := IdentityCascadedOperation(CascadedStructureOf(cascperm));
-  repeat
-    prevpow := pow;
-    pow := pow * cascperm;
-  until id = pow;
-  return prevpow;
-end;
-MakeReadOnlyGlobal("InvCascadedOperationByPowers");
-
-# transform the argument of the dependency and invert the value
-InvCascadedOperationByDependencies := function(cascperm)
-local invmaps, dep;
-
-  invmaps := [];
-  for dep in DependencyMapsFromCascadedOperation(cascperm) do
-    Add(invmaps,
-        [List([1..Size(dep[1])],
-              x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
-         Inverse(dep[2])
-         ]);
-  od;
-  return CascadedOperation(CascadedStructureOf(cascperm),
-                 DependencyTable(invmaps));
-end;
-MakeReadOnlyGlobal("InvCascadedOperationByDependencies");
-
-#here we just plug one algorithm in
-InstallOtherMethod(InverseOp, "for a cascaded perm",
-        [IsCascadedOperation],InvCascadedOperationByDependencies);
 
 ################################################################################
 ##########DEPENDENCIES##########################################################
