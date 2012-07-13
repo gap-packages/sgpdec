@@ -387,11 +387,9 @@ end);
 
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
-
 InstallOtherMethod(Raise, "for a flat transformation with no decomposition",
 [IsCascadedStructure,IsObject],
 function(cstr, flatop)
-
   #if it is not compatible
   if not IsDependencyCompatible(cstr,flatop) then
     Error("usage: the second argument does not belong to the wreath product");
@@ -480,18 +478,15 @@ end);
 # a permutation/transformation is compatible with the dependency frame of a
 # cascaded structure if the dependency relation is well-defined/single-valued,
 # a function (i.e. there is a unique action for an abstract state (a prefix))
-# the action is not checked here though
+# the action is not checked here though TODO!!!!
 InstallGlobalFunction(IsDependencyCompatibleOnPrefix,
 function(cstr, flatoplist, prefix)
-  local states, src_int, dest_cs, dest_prefix, coords, postfix, i;
+  local states, dest_prefix, coords, postfix, i;
 
   states := States(cstr);
-  #pick one source cascaded state (the first in the interval may do)
-  src_int := PositionCanonical(states,Concretize(CascadedState(cstr, prefix)));
-  #as a cascaded state the image is
-  dest_cs := states[flatoplist[src_int]];
   #get the prefix out of it
-  dest_prefix := dest_cs{[1..Length(prefix)]};
+  dest_prefix := FlatActionOnCoordinates(cstr, flatoplist, prefix)
+                 {[1..Length(prefix)]};
   #now checking: any image should have the same prefix
   #for all possible concretization
   for postfix in EnumeratorOfCartesianProduct(
@@ -499,8 +494,8 @@ function(cstr, flatoplist, prefix)
     coords := ShallowCopy(prefix);
     Append(coords,postfix);
     for i in [1..Length(dest_prefix)] do
-      if dest_prefix[i]<>states[flatoplist[PositionCanonical(states,
-       CascadedState(cstr,coords))]][i] then
+      if dest_prefix[i] <>
+         FlatActionOnCoordinates(cstr, flatoplist, coords)[i] then
         return false;
       fi;
     od;
