@@ -56,7 +56,7 @@ od;
 
 
 Print("\nTesting a group cascade ");
-GRP := CascadedStructure([Z3,Z2,Z2,Z5]);;
+GRP := CascadeShell([Z3,Z2,Z2,Z5]);;
 Print(GRP!.name_of_product,"\n\n");
 
 TestMultiplicationByIdentity(GRP);
@@ -65,7 +65,7 @@ TestCascadedInverses(GRP);
 TestDependencyExtraction(GRP);
 
 Print("\nTesting a semigroup cascade ");
-SGRP := CascadedStructure([Z3,FlipFlop,FlipFlop,Z5]);;
+SGRP := CascadeShell([Z3,FlipFlop,FlipFlop,Z5]);;
 Print(SGRP!.name_of_product,"\n\n");
 
 TestMultiplicationByIdentity(SGRP);
