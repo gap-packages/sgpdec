@@ -1,3 +1,5 @@
+0.6.54
+	Renamings: CascadedStructure -> CascadeShell, CascadedOperation -> CascadedTransformation.
 0.6.52
 	Revising CascadedOperation: SGPDEC_ActionOnLastCoord removed. OnCoordinates and OnCascadedStates introduced.
 0.6.51
