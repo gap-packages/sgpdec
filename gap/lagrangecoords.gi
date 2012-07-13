@@ -19,23 +19,13 @@ local l, i;
   return PermList(l);
 end;
 
-#just to avoid trying to reduce the trivial group
-SGPDEC_ReduceNumOfGenerators := function(G)
-    if IsTrivial(G) then
-        return G;
-    else
-        return Group(SmallGeneratingSet(G));
-    fi;
-end;
-
 ##################################################################
 # Simplified call for generating cascaded components for a group,
 # when a default Chief series is enough.
 InstallOtherMethod(LagrangeDecomposition,[IsPermGroup],
 function(G)
   return LagrangeDecomposition(G,ChiefSeries(G));
-end
-);
+end);
 
 ##################################################################
 # Creates the record containing the info for the lagrange decomposition of
@@ -60,7 +50,7 @@ function(G, subgroupchain)
   t := Runtime();
   if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
     #reducing the numbers of generators if possible
-    series := List(series, x->SGPDEC_ReduceNumOfGenerators(x));
+    series := List(series, G->Group(SmallGeneratingSet(G)));
     Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in the series ",
     SGPDEC_TimeString(Runtime()-t)); t := Runtime();
@@ -88,7 +78,7 @@ function(G, subgroupchain)
 
   if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
     #reducing the numbers of generators if possible
-    comps := List(comps, x->SGPDEC_ReduceNumOfGenerators(x));
+    comps := List(comps, G->Group(SmallGeneratingSet(G)));
     Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in components ",
        SGPDEC_TimeString(Runtime()-t)); t := Runtime();
