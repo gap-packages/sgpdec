@@ -1,6 +1,6 @@
 #############################################################################
 ##
-## cascadedoperation.gd           SgpDec package
+## cascadedtrans.gd           SgpDec package
 ##
 ## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -9,30 +9,30 @@
 ## Cascaded permutations and transformations.
 ##
 
-DeclareGlobalFunction("IdentityCascadedOperation");
-DeclareGlobalFunction("CascadedOperation");
+DeclareGlobalFunction("IdentityCascadedTransformation");
+DeclareGlobalFunction("CascadedTransformation");
 DeclareGlobalFunction("OnCascadedStates");
 DeclareGlobalFunction("OnCoordinates");
-DeclareGlobalFunction("RandomCascadedOperation");
-DeclareGlobalFunction("DependencyMapsFromCascadedOperation");
+DeclareGlobalFunction("RandomCascadedTransformation");
+DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
 DeclareGlobalFunction("DependsOn");
 DeclareGlobalFunction("DependencyGraph");
 DeclareGlobalFunction("ProjectedScope");
 DeclareGlobalFunction("IsDependencyCompatible");
 DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
-DeclareGlobalFunction("DotCascadedOperation");
+DeclareGlobalFunction("DotCascadedTransformation");
 
 #we need the 'WithInverse' property to build groups of cascaded
 #transformation though not all of them have inverses
-DeclareCategory("IsCascadedOperation", IsMultiplicativeElementWithInverse);
+DeclareCategory("IsCascadedTransformation", IsMultiplicativeElementWithInverse);
 
-CascadedOperationFamily := NewFamily("CascadedOperationFamily",
-                                   IsCascadedOperation);
-CascadedOperationRepresentation :=
-    NewRepresentation("CascadedOperationRepresentation",
+CascadedTransformationFamily := NewFamily("CascadedTransformationFamily",
+                                   IsCascadedTransformation);
+CascadedTransformationRepresentation :=
+    NewRepresentation("CascadedTransformationRepresentation",
     IsComponentObjectRep,["depfunc","csh"]);
 
-CascadedOperationType := NewType(CascadedOperationFamily,
-                                 IsCascadedOperation and
-                                 CascadedOperationRepresentation);
+CascadedTransformationType := NewType(CascadedTransformationFamily,
+                                 IsCascadedTransformation and
+                                 CascadedTransformationRepresentation);

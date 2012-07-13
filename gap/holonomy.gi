@@ -163,7 +163,7 @@ end;
 _holonomy_CreateDepFuncTableForFlatTransformation := function(decomp,t)
 local j,tilechain, tilechains, actions,depfunctable,arg, state;
 #TODO investigate why the identity fails below
-#  if IsOne(t) then return IdentityCascadedOperation(CascadeShellOf(decomp)); fi;
+#  if IsOne(t) then return IdentityCascadedTransformation(CascadeShellOf(decomp)); fi;
 
   #the states already coded as coset representatives
   tilechains := AllCoverChains(SkeletonOf(decomp));
@@ -364,7 +364,7 @@ InstallMethod(Raise,
     true,
     [IsHolonomyDecomposition,IsTransformation], 1,
 function(decomp,t)
-  return CascadedOperation(
+  return CascadedTransformation(
                  CascadeShellOf(decomp),
                  _holonomy_CreateDepFuncTableForFlatTransformation(decomp,t));
 end
@@ -373,7 +373,7 @@ end
 InstallMethod(Flatten,
     "flattens a cascaded operation in holonomy",
     true,
-    [IsHolonomyDecomposition,IsCascadedOperation], 1,
+    [IsHolonomyDecomposition,IsCascadedTransformation], 1,
 function(hd,co)
 local l, i;
   l := [];
