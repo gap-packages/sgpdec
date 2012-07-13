@@ -29,6 +29,8 @@ end;
 MakeReadOnlyGlobal("PermutationAction");
 
 # creating partial order modified from the library code
+# bypassing checks
+#for speed reasons
 PartialOrderByOrderingFunctionNC := function(d,of)
 local i,j,        # iterators
       tup;        # set of defining tuples
@@ -45,6 +47,9 @@ local i,j,        # iterators
   return  BinaryRelationByElements(d,tup);
 end;
 
+#this is a specialized version of HasseDiagram
+#knowing the underlying partial order, checks bypassed
+#for speed reasons
 HasseDiagramOfSubsets := function(orderedsubsets)
 local i, j,           # iterators
       d,              # elements of underlying domain
@@ -84,21 +89,4 @@ local i, j,           # iterators
   h := GeneralMappingByElements(d,d, tups);
   SetIsHasseDiagram(h, true);
   return h;
-end;
-
-#sorting for sets of varied positions, first bigger sets then default <
-BySizeSorter := function(v,w)
-if Size(v) <> Size(w) then
-  return Size(v)>Size(w);
-else
-  return v>w;
-fi;
-end;
-
-BySizeSorterAscend := function(v,w)
-if Size(v) <> Size(w) then
-  return Size(v)<Size(w);
-else
-  return v<w;
-fi;
 end;

@@ -169,7 +169,17 @@ end
 #of differing values
 _depfunctable_VariedPositionsNC := function(l1, l2)
   return Filtered([1..Length(l1)], x -> l1[x] <> l2[x]);
-end; 
+end;
+
+#sorting for sets of varied positions, first bigger sets then default <
+BySizeSorter := function(v,w)
+if Size(v) <> Size(w) then
+  return Size(v)>Size(w);
+else
+  return v>w;
+fi;
+end;
+MakeReadOnlyGlobal("BySizeSorter");
 
 #input coords with the same size and the sizes of the statesets
 #it returns an abstract state
