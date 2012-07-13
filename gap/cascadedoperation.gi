@@ -11,18 +11,6 @@
 ### Cascaded permutations and transformations.
 
 ##############################################################################
-# for symbol printing prefixes
-ConvertCascade2String := function(coordsprefix, converter)
-local i,str;
-  str := "";
-  for i in [1..Length(coordsprefix)] do
-    str := Concatenation(str,StringPrint(converter[i](coordsprefix[i])));
-    if i < Length(coordsprefix) then str := Concatenation(str,","); fi;
-  od;
-  return str;
-end;
-
-##############################################################################
 # this constructs the component action based on the flat action
 ComponentActionForPrefix := function(cstr, flatoplist, prefix)
   local states, actionlist, level, src_int, dest_cs, coordval;
@@ -57,56 +45,16 @@ ComponentActionForPrefix := function(cstr, flatoplist, prefix)
   return Transformation(actionlist);
 end;
 
-##############################################################################
-##############################################################################
-
-# for creating the identity cascaded permutation in a given family of cascaded
-# product elements no dependencies, just the component's identtiy is returned
-
-InstallGlobalFunction(IdentityCascadedOperation,
-function(cstr)
-  return CascadedOperation(cstr,DependencyTable([]));
-end);
-
-# just creating random dependency functions
-InstallGlobalFunction(RandomCascadedOperation,
-function(cstr,numofdeps)
-  local deps, level, arg;
-
-  # sanity check, to avoid infinite loops down below
-  if numofdeps > MaximumNumberOfElementaryDependencies(cstr) then
-    numofdeps := MaximumNumberOfElementaryDependencies(cstr);
-    Print("#W Number of elementary dependencies is set to ", numofdeps,
-     "\n");
-  fi;
-  deps := [];
-
-  # some trickry is needed as random may return the same element
-  while Length(deps) <> numofdeps do
-    level := Random(SgpDecOptionsRec.SGPDEC_RND, 1, Length(cstr));
-    arg := Random(EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]}));
-    if not (arg in deps) then
-      Add(deps,arg);
-    fi;
-  od;
-
-  # now putting the actions there - this may still give identity and reduce the
-  # number of dependencies
-  deps := List(deps, arg -> [arg, Random(cstr[Length(arg)+1])]);
-
-  return CascadedOperation(cstr,DependencyTable(deps));
-end);
+################################################################################
+####CONSTRUCTING CASCADED OPERATIONS############################################
 
 #for creating cascade permutations by giving dependency function maps in a
 #dependency function table
-
 InstallGlobalFunction(CascadedOperation,
 function(cstr,depfunctable)
-  local  depfunc, object;
-
+local  depfunc;
   # a function that returns the value corresponding to the argument if found,
   # otherwise the identity - embedded function
-
   depfunc := function(args)
     local value;
     value := SearchDepFuncTable(depfunctable, args);
@@ -124,7 +72,6 @@ end);
 # returns a list containing
 # coordinateprefixes - component element pairs (when it is not the identity of
 # the component) note that this returns concrete states now
-
 InstallGlobalFunction(DependencyMapsFromCascadedOperation,
 function(cascop)
   local cstr, pairs, identity, value, i, coords;
@@ -150,9 +97,47 @@ function(cascop)
   return pairs;
 end);
 
+
+# for creating the identity cascaded permutation in a given family of cascaded
+# product elements no dependencies, just the component's identtiy is returned
+InstallGlobalFunction(IdentityCascadedOperation,
+function(cstr)
+  return CascadedOperation(cstr,DependencyTable([]));
+end);
+
+# creating random dependency functions
+# the number of nontrivial entries has to be specified
+InstallGlobalFunction(RandomCascadedOperation,
+function(cstr,numofdeps)
+local deps, level, arg;
+
+  # sanity check, to avoid infinite loops down below
+  if numofdeps > MaximumNumberOfElementaryDependencies(cstr) then
+    numofdeps := MaximumNumberOfElementaryDependencies(cstr);
+    Print("#W Number of elementary dependencies is set to ", numofdeps,"\n");
+  fi;
+
+  deps := [];
+  # some trickery is needed as random may return the same element
+  while Length(deps) <> numofdeps do
+    level := Random(SgpDecOptionsRec.SGPDEC_RND, 1, Length(cstr));
+    arg := Random(EnumeratorOfCartesianProduct(StateSets(cstr){[1..level-1]}));
+    if not (arg in deps) then
+      Add(deps,arg);
+    fi;
+  od;
+
+  # now putting the actions there - this may still give identity and reduce the
+  # number of dependencies
+  deps := List(deps, arg -> [arg, Random(cstr[Length(arg)+1])]);
+
+  return CascadedOperation(cstr,DependencyTable(deps));
+end);
+
+################################################################################
+
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
-
 InstallOtherMethod(\=, "for cascaded op and cascaded op", IsIdenticalObj,
 [IsCascadedOperation, IsCascadedOperation],
 function(p,q)
@@ -210,7 +195,7 @@ function(p,q)
                    rec(cstr:=cstr, depfunc:= depfunct));
 end);
 
-InstallOtherMethod(\^, "for cascaded operation and int",
+InstallOtherMethod(\^, "exponent for cascaded operation",
 [IsCascadedOperation, IsInt],
 function(p, n)
   local result, multiplier, i;
@@ -221,13 +206,23 @@ function(p, n)
   else
     multiplier := p;
   fi;
-
   for i in [1..AbsoluteValue(n)] do
     result := result * multiplier;
   od;
   return result;
 end);
 
+##############################################################################
+# for symbol printing prefixes
+ConvertCascade2String := function(coordsprefix, converter)
+local i,str;
+  str := "";
+  for i in [1..Length(coordsprefix)] do
+    str := Concatenation(str,StringPrint(converter[i](coordsprefix[i])));
+    if i < Length(coordsprefix) then str := Concatenation(str,","); fi;
+  od;
+  return str;
+end;
 # Implementing display, printing nice, human readable format.
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedOperation],
