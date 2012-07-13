@@ -9,16 +9,6 @@
 ## Lagrange coordinatization of groups.
 ##
 
-#####canonical conversion of  acting on some points
-SGPDEC_CanonicalPermutationAction := function(transversal,g, action)
-local l, i;
-  l := [];
-  for i in [1..Length(transversal)] do
-    Add(l, PositionCanonical(transversal,action(transversal[i], g) ));
-  od;
-  return PermList(l);
-end;
-
 ##################################################################
 # Simplified call for generating cascaded components for a group,
 # when a default Chief series is enough.
@@ -31,7 +21,6 @@ end);
 # Creates the record containing the info for the lagrange decomposition of
 # permutation groups: series, transversals, components, coset representatives,
 # mapping from points to coset reprs and backwards.
-
 InstallMethod(LagrangeDecomposition, "for a perm group and list",
 [IsPermGroup, IsList],
 function(G, subgroupchain)
@@ -67,8 +56,7 @@ function(G, subgroupchain)
     # transversals
     compgens := [];
     for gen in GeneratorsOfGroup(series[i]) do
-      Add(compgens, SGPDEC_CanonicalPermutationAction(transversals[i],
-       gen,\*));
+      Add(compgens, PermutationAction(transversals[i],gen,\*));
     od;
     Add(comps,Group(AsSet(compgens)));
   od;
@@ -146,7 +134,7 @@ local fudges,i;
   od;
   #converting to canonical
   for i in [1..Length(fudges)] do
-    fudges[i] := SGPDEC_CanonicalPermutationAction(TransversalsOf(decomp)[i],
+    fudges[i] := PermutationAction(TransversalsOf(decomp)[i],
                          fudges[i],\*);
   od;
   return fudges;
