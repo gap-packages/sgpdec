@@ -32,7 +32,7 @@ local sets, level;
           Add(sets,0); #zero if the level is jumped over
         else
           # the position of the set
-          Add(sets,hd!.flat_coordinates[level][ints[level]]);
+          Add(sets,hd!.allcoords[level][ints[level]]);
       fi;
   od;
   return sets;
@@ -47,7 +47,7 @@ local rep,level,ints;
       if sets[level] = 0 then
           Add(ints,0);
     else
-     Add(ints,Position(hd!.flat_coordinates[level],
+     Add(ints,Position(hd!.allcoords[level],
                        sets[level],
                        _holonomy_slot_range(hd,rep)[1]-1));
      rep := sets[level]; #a hack to get the proper duplicated covering_set
@@ -130,10 +130,18 @@ local groups, numofpoints,i, movedpoints, orbitsizes;
   od;
 end);
 
-_holonomy_find_containing_set := function(hd, level, range, set)
-local i;
-  for i in range do
-    if IsSubset(hd!.flat_coordinates[level][i], set) then
+_holonomy_find_containing_set := function(hd, level,range, set)
+local i;#slot,sk,depth;
+  #sk := SkeletonOf(hd);
+  #depth := DepthOfSet(sk,Q);
+  #Print(depth,"-",level,"\n");
+  #slot := Position(hd!.reps[depth],
+  #                RepresentativeSet(sk, Q));
+  #return PositionProperty(hd!.allcoords[level],
+  #               s->IsSubset(s, set),
+  #               hd!.shifts[level][slot]);
+ for i in range do
+    if IsSubset(hd!.allcoords[level][i], set) then
       return i;
     fi;
   od;
@@ -178,7 +186,7 @@ function(T) return HolonomyDecomposition(Skeleton(T));end);
 
 InstallOtherMethod(HolonomyDecomposition,[IsRecord], #skeleton is a record now
 function(skeleton)
-local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
+local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets,widths;
   # 1. put the skeleton into the record
   holrec := rec(skeleton:=skeleton);
   holrec.original := skeleton.ts;
@@ -188,7 +196,9 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   n := DepthOfSkeleton(holrec.skeleton) - 1;
   holrec.groupcomponents := [];
   holrec.reps := [];
-  holrec.flat_coordinates := [];
+  holrec.coords := [];
+  holrec.allcoords := [];
+  holrec.widths := [];
   holrec.shifts := [];
   for depth in [1..n] do
     groups := [];
@@ -215,14 +225,16 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(holrec.shifts, shifts);
     Add(holrec.groupcomponents,groups);
     Add(holrec.reps, reps);
-    Add(holrec.flat_coordinates,Flat(coords));
+    Add(holrec.coords,coords);
+    Add(holrec.allcoords,Flat(coords));
+    Add(holrec.widths, Size(holrec.allcoords[depth]));
   od;
 
   #building the cascade shell
   holrec.cascadeshell :=
     CascadeShell(List([1..Length(holrec.groupcomponents)],
             x -> HolonomyPermutationReset(holrec.groupcomponents[x],
-                    Length(holrec.flat_coordinates[x]))));
+                    Length(holrec.allcoords[x]))));
   #the permutation reset semigroups
   return Objectify(HolonomyDecompositionType, holrec);
 end);
@@ -233,7 +245,7 @@ InstallMethod(Interpret,
     true,
     [IsHolonomyDecomposition,IsInt,IsInt], 0,
 function(hd,level,state)
-  return hd!.flat_coordinates[level][state];
+  return hd!.allcoords[level][state];
 end);
 
 InstallMethod(Flatten,
@@ -282,9 +294,9 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
         # list - the covering sets on a given level,
         # range - holonomy slot range, t is the action
         range := _holonomy_slot_range(decomp, Q);
-        list := decomp!.flat_coordinates[i];
+        list := decomp!.allcoords[i];
         l := [1..Length(list)];
-        for j in range  do
+        for j in range  do #this is just canonical action
           l[j] :=  Position(list,
                            OnFiniteSets(list[j],action),
                            range[1]-1);
@@ -304,9 +316,9 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
                        _holonomy_slot_range(decomp, Q),
                        OnFiniteSets(Ps , GetOUT(skeleton,Q)));
         actions[i] := Transformation(
-                              List([1..Length(decomp!.flat_coordinates[i])],
+                              List([1..Length(decomp!.allcoords[i])],
                                    x->pos));
-        Qs :=  decomp!.flat_coordinates[i][pos];
+        Qs :=  decomp!.allcoords[i][pos];
       else
         Print(i, "~~HEY~~ ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
       fi;
@@ -400,7 +412,7 @@ local skeleton,oldrep, pos, depth,i, coversets;
   hd!.reps[depth][pos] := set;
   coversets := CoveringSetsOf(skeleton, set);
   for i in [1..Length(coversets)] do
-    hd!.flat_coordinates[depth][hd!.shifts[depth][pos]+i] := coversets[i];
+    hd!.allcoords[depth][hd!.shifts[depth][pos]+i] := coversets[i];
   od;
   #TODO!! we may have lost the CoverGroup's mapping
   #to coordinate points as integers, but for the time being
