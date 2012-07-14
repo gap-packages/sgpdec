@@ -160,34 +160,6 @@ local gens;
 end;
 MakeReadOnlyGlobal("HolonomyPermutationReset");
 
-#this is basically raising, but one may want to access the depfucntable (for the time being)
-_holonomy_CreateDepFuncTableForFlatTransformation := function(decomp,t)
-local j,tilechain, tilechains, actions,depfunctable,arg, state;
-#TODO investigate why the identity fails below
-#  if IsOne(t) then return IdentityCascadedTransformation(CascadeShellOf(decomp)); fi;
-
-  #the states already coded as coset representatives
-  tilechains := AllCoverChains(SkeletonOf(decomp));
-
-  #the lookup for the new dependencies
-  depfunctable := [];
-
-  #we go through all states
-  for tilechain in tilechains  do
-    state := Coordinates(decomp,tilechain);
-    actions := ComponentActions(decomp,t,state);
-
-    #examine whether there is a nontrivial action, then add
-    for j in [1..Length(actions)] do
-      if not IsOne(actions[j]) then
-        arg := _holonomy_encode_coords(decomp,state{[1..(j-1)]});
-        RegisterNewDependency(depfunctable, arg, actions[j]);
-      fi;
-    od;
-  od;
-  return depfunctable;
-end;
-
 _holonomy_ShiftGroup :=  function(G,n, shift)
 local gens,g,set,origens,i,j;
   set := [1..n];
@@ -200,7 +172,6 @@ local gens,g,set,origens,i,j;
   od;
   return Group(List(gens, x -> PermList(x)));
 end;
-
 
 #CONSTRUCTOR##################################################
 InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
@@ -365,11 +336,33 @@ InstallMethod(Raise,
     true,
     [IsHolonomyDecomposition,IsTransformation], 1,
 function(decomp,t)
-  return CascadedTransformation(
-                 CascadeShellOf(decomp),
-                 _holonomy_CreateDepFuncTableForFlatTransformation(decomp,t));
-end
-);
+local j,tilechain, tilechains, actions,depfunctable,arg, state;
+  if IsOne(t) then
+    return IdentityCascadedTransformation(CascadeShellOf(decomp));
+  fi;
+
+  #the states already coded as coset representatives
+  tilechains := AllCoverChains(SkeletonOf(decomp));
+
+  #the lookup for the new dependencies
+  depfunctable := [];
+
+  #we go through all states
+  for tilechain in tilechains  do
+    state := Coordinates(decomp,tilechain);
+    actions := ComponentActions(decomp,t,state);
+
+    #examine whether there is a nontrivial action, then add
+    for j in [1..Length(actions)] do
+      if not IsOne(actions[j]) then
+        arg := _holonomy_encode_coords(decomp,state{[1..(j-1)]});
+        RegisterNewDependency(depfunctable, arg, actions[j]);
+      fi;
+    od;
+  od;
+
+  return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
+end);
 
 InstallMethod(Flatten,
     "flattens a cascaded operation in holonomy",
