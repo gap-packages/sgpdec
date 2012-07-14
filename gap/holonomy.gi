@@ -4,13 +4,14 @@
 ##
 ## Copyright (C) 2010-2012
 ##
-## Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
 
 #slots are the positions of the parallel components on a hierarchical level
 #returns the range of indices for the component's states
+#TODO store the ranges
 _holonomy_slot_range := function(hd, set)
 local slot, depth, skeleton;
   skeleton := SkeletonOf(hd);
@@ -40,7 +41,7 @@ end;
 # encoding: sets -> integers
 _holonomy_encode_coords := function(hd, sets)
 local rep,level,ints;
-  rep := TopSet(SkeletonOf(hd));#hack -- TODO why is this a hack?
+  rep := TopSet(SkeletonOf(hd));
   ints := [];
   for level in [1..Length(sets)] do
       if sets[level] = 0 then
@@ -49,7 +50,7 @@ local rep,level,ints;
      Add(ints,Position(hd!.flat_coordinates[level],
                        sets[level],
                        _holonomy_slot_range(hd,rep)[1]-1));
-     rep := sets[level]; #this is ugly hack to get the proper duplicated covering_set
+     rep := sets[level]; #a hack to get the proper duplicated covering_set
     fi;
   od;
   return ints;
@@ -67,8 +68,7 @@ local chain,P,depth,skeleton;
   chain := [];
   depth := 1;
   while depth <= Length(hd) do
-    #we go from the cover of the representative to the cover of the chain element 
-    #Print(P, " ", depth, "\n");
+    #we go from the cover of the rep to the cover of the chain element
     P := OnFiniteSets(coordinates[depth] , GetIN(skeleton, P));
     Add(chain,P);
     depth :=  DepthOfSet(skeleton,P);
@@ -86,13 +86,13 @@ local sets,i, P, skeleton;
   P := TopSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
-    sets[DepthOfSet(skeleton, P)] := OnFiniteSets(chain[i] , GetOUT(skeleton,P));
+    sets[DepthOfSet(skeleton, P)] := OnFiniteSets(chain[i], GetOUT(skeleton,P));
     P := chain[i];
   od;
   return sets;
-end
-);
+end);
 
+#TODO incorporate this into Display
 InstallGlobalFunction(ActionInfoOnLevel,
 function(hd, level)
 local groups, numofpoints,i, movedpoints, orbitsizes;
@@ -101,11 +101,11 @@ local groups, numofpoints,i, movedpoints, orbitsizes;
   #then for each group we print the action information
   for i in [1..Length(groups)] do
     numofpoints := hd!.shifts[level][i+1] - hd!.shifts[level][i];
-    #getting the orbits, but we are interested only in their sizes, so transform them immediately
+    #getting the orbits, but we are interested only in their sizes,
+    #so we transform them immediately
     orbitsizes := List(Orbits(groups[i]), x -> Length(x));
     #this is is zero only if Orbits(..) return an empty list (trivial orbits)
     movedpoints := Sum(orbitsizes);
-
     Print(StructureDescription(groups[i]), " acting on ");
     Print(numofpoints ," points ");
     if movedpoints > 0 then
@@ -128,8 +128,7 @@ local groups, numofpoints,i, movedpoints, orbitsizes;
     fi;
     Print("\n");
   od;
-end
-);
+end);
 
 _holonomy_find_containing_set := function(hd, level, range, set)
 local i;
@@ -138,10 +137,8 @@ local i;
       return i;
     fi;
   od;
-  Error("HOLONOMY: Finding a containing set fails! This cannot happen mathematically!\n");
-  return fail;
+  Error("HOLONOMY: Finding a containing set fails!\n");
 end;
-
 
 #constructing a transformation semigroup out of a list of groups + constants
 #if the groups act on different sets of points, then it is a direct product
@@ -177,12 +174,9 @@ MakeReadOnlyGlobal("ShiftGroupAction");
 
 #CONSTRUCTOR##################################################
 InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
-function(T)
-  return HolonomyDecomposition(Skeleton(T));
-end
-);
+function(T) return HolonomyDecomposition(Skeleton(T));end);
 
-InstallOtherMethod(HolonomyDecomposition,[IsRecord], #TODO quickfix - skeleton is a record now 
+InstallOtherMethod(HolonomyDecomposition,[IsRecord], #skeleton is a record now
 function(skeleton)
 local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   # 1. put the skeleton into the record
@@ -231,8 +225,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
                     Length(holrec.flat_coordinates[x]))));
   #the permutation reset semigroups
   return Objectify(HolonomyDecompositionType, holrec);
-end
-);
+end);
 
 ##METHODS FROM ABSTRACT DECOMPOSITION########################################
 InstallMethod(Interpret,
@@ -241,8 +234,7 @@ InstallMethod(Interpret,
     [IsHolonomyDecomposition,IsInt,IsInt], 0,
 function(hd,level,state)
   return hd!.flat_coordinates[level][state];
-end
-);
+end);
 
 InstallMethod(Flatten,
     "flatten a cascaded state",
@@ -263,8 +255,7 @@ function(hd,k)
                  _holonomy_encode_coords(hd,
                          Coordinates(hd,
                                  RandomCoverChain(hd!.skeleton,k))));
-end
-);
+end);
 
 
 InstallMethod(ComponentActions,
@@ -273,7 +264,7 @@ InstallMethod(ComponentActions,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
 function(decomp,s,tiles)
 local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
-  skeleton := SkeletonOf(decomp); # it is used frequently so it's better to have the reference
+  skeleton := SkeletonOf(decomp); #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..Length(decomp)], i -> One(decomp[i]));
   #initial successive approximation are the same for both
@@ -327,9 +318,7 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
     fi;
   od;
   return actions;
-end
-);
-
+end);
 
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
@@ -342,18 +331,14 @@ local j,tilechain, tilechains, actions,depfunctable,arg, state;
   if IsOne(t) then
     return IdentityCascadedTransformation(CascadeShellOf(decomp));
   fi;
-
   #the states already coded as coset representatives
   tilechains := AllCoverChains(SkeletonOf(decomp));
-
   #the lookup for the new dependencies
   depfunctable := [];
-
   #we go through all states
   for tilechain in tilechains  do
     state := Coordinates(decomp,tilechain);
     actions := ComponentActions(decomp,t,state);
-
     #examine whether there is a nontrivial action, then add
     for j in [1..Length(actions)] do
       if not IsOne(actions[j]) then
@@ -362,7 +347,6 @@ local j,tilechain, tilechains, actions,depfunctable,arg, state;
       fi;
     od;
   od;
-
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
@@ -377,12 +361,12 @@ local l, i;
     l[i] := Flatten(hd,Raise(hd,i) ^ co);
   od;
   return Transformation(l);
-end
-);
+end);
 
-# Collapsing the whole cascade shell (as Flatten gives back the original structure)
+#Flattening the whole decomposition (gives back the original semigroup)
+#TODO this should be wrapped in the semigroup homomorphism
 InstallOtherMethod(Flatten,
-    "collapsing a hierarchical decomposition",
+    "flattening a hierarchical decomposition",
     true,
     [IsHolonomyDecomposition], 0,
 function( hd )
@@ -392,22 +376,16 @@ function( hd )
         Add(gens,Flatten(Raise(hd,g)));
     od;
     return Semigroup(gens);
-end
-);
+end);
 
 ######################ACCESS FUNCTIONS############################
 InstallGlobalFunction(SkeletonOf,
-function(hd)
-  return hd!.skeleton;
-end
-);
+function(hd) return hd!.skeleton;end);
 
 InstallGlobalFunction(GroupComponentsOnDepth,
-function(hd, depth)
-  return hd!.groupcomponents[depth];
-end
-);
+function(hd, depth) return hd!.groupcomponents[depth];end);
 
+#changing the representative
 InstallGlobalFunction(ChangeCoveredSet,
 function(hd, set)
 local skeleton,oldrep, pos, depth,i, coversets;
@@ -427,9 +405,7 @@ local skeleton,oldrep, pos, depth,i, coversets;
   #TODO!! we may have lost the CoverGroup's mapping
   #to coordinate points as integers, but for the time being
   #it does not seem to matter
-end
-);
-
+end);
 
 ####################OLD FUNCTIONS#################################
 # The size of the cascade shell is the number components.
@@ -438,8 +414,7 @@ InstallMethod(Length,"for holonomy decompositions",
 function(hd)
   # just delegating the task to the cascade shell
   return Length(hd!.cascadeshell);
-end
-);
+end);
 
 # for accessing the list elements
 InstallOtherMethod( \[\],
@@ -448,8 +423,7 @@ InstallOtherMethod( \[\],
 function( hd, pos )
   # just delegating the task to the cascade shell
   return hd!.cascadeshell[pos];
-end
-);
+end);
 
 #quick print of the components
 InstallMethod( PrintObj,"for a holonomy decomposition",
