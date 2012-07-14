@@ -27,9 +27,10 @@ DeclareRepresentation(
         [ "skeleton", #reference to the full skeleton
           #the followings are here for convenient access for each level
           "reps", #the list of representative sets,
-          #whose covering sets are the states on this level
-          "coordinates", #the tile sets of the representatives
-          "flat_coordinates", # all reptile sets on one level in one list
+                  #whose covering sets are the states on this level
+          "coords", #the tile sets of the representatives
+          "allcoords", #cover sets of all reps on one level in one list
+          "widths", #the number of coordinates on levels
           "cascadeshell",
           "groupcomponents"]);#from permutation-reset components, it may not be
                             #straightforward what the group components are
