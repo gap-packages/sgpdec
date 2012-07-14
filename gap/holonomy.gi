@@ -130,22 +130,16 @@ local groups, numofpoints,i, movedpoints, orbitsizes;
   od;
 end);
 
-_holonomy_find_containing_set := function(hd, level,range, set)
-local i;#slot,sk,depth;
-  #sk := SkeletonOf(hd);
-  #depth := DepthOfSet(sk,Q);
-  #Print(depth,"-",level,"\n");
-  #slot := Position(hd!.reps[depth],
-  #                RepresentativeSet(sk, Q));
-  #return PositionProperty(hd!.allcoords[level],
-  #               s->IsSubset(s, set),
-  #               hd!.shifts[level][slot]);
- for i in range do
-    if IsSubset(hd!.allcoords[level][i], set) then
-      return i;
-    fi;
+_holonomy_find_containing_set := function(hd, level,Q, set)
+local i,slot,sk;
+  sk := SkeletonOf(hd);
+  slot := Position(hd!.reps[level],
+                  RepresentativeSet(sk, Q));
+  i := hd!.shifts[level][slot] +1;
+  while true do
+    if IsSubset(hd!.allcoords[level][i],set) then return i;fi;
+    i := i + 1;
   od;
-  Error("HOLONOMY: Finding a containing set fails!\n");
 end;
 
 #constructing a transformation semigroup out of a list of groups + constants
@@ -313,7 +307,7 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
         #look for a tile of Q that contains
         pos := _holonomy_find_containing_set(decomp,
                        i,
-                       _holonomy_slot_range(decomp, Q),
+                       Q,
                        OnFiniteSets(Ps , GetOUT(skeleton,Q)));
         actions[i] := Transformation(
                               List([1..Length(decomp!.allcoords[i])],
