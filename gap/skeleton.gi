@@ -341,7 +341,7 @@ InstallGlobalFunction(CoverGroup,
 function(sk,set)
 local gens;
   gens := AsSet(List(List(PermutatorGenerators(sk,set),
-                                    x->Construct(x, sk.gens, sk.id,\*)),x->PermutationAction(CoveringSetsOf(sk,set),x,OnFiniteSets)));
+                                    x->Construct(x, sk.gens, sk.id,\*)),x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets))));
   if IsEmpty(gens) then gens := [()]; fi;
   return Group(gens);
 end);

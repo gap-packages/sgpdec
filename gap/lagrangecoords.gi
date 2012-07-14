@@ -56,7 +56,7 @@ function(G, subgroupchain)
     # transversals
     compgens := [];
     for gen in GeneratorsOfGroup(series[i]) do
-      Add(compgens, PermutationAction(transversals[i],gen,\*));
+      Add(compgens, PermList(ActionOn(transversals[i],gen,\*)));
     od;
     Add(comps,Group(AsSet(compgens)));
   od;
@@ -133,8 +133,8 @@ local fudges,i;
   od;
   #converting to canonical
   for i in [1..Length(fudges)] do
-    fudges[i] := PermutationAction(TransversalsOf(decomp)[i],
-                         fudges[i],\*);
+    fudges[i] := PermList(ActionOn(TransversalsOf(decomp)[i],
+                         fudges[i],\*));
   od;
   return fudges;
 end);
