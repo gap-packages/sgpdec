@@ -160,18 +160,20 @@ local gens;
 end;
 MakeReadOnlyGlobal("HolonomyPermutationReset");
 
-_holonomy_ShiftGroup :=  function(G,n, shift)
-local gens,g,set,origens,i,j;
-  set := [1..n];
+#shifts the points of the action
+# G - permutation group, n - current size of the set acting upon
+ShiftGroupAction :=  function(G,n, shift)
+local gens,origens,i,j;
   origens := GeneratorsOfGroup(G);
-  gens := List(origens, x -> [1..Size(set)+shift]);
-  for i in set do
+  gens := List(origens, x -> [1..n+shift]);#identity maps
+  for i in [1..n] do
     for j in [1..Size(gens)] do
-      gens[j][i+shift] := i^origens[j] + shift;
+      gens[j][i+shift] := OnPoints(i,origens[j]) + shift;
     od;
   od;
   return Group(List(gens, x -> PermList(x)));
 end;
+MakeReadOnlyGlobal("ShiftGroupAction");
 
 #CONSTRUCTOR##################################################
 InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
@@ -206,7 +208,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
       coversets := CoveringSetsOf(holrec.skeleton,rep);
       Add(groups,
-          _holonomy_ShiftGroup(CoverGroup(holrec.skeleton, rep),
+          ShiftGroupAction(CoverGroup(holrec.skeleton, rep),
                   Size(coversets),shift));
       shift := shift + Size(coversets);
       Add(shifts,shift);
