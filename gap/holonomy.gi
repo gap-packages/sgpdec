@@ -2,9 +2,9 @@
 ##
 ## holonomy.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
+## Copyright (C) 2010-2012
 ##
-## 2010-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
@@ -19,9 +19,9 @@ local slot, depth, skeleton;
   return [hd!.shifts[depth][slot]+1..hd!.shifts[depth][slot+1]];
 end;
 
-# INTEGERS <--> SETS
-# CODEC - though the coordinate values are elements of the cover of representative, it still
-# has to be converted to integers, so  a cascade shell can be built
+# CODEC: INTEGERS <--> SETS
+# Though the coordinate values are elements of the cover of representative,
+# it still has to be converted to integers, so  a cascade shell can be built
 # decoding: integers -> sets
 _holonomy_decode_coords := function(hd, ints)
 local sets, level;
@@ -29,8 +29,9 @@ local sets, level;
   for level in [1..Length(ints)] do
       if ints[level] = 0 then
           Add(sets,0); #zero if the level is jumped over
-      else
-          Add(sets,hd!.flat_coordinates[level][ints[level]]); # the position of the set    
+        else
+          # the position of the set
+          Add(sets,hd!.flat_coordinates[level][ints[level]]);
       fi;
   od;
   return sets;
@@ -73,8 +74,7 @@ local chain,P,depth,skeleton;
     depth :=  DepthOfSet(skeleton,P);
   od;
   return chain;
-end
-);
+end);
 
 #the inverse of successive approximation
 InstallGlobalFunction(Coordinates,
@@ -144,20 +144,21 @@ end;
 
 
 #constructing a transformation semigroup out of a list of groups + constants
-# if the groups act on different sets of points, then it is really a direct product
-_holonomy_PermutationReset := function(groups,n) #groups is a list of permutation  groups, n number of points to act on
-local gens,G,i;
-  #first the group generators to transformations (they are shifted properly, so no problem here)
+#if the groups act on different sets of points, then it is a direct product
+#groups is a list of permutation  groups, n number of points to act on
+HolonomyPermutationReset := function(groups,n)
+local gens;
+  #first the group generators to transformations
+  #(they are shifted properly, so no problem here)
   gens := [];
-  for G in groups do
-    Append(gens,List(GeneratorsOfGroup(G), x -> AsTransformation(x,n)));
-  od;
+  Perform(groups, function(G)
+    Append(gens,List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)));end);
   #the resets (constant maps)
-  for i in [1..n] do
-    Add(gens, Transformation(List([1..n],x->i)));
-  od;
+  Perform([1..n], function(i)
+    Add(gens, Transformation(ListWithIdenticalEntries(n,i)));end);
   return SemigroupByGenerators(gens);
 end;
+MakeReadOnlyGlobal("HolonomyPermutationReset");
 
 #this is basically raising, but one may want to access the depfucntable (for the time being)
 _holonomy_CreateDepFuncTableForFlatTransformation := function(decomp,t)
@@ -253,7 +254,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   #building the cascade shell
   holrec.cascadeshell :=
     CascadeShell(List([1..Length(holrec.groupcomponents)],
-            x -> _holonomy_PermutationReset(holrec.groupcomponents[x],
+            x -> HolonomyPermutationReset(holrec.groupcomponents[x],
                     Length(holrec.flat_coordinates[x]))));
   #the permutation reset semigroups
   return Objectify(HolonomyDecompositionType, holrec);

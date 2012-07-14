@@ -2,9 +2,8 @@
 ##
 ## holonomy.gd           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
-##
-## 2008-2012
+## Copyright (C) 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
@@ -32,9 +31,8 @@ DeclareRepresentation(
           "coordinates", #the tile sets of the representatives
           "flat_coordinates", # all reptile sets on one level in one list
           "cascadeshell",
-          "groupcomponents" #from permutation-reset components, it may not be
-          #straightforward what the group components are
-          ] );
+          "groupcomponents"]);#from permutation-reset components, it may not be
+                            #straightforward what the group components are
 
 HolonomyDecompositionType  := NewType(
     NewFamily("HolonomyDecompositionTypeFamily",IsHolonomyDecomposition),
