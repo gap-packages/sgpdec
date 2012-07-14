@@ -26,7 +26,7 @@ local l;
           end);
   return l;
 end;
-MakeReadOnlyGlobal("ActionOm");
+MakeReadOnlyGlobal("ActionOn");
 
 # creating partial order modified from the library code
 # bypassing checks

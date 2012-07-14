@@ -12,12 +12,12 @@
 #slots are the positions of the parallel components on a hierarchical level
 #returns the range of indices for the component's states
 #TODO store the ranges
-_holonomy_slot_range := function(hd, set)
-local slot, depth, skeleton;
+_holonomy_slot := function(hd, set)
+local depth, skeleton;
   skeleton := SkeletonOf(hd);
   depth := DepthOfSet(skeleton,set);
-  slot :=  Position(hd!.reps[depth], RepresentativeSet(skeleton, set));
-  return [hd!.shifts[depth][slot]+1..hd!.shifts[depth][slot+1]];
+  return Position(hd!.reps[depth], RepresentativeSet(skeleton, set));
+  #return [hd!.shifts[depth][slot]+1..hd!.shifts[depth][slot+1]];
 end;
 
 # CODEC: INTEGERS <--> SETS
@@ -49,7 +49,7 @@ local rep,level,ints;
     else
      Add(ints,Position(hd!.allcoords[level],
                        sets[level],
-                       _holonomy_slot_range(hd,rep)[1]-1));
+                       hd!.shifts[level][_holonomy_slot(hd,rep)]));
      rep := sets[level]; #a hack to get the proper duplicated covering_set
     fi;
   od;
@@ -269,7 +269,7 @@ InstallMethod(ComponentActions,
     true,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
 function(decomp,s,tiles)
-local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
+local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot;
   skeleton := SkeletonOf(decomp); #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..Length(decomp)], i -> One(decomp[i]));
@@ -287,15 +287,23 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list;
         # calculating the action on the covers
         # list - the covering sets on a given level,
         # range - holonomy slot range, t is the action
-        range := _holonomy_slot_range(decomp, Q);
-        list := decomp!.allcoords[i];
-        l := [1..Length(list)];
-        for j in range  do #this is just canonical action
-          l[j] :=  Position(list,
-                           OnFiniteSets(list[j],action),
-                           range[1]-1);
-        od;
-        actions[i] :=Transformation(l);
+        #range := _holonomy_slot_range(decomp, Q);
+        #list := decomp!.allcoords[i];
+        l := [1..decomp!.widths[i]];
+        #for j in range  do #this is just canonical action
+        #  l[j] :=  Position(list,
+        #                   OnFiniteSets(list[j],action),
+        #                   range[1]-1);
+        #od;
+        slot := _holonomy_slot(decomp,Q);
+        range := ActionOn(decomp!.coords[i][slot],
+                         action,
+                         OnFiniteSets);
+        Perform([1..Size(range)],
+                function(x)
+          l[decomp!.shifts[i][slot]+x]:=range[x]+decomp!.shifts[i][slot];end);
+        actions[i]:=Transformation(l);
+
 
         # paranoid check whether the action is in the component
         if SgpDecOptionsRec.PARANOID then
