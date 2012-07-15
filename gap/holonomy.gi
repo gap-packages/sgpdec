@@ -246,21 +246,35 @@ InstallMethod(ComponentActions,
     true,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
 function(hd,s,tiles)
-local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,coversetaction,list, slot, set, shift, width;
-  skeleton := SkeletonOf(hd); #it is used often so it's better to have it
+local action,
+      pos,
+      actions,
+      i,
+      P,
+      Q,
+      Ps,
+      Qs,
+      sk,
+      j,
+      coversetaction,
+      slot,
+      set,
+      shift,
+      width;
+  sk := SkeletonOf(hd); #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..Length(hd)], i -> One(hd[i]));
   #initial successive approximation are the same for both
-  P := TopSet(skeleton);
+  P := TopSet(sk);
   Q := P;
   for i in [1..Length(hd)] do
-    if DepthOfSet(skeleton, Q) = i then # we are on the right level
-      slot := Position(hd!.reps[i], RepresentativeSet(skeleton, Q));#_holonomy_slot(hd,Q);
+    if DepthOfSet(sk, Q) = i then # we are on the right level
+      slot := Position(hd!.reps[i], RepresentativeSet(sk, Q));
       Ps := OnFiniteSets(P , s);
       if Ps = Q then #PERMUTATION
-        action := GetIN(skeleton,P)
+        action := GetIN(sk,P)
                   * s
-                  * GetOUT(skeleton,Q);
+                  * GetOUT(sk,Q);
         Qs := OnFiniteSets(tiles[i], action);
         # calculating the action on the covers
         coversetaction := ActionOn(hd!.coords[i][slot],
@@ -280,7 +294,7 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,coversetaction,list, slot, 
         fi;
       elif IsSubset(Q,Ps)  then #CONSTANT MAP
         #look for a tile of Q that contains
-        set := OnFiniteSets(Ps , GetOUT(skeleton,Q));
+        set := OnFiniteSets(Ps , GetOUT(sk,Q));
         pos := hd!.shifts[i][slot] +1;
         while not (IsSubset(hd!.allcoords[i][pos],set)) do
           pos := pos + 1;
@@ -293,11 +307,11 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,coversetaction,list, slot, 
         #this not supposed to happen, but still here until further testing
         Print(i, "HEY!!! ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
       fi;
-      Q :=  OnFiniteSets(Qs , GetIN(skeleton,Q));
+      Q :=  OnFiniteSets(Qs , GetIN(sk,Q));
     fi; #if we are on the right level for Q
 
-    if DepthOfSet(skeleton,P) = i then
-      P:= OnFiniteSets(tiles[i] , GetIN(skeleton, P));
+    if DepthOfSet(sk,P) = i then
+      P:= OnFiniteSets(tiles[i] , GetIN(sk, P));
     fi;
   od;
   return actions;
