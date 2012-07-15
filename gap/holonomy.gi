@@ -255,52 +255,53 @@ InstallMethod(ComponentActions,
     "component actions of an original transformation in holonomy decomposition",
     true,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
-function(decomp,s,tiles)
-local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot, set;
-  skeleton := SkeletonOf(decomp); #it is used often so it's better to have it
+function(hd,s,tiles)
+local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,coversetaction,list, slot, set, shift, width;
+  skeleton := SkeletonOf(hd); #it is used often so it's better to have it
   #initializing actions to identity
-  actions := List([1..Length(decomp)], i -> One(decomp[i]));
+  actions := List([1..Length(hd)], i -> One(hd[i]));
   #initial successive approximation are the same for both
   P := TopSet(skeleton);
   Q := P;
-  for i in [1..Length(decomp)] do
+  for i in [1..Length(hd)] do
     if DepthOfSet(skeleton, Q) = i then # we are on the right level
-      slot := _holonomy_slot(decomp,Q);
+      slot := _holonomy_slot(hd,Q);
       Ps := OnFiniteSets(P , s);
-      if Ps = Q then #permutation
+      if Ps = Q then #PERMUTATION
         action := GetIN(skeleton,P)
                   * s
                   * GetOUT(skeleton,Q);
         Qs := OnFiniteSets(tiles[i], action);
-        l := [1..decomp!.widths[i]];
         # calculating the action on the covers
-        range := ActionOn(decomp!.coords[i][slot],
-                         action,
-                         OnFiniteSets);
-        Perform([1..Size(range)],
-                function(x)
-          l[decomp!.shifts[i][slot]+x]:=range[x]+decomp!.shifts[i][slot];end);
-        actions[i]:=Transformation(l);
-
+        coversetaction := ActionOn(hd!.coords[i][slot],
+                                  action,
+                                  OnFiniteSets);
+        shift := hd!.shifts[i][slot];
+        width := Size(hd!.allcoords[i]);
+        actions[i]:=Transformation(Concatenation(
+                            [1..shift],
+                            coversetaction + shift,
+                            [shift+Size(coversetaction)+1..width]));
         # paranoid check whether the action is in the component
         if SgpDecOptionsRec.PARANOID then
-          if not actions[i] in decomp[i] then
+          if not actions[i] in hd[i] then
             Error("Alien component action!");
           fi;
         fi;
-      elif IsSubset(Q,Ps)  then #constant
+      elif IsSubset(Q,Ps)  then #CONSTANT MAP
         #look for a tile of Q that contains
         set := OnFiniteSets(Ps , GetOUT(skeleton,Q));
-        pos := decomp!.shifts[i][slot] +1;
-        while not (IsSubset(decomp!.allcoords[i][pos],set)) do
+        pos := hd!.shifts[i][slot] +1;
+        while not (IsSubset(hd!.allcoords[i][pos],set)) do
           pos := pos + 1;
         od;
         actions[i] := Transformation(
-                              List([1..Length(decomp!.allcoords[i])],
+                              List([1..Length(hd!.allcoords[i])],
                                    x->pos));
-        Qs :=  decomp!.allcoords[i][pos];
+        Qs :=  hd!.allcoords[i][pos];
       else
-        Print(i, "~~HEY~~ ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
+        #this not supposed to happen, but still here until further testing
+        Print(i, "HEY!!! ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
       fi;
       Q :=  OnFiniteSets(Qs , GetIN(skeleton,Q));
     fi; #if we are on the right level for Q
