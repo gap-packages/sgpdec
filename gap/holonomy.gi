@@ -9,17 +9,6 @@
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
 
-#slots are the positions of the parallel components on a hierarchical level
-#returns the range of indices for the component's states
-#TODO store the ranges
-_holonomy_slot := function(hd, set)
-local depth, skeleton;
-  skeleton := SkeletonOf(hd);
-  depth := DepthOfSet(skeleton,set);
-  return Position(hd!.reps[depth], RepresentativeSet(skeleton, set));
-  #return [hd!.shifts[depth][slot]+1..hd!.shifts[depth][slot+1]];
-end;
-
 # CODEC: INTEGERS <--> SETS
 # Though the coordinate values are elements of the cover of representative,
 # it still has to be converted to integers, so  a cascade shell can be built
@@ -40,17 +29,20 @@ end;
 
 # encoding: sets -> integers
 _holonomy_encode_coords := function(hd, sets)
-local rep,level,ints;
-  rep := TopSet(SkeletonOf(hd));
+local rep,level,ints,slot, sk;
+  sk := SkeletonOf(hd);
+  rep := TopSet(sk);
   ints := [];
   for level in [1..Length(sets)] do
-      if sets[level] = 0 then
-          Add(ints,0);
+    if sets[level] = 0 then
+      Add(ints,0);
     else
-     Add(ints,Position(hd!.allcoords[level],
-                       sets[level],
-                       hd!.shifts[level][_holonomy_slot(hd,rep)]));
-     rep := sets[level]; #a hack to get the proper duplicated covering_set
+      # TODO rep seems to be a misnomer here
+      slot := Position(hd!.reps[DepthOfSet(sk,rep)], RepresentativeSet(sk,rep));
+      Add(ints,Position(hd!.allcoords[level],
+              sets[level],
+              hd!.shifts[level][slot]));
+      rep := sets[level]; #a hack to get the proper duplicated covering_set
     fi;
   od;
   return ints;
@@ -263,7 +255,7 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,coversetaction,list, slot, 
   Q := P;
   for i in [1..Length(hd)] do
     if DepthOfSet(skeleton, Q) = i then # we are on the right level
-      slot := _holonomy_slot(hd,Q);
+      slot := Position(hd!.reps[i], RepresentativeSet(skeleton, Q));#_holonomy_slot(hd,Q);
       Ps := OnFiniteSets(P , s);
       if Ps = Q then #PERMUTATION
         action := GetIN(skeleton,P)
