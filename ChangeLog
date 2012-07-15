@@ -1,4 +1,6 @@
 0.6.54
+	PermutationAction generalized to ActionOn. Several simplifications in the holonomy code, especially the critical ComponentActions.
+0.6.53
 	Renamings: CascadedStructure -> CascadeShell, CascadedOperation -> CascadedTransformation.
 0.6.52
 	Revising CascadedOperation: SGPDEC_ActionOnLastCoord removed. OnCoordinates and OnCascadedStates introduced.
