@@ -168,7 +168,7 @@ function(T) return HolonomyDecomposition(Skeleton(T));end);
 
 InstallOtherMethod(HolonomyDecomposition,[IsRecord], #skeleton is a record now
 function(skeleton)
-local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets,widths;
+local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   # 1. put the skeleton into the record
   holrec := rec(skeleton:=skeleton);
   holrec.original := skeleton.ts;
@@ -180,7 +180,6 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets,widths;
   holrec.reps := [];
   holrec.coords := [];
   holrec.allcoords := [];
-  holrec.widths := [];
   holrec.shifts := [];
   for depth in [1..n] do
     groups := [];
@@ -209,7 +208,6 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets,widths;
     Add(holrec.reps, reps);
     Add(holrec.coords,coords);
     Add(holrec.allcoords,Flat(coords));
-    Add(holrec.widths, Size(holrec.allcoords[depth]));
   od;
 
   #building the cascade shell
