@@ -28,7 +28,7 @@ local i,numofstates, t, cascadedt,cs,cs_,chain;
     cascadedt := Raise(hd,t );
     for i in [1..numofstates] do
       for chain in AllCoverChainsToSet(SkeletonOf(hd), FiniteSet([i],numofstates)) do 
-        cs := CascadedState(CascadeShellOf(hd),_holonomy_encode_coords(hd, Coordinates(hd,chain)));#do all chains instead of raise
+        cs := CascadedState(CascadeShellOf(hd),HolonomySets2Ints(hd, Coordinates(hd,chain)));#do all chains instead of raise
         #cs := Raise(hd,i); 
         if i <> Flatten(hd, cs) then
           Print("FAIL\n");

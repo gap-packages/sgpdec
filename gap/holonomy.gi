@@ -13,14 +13,14 @@
 # Though the coordinate values are elements of the cover of representative,
 # it still has to be converted to integers, so  a cascade shell can be built
 # decoding: integers -> sets
-_holonomy_decode_coords := function(hd, ints)
+HolonomyInts2Sets := function(hd, ints)
 local sets, level;
   sets := [];
   for level in [1..Length(ints)] do
       if ints[level] = 0 then
           Add(sets,0); #zero if the level is jumped over
         else
-          # the position of the set
+          # the set at the position coded by the integer
           Add(sets,hd!.allcoords[level][ints[level]]);
       fi;
   od;
@@ -28,7 +28,7 @@ local sets, level;
 end;
 
 # encoding: sets -> integers
-_holonomy_encode_coords := function(hd, sets)
+HolonomySets2Ints := function(hd, sets)
 local rep,level,ints,slot, sk;
   sk := SkeletonOf(hd);
   rep := TopSet(sk);
@@ -226,7 +226,7 @@ InstallMethod(Flatten,
     [IsHolonomyDecomposition,IsAbstractCascadedState], 1,
 function(hd,cs)
   local coverchain;
-  coverchain := CoverChain(hd, _holonomy_decode_coords(hd,cs));
+  coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
   return AsList(coverchain[Length(coverchain)])[1];
 end);
 
@@ -236,7 +236,7 @@ InstallMethod(Raise,
     [IsHolonomyDecomposition,IsInt], 1,
 function(hd,k)
   return CascadedState(CascadeShellOf(hd),
-                 _holonomy_encode_coords(hd,
+                 HolonomySets2Ints(hd,
                          Coordinates(hd,
                                  RandomCoverChain(hd!.skeleton,k))));
 end);
@@ -325,7 +325,7 @@ local j,tilechain, tilechains, actions,depfunctable,arg, state;
     #examine whether there is a nontrivial action, then add
     for j in [1..Length(actions)] do
       if not IsOne(actions[j]) then
-        arg := _holonomy_encode_coords(decomp,state{[1..(j-1)]});
+        arg := HolonomySets2Ints(decomp,state{[1..(j-1)]});
         RegisterNewDependency(depfunctable, arg, actions[j]);
       fi;
     od;
