@@ -130,18 +130,6 @@ local groups, numofpoints,i, movedpoints, orbitsizes;
   od;
 end);
 
-_holonomy_find_containing_set := function(hd, level,Q, set)
-local i,slot,sk;
-  sk := SkeletonOf(hd);
-  slot := Position(hd!.reps[level],
-                  RepresentativeSet(sk, Q));
-  i := hd!.shifts[level][slot] +1;
-  while true do
-    if IsSubset(hd!.allcoords[level][i],set) then return i;fi;
-    i := i + 1;
-  od;
-end;
-
 #constructing a transformation semigroup out of a list of groups + constants
 #if the groups act on different sets of points, then it is a direct product
 #groups is a list of permutation  groups, n number of points to act on
@@ -263,6 +251,17 @@ function(hd,k)
                                  RandomCoverChain(hd!.skeleton,k))));
 end);
 
+_holonomy_find_containing_set := function(hd, level,Q, set)
+local k,slot,sk;
+  sk := SkeletonOf(hd);
+  slot := Position(hd!.reps[level],
+                  RepresentativeSet(sk, Q));
+  k := hd!.shifts[level][slot] +1;
+  while not (IsSubset(hd!.allcoords[level][k],set)) do
+    k := k + 1;
+  od;
+  return k;
+end;
 
 InstallMethod(ComponentActions,
     "component actions of an original transformation in holonomy decomposition",
@@ -278,24 +277,15 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot;
   Q := P;
   for i in [1..Length(decomp)] do
     if DepthOfSet(skeleton, Q) = i then # we are on the right level
+      slot := _holonomy_slot(decomp,Q);
       Ps := OnFiniteSets(P , s);
       if Ps = Q then #permutation
         action := GetIN(skeleton,P)
                   * s
                   * GetOUT(skeleton,Q);
         Qs := OnFiniteSets(tiles[i], action);
-        # calculating the action on the covers
-        # list - the covering sets on a given level,
-        # range - holonomy slot range, t is the action
-        #range := _holonomy_slot_range(decomp, Q);
-        #list := decomp!.allcoords[i];
         l := [1..decomp!.widths[i]];
-        #for j in range  do #this is just canonical action
-        #  l[j] :=  Position(list,
-        #                   OnFiniteSets(list[j],action),
-        #                   range[1]-1);
-        #od;
-        slot := _holonomy_slot(decomp,Q);
+        # calculating the action on the covers
         range := ActionOn(decomp!.coords[i][slot],
                          action,
                          OnFiniteSets);
@@ -303,7 +293,6 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot;
                 function(x)
           l[decomp!.shifts[i][slot]+x]:=range[x]+decomp!.shifts[i][slot];end);
         actions[i]:=Transformation(l);
-
 
         # paranoid check whether the action is in the component
         if SgpDecOptionsRec.PARANOID then
