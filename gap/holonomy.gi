@@ -251,24 +251,12 @@ function(hd,k)
                                  RandomCoverChain(hd!.skeleton,k))));
 end);
 
-_holonomy_find_containing_set := function(hd, level,Q, set)
-local k,slot,sk;
-  sk := SkeletonOf(hd);
-  slot := Position(hd!.reps[level],
-                  RepresentativeSet(sk, Q));
-  k := hd!.shifts[level][slot] +1;
-  while not (IsSubset(hd!.allcoords[level][k],set)) do
-    k := k + 1;
-  od;
-  return k;
-end;
-
 InstallMethod(ComponentActions,
     "component actions of an original transformation in holonomy decomposition",
     true,
     [IsHolonomyDecomposition,IsTransformation, IsList], 0,
 function(decomp,s,tiles)
-local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot;
+local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot, set;
   skeleton := SkeletonOf(decomp); #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..Length(decomp)], i -> One(decomp[i]));
@@ -302,10 +290,11 @@ local action,pos,actions,i, P, Q,Ps,Qs, skeleton,l,j,range,list, slot;
         fi;
       elif IsSubset(Q,Ps)  then #constant
         #look for a tile of Q that contains
-        pos := _holonomy_find_containing_set(decomp,
-                       i,
-                       Q,
-                       OnFiniteSets(Ps , GetOUT(skeleton,Q)));
+        set := OnFiniteSets(Ps , GetOUT(skeleton,Q));
+        pos := decomp!.shifts[i][slot] +1;
+        while not (IsSubset(decomp!.allcoords[i][pos],set)) do
+          pos := pos + 1;
+        od;
         actions[i] := Transformation(
                               List([1..Length(decomp!.allcoords[i])],
                                    x->pos));
