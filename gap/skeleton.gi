@@ -66,7 +66,6 @@ SGPDEC_skeleton_DepthCalc := function(sk)
   sk.depth := Maximum(sk.depths) + correction;
 end;
 
-
 # indx - the index of an orbit element
 directImagesReps := function(sk,indx)
 local l, rep;
@@ -86,11 +85,9 @@ local l, rep, tmpl,i;
   l := [];
   for i in tmpl do
     if i <> fail then
-      AddSet(l, OrbSCCLookup(sk.orb)[i]);  
+      AddSet(l, OrbSCCLookup(sk.orb)[i]);
     fi;
-    
   od;
-    
   rep := OrbSCCLookup(sk.orb)[indx];
   if rep in l then
     Remove(l, Position(l,rep));
@@ -99,7 +96,7 @@ local l, rep, tmpl,i;
 end;
 
 CoversOfSCC := function(sk, sccindx) #TODO! highly nonoptimized
-local l,k;  
+local l,k;
   l := DuplicateFreeList(
                Concatenation(
                        List(OrbSCC(sk.orb)[sccindx],
@@ -108,8 +105,8 @@ local l,k;
                Concatenation(
                        List(OrbSCC(sk.orb)[sccindx],
                             x -> directImagesReps(sk,x))));
-  return DuplicateFreeList(Concatenation(l,k));  
-end;  
+  return DuplicateFreeList(Concatenation(l,k));
+end;
 
 #for sorting finitesets, first by size, then by content
 BySizeSorterAscend := function(v,w)
@@ -124,7 +121,6 @@ MakeReadOnlyGlobal("BySizeSorterAscend");
 InstallMethod(Skeleton,[IsTransformationSemigroup],
 function(ts)
 local sk;
-
   sk := rec(ts:=ts,
             degree:=DegreeOfTransformationSemigroup(ts)
             );
@@ -172,7 +168,6 @@ function(sk)
   return List(sk.reps, x->sk.orb[x]);
 end);
 
-
 #changes the representative element to the given finite set
 #in the corresponding scc
 InstallGlobalFunction(ChangeRepresentativeSet,
@@ -185,7 +180,7 @@ end);
 InstallGlobalFunction(IsEquivalent,
 function(sk, A, B)
   return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
-         =  OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
+         = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
 end);
 
 #returns the word  that takes the representative
@@ -235,8 +230,6 @@ InstallGlobalFunction(CoveringSetsOf,
 function(sk,A)
   return Images(sk.inclusionHD,A);
 end);
-
-
 
 InstallGlobalFunction(RandomCoverChain,
 function(sk,k)
@@ -299,7 +292,6 @@ local coll,i;
   return coll;
 end);
 
-
 InstallGlobalFunction(Permutators,
 function(sk,set)
 local permutators,i,j,nset,scc,word;
@@ -317,31 +309,39 @@ local permutators,i,j,nset,scc,word;
       #if it stays in the class then it will give rise to a permutator
       if nset in scc then #this could be optimized TODO
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
-        if not (word in permutators) then Add(permutators, word, PositionSorted(permutators, word)); fi;
+        if not (word in permutators) then
+          Add(permutators, word, PositionSorted(permutators, word));
+        fi;
       fi;
     od;
   od;
   #conjugation here
-  permutators := List(permutators, x -> Concatenation(GetOUTw(sk,set), x, GetINw(sk,set)));
-  if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then 
-    permutators := List(permutators, x -> Reduce2StraightWord(x, sk.gens, sk.id)); #reducing on sets yield alien actions
-    permutators := DuplicateFreeList(permutators); # straightening may introduce duplicates
+  permutators := List(permutators,
+                      x -> Concatenation(GetOUTw(sk,set), x, GetINw(sk,set)));
+  if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
+    #reducing on sets yield alien actions
+    permutators := List(permutators,
+                        x -> Reduce2StraightWord(x, sk.gens, sk.id));
+    # straightening may introduce duplicates
+    permutators := DuplicateFreeList(permutators);
   fi;
   return permutators;
 end);
 
 InstallGlobalFunction(PermutatorGenerators,
 function(sk,set)
-  return Filtered(Permutators(sk,set), 
-                  x -> not (IsIdentityOnFiniteSet(Construct(x, sk.gens, sk.id,\*) ,set)));  
+  return Filtered(Permutators(sk,set),
+                 x -> not (IsIdentityOnFiniteSet(
+                         Construct(x, sk.gens, sk.id,\*) ,set)));
 end);
-
 
 InstallGlobalFunction(CoverGroup,
 function(sk,set)
 local gens;
   gens := AsSet(List(List(PermutatorGenerators(sk,set),
-                                    x->Construct(x, sk.gens, sk.id,\*)),x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets))));
+                  x->Construct(x, sk.gens, sk.id,\*)),
+                  x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
+                );
   if IsEmpty(gens) then gens := [()]; fi;
   return Group(gens);
 end);
@@ -363,12 +363,10 @@ function(sk,A)
   return sk.height[OrbSCCLookup(sk.orb)[Position(sk.orb,A)]];
 end);
 
-
 InstallGlobalFunction(TopSet,
 function(sk)
   return sk.stateset;
 end);
-
 
 InstallGlobalFunction(ImageSets,
 function(sk)
@@ -388,13 +386,13 @@ function(sk, depth)
 end);
 
 # viz
-# creating graphviz file for drawing the 
+# creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(sk,params)
 local  str, i,label,node,out,class,classes,set,states,G;
 
   str := "";
-  out := OutputTextString(str,true);  
+  out := OutputTextString(str,true);
   PrintTo(out,"digraph skeleton{\n");
 
   if "states" in RecNames(params) then
@@ -403,17 +401,15 @@ local  str, i,label,node,out,class,classes,set,states,G;
     states := [1..999];
   fi;
 
-  
   #defining the hierarchical levels - the nodes are named only by integers
   AppendTo(out, "{node [shape=plaintext]\n edge [style=invis]\n");
   for i in [1..DepthOfSkeleton(sk)-1] do
     AppendTo(out,Concatenation(StringPrint(i),"\n"));
     if i <= DepthOfSkeleton(sk) then
       AppendTo(out,Concatenation(StringPrint(i),"->",StringPrint(i+1),"\n"));
-    fi;    
+    fi;
   od;
   AppendTo(out,"}\n");
-  
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
   for i in [1..Length(classes)] do
@@ -424,22 +420,21 @@ local  str, i,label,node,out,class,classes,set,states,G;
     AppendTo(out,"color=\"black\";");
     if DepthOfSet(sk, node) < DepthOfSkeleton(sk) then
       G := CoverGroup(sk, node);
-      if not IsTrivial(G) then 
+      if not IsTrivial(G) then
         AppendTo(out,"style=\"filled\";fillcolor=\"lightgrey\";");
-        if SgpDecOptionsRec.SMALL_GROUPS then 
-          label := StructureDescription(G); 
-        else 
-          label:= ""
-        ;fi;       
+        if SgpDecOptionsRec.SMALL_GROUPS then
+          label := StructureDescription(G);
+        else
+          label:= "";
+        fi;
         AppendTo(out,"label=\"",label,"\"  }\n");
       else
         AppendTo(out,"  }\n");
-      fi;        
+      fi;
     else
       AppendTo(out,"  }\n");
-    fi;        
+    fi;
   od;
-  
   #drawing the the same level elements
   for i in [1..DepthOfSkeleton(sk)] do
     AppendTo(out, "{rank=same;",StringPrint(i),";");
@@ -450,13 +445,14 @@ local  str, i,label,node,out,class,classes,set,states,G;
     od;
     AppendTo(out,"}\n");
   od;
-
   #drawing the representatives as rectangles and their covers
-  for class in AllRepresentativeSets(sk) do     
-      AppendTo(out,"\"",FiniteSetPrinter(class,states),"\" [shape=box,color=black];\n");
-      for set in CoveringSetsOf(sk, class) do
-          AppendTo(out,"\"",FiniteSetPrinter(class,states),"\" -> \"",FiniteSetPrinter(set,states),"\"\n");     
-      od;     
+  for class in AllRepresentativeSets(sk) do
+    AppendTo(out,"\"",FiniteSetPrinter(class,states),
+            "\" [shape=box,color=black];\n");
+    for set in CoveringSetsOf(sk, class) do
+      AppendTo(out,"\"",FiniteSetPrinter(class,states),
+              "\" -> \"",FiniteSetPrinter(set,states),"\"\n");
+      od;
     od;
     AppendTo(out,"}\n");
     CloseStream(out);
