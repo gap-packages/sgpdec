@@ -17,7 +17,7 @@ MakeReadOnlyGlobal("Transformation2Mapping");
 # Finding the components of a transformation (the disconnected subgraphs).
 # A component is a list of points, and the components are returned in a list.
 TransformationComponents := function(t)
-local visited,comps, i,actualcomp,comp;
+local visited,comps, i,actualcomp;
   comps := [];           #components will be represented as list of points
   visited := [];         #we keep track of the points we visited already
   #seemingly going through all points...
@@ -35,13 +35,8 @@ local visited,comps, i,actualcomp,comp;
       od;
       if not (i in actualcomp) then
         #merging to actual component to a previous one
-        for comp in comps do
-          if i in comp then
-            Append(comp, actualcomp);
-            Remove(comps);
-            break;
-          fi;
-        od;
+        Append(First(comps, c -> i in c), actualcomp);
+        Remove(comps);
       fi;
     fi;
   od;
