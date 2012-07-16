@@ -2,7 +2,9 @@
 ##
 ## words.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C)
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Algorithms with words.
 ##
@@ -40,7 +42,7 @@ local i,t,trajectory;
   return IsDuplicateFreeList(trajectory);
 end);
 
-SGPDEC_straightenWord := function(word, trajectory)
+StraightenWord := function(word, trajectory)
 local reduced, pointer, duplicate, i, shift;
   shift:=1; #there is an extra element in the trajectory (the starting point)
   if (trajectory[1] = trajectory[Length(trajectory)]) then
@@ -63,13 +65,13 @@ local reduced, pointer, duplicate, i, shift;
   od;
   return Compacted(reduced);
 end;
+MakeReadOnlyGlobal("StraightenWord");
 
 InstallGlobalFunction(Reduce2StraightWord,
 function(word, gens, point)
   #just calculating the trajectory on the fly
-  return SGPDEC_straightenWord(word,Trajectory(word,gens,point,\*));
-end
-);
+  return StraightenWord(word,Trajectory(word,gens,point,\*));
+end);
 
 #l - length of the word, n - number of generators
 InstallGlobalFunction(RandomWord,
@@ -190,10 +192,9 @@ function(word, gens, point)
     #we reduce the word symbolically first (cancelling inverses)
     reduced := ReducePermutationWord(word);
     #we create the trajectory by the invertible word and also cancel
-    return SGPDEC_straightenWord(ReducePermutationWord(reduced),
+    return StraightenWord(ReducePermutationWord(reduced),
                    TrajectoryWithInverses(reduced,gens,point,\*));
-end
-);
+end);
 
 InstallGlobalFunction(InvertPermutationWord,
 function(sequence)
