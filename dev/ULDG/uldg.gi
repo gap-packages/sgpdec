@@ -100,7 +100,7 @@ function(k,l,m)
  return OldBetaGraph(m+1, k-m-1, l-m-1);
 end);
 
-InstallGlobalFunction(MyBetaGraph,
+InstallGlobalFunction(ThetaGraph,
 function(k,l,m) # cycle of length k and l, sharing m edges.
 local collapsings,cycle1,cycle2,i,shift;
   collapsings := [];
@@ -108,7 +108,8 @@ local collapsings,cycle1,cycle2,i,shift;
   cycle2 := [];
 
 
-  if m > Minimum(k,l) then return fail; fi; 
+  # at least one edge per cycle must be not shared
+  if m >= Minimum(k,l) then return fail; fi; 
   shift := k-m-1;
   if shift < 0 then return fail; fi;
 
