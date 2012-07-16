@@ -7,11 +7,12 @@
 ## 2009-2012
 ## One line notation for transformations.
 
-SGPDEC_LinearNotation_Transformation2Mapping := function(t)
+Transformation2Mapping := function(t)
 local dom;
   dom := Domain([1..DegreeOfTransformation(t)]);
   return MappingByFunction(dom,dom, x -> x^t);
 end;
+MakeReadOnlyGlobal("Transformation2Mapping");
 
 # Finding the components of a transformation (the disconnected subgraphs).
 # A component is a list of points, and the components are returned in a list.
@@ -62,7 +63,7 @@ end;
 ##############################################
 # point - the root of the tree, mapping the whole transformation as Mapping,
 #the list of the cycle elements, the string
-SGPDEC_LinearNotation_TreePrint := function(point, mapping,cycle, str)
+TreePrint := function(point, mapping,cycle, str)
     local preimgs,p;
 
     #we reverse the arrows in the graph for the recursion
@@ -76,7 +77,7 @@ SGPDEC_LinearNotation_TreePrint := function(point, mapping,cycle, str)
     for p in preimgs do
       #if we are tracing the tree, not the cycle the recursion
       if point <> p and (not p in cycle)then
-        str := SGPDEC_LinearNotation_TreePrint(p,mapping,cycle,str);
+        str := TreePrint(p,mapping,cycle,str);
         str := Concatenation(str,",");
       fi;
     od;
@@ -88,6 +89,7 @@ SGPDEC_LinearNotation_TreePrint := function(point, mapping,cycle, str)
   str := Concatenation(str,StringPrint(point),"]"); # ending the tree notation
   return str;
 end;
+MakeReadOnlyGlobal("TreePrint");
 
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
@@ -96,7 +98,7 @@ function(transformation)
   #this special case would be difficult to handle
   if IsOne(transformation) then return "()";fi;
   #for the preimages
-  mapping := SGPDEC_LinearNotation_Transformation2Mapping(transformation);
+  mapping := Transformation2Mapping(transformation);
   str := "";
   components := TransformationComponents(transformation);
   for comp in components do
@@ -108,7 +110,7 @@ function(transformation)
       if IsSubset(AsSet(cycle), AsSet(PreImages(mapping, point))) then
         str := Concatenation(str,StringPrint(point));
       else
-        str := SGPDEC_LinearNotation_TreePrint(point,mapping,cycle,str);
+        str := TreePrint(point,mapping,cycle,str);
       fi;
       str := Concatenation(str,",");
     od;
@@ -116,8 +118,7 @@ function(transformation)
     if (Length(cycle) > 1 ) then str := Concatenation(str,")");fi;
   od;
   return str;
-end
-);
+end);
 
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(SimplerLinearNotation,
@@ -127,8 +128,7 @@ InstallGlobalFunction(SimplerLinearNotation,
  else
   return LinearNotation(transformation);
  fi;
-end
-);
+end);
 
 if SgpDecOptionsRec.LINEAR_NOTATION then
   #redefining display for transformations
