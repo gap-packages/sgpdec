@@ -64,5 +64,6 @@ DeclareGlobalFunction("GammaGraph");
 DeclareGlobalFunction("DeltaGraph");
 DeclareGlobalFunction("OldBetaGraph");
 DeclareGlobalFunction("BetaGraph");
-DeclareGlobalFunction("MyBetaGraph");
+DeclareGlobalFunction("ThetaGraph");
+## Two overlapping cycles sharing a directed path of edges
 
