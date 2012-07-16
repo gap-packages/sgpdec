@@ -5,7 +5,7 @@ Read("uldg.gi");
 Print("Theta Graphs - Holonomy Decompositons \n");
 #i:=6; j:=6; m:=4;
 
-for i in [2..15] do
+for i in [3..15] do
   for j in [i..15] do
     for m in [1..Minimum([(i-1),(j-1)])] do
 
@@ -18,8 +18,8 @@ for i in [2..15] do
                       )
                    );
 #    hd := HolonomyDecomposition(S);
-f := DotSemigroupAction(S,[1..NumNodes],OnPoints);
-FileString(Concatenation("~/Theta-",String(i),"-",String(j),"-",String(m),".dot"),f);
+#f := DotSemigroupAction(S,[1..NumNodes],OnPoints);
+#FileString(Concatenation("~/Theta-",String(i),"-",String(j),"-",String(m),".dot"),f);
 
   Print("Rank of Defect One: ", NumNodes-1,"\n");
 
@@ -60,6 +60,19 @@ Display(LinearNotation(g2));
 
 Display(HolonomyDecomposition(SemigroupByGenerators([g1,g2])));
  
+h1:= PermList(ActionOn(Concatenation([1..i-2],[i..NumNodes]),g1,OnPoints));
+h2:= PermList(ActionOn(Concatenation([1..i-2],[i..NumNodes]),g2,OnPoints));
+
+Print("Conjugate of gen1: ");
+Display(h1 * h2 *Inverse(h1));
+Print("Commutator of gens: ");
+Display(h1 * h2 *Inverse(h1) *Inverse(h2));
+Display(Inverse(h1) * h2 *h1 *Inverse(h2));
+Display(Inverse(h1) * Inverse(h2) *h1 *h2);
+Display(h2 * h1 *Inverse(h2) *Inverse(h1));
+Display(Inverse(h2) * h1 *h2 *Inverse(h1));
+Display(Inverse(h2) * Inverse(h1) *h2 *h1);
+
   #  Splash(DotSkeleton(SkeletonOf(hd))));
 si := Size(SemigroupByGenerators([g1,g2])); 
 if si= Factorial(NumNodes-1)/2 and i mod 2 = 0 and j mod 2 =0 then Print("Alternating Group A",NumNodes-1,"\n"); 
