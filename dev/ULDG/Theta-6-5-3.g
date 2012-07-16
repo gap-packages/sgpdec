@@ -3,11 +3,7 @@ Read("uldg.gd");
 Read("uldg.gi");
 
 Print("Theta Graphs - Holonomy Decompositons \n");
-#i:=6; j:=6; m:=4;
-
-for i in [2..15] do
-  for j in [i..15] do
-    for m in [1..Minimum([(i-1),(j-1)])] do
+i:=6; j:=5; m:=3;
 
     NumNodes := i + j - (m+1);
 
@@ -17,11 +13,12 @@ for i in [2..15] do
                       x -> TransformationFromElementaryCollapsing(x, NumNodes)
                       )
                    );
-#    hd := HolonomyDecomposition(S);
-f := DotSemigroupAction(S,[1..NumNodes],OnPoints);
-FileString(Concatenation("~/Theta-",String(i),"-",String(j),"-",String(m),".dot"),f);
-
+Splash(DotSemigroupAction(S,[1..NumNodes],OnPoints));
   Print("Rank of Defect One: ", NumNodes-1,"\n");
+
+
+   hd := HolonomyDecomposition(S);
+ Splash(DotSkeleton(SkeletonOf(hd),rec()));
 
  word1 :=[];
  for c in Reversed([2..i]) do
@@ -55,10 +52,15 @@ g2 := w2[1];
 for u in [2..Length(w1)] do g1:=g1*w1[u]; od;
 for u in [2..Length(w2)] do g2:=g2*w2[u]; od;
 
+TopGroup :=SemigroupByGenerators([g1,g2]);
+Splash(DotSemigroupAction(TopGroup,[1..NumNodes],OnPoints));
+
 Display(LinearNotation(g1));
 Display(LinearNotation(g2));
 
-Display(HolonomyDecomposition(SemigroupByGenerators([g1,g2])));
+hd2:= HolonomyDecomposition(TopGroup);
+ Splash(DotSkeleton(SkeletonOf(hd2),rec()));
+
  
   #  Splash(DotSkeleton(SkeletonOf(hd))));
 si := Size(SemigroupByGenerators([g1,g2])); 
@@ -66,6 +68,21 @@ if si= Factorial(NumNodes-1)/2 and i mod 2 = 0 and j mod 2 =0 then Print("Altern
 elif  si = Factorial(NumNodes-1) then Print("Symmetric Group S",NumNodes-1,"\n"); else Print("Size: ",si,"\n"); fi;
 if (i=j and m=i-1) then Print("Cycle Graph"); fi;
     Print("\n *** \n");
+
+
+a := (1,2,3,4,6); b := (3,4,6,7);
+ TG := GroupByGenerators([a,b]);
+Transitivity(TG);  # It's 3-transitive
+A7 :=AlternatingGroup(7);
+Intersection(A7,TG);
+#TG is not contained in A7 in S7
+#but it has no 3-cycles
+for i in TG do Display(i); 
 od;
-od;
-od;
+a1 := (1,2,3,4,5); b1 := (3,4,5,6);
+TG1:=GroupByGenerators([a1,b1]);
+A6 := AlternatingGroup(6);
+Intersection(A6,TG1);
+
+
+

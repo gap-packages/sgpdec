@@ -15,3 +15,9 @@ for i in [5..13] do
     Print("NEXT\n");
   od;
 od;
+
+i:=4, j:=3; m:=2;
+   S := Semigroup(
+                 List(MyBetaGraph(i,j,m),
+                      x -> TransformationFromElementaryCollapsing(x, i+j-m-1)));
+    Display(HolonomyDecomposition(S));
