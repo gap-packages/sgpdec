@@ -7,13 +7,6 @@
 ## 2009-2012
 ## One line notation for transformations.
 
-Transformation2Mapping := function(t)
-local dom;
-  dom := Domain([1..DegreeOfTransformation(t)]);
-  return MappingByFunction(dom,dom, x -> x^t);
-end;
-MakeReadOnlyGlobal("Transformation2Mapping");
-
 # Finding the components of a transformation (the disconnected subgraphs).
 # A component is a list of points, and the components are returned in a list.
 TransformationComponents := function(t)
@@ -56,13 +49,13 @@ local orbit;
 end;
 
 ##############################################
-# point - the root of the tree, mapping the whole transformation as Mapping,
+# point - the root of the tree, transformation,
 #the list of the cycle elements, the string
-TreePrint := function(point, mapping,cycle, str)
+TreePrint := function(point, transformation,cycle, str)
     local preimgs,p;
 
     #we reverse the arrows in the graph for the recursion
-    preimgs := PreImages(mapping, point);
+    preimgs := PreimagesOfTransformation(transformation, point);
     if IsEmpty(preimgs) then   #if it is a terminal point, just print it
       str := Concatenation(str,StringPrint(point));
       return str;
@@ -72,7 +65,7 @@ TreePrint := function(point, mapping,cycle, str)
     for p in preimgs do
       #if we are tracing the tree, not the cycle the recursion
       if point <> p and (not p in cycle)then
-        str := TreePrint(p,mapping,cycle,str);
+        str := TreePrint(p,transformation,cycle,str);
         str := Concatenation(str,",");
       fi;
     od;
@@ -89,11 +82,9 @@ MakeReadOnlyGlobal("TreePrint");
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
 function(transformation)
-  local mapping,components,comp,cycle,point,str;
+  local components,comp,cycle,point,str;
   #this special case would be difficult to handle
   if IsOne(transformation) then return "()";fi;
-  #for the preimages
-  mapping := Transformation2Mapping(transformation);
   str := "";
   components := TransformationComponents(transformation);
   for comp in components do
@@ -102,10 +93,10 @@ function(transformation)
     cycle := CycleOfTransformationFromPoint(transformation,comp[1]);
     if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
     for point in cycle do
-      if IsSubset(AsSet(cycle), AsSet(PreImages(mapping, point))) then
+      if IsSubset(AsSet(cycle), AsSet(PreimagesOfTransformation(transformation, point))) then
         str := Concatenation(str,StringPrint(point));
       else
-        str := TreePrint(point,mapping,cycle,str);
+        str := TreePrint(point,transformation,cycle,str);
       fi;
       str := Concatenation(str,",");
     od;
@@ -115,7 +106,7 @@ function(transformation)
   return str;
 end);
 
-#Returns the linear notation of the transformation in a string
+#constant maps are further simplified
 InstallGlobalFunction(SimplerLinearNotation,
  function(transformation)
  if RankOfTransformation(transformation) = 1 then
@@ -125,8 +116,9 @@ InstallGlobalFunction(SimplerLinearNotation,
  fi;
 end);
 
+#redefining display for transformations if user
+#wants linearnotaion
 if SgpDecOptionsRec.LINEAR_NOTATION then
-  #redefining display for transformations
   InstallMethod( ViewObj,
     "linear notation for transformations",
     true,
