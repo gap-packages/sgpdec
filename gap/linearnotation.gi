@@ -32,6 +32,7 @@ local visited,comps, i,actualcomp;
   od;
   return comps;
 end;
+MakeReadOnlyGlobal("TransformationComponents");
 
 #Find the points in the cycle in a component containing the initial point.
 CycleOfTransformationFromPoint := function(t,p)
@@ -44,6 +45,7 @@ local orbit;
   #p is repeated so we can  cut out the cycle
   return orbit{[Position(orbit,p)..Length(orbit)]};
 end;
+MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
 
 ##############################################
 # point - the root of the tree, transformation,
@@ -67,7 +69,7 @@ local preimgs,p;
     fi;
   od;
   if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
-  if (Size(preimgs) > 1)
+  if (Size(preimgs) > 1) # this part is not totally clear ENA
      or (preimgs[1] <> point and not (preimgs[1] in cycle)) then
     str := Concatenation(str,";");
   fi;
