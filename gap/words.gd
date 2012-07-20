@@ -2,7 +2,9 @@
 ##
 ## words.gd           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2010-2012
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Algorithms with words.
 ##
