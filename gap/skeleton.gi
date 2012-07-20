@@ -1,30 +1,19 @@
-HasseDiagramByCoverFunction := function(set, coverfunc)
-local i, j,           # iterators
-      d,              # elements of underlying domain
-      tups,           # elements of the hasse diagram relation
-      h;              # the resulting hasse diagram
-  d := Domain(set);
+# adapted from GAPlib, it creates a Hasse diagram given a function
+# which calculates the covering elements for each elements in the set
+# TODO it is used only for Images and PreImages calc in the constructor
+# slated fro removal
+HasseDiagramByCoverFuncNC := function(set, coverfunc)
+local i,j,dom,tups,h;
+  dom := Domain(set);
   tups := [];
-  for i in d do
+  for i in dom do
     for j in coverfunc(i) do
       Add(tups, Tuple([i, j]));
     od;
   od;
-  h := GeneralMappingByElements(d,d, tups);
+  h := GeneralMappingByElements(dom,dom, tups);
   SetIsHasseDiagram(h, true);
   return h;
-end;
-
-#returns the n, ENA PhD Lemma 5.9
-SGPDEC_skeleton_Lemma_5_9 := function(A,f)
-local power,n;
-  power := One(f);
-  n := 0;
-  repeat
-    power := power * f;
-    n := n+1;
-  until IsIdentityOnFiniteSet(power, A);
-  return n;
 end;
 
 #height calculation is needed before depth
@@ -145,7 +134,7 @@ local sk;
   #now sorting properly TODO try to avoid double sorting
   Sort(sk.sets,BySizeSorterAscend);
   sk.inclusionHD := HasseDiagramOfSubsets(sk.sets);
-  sk.geninclusionHD := HasseDiagramByCoverFunction([1..Length(sk.reps)],
+  sk.geninclusionHD := HasseDiagramByCoverFuncNC([1..Length(sk.reps)],
                                x->CoversOfSCC(sk,x));
   #calculating depth
   SGPDEC_skeleton_DepthCalc(sk);
@@ -212,12 +201,13 @@ local pos, scc, n, outw, fg, inw, out,l;
                    TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
   out := Construct(outw, sk.gens, sk.id, \*);
   inw := GetINw(sk,A);
-  #now doing it properly
-  n := SGPDEC_skeleton_Lemma_5_9(RepresentativeSet(sk,A), GetIN(sk,A) * out);
+  #now doing it properly (Lemma 5.9. in ENA PhD thesis)
+  n := First([1..2147483648],  #TODO this is a hard limit, figure out why PositiveIntegers does not work
+             x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1), RepresentativeSet(sk,A)));
   l := [];
   Add(l, outw);
   fg := Flat([inw,outw]);
-  Add(l, ListWithIdenticalEntries(n-1,fg));
+  Add(l, ListWithIdenticalEntries(n,fg));
   return Flat(l);
 end);
 
