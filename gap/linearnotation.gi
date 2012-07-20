@@ -54,7 +54,7 @@ local preimgs,p;
   #we reverse the arrows in the graph for the recursion
   preimgs := PreimagesOfTransformation(transformation, point);
   if IsEmpty(preimgs) then   #if it is a terminal point, just print it
-    str := Concatenation(str,StringPrint(point));
+    str := Concatenation(str,String(point));
     return str;
   fi;
   
@@ -71,7 +71,7 @@ local preimgs,p;
      or (preimgs[1] <> point and not (preimgs[1] in cycle)) then
     str := Concatenation(str,";");
   fi;
-  str := Concatenation(str,StringPrint(point),"]"); # ending the tree notation
+  str := Concatenation(str,String(point),"]"); # ending the tree notation
   return str;
 end;
 MakeReadOnlyGlobal("TreePrint");
@@ -91,13 +91,15 @@ function(transformation)
     if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
     for point in cycle do
       if IsSubset(AsSet(cycle), AsSet(PreimagesOfTransformation(transformation, point))) then
+        #preimages are all in the cycle -> no incoming tree, just print the point
         str := Concatenation(str,String(point));
       else
+        #print the incoming tree
         str := TreePrint(point,transformation,cycle,str);
       fi;
       str := Concatenation(str,",");
     od;
-    Remove(str);
+    Remove(str); #removing last comma
     if (Length(cycle) > 1 ) then str := Concatenation(str,")");fi;
   od;
   return str;
