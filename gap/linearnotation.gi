@@ -41,7 +41,7 @@ local orbit;
     Add(orbit,p);
     p := p ^ t;
   od;
-  #and if a point is repeated  cut the cycle out
+  #p is repeated so we can  cut out the cycle
   return orbit{[Position(orbit,p)..Length(orbit)]};
 end;
 
@@ -49,23 +49,23 @@ end;
 # point - the root of the tree, transformation,
 #the list of the cycle elements, the string
 TreePrint := function(point, transformation,cycle, str)
-    local preimgs,p;
+local preimgs,p;
 
-    #we reverse the arrows in the graph for the recursion
-    preimgs := PreimagesOfTransformation(transformation, point);
-    if IsEmpty(preimgs) then   #if it is a terminal point, just print it
-      str := Concatenation(str,StringPrint(point));
-      return str;
+  #we reverse the arrows in the graph for the recursion
+  preimgs := PreimagesOfTransformation(transformation, point);
+  if IsEmpty(preimgs) then   #if it is a terminal point, just print it
+    str := Concatenation(str,StringPrint(point));
+    return str;
+  fi;
+  
+  str := Concatenation(str,"["); #starting the tree notation
+  for p in preimgs do
+    #if we are tracing the tree, not the cycle the recursion
+    if point <> p and (not p in cycle)then
+      str := TreePrint(p,transformation,cycle,str);
+      str := Concatenation(str,",");
     fi;
-
-    str := Concatenation(str,"["); #starting the tree notation
-    for p in preimgs do
-      #if we are tracing the tree, not the cycle the recursion
-      if point <> p and (not p in cycle)then
-        str := TreePrint(p,transformation,cycle,str);
-        str := Concatenation(str,",");
-      fi;
-    od;
+  od;
   if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
   if (Size(preimgs) > 1)
      or (preimgs[1] <> point and not (preimgs[1] in cycle)) then
@@ -91,7 +91,7 @@ function(transformation)
     if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
     for point in cycle do
       if IsSubset(AsSet(cycle), AsSet(PreimagesOfTransformation(transformation, point))) then
-        str := Concatenation(str,StringPrint(point));
+        str := Concatenation(str,String(point));
       else
         str := TreePrint(point,transformation,cycle,str);
       fi;
@@ -107,7 +107,7 @@ end);
 InstallGlobalFunction(SimplerLinearNotation,
  function(transformation)
  if RankOfTransformation(transformation) = 1 then
-  return Concatenation("[->", StringPrint(transformation![1][1]),"]");
+  return Concatenation("[->", String(transformation![1][1]),"]");
  else
   return LinearNotation(transformation);
  fi;
