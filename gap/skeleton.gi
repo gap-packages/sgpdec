@@ -58,8 +58,9 @@ end;
 # indx - the index of an orbit element
 directImagesReps := function(sk,indx)
 local l, rep;
-  l := DuplicateFreeList(
-               List(sk.orb!.orbitgraph[indx], x -> OrbSCCLookup(sk.orb)[x]));
+  l := [];  
+  Perform(sk.orb!.orbitgraph[indx],
+          function(x) AddSet(l, OrbSCCLookup(sk.orb)[x]);end);
   rep := OrbSCCLookup(sk.orb)[indx];
   if rep in l then
     Remove(l, Position(l,rep));
