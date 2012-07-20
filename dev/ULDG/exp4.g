@@ -1,4 +1,4 @@
-#LoadPackage("sgpdec");
+LoadPackage("sgpdec");
 Read("uldg.gd");
 Read("uldg.gi");
 
@@ -66,12 +66,14 @@ h2:= PermList(ActionOn(Concatenation([1..i-2],[i..NumNodes]),g2,OnPoints));
 Print("Conjugate of gen1: ");
 Display(h1 * h2 *Inverse(h1));
 Print("Commutator of gens: ");
+Display(h1^m * h2 *Inverse(h1^m) *Inverse(h2));
 Display(h1 * h2 *Inverse(h1) *Inverse(h2));
 Display(Inverse(h1) * h2 *h1 *Inverse(h2));
 Display(Inverse(h1) * Inverse(h2) *h1 *h2);
-Display(h2 * h1 *Inverse(h2) *Inverse(h1));
-Display(Inverse(h2) * h1 *h2 *Inverse(h1));
-Display(Inverse(h2) * Inverse(h1) *h2 *h1);
+Display(h2^2 * h1 *Inverse(h2^2) *Inverse(h1));
+Display(Inverse(h2^2) * h1 *h2^2 *Inverse(h1));
+Display(Inverse(h2^2) * Inverse(h1) *h2^2 *h1);
+Display(h1^2 * h2 *Inverse(h1^2) *Inverse(h2));
 
   #  Splash(DotSkeleton(SkeletonOf(hd))));
 si := Size(SemigroupByGenerators([g1,g2])); 

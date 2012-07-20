@@ -71,12 +71,9 @@ if (i=j and m=i-1) then Print("Cycle Graph"); fi;
 
 
 a := (1,2,3,5); b := (3,5,6,7);
- TG := GroupByGenerators([a,b]);
+TG := GroupByGenerators([a,b]);
 Transitivity(TG);  # It's 3-transitive
-A6 :=AlternatingGroup(6);
-Intersection(A6,TG);
-#TG is contained in A6 in S6!
-#but it has no 3-cycles
+#TG has no 3-cycles
 for i in TG do Display(i); 
 od;
 
