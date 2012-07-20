@@ -17,17 +17,14 @@ local visited,comps, i,actualcomp;
   for i in [1..DegreeOfTransformation(t)] do
     #...but skipping those that are already in some component
     if not (i in visited) then
-      Add(comps,[i]);    #let's start with a fresh new component
-      actualcomp := comps[Length(comps)];
-      Add(visited,i);
-      i := i ^ t;   #keep going with the orbit till we bump into something known
-      while not (i in  visited) do
+      Add(comps,[]);    #let's start with a fresh new component
+      actualcomp := comps[Length(comps)]; #make it the actual one
+      repeat 
         Add(actualcomp,i);
         Add(visited,i);
         i := i ^ t;
-      od;
-      if not (i in actualcomp) then
-        #merging to actual component to a previous one
+      until i in visited; #keep adding until we bump into soemthing known
+      if not (i in actualcomp) then #known but not in actual component -> merge & remove
         Append(First(comps, c -> i in c), actualcomp);
         Remove(comps);
       fi;
