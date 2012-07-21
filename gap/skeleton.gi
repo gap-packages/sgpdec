@@ -1,3 +1,6 @@
+################################################################################
+##Functions for calculating the Hasse diagram of relations on the set of subsets
+
 # adapted from GAPlib, it creates a Hasse diagram given a function
 # which calculates the covering elements for each elements in the set
 # TODO it is used only for Images and PreImages calc in the constructor
@@ -15,15 +18,22 @@ local i,j,dom,tups,h;
   SetIsHasseDiagram(h, true);
   return h;
 end;
+MakeReadOnlyGlobal("HasseDiagramByCoverFuncNC");
 
-CoveringSubsets := function(set, orderedsubsets) #TODO this can be improved by recursion
+# returns the covering subsets of the given set
+# the whole set of sets needs to be ordered, as the code is somewhat optimized
+#TODO can this be further improved by recursion
+CoveringSubsets := function(set, orderedsubsets)
 local covers, pos, flag,s;
+  #singletons have no covers
   if Size(set) = 1 then return []; fi;
   covers := [];
+  #we search only from this position
   pos := Position(orderedsubsets, set) - 1;
   while pos > 0 do
     if IsProperFiniteSubset(set, orderedsubsets[pos]) then
       flag := true;
+      # we check whether the newly found subset is a subset of a cover
       for s in covers do
         if IsProperFiniteSubset(s,orderedsubsets[pos]) then
           flag := false;
@@ -36,11 +46,15 @@ local covers, pos, flag,s;
   od;
   return covers;
 end;
+MakeReadOnlyGlobal("CoveringSubsets");
 
 HasseDiagramOfSubsets := function(orderedsubsets)
   return HasseDiagramByCoverFuncNC(orderedsubsets,
                  set->CoveringSubsets(set, orderedsubsets));
 end;
+MakeReadOnlyGlobal("HasseDiagramOfSubsets");
+
+################################################################################
 
 #height calculation is needed before depth
 SGPDEC_skeleton_recHeight := function(sk, eqclassindx ,height)
