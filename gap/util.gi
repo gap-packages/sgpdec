@@ -7,9 +7,11 @@
 ##  Some utility methods.
 ##
 
-InstallGlobalFunction(RoundedPercentage,
+InstallGlobalFunction(FormattedPercentageString,
 function(n,N)
- return Float(Int((Float(n)/Float(N)) * 10000)/Float(100));
+local i;
+  i := Int(Int((Float(n)/Float(N)) * 10000));
+  return Concatenation(String(Int(i/100)),".",String(i mod 100),"%");
 end);
 
 ################################################################################

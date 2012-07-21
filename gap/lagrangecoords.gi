@@ -42,7 +42,7 @@ function(G, subgroupchain)
     series := List(series, G->Group(SmallGeneratingSet(G)));
     Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in the series ",
-    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+    FormattedTimeString(Runtime()-t)); t := Runtime();
   fi;
 
   #############TRANSVERSALS & COMPONENTS##############################
@@ -62,18 +62,18 @@ function(G, subgroupchain)
   od;
   Info(LagrangeDecompositionInfoClass, 2,
    "Calculating transversals and components ",
-   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+   FormattedTimeString(Runtime()-t)); t := Runtime();
 
   if SgpDecOptionsRec.SMALLER_GENERATOR_SET then
     #reducing the numbers of generators if possible
     comps := List(comps, G->Group(SmallGeneratingSet(G)));
     Info(LagrangeDecompositionInfoClass, 2,
     "Reducing the number of generators in components ",
-       SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+       FormattedTimeString(Runtime()-t)); t := Runtime();
   fi;
 
   Info(LagrangeDecompositionInfoClass, 2, "Calculating codec ",
-   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+   FormattedTimeString(Runtime()-t)); t := Runtime();
 
   csh := CascadeShell(comps);
 
@@ -87,7 +87,7 @@ function(G, subgroupchain)
     Perform(series, StructureDescription);
     Perform([G],StructureDescription);
     Info(LagrangeDecompositionInfoClass, 2, "DONE ",
-    SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+    FormattedTimeString(Runtime()-t)); t := Runtime();
   fi;
 
   #calculating the cosetaction map (needed for raising a state)
@@ -98,7 +98,7 @@ function(G, subgroupchain)
   od;
   Info(LagrangeDecompositionInfoClass, 2,
   "Coset reps for the original group action ",
-   SGPDEC_TimeString(Runtime()-t)); t := Runtime();
+   FormattedTimeString(Runtime()-t)); t := Runtime();
 
 #the record containing the information about the components
   result := rec(
