@@ -7,6 +7,9 @@
 ##  Some utility methods.
 ##
 
+################################################################################
+### PERCENTAGESTRING ###########################################################
+
 InstallGlobalFunction(FormattedPercentageString,
 function(n,N)
 local i;
