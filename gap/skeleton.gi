@@ -16,6 +16,32 @@ local i,j,dom,tups,h;
   return h;
 end;
 
+CoveringSubsets := function(set, orderedsubsets) #TODO this can be improved by recursion
+local covers, pos, flag,s;
+  if Size(set) = 1 then return []; fi;
+  covers := [];
+  pos := Position(orderedsubsets, set) - 1;
+  while pos > 0 do
+    if IsProperFiniteSubset(set, orderedsubsets[pos]) then
+      flag := true;
+      for s in covers do
+        if IsProperFiniteSubset(s,orderedsubsets[pos]) then
+          flag := false;
+          break;
+        fi;
+      od;
+      if flag then Add(covers,orderedsubsets[pos]);fi;
+    fi;
+    pos := pos - 1;
+  od;
+  return covers;
+end;
+
+HasseDiagramOfSubsets := function(orderedsubsets)
+  return HasseDiagramByCoverFuncNC(orderedsubsets,
+                 set->CoveringSubsets(set, orderedsubsets));
+end;
+
 #height calculation is needed before depth
 SGPDEC_skeleton_recHeight := function(sk, eqclassindx ,height)
 local p,parents;
