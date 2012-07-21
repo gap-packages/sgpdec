@@ -191,6 +191,11 @@ local sk;
                                x->CoversOfSCC(sk,x));
   #calculating depth
   DepthCalc(sk);
+  #setting empty cache for INs and OUTs
+  sk.IN := [];
+  sk.INw := [];
+  sk.OUT := [];
+  sk.OUTw := [];
   return sk;
 end);
 
@@ -219,6 +224,12 @@ function(sk, finiteset)
 local pos;
   pos := Position(sk.orb, finiteset);
   sk.reps[OrbSCCLookup(sk.orb)[pos]] := pos;
+  #we need to empty the cache for INs and OUTs
+  #TODO make this more specific, just empty
+  sk.IN := [];
+  sk.INw := [];
+  sk.OUT := [];
+  sk.OUTw := [];
 end);
 
 InstallGlobalFunction(IsEquivalent,
@@ -227,21 +238,32 @@ function(sk, A, B)
          = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
 end);
 
+################################################################################
+### INs and OUTs with a primitive caching method to avoid double calculation ###
+
 #returns the word  that takes the representative
 #to the set A - so a path that goes INto A
 InstallGlobalFunction(GetINw,
 function(sk, A)
 local pos, scc;
   pos := Position(sk.orb, A);
-  scc := OrbSCCLookup(sk.orb)[pos];
-  return Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, sk.reps[scc]),
-                 TraceSchreierTreeOfSCCForward(sk.orb, scc, pos));
-#TODO the first bit can be stored and calculated when the representative changed
+  if not IsBound(sk.INw[pos]) then
+    scc := OrbSCCLookup(sk.orb)[pos];
+    sk.INw[pos] := Concatenation(
+                           TraceSchreierTreeOfSCCBack(sk.orb,scc,sk.reps[scc]),
+                           TraceSchreierTreeOfSCCForward(sk.orb, scc, pos));
+  fi;
+  return sk.INw[pos];
 end);
 
 InstallGlobalFunction(GetIN,
 function(sk, A)
-  return Construct(GetINw(sk,A), sk.gens, sk.id, \*);
+local pos;
+  pos := Position(sk.orb, A);
+  if not IsBound(sk.IN[pos]) then
+    sk.IN[pos] := Construct(GetINw(sk,A), sk.gens, sk.id, \*);
+  fi;
+  return sk.IN[pos];
 end);
 
 #returns the word  that takes A to its representative
@@ -249,29 +271,38 @@ end);
 InstallGlobalFunction(GetOUTw,
 function(sk, A)
 local pos, scc, n, outw, fg, inw, out,l;
-
   pos := Position(sk.orb, A);
-  scc := OrbSCCLookup(sk.orb)[pos];
-  outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
-                   TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
-  out := Construct(outw, sk.gens, sk.id, \*);
-  inw := GetINw(sk,A);
-  #now doing it properly (Lemma 5.9. in ENA PhD thesis)
-  #TODO a hardcoded limit, figure out why PositiveIntegers does not work!
-  n := First([1..2147483648],
-             x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1),
-                     RepresentativeSet(sk,A)));
-  l := [];
-  Add(l, outw);
-  fg := Flat([inw,outw]);
-  Add(l, ListWithIdenticalEntries(n,fg));
-  return Flat(l);
+  if not IsBound(sk.OUTw[pos]) then
+    scc := OrbSCCLookup(sk.orb)[pos];
+    outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
+                     TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
+    out := Construct(outw, sk.gens, sk.id, \*);
+    inw := GetINw(sk,A);
+    #now doing it properly (Lemma 5.9. in ENA PhD thesis)
+    #TODO a hardcoded limit, figure out why PositiveIntegers does not work!
+    n := First([1..2147483648],
+               x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1),
+                       RepresentativeSet(sk,A)));
+    l := [];
+    Add(l, outw);
+    fg := Flat([inw,outw]);
+    Add(l, ListWithIdenticalEntries(n,fg));
+    sk.OUTw[pos] := Flat(l);
+  fi;
+  return sk.OUTw[pos];
 end);
 
 InstallGlobalFunction(GetOUT,
 function(sk, A)
-  return Construct(GetOUTw(sk,A), sk.gens, sk.id, \*);
+local pos;
+  pos := Position(sk.orb, A);
+  if not IsBound(sk.OUT[pos]) then
+    sk.OUT[pos] := Construct(GetOUTw(sk,A), sk.gens, sk.id, \*);
+  fi;
+  return sk.OUT[pos];
 end);
+
+################################################################################
 
 InstallGlobalFunction(CoveringSetsOf,
 function(sk,A)
