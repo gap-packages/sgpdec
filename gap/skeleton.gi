@@ -96,34 +96,32 @@ SGPDEC_skeleton_DepthCalc := function(sk)
 end;
 
 # indx - the index of an orbit element
-directImagesReps := function(sk,indx)
+DirectImagesReps := function(sk,indx)
 local l, rep;
-  l := [];  
+  l := [];
   Perform(sk.orb!.orbitgraph[indx],
           function(x) AddSet(l, OrbSCCLookup(sk.orb)[x]);end);
   rep := OrbSCCLookup(sk.orb)[indx];
-  if rep in l then
-    Remove(l, Position(l,rep));
-  fi;
+  if rep in l then Remove(l, Position(l,rep));fi;
   return l;
 end;
+MakeReadOnlyGlobal("DirectImagesReps");
 
 # indx - the index of an orbit element
-directInclusionReps := function(sk,indx)
+InclusionCoverReps := function(sk,indx)
 local l, rep, tmpl,i;
   tmpl := List(CoveringSetsOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
   l := [];
   for i in tmpl do
-    if i <> fail then
+    if i <> fail then # some singletons may not be in the orbit
       AddSet(l, OrbSCCLookup(sk.orb)[i]);
     fi;
   od;
   rep := OrbSCCLookup(sk.orb)[indx];
-  if rep in l then
-    Remove(l, Position(l,rep));
-  fi;
+  if rep in l then Remove(l, Position(l,rep));fi;
   return l;
 end;
+MakeReadOnlyGlobal("InclusionCoverReps");
 
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
@@ -132,17 +130,20 @@ local l,covers;
   covers := [];
   #the covers in the inclusion relation
   for l in List(OrbSCC(sk.orb)[sccindx],
-          x -> directInclusionReps(sk,x)) do
+          x -> InclusionCoverReps(sk,x)) do
     Perform(l, function(x) AddSet(covers, x);end);
   od;
   #the direct image covers
   for l in List(OrbSCC(sk.orb)[sccindx],
-          x -> directImagesReps(sk,x)) do
+          x -> DirectImagesReps(sk,x)) do
     Perform(l, function(x) AddSet(covers, x);end);
   od;
   return covers;
 end;
 MakeReadOnlyGlobal("CoversOfSCC");
+
+################################################################################
+###CONSTRUCTOR##################################################################
 
 #for sorting finitesets, first by size, then by content
 BySizeSorterAscend := function(v,w)
@@ -187,6 +188,8 @@ local sk;
   SGPDEC_skeleton_DepthCalc(sk);
   return sk;
 end);
+
+################################################################################
 
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,
