@@ -257,8 +257,10 @@ local pos, scc, n, outw, fg, inw, out,l;
   out := Construct(outw, sk.gens, sk.id, \*);
   inw := GetINw(sk,A);
   #now doing it properly (Lemma 5.9. in ENA PhD thesis)
-  n := First([1..2147483648],  #TODO this is a hard limit, figure out why PositiveIntegers does not work
-             x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1), RepresentativeSet(sk,A)));
+  #TODO a hardcoded limit, figure out why PositiveIntegers does not work!
+  n := First([1..2147483648],
+             x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1),
+                     RepresentativeSet(sk,A)));
   l := [];
   Add(l, outw);
   fg := Flat([inw,outw]);
@@ -300,7 +302,7 @@ local sizes, preimgs;
   return Length(sizes)*Product(sizes);
 end);
 
-rec_AllCoverChainsToSet := function(sk,chain ,coll, relation)
+RecAllCoverChainsToSet := function(sk,chain ,coll, relation)
 local set,preimg, l;
   set := chain[Length(chain)];
   if set = sk.stateset then
@@ -312,18 +314,19 @@ local set,preimg, l;
   for preimg in  PreImages(relation, set) do
     if preimg <> chain[Length(chain)] then
       Add(chain, preimg);
-      rec_AllCoverChainsToSet(sk, chain, coll,relation);
+      RecAllCoverChainsToSet(sk, chain, coll,relation);
       Remove(chain);
     fi;
   od;
   return;
 end;
+MakeReadOnlyGlobal("RecAllCoverChainsToSet");
 
 InstallGlobalFunction(AllCoverChainsToSet,
 function(sk, set)
 local coll;
   coll := [];
-  rec_AllCoverChainsToSet(sk, [set], coll, sk.inclusionHD);
+  RecAllCoverChainsToSet(sk, [set], coll, sk.inclusionHD);
   return coll;
 end);
 
@@ -430,7 +433,9 @@ function(sk, depth)
               x->List(x, y->sk.orb[y]));
 end);
 
-# viz
+################################################################################
+# VIZ ##########################################################################
+
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(sk,params)
