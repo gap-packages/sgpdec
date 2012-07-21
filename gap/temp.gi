@@ -28,25 +28,6 @@ local l;
 end;
 MakeReadOnlyGlobal("ActionOn");
 
-# creating partial order modified from the library code
-# bypassing checks
-#for speed reasons
-PartialOrderByOrderingFunctionNC := function(d,of)
-local i,j,        # iterators
-      tup;        # set of defining tuples
-
-  ## Construct a set of tuples which defines the partial order
-  tup :=[];
-  for i in d do
-    for j in d do
-      if of(i,j) then
-        Add(tup,Tuple([i,j]));
-      fi;
-    od;
-  od;
-  return  BinaryRelationByElements(d,tup);
-end;
-
 #this is a specialized version of HasseDiagram
 #knowing the underlying partial order, checks bypassed
 #for speed reasons
