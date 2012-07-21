@@ -1,6 +1,6 @@
 #############################################################################
 ##
-##  io.g  SgpDec package
+##  util.gi  SgpDec package
 ##
 ##  (C)  2011-2012 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -13,7 +13,9 @@ SGPDEC_Percentage := function(n,N)
 end;
 
 SGPDEC_util_timeunits := ["d","h","m","s","ms"];
+MakeReadOnlyGlobal("SGPDEC_util_timeunits");
 SGPDEC_util_durations := [24*60*60*1000, 60*60*1000, 60*1000, 1000, 1];
+MakeReadOnlyGlobal("SGPDEC_util_durations");
 
 SGPDEC_TimeString :=
 function(t)
@@ -36,16 +38,16 @@ local vals,k,s;
 end;
 
 #returns the readable string representation of the number of bytes
-FormattedMemoryInfo := function(mem)
-  if mem < 1024 then
-    return Concatenation(StringPrint(mem),"b");
-  elif mem >= 1024 and mem < 1024^2 then
-    return Concatenation(StringPrint(Round(Float(mem/1024))),"KB");
-  elif mem >= 1024^2 and mem < 1024^3 then
+MemoryString := function(numofbytes)
+  if numofbytes < 1024 then
+    return Concatenation(StringPrint(numofbytes),"B");
+  elif numofbytes >= 1024 and numofbytes < 1024^2 then
+    return Concatenation(StringPrint(Round(Float(numofbytes/1024))),"KB");
+  elif numofbytes >= 1024^2 and numofbytes < 1024^3 then
     return Concatenation(StringPrint(
-                   Float(Round(Float(mem/(1024^2))*10)/10)),"MB");
-  elif mem >= 1024^3 and mem < 1024^4 then
+                   Float(Round(Float(numofbytes/(1024^2))*10)/10)),"MB");
+  elif numofbytes >= 1024^3 and numofbytes < 1024^4 then
     return Concatenation(StringPrint(
-                   Float(Round(Float(mem/(1024^3))*100)/100)),"GB");
+                   Float(Round(Float(numofbytes/(1024^3))*100)/100)),"GB");
   fi;
 end;
