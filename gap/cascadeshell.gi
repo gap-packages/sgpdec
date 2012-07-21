@@ -16,6 +16,7 @@
 # 1. If it has a name just return it.
 # 2. For a group when the Small Group's Library allowed, then use that
 # 3. Otherwise S_order for semigroups, G_order for groups
+# Side effect! This actually sets the name for the component if missing.
 Name4Component := function(comp)
   if HasName(comp) then
     return Name(comp);
@@ -23,13 +24,14 @@ Name4Component := function(comp)
 
   if IsGroup(comp) then
     if SgpDecOptionsRec.SMALL_GROUPS then
-      return StructureDescription(comp);
+      SetName(comp, StructureDescription(comp));
     else
-      return Concatenation("G",StringPrint(Order(comp)));
+      SetName(comp, Concatenation("G",StringPrint(Order(comp))));
     fi;
   else
-    return Concatenation("S",StringPrint(Size(comp)));
+    SetName(comp, Concatenation("S",StringPrint(Size(comp))));
   fi;
+  return Name(comp);
 end;
 
 InstallMethod(IsCascadedGroupShell,[IsCascadeShell],
