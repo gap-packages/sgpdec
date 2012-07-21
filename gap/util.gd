@@ -7,5 +7,6 @@
 ##  Some utility methods.
 ##
 
+DeclareGlobalFunction("RoundedPercentage");
 DeclareGlobalFunction("FormattedMemoryString");
 DeclareGlobalFunction("FormattedTimeString");

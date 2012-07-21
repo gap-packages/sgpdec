@@ -7,9 +7,10 @@
 ##  Some utility methods.
 ##
 
-SGPDEC_Percentage := function(n,N)
- return Int(Int((Float(n)/Float(N)) * 10000)/Float(100));
-end;
+InstallGlobalFunction(RoundedPercentage,
+function(n,N)
+ return Float(Int((Float(n)/Float(N)) * 10000)/Float(100));
+end);
 
 ################################################################################
 #### TIMESTRING ################################################################
