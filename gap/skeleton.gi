@@ -85,18 +85,24 @@ local l, rep, tmpl,i;
   return l;
 end;
 
-CoversOfSCC := function(sk, sccindx) #TODO! highly nonoptimized
-local l,k;
-  l := DuplicateFreeList(
-               Concatenation(
-                       List(OrbSCC(sk.orb)[sccindx],
-                            x -> directInclusionReps(sk,x))));
-  k := DuplicateFreeList(
-               Concatenation(
-                       List(OrbSCC(sk.orb)[sccindx],
-                            x -> directImagesReps(sk,x))));
-  return DuplicateFreeList(Concatenation(l,k));
+#collecting the direct images and inclusion covers of an SCC
+#thus building the generalized inclusion covers
+CoversOfSCC := function(sk, sccindx)
+local l,covers;
+  covers := [];
+  #the covers in the inclusion relation
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> directInclusionReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  #the direct image covers
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> directImagesReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  return covers;
 end;
+MakeReadOnlyGlobal("CoversOfSCC");
 
 #for sorting finitesets, first by size, then by content
 BySizeSorterAscend := function(v,w)
