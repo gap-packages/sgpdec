@@ -55,9 +55,10 @@ end;
 MakeReadOnlyGlobal("HasseDiagramOfSubsets");
 
 ################################################################################
+#### HEIGHT AND DEPTH CALCULATION###############################################
 
 #height calculation is needed before depth
-SGPDEC_skeleton_recHeight := function(sk, eqclassindx ,height)
+RecHeight := function(sk, eqclassindx ,height)
 local p,parents;
   parents := PreImages(sk.geninclusionHD, eqclassindx);
   for p in parents do
@@ -65,13 +66,14 @@ local p,parents;
       if sk.height[p] < height+1 then
         sk.height[p] := height+1;
         #only call when the height is raised (this saves a lot of calls)
-        SGPDEC_skeleton_recHeight(sk,p,height+1);
+        RecHeight(sk,p,height+1);
       fi;
     fi;
   od;
 end;
+MakeReadOnlyGlobal("RecHeight");
 
-SGPDEC_skeleton_DepthCalc := function(sk)
+DepthCalc := function(sk)
   local leaves, leaf, height, correction;
   #If there is no singleton image, then we need to add one to the depth
   correction := 1;
@@ -83,10 +85,10 @@ SGPDEC_skeleton_DepthCalc := function(sk)
     if IsSingleton(sk.orb[sk.reps[leaf]]) then
       correction:=0;#there is a singleton image, so no correction needed
       sk.height[leaf] := 0;
-      SGPDEC_skeleton_recHeight(sk,leaf,0);
+      RecHeight(sk,leaf,0);
     else
       sk.height[leaf] := 1;
-      SGPDEC_skeleton_recHeight(sk,leaf,1);
+      RecHeight(sk,leaf,1);
     fi;
   od;
   height := sk.height[1];
@@ -94,6 +96,9 @@ SGPDEC_skeleton_DepthCalc := function(sk)
   sk.depths  := List(sk.height, x-> height-x + 1);
   sk.depth := Maximum(sk.depths) + correction;
 end;
+MakeReadOnlyGlobal("DepthCalc");
+
+################################################################################
 
 # indx - the index of an orbit element
 DirectImagesReps := function(sk,indx)
@@ -185,7 +190,7 @@ local sk;
   sk.geninclusionHD := HasseDiagramByCoverFuncNC([1..Length(sk.reps)],
                                x->CoversOfSCC(sk,x));
   #calculating depth
-  SGPDEC_skeleton_DepthCalc(sk);
+  DepthCalc(sk);
   return sk;
 end);
 
