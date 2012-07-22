@@ -33,6 +33,7 @@ Name4Component := function(comp)
   fi;
   return Name(comp);
 end;
+MakeReadOnlyGlobal("Name4Component");
 
 InstallMethod(IsCascadedGroupShell,[IsCascadeShell],
 csh -> ForAll(csh!.components, IsGroup));
@@ -154,8 +155,7 @@ end);
 InstallMethod(Length,"for cascade shells",true,[IsCascadeShell],
 function(csh)
   return Length(csh!.components);
-end
-);
+end);
 
 # for accessing the list elements
 InstallOtherMethod( \[\],
