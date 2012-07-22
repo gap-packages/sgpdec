@@ -280,7 +280,7 @@ local pos, scc, n, outw, fg, inw, out,l;
     inw := GetINw(sk,A);
     #now doing it properly (Lemma 5.9. in ENA PhD thesis)
     #TODO a hardcoded limit, figure out why PositiveIntegers does not work!
-    n := First([1..2147483648],
+    n := First([1..268435455],
                x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1),
                        RepresentativeSet(sk,A)));
     l := [];
