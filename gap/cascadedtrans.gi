@@ -225,6 +225,8 @@ local i,str;
   od;
   return str;
 end;
+MakeReadOnlyGlobal("ConvertCascade2String");
+
 # Implementing display, printing nice, human readable format.
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedTransformation],
@@ -331,6 +333,7 @@ local src;
   #we find the cascaded state corresponding to the flatop image
   return States(csh)[flatop[src]];
 end;
+MakeReadOnlyGlobal("FlatActionOnCoordinates");
 
 ##############################################################################
 # this constructs the component action based on the flat action
@@ -355,6 +358,7 @@ ComponentActionForPrefix := function(csh, flatoplist, prefix)
   fi;
   return Transformation(actionlist);
 end;
+MakeReadOnlyGlobal("ComponentActionForPrefix");
 
 #raising a permutation/transformation to its cascaded format
 #InstallOtherMethod(RaiseNC, "for a cascade shell and object",
