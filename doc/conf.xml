@@ -1,0 +1,66 @@
+
+<Section Label="sec:global variables"> <Heading>Configuration</Heading>
+The values of the following global variables can change the behavior of the
+package. Their value can be modified any time. The default values are stored in
+the file named <F>config</F>.
+   
+ <ManSection>
+ <Var Name="PARANOID"/>
+ <Description>
+ Thorough checks are performed if this is set true. 
+ Used for establishing correctness but can have significant performance
+ penalties.
+ Default value is <C>false</C>.
+ </Description>
+ </ManSection>
+
+ <ManSection>
+ <Var Name="STRAIGHTWORD_REDUCTION"/>
+ <Description>
+ Some algorithms can do on the fly reduction of words to straight words if this 
+ variable is set true. This gives smaller footprint for decompositions but needs
+ more processing time. Default value is <C>true</C>.
+ </Description>
+ </ManSection>
+
+ <ManSection>
+ <Var Name="SMALLER_GENERATOR_SET"/>
+ <Description>
+ <C>SgpDec</C> can try to reduce the number of generators of a permutation
+ group 
+ by calling <C>SmallGeneratingSet</C> if this 
+ variable is set true. 
+ Default value is <C>false</C>.
+ </Description>
+ </ManSection>
+
+ <ManSection>
+ <Var Name="LINEAR_NOTATION"/>
+ <Description>
+ Transformations are displayed in linear notation (see <Ref
+   Subsect="LinearNotation" Style="Number"/>
+) if this is set to true. Default is <C>false</C>,
+ as it can be confusing for someone not familiar with linear notation. 
+ Also, setting this parameter has its effect only when loading the
+ <C>SgpDec</C> package. Default value is <C>false</C>.
+ </Description>
+ </ManSection>
+
+ <ManSection>
+ <Var Name="SMALL_GROUPS"/>
+ <Description>
+ Information on small groups can be retrieved on the fly during calculations
+ using <Code>StructureDescription</Code>, 
+ however this could die on bigger groups and there is an overhead in all cases.
+ Default is <C>true</C>.
+ </Description>
+ </ManSection>
+
+ <ManSection>
+ <Var Name="PDF_VIEWER"/>
+ <Description>
+ External executable for a PDF viewer needed for online drawing (splashing).
+ </Description>
+ </ManSection>
+
+</Section>
