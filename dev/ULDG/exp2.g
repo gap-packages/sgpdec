@@ -7,7 +7,7 @@ for i in [5..13] do
     for m in [0..2] do 
     Display([i+m,j+m,m]);
     S := Semigroup(
-                 List(MyBetaGraph(i+m,j+m,m),
+                 List(ThetaGraph(i+m,j+m,m),
                       x -> TransformationFromElementaryCollapsing(x, i+j+2*m-m-1)));
     Display(HolonomyDecomposition(S));
     Print("\n");

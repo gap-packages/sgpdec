@@ -21,7 +21,10 @@ Print("Theta graph: ");
 
   Print("Rank of Defect One: ", NumNodes-1,"\n");
 
+# cycle the first i-1 nodes, leaving others fixed:
 tau := PermList(Concatenation([2..i-1],[1],[i],[i+1..NumNodes]));
+
+# cycle around both loops omitting internal overlap nodes :
 sigma := PermList(Concatenation([2..i-m],[i+1],[i-m+1..i-1],[i],[i+2..NumNodes],[1]));
 
 flag :=0;
