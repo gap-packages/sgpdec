@@ -225,6 +225,8 @@ local i,str;
   od;
   return str;
 end;
+MakeReadOnlyGlobal("ConvertCascade2String");
+
 # Implementing display, printing nice, human readable format.
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedTransformation],
@@ -236,7 +238,7 @@ function( ct )
 
   for i in [1..Length(csh)] do
     Print("Level ",i,": ", csh!.argument_names[i]," -> ",
-     csh!.names_of_components[i],"\n");
+     csh[i],"\n");
     for j in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
       if not IsOne(ct!.depfunc(j)) then
         Print("[",ConvertCascade2String(j,csh!.state_symbol_functions),
@@ -331,6 +333,7 @@ local src;
   #we find the cascaded state corresponding to the flatop image
   return States(csh)[flatop[src]];
 end;
+MakeReadOnlyGlobal("FlatActionOnCoordinates");
 
 ##############################################################################
 # this constructs the component action based on the flat action
@@ -355,6 +358,7 @@ ComponentActionForPrefix := function(csh, flatoplist, prefix)
   fi;
   return Transformation(actionlist);
 end;
+MakeReadOnlyGlobal("ComponentActionForPrefix");
 
 #raising a permutation/transformation to its cascaded format
 #InstallOtherMethod(RaiseNC, "for a cascade shell and object",
@@ -606,38 +610,28 @@ end);
 ########### DRAWING ############################################################
 InstallGlobalFunction(DotCascadedTransformation,
 function(ct)
-  local castruct, str, out, vertices, vertexlabels, edges, deps, coordsname,
-  level, newnn, edge, i, dep, coord;
+  local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
+        level, newnn, edge, i, dep, coord;
 
-  castruct := CascadeShellOf(ct);
-
+  csh := CascadeShellOf(ct);
   str := "";
   out := OutputTextString(str,true);
-
   PrintTo(out,"digraph ct{\n");
-
   #putting an extra node on the top as the title of the graph
   #AppendTo(out,"orig [label=\"", params.title ,"\",color=\"white\"];\n");
   #AppendTo(out,"orig -> n [style=\"invis\"];\n");
 
-  #hashtables for storing string-string pairs
   vertices := [];
-
-  #JDM no hash table!
-  vertexlabels := HTCreate("a string");
+  vertexlabels := rec();#HTCreate("a string");
   edges := [];
-
   #extracting dependencies
   deps := DependencyMapsFromCascadedTransformation(ct);
   coordsname := "n";
   Add(vertices, coordsname);
-
   #adding a default label
-  HTAdd(vertexlabels,coordsname ," [width=0.2,height=0.2,label=\"\"]");
-
+  vertexlabels.(coordsname) := " [width=0.2,height=0.2,label=\"\"]";
   #just to be on the safe side
   Sort(vertices); Sort(edges);
-
   for dep in deps do
     #coordsnames are created like n_#1_#2_...._#n
     coordsname := "n";
@@ -645,14 +639,12 @@ function(ct)
     for coord in dep[1] do
       newnn := Concatenation(coordsname,"_",StringPrint(coord));
       edge := Concatenation(coordsname ," -> ", newnn," [label=\"",
-       StringPrint(castruct!.state_symbol_functions[level](coord)),"\"]");
-
+                      StringPrint(csh!.state_symbol_functions[level](coord)),
+                      "\"]");
       if not (edge in edges) then
-
         # we just add the full edge
         Add(edges,edge, PositionSorted(edges,edge));
       fi;
-
       #we can now forget about the
       coordsname := newnn;
       level := level + 1;
@@ -660,24 +652,21 @@ function(ct)
         i := PositionSorted(vertices, coordsname);
         Add(vertices, coordsname, i);
         #adding a default label
-        HTAdd(vertexlabels, coordsname, " [width=0.2,height=0.2,label=\"\"]");
+        vertexlabels.(coordsname) := " [width=0.2,height=0.2,label=\"\"]";
       fi;
     od;
 
     #putting the proper label there as we are at the end of the coordinates
-    HTUpdate(vertexlabels, coordsname, Concatenation(" [label=\"",
-     StringPrint(castruct!.operation_symbol_functions[level](dep[2])),"\"]"));
+    vertexlabels.(coordsname) := Concatenation(" [label=\"",
+            StringPrint(csh!.operation_symbol_functions[level](dep[2])),"\"]");
   od;
-
   # finally writing them into the dot file
   for i in [1..Size(vertices)] do
-    AppendTo(out, vertices[i]," ",HTValue(vertexlabels,vertices[i]),";\n");
+    AppendTo(out, vertices[i]," ",vertexlabels.(vertices[i]),";\n");
   od;
-
   for edge in edges do
     AppendTo(out, edge,";\n");
   od;
-
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
