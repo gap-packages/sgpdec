@@ -193,7 +193,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
       Add(coords,coversets);
       Info(HolonomyInfoClass, 2, "  ",
            StructureDescription(groups[Length(groups)])," ",
-           SGPDEC_TimeString(Runtime() -t));t := Runtime();
+           FormattedTimeString(Runtime() -t));t := Runtime();
     od;
     Add(holrec.shifts, shifts);
     Add(holrec.groupcomponents,groups);

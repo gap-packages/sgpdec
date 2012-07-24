@@ -1,34 +1,64 @@
-HasseDiagramByCoverFunction := function(set, coverfunc)
-local i, j,           # iterators
-      d,              # elements of underlying domain
-      tups,           # elements of the hasse diagram relation
-      h;              # the resulting hasse diagram
-  d := Domain(set);
+################################################################################
+##Functions for calculating the Hasse diagram of relations on the set of subsets
+
+# adapted from GAPlib, it creates a Hasse diagram given a function
+# which calculates the covering elements for each elements in the set
+# TODO it is used only for Images and PreImages calc in the constructor
+# slated fro removal
+HasseDiagramByCoverFuncNC := function(set, coverfunc)
+local i,j,dom,tups,h;
+  dom := Domain(set);
   tups := [];
-  for i in d do
+  for i in dom do
     for j in coverfunc(i) do
       Add(tups, Tuple([i, j]));
     od;
   od;
-  h := GeneralMappingByElements(d,d, tups);
+  h := GeneralMappingByElements(dom,dom, tups);
   SetIsHasseDiagram(h, true);
   return h;
 end;
+MakeReadOnlyGlobal("HasseDiagramByCoverFuncNC");
 
-#returns the n, ENA PhD Lemma 5.9
-SGPDEC_skeleton_Lemma_5_9 := function(A,f)
-local power,n;
-  power := One(f);
-  n := 0;
-  repeat
-    power := power * f;
-    n := n+1;
-  until IsIdentityOnFiniteSet(power, A);
-  return n;
+# returns the covering subsets of the given set
+# the whole set of sets needs to be ordered, as the code is somewhat optimized
+#TODO can this be further improved by recursion
+CoveringSubsets := function(set, orderedsubsets)
+local covers, pos, flag,s;
+  #singletons have no covers
+  if Size(set) = 1 then return []; fi;
+  covers := [];
+  #we search only from this position
+  pos := Position(orderedsubsets, set) - 1;
+  while pos > 0 do
+    if IsProperFiniteSubset(set, orderedsubsets[pos]) then
+      flag := true;
+      # we check whether the newly found subset is a subset of a cover
+      for s in covers do
+        if IsProperFiniteSubset(s,orderedsubsets[pos]) then
+          flag := false;
+          break;
+        fi;
+      od;
+      if flag then Add(covers,orderedsubsets[pos]);fi;
+    fi;
+    pos := pos - 1;
+  od;
+  return covers;
 end;
+MakeReadOnlyGlobal("CoveringSubsets");
+
+HasseDiagramOfSubsets := function(orderedsubsets)
+  return HasseDiagramByCoverFuncNC(orderedsubsets,
+                 set->CoveringSubsets(set, orderedsubsets));
+end;
+MakeReadOnlyGlobal("HasseDiagramOfSubsets");
+
+################################################################################
+#### HEIGHT AND DEPTH CALCULATION###############################################
 
 #height calculation is needed before depth
-SGPDEC_skeleton_recHeight := function(sk, eqclassindx ,height)
+RecHeight := function(sk, eqclassindx ,height)
 local p,parents;
   parents := PreImages(sk.geninclusionHD, eqclassindx);
   for p in parents do
@@ -36,13 +66,14 @@ local p,parents;
       if sk.height[p] < height+1 then
         sk.height[p] := height+1;
         #only call when the height is raised (this saves a lot of calls)
-        SGPDEC_skeleton_recHeight(sk,p,height+1);
+        RecHeight(sk,p,height+1);
       fi;
     fi;
   od;
 end;
+MakeReadOnlyGlobal("RecHeight");
 
-SGPDEC_skeleton_DepthCalc := function(sk)
+DepthCalc := function(sk)
   local leaves, leaf, height, correction;
   #If there is no singleton image, then we need to add one to the depth
   correction := 1;
@@ -54,10 +85,10 @@ SGPDEC_skeleton_DepthCalc := function(sk)
     if IsSingleton(sk.orb[sk.reps[leaf]]) then
       correction:=0;#there is a singleton image, so no correction needed
       sk.height[leaf] := 0;
-      SGPDEC_skeleton_recHeight(sk,leaf,0);
+      RecHeight(sk,leaf,0);
     else
       sk.height[leaf] := 1;
-      SGPDEC_skeleton_recHeight(sk,leaf,1);
+      RecHeight(sk,leaf,1);
     fi;
   od;
   height := sk.height[1];
@@ -65,48 +96,59 @@ SGPDEC_skeleton_DepthCalc := function(sk)
   sk.depths  := List(sk.height, x-> height-x + 1);
   sk.depth := Maximum(sk.depths) + correction;
 end;
+MakeReadOnlyGlobal("DepthCalc");
+
+################################################################################
 
 # indx - the index of an orbit element
-directImagesReps := function(sk,indx)
+DirectImagesReps := function(sk,indx)
 local l, rep;
-  l := DuplicateFreeList(
-               List(sk.orb!.orbitgraph[indx], x -> OrbSCCLookup(sk.orb)[x]));
+  l := [];
+  Perform(sk.orb!.orbitgraph[indx],
+          function(x) AddSet(l, OrbSCCLookup(sk.orb)[x]);end);
   rep := OrbSCCLookup(sk.orb)[indx];
-  if rep in l then
-    Remove(l, Position(l,rep));
-  fi;
+  if rep in l then Remove(l, Position(l,rep));fi;
   return l;
 end;
+MakeReadOnlyGlobal("DirectImagesReps");
 
 # indx - the index of an orbit element
-directInclusionReps := function(sk,indx)
+InclusionCoverReps := function(sk,indx)
 local l, rep, tmpl,i;
   tmpl := List(CoveringSetsOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
   l := [];
   for i in tmpl do
-    if i <> fail then
+    if i <> fail then # some singletons may not be in the orbit
       AddSet(l, OrbSCCLookup(sk.orb)[i]);
     fi;
   od;
   rep := OrbSCCLookup(sk.orb)[indx];
-  if rep in l then
-    Remove(l, Position(l,rep));
-  fi;
+  if rep in l then Remove(l, Position(l,rep));fi;
   return l;
 end;
+MakeReadOnlyGlobal("InclusionCoverReps");
 
-CoversOfSCC := function(sk, sccindx) #TODO! highly nonoptimized
-local l,k;
-  l := DuplicateFreeList(
-               Concatenation(
-                       List(OrbSCC(sk.orb)[sccindx],
-                            x -> directInclusionReps(sk,x))));
-  k := DuplicateFreeList(
-               Concatenation(
-                       List(OrbSCC(sk.orb)[sccindx],
-                            x -> directImagesReps(sk,x))));
-  return DuplicateFreeList(Concatenation(l,k));
+#collecting the direct images and inclusion covers of an SCC
+#thus building the generalized inclusion covers
+CoversOfSCC := function(sk, sccindx)
+local l,covers;
+  covers := [];
+  #the covers in the inclusion relation
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> InclusionCoverReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  #the direct image covers
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> DirectImagesReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  return covers;
 end;
+MakeReadOnlyGlobal("CoversOfSCC");
+
+################################################################################
+###CONSTRUCTOR##################################################################
 
 #for sorting finitesets, first by size, then by content
 BySizeSorterAscend := function(v,w)
@@ -145,12 +187,19 @@ local sk;
   #now sorting properly TODO try to avoid double sorting
   Sort(sk.sets,BySizeSorterAscend);
   sk.inclusionHD := HasseDiagramOfSubsets(sk.sets);
-  sk.geninclusionHD := HasseDiagramByCoverFunction([1..Length(sk.reps)],
+  sk.geninclusionHD := HasseDiagramByCoverFuncNC([1..Length(sk.reps)],
                                x->CoversOfSCC(sk,x));
   #calculating depth
-  SGPDEC_skeleton_DepthCalc(sk);
+  DepthCalc(sk);
+  #setting empty cache for INs and OUTs
+  sk.IN := [];
+  sk.INw := [];
+  sk.OUT := [];
+  sk.OUTw := [];
   return sk;
 end);
+
+################################################################################
 
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,
@@ -175,6 +224,12 @@ function(sk, finiteset)
 local pos;
   pos := Position(sk.orb, finiteset);
   sk.reps[OrbSCCLookup(sk.orb)[pos]] := pos;
+  #we need to empty the cache for INs and OUTs
+  #TODO make this more specific, just empty
+  sk.IN := [];
+  sk.INw := [];
+  sk.OUT := [];
+  sk.OUTw := [];
 end);
 
 InstallGlobalFunction(IsEquivalent,
@@ -183,21 +238,32 @@ function(sk, A, B)
          = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
 end);
 
+################################################################################
+### INs and OUTs with a primitive caching method to avoid double calculation ###
+
 #returns the word  that takes the representative
 #to the set A - so a path that goes INto A
 InstallGlobalFunction(GetINw,
 function(sk, A)
 local pos, scc;
   pos := Position(sk.orb, A);
-  scc := OrbSCCLookup(sk.orb)[pos];
-  return Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, sk.reps[scc]),
-                 TraceSchreierTreeOfSCCForward(sk.orb, scc, pos));
-#TODO the first bit can be stored and calculated when the representative changed
+  if not IsBound(sk.INw[pos]) then
+    scc := OrbSCCLookup(sk.orb)[pos];
+    sk.INw[pos] := Concatenation(
+                           TraceSchreierTreeOfSCCBack(sk.orb,scc,sk.reps[scc]),
+                           TraceSchreierTreeOfSCCForward(sk.orb, scc, pos));
+  fi;
+  return sk.INw[pos];
 end);
 
 InstallGlobalFunction(GetIN,
 function(sk, A)
-  return Construct(GetINw(sk,A), sk.gens, sk.id, \*);
+local pos;
+  pos := Position(sk.orb, A);
+  if not IsBound(sk.IN[pos]) then
+    sk.IN[pos] := Construct(GetINw(sk,A), sk.gens, sk.id, \*);
+  fi;
+  return sk.IN[pos];
 end);
 
 #returns the word  that takes A to its representative
@@ -205,26 +271,38 @@ end);
 InstallGlobalFunction(GetOUTw,
 function(sk, A)
 local pos, scc, n, outw, fg, inw, out,l;
-
   pos := Position(sk.orb, A);
-  scc := OrbSCCLookup(sk.orb)[pos];
-  outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
-                   TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
-  out := Construct(outw, sk.gens, sk.id, \*);
-  inw := GetINw(sk,A);
-  #now doing it properly
-  n := SGPDEC_skeleton_Lemma_5_9(RepresentativeSet(sk,A), GetIN(sk,A) * out);
-  l := [];
-  Add(l, outw);
-  fg := Flat([inw,outw]);
-  Add(l, ListWithIdenticalEntries(n-1,fg));
-  return Flat(l);
+  if not IsBound(sk.OUTw[pos]) then
+    scc := OrbSCCLookup(sk.orb)[pos];
+    outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
+                     TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
+    out := Construct(outw, sk.gens, sk.id, \*);
+    inw := GetINw(sk,A);
+    #now doing it properly (Lemma 5.9. in ENA PhD thesis)
+    #TODO a hardcoded limit, figure out why PositiveIntegers does not work!
+    n := First([1..268435455],
+               x-> IsIdentityOnFiniteSet( (GetIN(sk,A) * out)^(x+1),
+                       RepresentativeSet(sk,A)));
+    l := [];
+    Add(l, outw);
+    fg := Flat([inw,outw]);
+    Add(l, ListWithIdenticalEntries(n,fg));
+    sk.OUTw[pos] := Flat(l);
+  fi;
+  return sk.OUTw[pos];
 end);
 
 InstallGlobalFunction(GetOUT,
 function(sk, A)
-  return Construct(GetOUTw(sk,A), sk.gens, sk.id, \*);
+local pos;
+  pos := Position(sk.orb, A);
+  if not IsBound(sk.OUT[pos]) then
+    sk.OUT[pos] := Construct(GetOUTw(sk,A), sk.gens, sk.id, \*);
+  fi;
+  return sk.OUT[pos];
 end);
+
+################################################################################
 
 InstallGlobalFunction(CoveringSetsOf,
 function(sk,A)
@@ -255,7 +333,7 @@ local sizes, preimgs;
   return Length(sizes)*Product(sizes);
 end);
 
-rec_AllCoverChainsToSet := function(sk,chain ,coll, relation)
+RecAllCoverChainsToSet := function(sk,chain ,coll, relation)
 local set,preimg, l;
   set := chain[Length(chain)];
   if set = sk.stateset then
@@ -267,18 +345,19 @@ local set,preimg, l;
   for preimg in  PreImages(relation, set) do
     if preimg <> chain[Length(chain)] then
       Add(chain, preimg);
-      rec_AllCoverChainsToSet(sk, chain, coll,relation);
+      RecAllCoverChainsToSet(sk, chain, coll,relation);
       Remove(chain);
     fi;
   od;
   return;
 end;
+MakeReadOnlyGlobal("RecAllCoverChainsToSet");
 
 InstallGlobalFunction(AllCoverChainsToSet,
 function(sk, set)
 local coll;
   coll := [];
-  rec_AllCoverChainsToSet(sk, [set], coll, sk.inclusionHD);
+  RecAllCoverChainsToSet(sk, [set], coll, sk.inclusionHD);
   return coll;
 end);
 
@@ -385,7 +464,9 @@ function(sk, depth)
               x->List(x, y->sk.orb[y]));
 end);
 
-# viz
+################################################################################
+# VIZ ##########################################################################
+
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(sk,params)
