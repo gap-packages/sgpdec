@@ -16,37 +16,37 @@ points. For an empty word the starting point is returned.
 Trajectory is the same but it returns the whole calculation.
 
 Calculating a transformation represented by a word:
-    <Example>
-      gap> gens := [Transformation([2,3,4,1]),
-      Transformation([2,1,3,4]),
-      Transformation([1,1,3,4])];;
-      gap> Construct([1,2,1,2,3],gens,IdentityTransformation(4),\*);
-      Transformation( [ 1, 4, 1, 3 ] )
-    </Example>
+<Example>
+gap> gens := [Transformation([2,3,4,1]),
+> Transformation([2,1,3,4]),
+> Transformation([1,1,3,4])];;
+gap> Construct([1,2,1,2,3],gens,IdentityTransformation(4),\*);
+Transformation( [ 1, 4, 1, 3 ] )
+</Example>
     Or acting on some set:
     <Example>
-      gap> Construct([1,2,1,2,3],gens,[1,2],OnSets);
-      [ 1, 4 ]
-    </Example>
+gap> Construct([1,2,1,2,3],gens,[1,2],OnSets);
+[ 1, 4 ]
+</Example>
     For invertible generators (e.g. permutations), negative integers can be used
     for coding inverses:
     <Example>
-      gap> ConstructWithInverses([1,-1],[(1,2)],(),\*);
-      ()
-    </Example>
+gap> ConstructWithInverses([1,-1],[(1,2)],(),\*);
+()
+</Example>
     For displaying words really as a string, the following trick can be used:
     <Example>
-      gap> Construct([3,5,9,9,4,6,2,4,8,9,7,1],
-      ["!","W","H","o","e"," ","d","r","l"],
-      "",
-      Concatenation);
-      "Hello World!"
-    </Example>
+gap> Construct([3,5,9,9,4,6,2,4,8,9,7,1],
+> ["!","W","H","o","e"," ","d","r","l"],
+> "",
+> Concatenation);
+"Hello World!"
+</Example>
     Or we can have the intermediate elements of the construction.
     <Example>
-      gap> Trajectory([3,2,1],["c","b","a"],"",Concatenation);
-      [ "", "a", "ab", "abc" ]
-    </Example>
+gap> Trajectory([3,2,1],["c","b","a"],"",Concatenation);
+[ "", "a", "ab", "abc" ]
+</Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

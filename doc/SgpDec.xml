@@ -35,9 +35,6 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <Body>
 <!--##### Chapters/sections are in individual xml files. -->
 
- <#Include SYSTEM "intro.xml">
- <#Include SYSTEM "cascadedstructs.xml">
- <#Include SYSTEM "decomposition.xml">
 
 <Chapter> <Heading>Technical Bits</Heading>
 The following functions are needed to work with decompositions on a low level or
