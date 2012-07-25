@@ -7,6 +7,6 @@ BindGlobal("SgpDecOptionsRec",
         SMALLER_GENERATOR_SET:=false,
         LINEAR_NOTATION:=false,
         SMALL_GROUPS:=true,
-        SGPDEC_RND:=RandomSource(IsMersenneTwister, 324)));
+        SGPDEC_RND:=RandomSource(IsMersenneTwister, IO_gettimeofday().tv_sec)));
 
 MakeReadWriteGlobal("SgpDecOptionsRec");
