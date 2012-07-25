@@ -423,7 +423,7 @@ function( hd, pos )
 end);
 
 #quick print of the components
-InstallMethod( PrintObj,"for a holonomy decomposition",
+InstallMethod( Display,"for a holonomy decomposition",
         [ IsHolonomyDecomposition ],
 function( hd )
 local groupindicators,i;
