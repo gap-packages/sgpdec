@@ -187,39 +187,46 @@ function(word, result)
   Print(result,":", word,"\n");
 end);
 
+SWP_Collector :=
+function(cargo)
+  return function(word,elm)
+    Add(cargo,[ShallowCopy(word),elm]);
+  end;
+end;
+
 # full backtrack on all straightword
 InstallGlobalFunction(AllStraightWords,
 function(start, gens,action, processor,limit)
 local recursion;
   #======================================================
   recursion := function(word, trajectory)
-    local t,i;
+    local t,i,pt, pos;
 
-    if (trajectory[1] = trajectory[Length(trajectory)]) then
-      t := trajectory{[1..Length(trajectory)-1]};
-    else
-      t := trajectory;
-    fi;
-
-    if not IsDuplicateFreeList(t) and (not IsEmpty(word)) then
-      return;
-    fi;
     processor(word, trajectory[Length(trajectory)]);
     ####################################################
     if (Length(word) < limit) then
       #do the recursion bit - no new list is allocated
       for i in [1..Length(gens)] do
         Add(word,i);
-        Add(trajectory, action(trajectory[Length(trajectory)],gens[i]));
-        recursion(word,trajectory);
-        Remove(trajectory);
+        pt := action(trajectory[Length(trajectory)],gens[i]);
+        pos := Position(trajectory, pt);
+        if pos = fail then
+          #if not contained in trajectory then recurse
+          Add(trajectory, pt);
+          recursion(word,trajectory);
+          Remove(trajectory);
+        else
+          #we do nothing, except for genuine loops we process
+          if pos = 1 then
+            processor(word, pt);
+          fi;
+        fi;
         Remove(word);
       od;
     fi;
   end;
   #======================================================
-
-  # the root call
+  # the start of recursion
   recursion([],[start]);
 end);
 
