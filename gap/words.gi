@@ -32,9 +32,9 @@ local trajectory,i;
 end);
 
 InstallGlobalFunction(IsStraightWord,
-function(word, gens, start)
+function(word, gens, start, action)
 local i,t,trajectory;
-  trajectory := Trajectory(word, gens, start,\*);
+  trajectory := Trajectory(word, gens, start,action);
   #if the first element is also at the end, we remove the last
   if (trajectory[1] = trajectory[Length(trajectory)]) then
     Remove(trajectory);
