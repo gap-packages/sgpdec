@@ -15,3 +15,13 @@ SgpDecMakeDoc := function()
                     "../gap/holonomy.xml"
                     ],"SgpDec");
 end;
+
+SgpDecRunManualExamples := function()
+  RunExamples(
+          ExtractExamples(
+                  Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
+                          "/doc"),
+                  "SgpDec.xml",
+                  ["../gap/words.xml"],
+                  "Section"));
+end;
