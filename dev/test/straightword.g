@@ -14,12 +14,12 @@ local t,w,rw,i;
       Print(" reduced to ",
             FormattedPercentageString(Size(Compacted(rw)),Size(w)),"\n\c");
     fi;
-    if (not IsStraightWord(w,gens,One(gens[1])))
+    if (not IsStraightWord(w,gens,One(gens[1]),\*))
        and (Length(rw) >= Length(w)) then
       Print("FAIL\n");
       Error("Straight word reduction does not produce shorter word!\n");
     fi;
-    if (not IsStraightWord(rw,gens,One(gens[1]))) then
+    if (not IsStraightWord(rw,gens,One(gens[1]),\*)) then
       Print("FAIL\n");
       Error("Straight word reduction does not produce straight word!\n");
     fi;
