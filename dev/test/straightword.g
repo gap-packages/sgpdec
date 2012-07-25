@@ -8,7 +8,7 @@ local t,w,rw,i;
     else
       w := RandomWord(length,Size(gens));
     fi;
-    rw := Reduce2StraightWord(w,gens,One(gens[1]));
+    rw := Reduce2StraightWord(w,gens,One(gens[1]),\*);
     Print(" ",Length(w),"->", Length(rw), " ");
     if Size(w) <> 0 then
       Print(" reduced to ",

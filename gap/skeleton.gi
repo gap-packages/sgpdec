@@ -400,7 +400,7 @@ local permutators,i,j,nset,scc,word;
   if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
     #reducing on sets yield alien actions
     permutators := List(permutators,
-                        x -> Reduce2StraightWord(x, sk.gens, sk.id));
+                        x -> Reduce2StraightWord(x, sk.gens, sk.id, \*));
     # straightening may introduce duplicates
     permutators := DuplicateFreeList(permutators);
   fi;
