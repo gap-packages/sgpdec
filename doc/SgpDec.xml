@@ -36,14 +36,22 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <!--##### Chapters/sections are in individual xml files. -->
 
 
-<Chapter> <Heading></Heading>
+<Chapter> <Heading>Words</Heading>
 <Section>
 <Heading>Words as list of integers</Heading>
 In <Package>SgpDec</Package> words are dense lists of positive integers.
-The integers usually code the indices of elements of some generator set.
+The integers usually code the indices of elements of some generator set, thus
+they should be between 1 and the size of the generator set.
 In case of invertible generators negative integers code the inverse of the
 corresponding permutation.
+
 <#Include Label="Construct">
+</Section>
+<Section>
+<Heading>Straight words</Heading>
+If a word constructs a trajectory without repeated elements then we say that
+it is straight (the start point can be repeated at the end).
+Note that the word itself can contain repeated symbols.
 <#Include Label="IsStraightWord">
 <#Include Label="Reduce2StraightWord">
 </Section>
