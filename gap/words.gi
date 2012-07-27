@@ -94,21 +94,41 @@ end);
 # processor can be any function taking two arguments:
 # the word and the resulting point, when collecting the word it has to be copied
 
-# for instance for printing all straightwords
-InstallGlobalFunction(SWP_Print,
+# for printing all straightwords found
+InstallGlobalFunction(SWP_Printer,
 function(word, result)
   Print(result,":", word,"\n");
 end);
 
-SWP_Collector :=
+# gives back a processor function that collects
+# straight words into the given list
+InstallGlobalFunction(SWP_SimpleCollector,
+function(cargo)
+  return function(word,elm)
+    Add(cargo,ShallowCopy(word));
+  end;
+end);
+
+# gives back a processor function that collects
+# straight words into the given list
+InstallGlobalFunction(SWP_WordPointPairCollector,
 function(cargo)
   return function(word,elm)
     Add(cargo,[ShallowCopy(word),elm]);
   end;
-end;
+end);
 
-# full backtrack on all straightword
-InstallGlobalFunction(AllStraightWords,
+InstallGlobalFunction(SWP_Search,
+function(l,finish)
+  return function(word,result)
+    if result = finish then
+      Add(l, ShallowCopy(word));
+    fi;
+  end;
+end);
+
+# backtrack search
+InstallGlobalFunction(StraightWords,
 function(start, gens,action, processor,limit)
 local recursion;
   #======================================================
@@ -141,20 +161,4 @@ local recursion;
   #======================================================
   # the start of recursion
   recursion([],[start]);
-end);
-
-#straightwords from start to finish
-InstallGlobalFunction(StraightWords,function(start, finish, gens, action,limit)
-local l, collector;
-  l := [];
-  #---------------------------------------------------
-  collector := function(word,result)
-    if result = finish then
-      Add(l, ShallowCopy(word));
-    fi;
-  end;
-  #---------------------------------------------------
-
-  AllStraightWords(start,gens, action, collector,limit);
-  return l;
 end);

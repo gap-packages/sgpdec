@@ -17,9 +17,9 @@ DeclareGlobalFunction("Reduce2StraightWord");
 DeclareGlobalFunction("RandomWord");
 
 #enumerating straight words
-DeclareGlobalFunction("AllStraightWords");
 DeclareGlobalFunction("StraightWords");
-#straight word processors
-DeclareGlobalFunction("SWP_Print");
-
-DeclareInfoClass("StraightWordsInfoClass");
+#SWPs straight word processors
+DeclareGlobalFunction("SWP_Printer");
+DeclareGlobalFunction("SWP_SimpleCollector");
+DeclareGlobalFunction("SWP_WordPointPairCollector");
+DeclareGlobalFunction("SWP_Search");
