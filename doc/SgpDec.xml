@@ -42,10 +42,9 @@ of the wreath product) can be constructed by explicitly giving the dependency
 In <Package>SgpDec</Package> words are dense lists of positive integers.
 The integers usually code the indices of elements of some generator set, thus
 they should be between 1 and the size of the generator set.
-
 <#Include Label="Construct">
-
 </Section>
+
 <Section>
 <Heading>Straight words</Heading>
 If a word constructs a trajectory without repeated elements then we say that
@@ -55,6 +54,20 @@ Note that the word itself can contain repeated symbols.
 <#Include Label="IsStraightWord">
 <#Include Label="Reduce2StraightWord">
 </Section>
+
+<Section>
+<Heading>Enumerating straight words</Heading>
+A backtrack algorithm is used to go through the straight words.
+Whenever the search finds a straight word a processor function is called.
+Using these plugins  the backtrack algorithm can do many different things
+with the results.
+
+<#Include Label="StraightWords">
+<#Include Label="SWP_Printer">
+
+</Section>
+
+
 </Chapter>
 </Body>
 
