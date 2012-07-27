@@ -50,7 +50,8 @@ corresponding permutation.
 <Section>
 <Heading>Straight words</Heading>
 If a word constructs a trajectory without repeated elements then we say that
-it is straight (the start point can be repeated at the end).
+it is straight (the start point can be repeated at the end)
+<Cite Key="straightwords2010"/> .
 Note that the word itself can contain repeated symbols.
 <#Include Label="IsStraightWord">
 <#Include Label="Reduce2StraightWord">
