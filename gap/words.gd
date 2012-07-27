@@ -16,16 +16,6 @@ DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
 DeclareGlobalFunction("RandomWord");
 
-#words containing negative values (-i coding the inverse of i)
-DeclareGlobalFunction("ConstructWithInverses");
-DeclareGlobalFunction("TrajectoryWithInverses");
-DeclareGlobalFunction("Reduce2StraightWordWithInverses");
-DeclareGlobalFunction("SymbolicInverse");
-DeclareGlobalFunction("SymbolicReduced");
-DeclareGlobalFunction("RandomWordWithInverses");
-DeclareGlobalFunction("AugmentWithInverses");
-DeclareGlobalFunction("DecodeAugmentedInverses");
-
 #enumerating straight words
 DeclareGlobalFunction("AllStraightWords");
 DeclareGlobalFunction("StraightWords");
