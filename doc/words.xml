@@ -1,9 +1,7 @@
 <#GAPDoc Label="Construct">
 <ManSection>
   <Oper Arg="word, generators, start, action" Name="Construct" />
-  <Oper Arg="word, generators, start, action" Name="ConstructWithInverses" />
   <Oper Arg="word, generators, start, action" Name="Trajectory" />
-  <Oper Arg="word, generators, start, action" Name="TrajectoryWithInverses" />
   <Description>
 General purpose function for constructing some structure by applying generators
 in the order coded defined by a sequence of integers (words).
@@ -27,12 +25,6 @@ Transformation( [ 1, 4, 1, 3 ] )
     <Example>
 gap> Construct([1,2,1,2,3],gens,[1,2],OnSets);
 [ 1, 4 ]
-</Example>
-    For invertible generators (e.g. permutations), negative integers can be used
-    for coding inverses:
-    <Example>
-gap> ConstructWithInverses([1,-1],[(1,2)],(),\*);
-()
 </Example>
     The next archetypical programming example demonstrates the flexibility of
 these functions:
@@ -86,36 +78,6 @@ gap> Trajectory(rw, [(1,2),(1,2,3)],(),\*);
 [ (), (1,2), (1,3), (1,3,2), () ]
 gap> IsStraightWord(rw, [(1,2),(1,2,3)],(),\*);
 true
-</Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="SymbolicInverse">
-<ManSection>
-  <Oper Arg="word" Name="SymbolicInverse" />
-  <Description>
-Inverts the word as a product of permutations.
-The order is reversed  and the indices are multiplied by -1, corresponding to
-the way of encoding inverse permutations.
-<Example>
-gap> SymbolicInverse([2,1,-2]);
-[ 2, -1, -2 ]
-</Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="SymbolicReduced">
-<ManSection>
-  <Oper Arg="word" Name="SymbolicReduced" />
-  <Description>
-    Symbolically reduces the word, i.e. cancelling neighbouring inverses.
-<Example>
-gap> SymbolicReduced([1,-1,2,-3,3]);
-[ 2 ]
-gap> SymbolicReduced([-2,1,-1,2,-3,3]);
-[  ]
 </Example>
   </Description>
 </ManSection>

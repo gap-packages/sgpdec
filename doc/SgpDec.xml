@@ -42,13 +42,9 @@ of the wreath product) can be constructed by explicitly giving the dependency
 In <Package>SgpDec</Package> words are dense lists of positive integers.
 The integers usually code the indices of elements of some generator set, thus
 they should be between 1 and the size of the generator set.
-In case of invertible generators negative integers code the inverse of the
-corresponding permutation.
 
 <#Include Label="Construct">
 
-<#Include Label="SymbolicInverse">
-<#Include Label="SymbolicReduced">
 </Section>
 <Section>
 <Heading>Straight words</Heading>
