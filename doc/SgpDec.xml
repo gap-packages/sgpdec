@@ -46,6 +46,9 @@ In case of invertible generators negative integers code the inverse of the
 corresponding permutation.
 
 <#Include Label="Construct">
+
+<#Include Label="SymbolicInverse">
+<#Include Label="SymbolicReduced">
 </Section>
 <Section>
 <Heading>Straight words</Heading>

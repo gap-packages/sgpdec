@@ -22,6 +22,6 @@ SgpDecRunManualExamples := function()
                   Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
                           "/doc"),
                   "SgpDec.xml",
-                  ["../gap/words.xml"],
+                  ["words.xml"],
                   "Section"));
 end;

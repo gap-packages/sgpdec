@@ -134,13 +134,13 @@ InstallGlobalFunction(Reduce2StraightWordWithInverses,
 function(word, gens, point, action)
     local reduced;
     #we reduce the word symbolically first (cancelling inverses)
-    reduced := ReducePermutationWord(word);
+    reduced := SymbolicReduced(word);
     #we create the trajectory by the invertible word and also cancel
     return StraightenWord(ReducePermutationWord(reduced),
                    TrajectoryWithInverses(reduced,gens,point,action));
 end);
 
-InstallGlobalFunction(InvertPermutationWord,
+InstallGlobalFunction(SymbolicInverse,
 function(sequence)
 local i,inverted;
   inverted := [];
@@ -151,7 +151,7 @@ local i,inverted;
 end);
 
 #just the usual cancellation of inverses
-InstallGlobalFunction(ReducePermutationWord,
+InstallGlobalFunction(SymbolicReduced,
 function(sequence)
 local i;
   i:=1;
