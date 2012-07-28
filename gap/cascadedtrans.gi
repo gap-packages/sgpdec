@@ -220,7 +220,7 @@ ConvertCascade2String := function(coordsprefix, converter)
 local i,str;
   str := "";
   for i in [1..Length(coordsprefix)] do
-    str := Concatenation(str,StringPrint(converter[i](coordsprefix[i])));
+    str := Concatenation(str,String(converter[i](coordsprefix[i])));
     if i < Length(coordsprefix) then str := Concatenation(str,","); fi;
   od;
   return str;
@@ -637,9 +637,9 @@ function(ct)
     coordsname := "n";
     level := 1;
     for coord in dep[1] do
-      newnn := Concatenation(coordsname,"_",StringPrint(coord));
+      newnn := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newnn," [label=\"",
-                      StringPrint(csh!.state_symbol_functions[level](coord)),
+                      String(csh!.state_symbol_functions[level](coord)),
                       "\"]");
       if not (edge in edges) then
         # we just add the full edge
@@ -658,7 +658,7 @@ function(ct)
 
     #putting the proper label there as we are at the end of the coordinates
     vertexlabels.(coordsname) := Concatenation(" [label=\"",
-            StringPrint(csh!.operation_symbol_functions[level](dep[2])),"\"]");
+            String(csh!.operation_symbol_functions[level](dep[2])),"\"]");
   od;
   # finally writing them into the dot file
   for i in [1..Size(vertices)] do

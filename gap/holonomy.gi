@@ -439,7 +439,7 @@ local groupindicators,i;
       if Order(z) = 1 then
         return "I";
       else
-        return Concatenation("G",StringPrint(Order(z)));
+        return Concatenation("G",String(Order(z)));
       fi;end));
   fi;
 
