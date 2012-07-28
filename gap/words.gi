@@ -84,7 +84,7 @@ InstallGlobalFunction(RandomWord,
 function(l,n)
 local list;
   list := [1..n];
-  return List([1..l], x->Random(SgpDecOptionsRec.SGPDEC_RND,list));
+  return List([1..l], x->Random(list));
 end);
 
 
