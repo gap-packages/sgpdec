@@ -54,26 +54,14 @@ gap> Size(A);
  </ManSection>
  <#/GAPDoc>
 
-###action related
- <#GAPDoc Label="IsIdentityOnFiniteSet">
- <ManSection >
- <Func Arg="trans, finset" Name="IsIdentityOnFiniteSet" />
- <Description>
- Returns true if  the transformation acts  as the identity restricted to  the given set.
- </Description>
- </ManSection>
- <#/GAPDoc>
-
-###action related
- <#GAPDoc Label="Transf2PermOnSet">
- <ManSection >
- <Func Arg="trans, finset" Name="Transf2PermOnSet" />
- <Description>
- If the transformation acts as a permutation on the set,
- then the corresponding permutation is returned.
- </Description>
- </ManSection>
- <#/GAPDoc>
+<#GAPDoc Label="IsIdentityOnFiniteSet">
+<ManSection >
+<Func Arg="trans, finset" Name="IsIdentityOnFiniteSet" />
+<Description>
+Returns true if  the transformation acts  as the identity restricted to  the given set.
+</Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsSingleton">
 <ManSection >
