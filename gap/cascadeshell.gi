@@ -26,10 +26,10 @@ Name4Component := function(comp)
     if SgpDecOptionsRec.SMALL_GROUPS then
       SetName(comp, StructureDescription(comp));
     else
-      SetName(comp, Concatenation("G",StringPrint(Order(comp))));
+      SetName(comp, Concatenation("G",String(Order(comp))));
     fi;
   else
-    SetName(comp, Concatenation("S",StringPrint(Size(comp))));
+    SetName(comp, Concatenation("S",String(Size(comp))));
   fi;
   return Name(comp);
 end;
@@ -106,7 +106,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   str := "";
   for i in [2..Length(components)] do
       if i > 2 then str  := Concatenation(str, " x ");fi;
-      str := Concatenation(str,StringPrint(Size(cascprodinfo.state_sets[i-1])));
+      str := Concatenation(str,String(Size(cascprodinfo.state_sets[i-1])));
       cascprodinfo.argument_names[i] := str;
   od;
 

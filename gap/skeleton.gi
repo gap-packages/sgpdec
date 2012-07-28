@@ -485,16 +485,16 @@ local  str, i,label,node,out,class,classes,set,states,G;
   #defining the hierarchical levels - the nodes are named only by integers
   AppendTo(out, "{node [shape=plaintext]\n edge [style=invis]\n");
   for i in [1..DepthOfSkeleton(sk)-1] do
-    AppendTo(out,Concatenation(StringPrint(i),"\n"));
+    AppendTo(out,Concatenation(String(i),"\n"));
     if i <= DepthOfSkeleton(sk) then
-      AppendTo(out,Concatenation(StringPrint(i),"->",StringPrint(i+1),"\n"));
+      AppendTo(out,Concatenation(String(i),"->",String(i+1),"\n"));
     fi;
   od;
   AppendTo(out,"}\n");
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
   for i in [1..Length(classes)] do
-    AppendTo(out,"subgraph cluster",StringPrint(i),"{\n");
+    AppendTo(out,"subgraph cluster",String(i),"{\n");
     for node in classes[i] do
       AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
     od;
@@ -518,7 +518,7 @@ local  str, i,label,node,out,class,classes,set,states,G;
   od;
   #drawing the the same level elements
   for i in [1..DepthOfSkeleton(sk)] do
-    AppendTo(out, "{rank=same;",StringPrint(i),";");
+    AppendTo(out, "{rank=same;",String(i),";");
     for class in SkeletonClassesOnDepth(sk,i) do
       for node in class do
             AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");

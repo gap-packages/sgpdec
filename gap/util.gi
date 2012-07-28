@@ -38,7 +38,7 @@ local vals,k,s;
   k := 1;
   while vals[k] = 0 do k := k+1; od;
   while k <= Length(SGPDEC_util_durations) do
-    s := Concatenation(s, StringPrint(vals[k]),SGPDEC_util_timeunits[k]);
+    s := Concatenation(s, String(vals[k]),SGPDEC_util_timeunits[k]);
     k := k+1;
   od;
   return s;
@@ -51,14 +51,14 @@ end);
 InstallGlobalFunction(FormattedMemoryString,
 function(numofbytes)
   if numofbytes < 1024 then
-    return Concatenation(StringPrint(numofbytes),"B");
+    return Concatenation(String(numofbytes),"B");
   elif numofbytes >= 1024 and numofbytes < 1024^2 then
-    return Concatenation(StringPrint(Round(Float(numofbytes/1024))),"KB");
+    return Concatenation(String(Round(Float(numofbytes/1024))),"KB");
   elif numofbytes >= 1024^2 and numofbytes < 1024^3 then
-    return Concatenation(StringPrint(
+    return Concatenation(String(
                    Float(Round(Float(numofbytes/(1024^2))*10)/10)),"MB");
   elif numofbytes >= 1024^3 and numofbytes < 1024^4 then
-    return Concatenation(StringPrint(
+    return Concatenation(String(
                    Float(Round(Float(numofbytes/(1024^3))*100)/100)),"GB");
   fi;
 end);

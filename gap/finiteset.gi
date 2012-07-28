@@ -266,7 +266,7 @@ function(finiteset, states)
   str := "{";
   l := AsList(finiteset);
   for i in [1..Length(l)] do
-    str := Concatenation(str, StringPrint(states[l[i]]));
+    str := Concatenation(str, String(states[l[i]]));
     if i < Length(l) then
       str := Concatenation(str,",");
     fi;
