@@ -104,11 +104,18 @@ with the results.
 <#Include Label="SWP_SimpleCollector">
 <#Include Label="SWP_WordPointPairCollector">
 <#Include Label="SWP_Search">
-
 </Section>
-
-
 </Chapter>
+
+<Chapter> <Heading>Misc</Heading>
+<Section>
+
+<Heading>Linear notation for transformations</Heading>
+<Cite Key="ClassicalTransSemigroups2009"/>
+<#Include Label="LinearNotation">
+</Section>
+</Chapter>
+
 </Body>
 
 <Bibliography Databases="SGPDEC" />
