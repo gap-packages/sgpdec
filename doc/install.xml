@@ -1,18 +1,29 @@
 <Section Label="install"><Heading>Installing <Package>SgpDec</Package></Heading>
-Released versions of <Package>SgpDec</Package> can be downloaded from <URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>. The most recent (possibly broken) version can be obtained from the project's <URL Text="Svn Repository">http://sourceforge.net/scm/?type=svn&amp;group_id=166182 </URL> (see instructions there).   
+Released versions of <Package>SgpDec</Package> can be downloaded from
+<URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>.
+The most recent (possibly broken) version can be obtained from the project's
+ <URL Text="Mercurial Repository">
+   https://bitbucket.org/dersu/sgpdec </URL>
+(see instructions there).
 
-Given that you have a working copy of the latest complete &GAP; system on a UNIX machine you can install SgpDec with the following commands. <C>GAPROOT</C>  should be substituted with the main &GAP; directory (the 
-one containing the folders `bin', `lib', and so on), and '*' by the latest version numbers.
-<Example>
-&gt; gunzip sgpdec-*.tar.gz 
+Given that you have a working copy of the latest complete &GAP; system on a UNIX
+machine you can install SgpDec with the following commands. <C>GAPROOT</C>
+should be substituted with the main &GAP; directory (the
+one containing the folders `bin', `lib', and so on), and '*' by the latest
+version numbers.
+<Log>
+&gt; gunzip sgpdec-*.tar.gz
 &gt; tar -xf sgpdec-*.tar
 &gt; mv sgpdec GAPROOT/pkg
-&gt; gap 
-</Example>
+&gt; gap
+</Log>
+
 Then after starting &GAP; the package can be loaded by:
-<Example>
+
+<Log>
 gap> LoadPackage("SgpDec");
-</Example>
+</Log>
+
 which command prints version information and should return <C>true</C>.
 This also loads the packages that <Package>SgpDec</Package> depends on.
 <Table Align="|c|c|">
@@ -24,19 +35,25 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item> <URL Text="GAPDoc">http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc</URL></Item><Item>Generating documentation, <Code>StringPrint</Code></Item>
+   <Item>
+    <URL Text="GAPDoc">http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc
+    </URL></Item>
+    <Item>Generating documentation</Item>
   </Row>
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item> <URL Text="MONOID">http://www-groups.mcs.st-and.ac.uk/~jamesm/monoid</URL></Item><Item>Orbit calculations</Item>
+   <Item> <URL Text="Citrus">http://www-groups.mcs.st-and.ac.uk/~jamesm/citrus
+   </URL></Item>
+   <Item>Calculating with transformation semigroups</Item>
   </Row>
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item> <URL Text="orb">http://www-groups.mcs.st-and.ac.uk/~neunhoef/Computer/Software/Gap/orb.html</URL></Item><Item>Excellent hashtable functionality</Item>
+   <Item> <URL Text="Viz">https://bitbucket.org/zen154115/viz
+   </URL></Item>
+   <Item>Visualising by GrapViz and LaTeX (optional)</Item>
   </Row>
  <HorLine/>
 </Table>
-
 </Section>

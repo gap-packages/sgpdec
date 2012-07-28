@@ -1,6 +1,6 @@
 SgpDecDocSourceFiles :=
   [
-   "../gap/linearnotation.xml",
+   "linearnotation.xml",
    "words.xml",
    "../gap/decomposition.xml",
    "../gap/cascadedstructure.xml",
