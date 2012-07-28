@@ -1,3 +1,5 @@
+0.6.58
+	Small fixes in naming components. Removing last direct usage of Orb's hashtables. Revamping module dealing with words: removing invertable word functions, rewriting straight word search (major speed boost), rewritten documentation.
 0.6.57
 	New caching mechanism in Skeleton. Movements within the equivalence classes of the skeleton are calculated only once. This is a major speed boost for calculating in the holonomy decomposition.
 0.6.56
