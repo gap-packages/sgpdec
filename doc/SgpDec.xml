@@ -39,9 +39,10 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <Chapter> <Heading>Words</Heading>
 <Section>
 <Heading>Words as list of integers</Heading>
-In <Package>SgpDec</Package> words are dense lists of positive integers.
+In <Package>SgpDec</Package> words are represented as dense lists of positive
+integers.
 The integers usually code the indices of elements of some generator set, thus
-they should be between 1 and the size of the generator set.
+they should be between 1 and the size of the generator set. 
 <#Include Label="Construct">
 </Section>
 
@@ -64,6 +65,9 @@ with the results.
 
 <#Include Label="StraightWords">
 <#Include Label="SWP_Printer">
+<#Include Label="SWP_SimpleCollector">
+<#Include Label="SWP_WordPointPairCollector">
+<#Include Label="SWP_Search">
 
 </Section>
 
