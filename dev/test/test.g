@@ -5,6 +5,10 @@ LoadPackage("sgpdec");
 Read("namedgroups.g");
 Read("namedsemigroups.g");
 
+SEED := IO_gettimeofday().tv_sec;
+Reset(GlobalMersenneTwister, SEED);
+Print("#Random seed:", SEED, "\n");
+
 SMALL_GROUPS := true;;
 test_groups := [D8,C4,C5,S4];;
 test_semigroups := [MICROBUG,HEYBUG,SMLBUG,BECKS, BEX,T4, ALIFEX, NONISOMPERM];
@@ -93,3 +97,5 @@ for G in test_groups do
   LagrangeTest4(decomp);
   LagrangeTest5(decomp);
 od;
+
+Print("#Random seed:", SEED, "\n");

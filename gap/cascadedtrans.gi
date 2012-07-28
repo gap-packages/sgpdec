@@ -81,7 +81,7 @@ local deps, level, arg;
   deps := [];
   # some trickery is needed as random may return the same element
   while Length(deps) <> numofdeps do
-    level := Random(SgpDecOptionsRec.SGPDEC_RND, 1, Length(csh));
+    level := Random(1,Length(csh));
     arg := Random(EnumeratorOfCartesianProduct(StateSets(csh){[1..level-1]}));
     if not (arg in deps) then
       Add(deps,arg);
@@ -90,8 +90,8 @@ local deps, level, arg;
 
   # now putting the actions there - this may still give identity and reduce the
   # number of dependencies
-  deps := List(deps, arg -> [arg, Random(csh[Length(arg)+1])]);
-
+  deps := List(deps,
+               arg->[arg,Random(csh[Length(arg)+1])]);
   return CascadedTransformation(csh,DependencyTable(deps));
 end);
 

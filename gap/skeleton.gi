@@ -316,7 +316,7 @@ local chain, set, topset;
   set := FiniteSet([k], sk.degree);
   Add(chain,set);
   while set <> sk.stateset do
-    set := Random(SgpDecOptionsRec.SGPDEC_RND,PreImages(sk.inclusionHD, set));
+    set := Random(PreImages(sk.inclusionHD, set));
     Add(chain,set);
   od;
   Remove(chain);#TODO quick hack - we don't need the full set in the chain
