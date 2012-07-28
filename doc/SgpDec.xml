@@ -41,6 +41,12 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <#Include Label="FiniteSet">
 </Section>
 
+<Section>
+<Heading>Properties of finite sets</Heading>
+<#Include Label="SizeOfUniverse">
+<#Include Label="IsSingleton">
+</Section>
+
 
 
 </Chapter>
