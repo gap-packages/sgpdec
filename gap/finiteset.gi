@@ -306,12 +306,12 @@ function(A, t)
   return FiniteSetByBlist(result);
 end);
 
+#this function tells quickly if it is not the identity
 InstallGlobalFunction(IsIdentityOnFiniteSet,
 function(t, s)
-  local n, blist, i;
-  n:=SizeOfUniverse(s);
+local blist, i;
   blist:=s!.blist;
-  for i in [1..n] do
+  for i in [1..SizeOfUniverse(s)] do
     if blist[i] and not i^t=i then
       return false;
     fi;
