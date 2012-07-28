@@ -3,11 +3,7 @@ local t,w,rw,i;
   t := Runtime();
   Print("Reducing random words of length ", length ," for straightness...\n");
   for i in [1..10] do
-    if IsPerm(gens[1]) then
-      w := RandomWordWithInverses(length,Size(gens));
-    else
-      w := RandomWord(length,Size(gens));
-    fi;
+    w := RandomWord(length,Size(gens));
     rw := Reduce2StraightWord(w,gens,One(gens[1]),\*);
     Print(" ",Length(w),"->", Length(rw), " ");
     if Size(w) <> 0 then
