@@ -36,9 +36,19 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <!--##### Chapters/sections are in individual xml files. -->
 
 <Chapter> <Heading>Finite Sets</Heading>
+For representing finite sets of positive integers we can use lists.
+However, it we store a lot of these sets then we need to use boolean lists
+to save space. On the other hand dealing with boolean lists would provide
+an inelegant solution for the <Package>SgpDec</Package> user.
+That is why we introduce this new data type.
+Many set operations are reimplemented and a few specialized functions
+used in decompositions are also included.
 <Section>
 <Heading>Constructors</Heading>
 <#Include Label="FiniteSet">
+If the underlying <C>BList</C> is constructed beforehand, then
+<C>FiniteSetByBlist</C> can be used to wrap the boolean list.
+For copying an exisiting finite set <C>FiniteSetCopy</C> can be used.
 </Section>
 
 <Section>
@@ -47,7 +57,10 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <#Include Label="IsSingleton">
 </Section>
 
-
+<Section>
+<Heading>Acting on finite sets</Heading>
+<#Include Label="IsIdentityOnFiniteSet">
+</Section>
 
 </Chapter>
 
