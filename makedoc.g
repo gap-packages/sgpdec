@@ -13,10 +13,11 @@ SgpDecMakeDoc := function()
                     "../gap/subgroupchains.xml",
                     "../gap/skeleton.xml",
                     "../gap/holonomy.xml"
-                    ],"SgpDec");
+                    ],"SgpDec","MathJax");
 end;
 
 SgpDecRunManualExamples := function()
+  SizeScreen([80]);
   RunExamples(
           ExtractExamples(
                   Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
