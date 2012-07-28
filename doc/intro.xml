@@ -1,7 +1,6 @@
 <Chapter> <Heading>Introduction</Heading>
 
- <#Include SYSTEM "basic.xml"> 
- <#Include SYSTEM "install.xml"> 
- <#Include SYSTEM "conf.xml"> 
+ <#Include SYSTEM "install.xml">
+ <#Include SYSTEM "conf.xml">
 
 </Chapter>
