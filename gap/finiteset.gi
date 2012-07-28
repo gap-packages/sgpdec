@@ -46,22 +46,21 @@ function(finset)
 end);
 
 InstallMethod(Size, "for a finite set",
-        [IsFiniteSet  and IsFiniteSetBlistRep], 
+        [IsFiniteSet  and IsFiniteSetBlistRep],
         x-> SizeBlist(x!.blist));
 
 InstallMethod(IsEmpty, "for a finite set",
-        [IsFiniteSet  and IsFiniteSetBlistRep], 
+        [IsFiniteSet  and IsFiniteSetBlistRep],
         x-> (SizeBlist(x!.blist)=0) );
 
 
 InstallOtherMethod(Length, "for a finite set",
-        [IsFiniteSet and IsFiniteSetBlistRep], 
+        [IsFiniteSet and IsFiniteSetBlistRep],
         Size);
 
-
 ##########SET OPERATIONS#####################
-#if the name is a noun then it returns a new inctance, 
-#otherwise it changes the (first) parameter  
+#if the name is a noun then it returns a new inctance,
+#if it is a verb then it changes the (first) parameter
 InstallGlobalFunction(UnionFiniteSet,
 function(listofFS)
 local union,fset;
@@ -72,38 +71,36 @@ local union,fset;
   return FiniteSetByBlist(union);
 end);
 
-
 InstallGlobalFunction(UniteFiniteSet,
 function(A,B)
 local union,fset;
-    UniteBlist(A!.blist,B!.blist); 
+    UniteBlist(A!.blist,B!.blist);
 end);
 
 
 InstallGlobalFunction( IntersectionFiniteSet,
 function( listofFS )
 local intersect,fset;
-
-  intersect := BlistList( [1..SizeOfUniverse(listofFS[1])], [1..SizeOfUniverse(listofFS[1])]  );
+  intersect := BlistList( [1..SizeOfUniverse(listofFS[1])],
+                       [1..SizeOfUniverse(listofFS[1])]  );
   for fset  in listofFS  do
     IntersectBlist( intersect, fset!.blist );
   od;
   return FiniteSetByBlist(intersect);
-end );
-
+end);
 
 InstallGlobalFunction(IntersectFiniteSet,
 function(A,B)
 local union,fset;
-    IntersectBlist(A!.blist,B!.blist); 
+    IntersectBlist(A!.blist,B!.blist);
 end);
 
-InstallGlobalFunction(DifferenceFiniteSet, 
+InstallGlobalFunction(DifferenceFiniteSet,
 function(A, B)
   return  FiniteSetByBlist(DifferenceBlist(A!.blist, B!.blist));
 end);
 
-InstallGlobalFunction(SubtractFiniteSet, 
+InstallGlobalFunction(SubtractFiniteSet,
 function(A, B)
   return  SubtractBlist(A!.blist, B!.blist);
 end);
@@ -116,47 +113,44 @@ local copy;
   return copy;
 end);
 
-
 InstallGlobalFunction(ComplementFiniteSet,
 function(A)
   Apply(A!.blist, x->not x);
 end);
 
 InstallOtherMethod(IsSubset, "for two finite sets", true,
-        [IsFiniteSet, 
-         IsFiniteSet], 0, 
-    function(A, B) 
-        return  IsSubsetBlist(A!.blist,B!.blist);
-    end);
-    
-InstallGlobalFunction( IsProperFiniteSubset,
+        [IsFiniteSet,
+         IsFiniteSet],
+function(A, B)
+  return  IsSubsetBlist(A!.blist,B!.blist);
+end);
+
+InstallGlobalFunction(IsProperFiniteSubset,
 function (A,B )
     return (Size(A) > Size(B)) and IsSubset(A,B);
-end );
+end);
 
 ########MODIFY AND ACCESS THE ELEMENTS########################
 InstallOtherMethod(Add,"for finite sets",[IsFiniteSet,IsInt],
-function ( finiteset , elem)
+function (finiteset , elem)
   finiteset!.blist[elem] := true;
-end
-);
+end);
 
 InstallOtherMethod(Remove,"for finite sets",[IsFiniteSet,IsInt],
 function ( finiteset , elem)
   finiteset!.blist[elem] := false;
-end
-);
+end);
 
-InstallMethod(\in, 
+InstallMethod(\in,
   "for an integer and a finite set",
   [IsInt, IsFiniteSet],
 function(i, s)
-  if i < 1 or i > Size(s!.blist) then return false;fi;   
+  if i < 1 or i > Size(s!.blist) then return false;fi;
   return s!.blist[i];
-end );
+end);
 
 InstallGlobalFunction(MinFiniteSet,
-        function(A)
+function(A)
   if Size(A!.blist) = 0 then return fail; fi;
   return Position(A!.blist,true);
 end);
@@ -164,43 +158,40 @@ end);
 
 InstallMethod(AsList,"for finite sets",[IsFiniteSet],
 function ( finiteset )
-    local n, result, j, blist, i;
-    
-    #an empty finite set
-    n:=Size(finiteset!.blist);
-    result := EmptyPlist(n);
-    j:=0; blist:=finiteset!.blist;
-    
-    for i in [1..n] do
-        if blist[i] then
-            j:=j+1; result[j]:=i;
-        fi;
-    od;
-    return result;
-end );
+  local n, result, j, blist, i;
+  #an empty finite set
+  n:=Size(finiteset!.blist);
+  result := EmptyPlist(n);
+  j:=0; blist:=finiteset!.blist;
+  for i in [1..n] do
+    if blist[i] then
+      j:=j+1; result[j]:=i;
+    fi;
+  od;
+  return result;
+end);
 
 ###########ITERATOR#################################################
 
 BindGlobal( "IsDoneIterator_FiniteSet",
-    iter -> (iter!.pos = iter!.len));
+  iter -> (iter!.pos = iter!.len));
 
-BindGlobal( "NextIterator_FiniteSet", 
+BindGlobal( "NextIterator_FiniteSet",
 function(iter)
-    if iter!.pos = iter!.len then
-        Error("<iter> is exhausted");
-    fi;
-    iter!.pos := iter!.pos + 1;        
-    while not iter!.blist[iter!.pos]  do
-        iter!.pos := iter!.pos + 1;
-    od;
-    return iter!.pos;
+  if iter!.pos = iter!.len then
+    Error("<iter> is exhausted");
+  fi;
+  iter!.pos := iter!.pos + 1;
+  while not iter!.blist[iter!.pos] do
+    iter!.pos := iter!.pos + 1;
+  od;
+  return iter!.pos;
 end);
 
-BindGlobal( "ShallowCopy_FiniteSet",
-    iter -> rec(blist := iter!.list,
-                 pos := iter!.pos,
-                 len := iter!.len));
-
+BindGlobal("ShallowCopy_FiniteSet",
+  iter -> rec(blist := iter!.list,
+                       pos := iter!.pos,
+                       len := iter!.len));
 
 BindGlobal("IteratorFiniteSet",
 function(A)
@@ -210,7 +201,6 @@ function(A)
                 ShallowCopy := ShallowCopy_FiniteSet,
                 IsDoneIterator := x->true,
                 NextIterator := fail);
-      
   else
     iter := rec(
                 blist := A!.blist,
@@ -219,123 +209,114 @@ function(A)
                 ShallowCopy := ShallowCopy_FiniteSet,
                 IsDoneIterator := IsDoneIterator_FiniteSet,
                 NextIterator := NextIterator_FiniteSet);
-    #length 
-    while (not iter!.blist[iter.len]) and (iter.len > 0) do 
-      iter.len := iter.len-1; 
+    #length
+    while (not iter!.blist[iter.len]) and (iter.len > 0) do
+      iter.len := iter.len-1;
     od;
   fi;
   return IteratorByFunctions(iter);
 end);
 
-InstallMethod(Iterator, 
+InstallMethod(Iterator,
   "for a finite set",
   [IsFiniteSet],
 function(A)
   return IteratorFiniteSet(A);
 end);
 
-
 InstallGlobalFunction(AllSubsets,
-function(A)       #TODO clean up!!! 
-local l, lc, result,n, bl,tmp;  
+function(A)
+local l, lc, result, bl,tmp;
   l := AsList(A);
   result := [];
-  n := SizeOfUniverse(A);
-  lc := EnumeratorOfCartesianProduct(ListWithIdenticalEntries(Size(l), [true, false]));
+  lc := EnumeratorOfCartesianProduct(ListWithIdenticalEntries(Size(l),
+                [true, false]));
   for bl in lc do
     tmp := [];
     Perform([1..Size(bl)], function(x) if bl[x] then Add(tmp,l[x]);fi;end );
     Add(result,tmp);
   od;
-  return List(result, x->FiniteSet(x,n));
+  return List(result, x->FiniteSet(x,SizeOfUniverse(A)));
 end);
-
 
 ###DISPLAY##############
 InstallMethod( PrintObj,"for a finite set",
     [ IsFiniteSet ],
 function( A )
 local i,n,size;
-
-    n := 0;
-    size := Size(A);
-    Print("{");
-        for i in [1..SizeOfUniverse(A)] do
-        if A!.blist[i] then
-            Print(i);
-            n := n + 1;
-            if n < size then
-                Print(",");
-            fi;
-        fi;
-    od;
-    Print( "}" );
-end );
-
+  n := 0;
+  size := Size(A);
+  Print("{");
+  for i in [1..SizeOfUniverse(A)] do
+    if A!.blist[i] then
+      Print(i);
+      n := n + 1;
+      if n < size then
+        Print(",");
+      fi;
+    fi;
+  od;
+  Print( "}" );
+end);
 
 #to give arbitrary names to set elements
 InstallGlobalFunction(FiniteSetPrinter,
 function(finiteset, states)
-    local str,i,l;
-    str := "{";
-    l := AsList(finiteset);
-    for i in [1..Length(l)] do
-        str := Concatenation(str, StringPrint(states[l[i]]));
-        if i < Length(l) then
-            str := Concatenation(str,",");
-        fi;
-    od;
-    str := Concatenation(str,"}");
-    return str;
-end
-);
+  local str,i,l;
+  str := "{";
+  l := AsList(finiteset);
+  for i in [1..Length(l)] do
+    str := Concatenation(str, StringPrint(states[l[i]]));
+    if i < Length(l) then
+      str := Concatenation(str,",");
+    fi;
+  od;
+  str := Concatenation(str,"}");
+  return str;
+end);
 
-#  Two finite sets are equal if they have the same underlying bitlist representation.
+#Two finite sets are equal if they have the same underlying bitlists.
 InstallOtherMethod(\=, "for two finite sets", IsIdenticalObj,
-        [IsFiniteSet, 
-         IsFiniteSet], 0, 
-    function(A, B) 
-        return  A!.blist = B!.blist;
-    end);
-    
+        [IsFiniteSet,
+         IsFiniteSet],
+function(A, B)
+  return  A!.blist = B!.blist;
+end);
+
 InstallOtherMethod(\<, "for two finite sets", IsIdenticalObj,
-        [IsFiniteSet, 
-         IsFiniteSet], 0, 
-    function(A, B) 
-        return  A!.blist < B!.blist;
-    end);
-    
+        [IsFiniteSet,
+         IsFiniteSet], 0,
+function(A, B)
+  return  A!.blist < B!.blist;
+end);
+
 #######ACTION RELATED############################
-InstallGlobalFunction(OnFiniteSets, 
+InstallGlobalFunction(OnFiniteSets,
 function(A, t)
   local n, result, blist, i;
-    
-    #an empty finite set
-    n:=SizeOfUniverse(A);
-    result := BlistList([1..n],[]);
-    blist:=A!.blist;
-
-    for i in [1..n] do
-        if blist[i] then
-            result[i^t] := true;
-        fi;
-    od;
-    return FiniteSetByBlist(result);
+  #an empty finite set
+  n:=SizeOfUniverse(A);
+  result := BlistList([1..n],[]);
+  blist:=A!.blist;
+  for i in [1..n] do
+    if blist[i] then
+      result[i^t] := true;
+    fi;
+  od;
+  return FiniteSetByBlist(result);
 end);
 
 InstallGlobalFunction(IsIdentityOnFiniteSet,
 function(t, s)
   local n, blist, i;
-
   n:=SizeOfUniverse(s);
   blist:=s!.blist;
-
   for i in [1..n] do
-        if blist[i] and not i^t=i then
-            return false;
-        fi;
-    od;
-return true;
+    if blist[i] and not i^t=i then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 # if we know that a transformation acts as a permutation on a set
@@ -349,15 +330,14 @@ local l,i;
     l[i] := i ^ trans;
   od;
   return PermList(l);
-end
-);
+end);
 
 ###########FOR ORB'S HASHTABLE FUNCTIONS#################################
-HashFunctionForFiniteSet:=function ( v, data )
+HashFunctionForFiniteSet:=function (v, data)
 local  i, res, n, blist;
   res := 0; n:=SizeOfUniverse(v); blist:=v!.blist;
   for i in [1..n] do
-    if blist[i] then 
+    if blist[i] then
       res := (res * data[1] + i) mod data[2];
     fi;
   od;
@@ -368,9 +348,10 @@ InstallMethod( ChooseHashFunction, "for finite sets",
 [IsFiniteSet, IsInt],
   function(p,hashlen)
     return rec(func := HashFunctionForFiniteSet, data := [101,hashlen]);
-end );
+end);
 
-
+#returns the integer value of the set as a binary number
+#this is unique, unlike the hash value
 InstallGlobalFunction(FiniteSetID,
 function(A)
 local i, sum;
@@ -384,4 +365,3 @@ local i, sum;
   #here is the nice code, but the above is 18% faster
   #return Sum(List(AsList(A), x->2^(x-1)));
 end);
-
