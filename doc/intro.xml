@@ -1,6 +1,0 @@
-<Chapter> <Heading>Introduction</Heading>
-
- <#Include SYSTEM "install.xml">
- <#Include SYSTEM "conf.xml">
-
-</Chapter>
