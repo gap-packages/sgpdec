@@ -2,11 +2,12 @@
 ##
 ## finiteset.gi           SgpDec package
 ##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2012
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Finite sets of integers.
+## Finite sets of integers. Wrapping boolean lists for speed and readability
+## purposes
 ##
 
 ########CONSTRUCTORS####################
@@ -27,10 +28,11 @@ function(arg)
   fi;
 end);
 
-#copy constructor 
-FiniteSetCopy := function(A)
+#copy constructor
+InstallGlobalFunction(FiniteSetCopy,
+function(A)
   return FiniteSetByBlist(ShallowCopy(A!.blist));
-end;
+end);
 
 #########SIZE################################
 InstallGlobalFunction(SizeOfUniverse,
