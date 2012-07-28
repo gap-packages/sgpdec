@@ -19,7 +19,6 @@ DeclareGlobalFunction("SizeOfUniverse");
 DeclareGlobalFunction("IsSingleton");
 #action on finite sets
 DeclareGlobalFunction("OnFiniteSets");
-DeclareGlobalFunction("Transf2PermOnSet");
 DeclareGlobalFunction("IsIdentityOnFiniteSet");
 #set operations that create a new set
 DeclareGlobalFunction("IsProperFiniteSubset");

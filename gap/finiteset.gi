@@ -319,19 +319,6 @@ function(t, s)
   return true;
 end);
 
-# if we know that a transformation acts as a permutation on a set
-# then we can produce the corresponding permutation (acting on the same set)
-InstallGlobalFunction(Transf2PermOnSet,
-function(trans, finset)
-local l,i;
-  l := [1..SizeOfUniverse(finset)];
-  #see where the points go
-  for i in AsList(finset) do
-    l[i] := i ^ trans;
-  od;
-  return PermList(l);
-end);
-
 ###########FOR ORB'S HASHTABLE FUNCTIONS#################################
 HashFunctionForFiniteSet:=function (v, data)
 local  i, res, n, blist;
