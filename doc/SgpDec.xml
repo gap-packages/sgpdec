@@ -35,6 +35,13 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <Body>
 <!--##### Chapters/sections are in individual xml files. -->
 
+<Chapter> <Heading>Introduction</Heading>
+
+ <#Include SYSTEM "install.xml">
+ <#Include SYSTEM "conf.xml">
+
+</Chapter>
+
 <Chapter> <Heading>Finite Sets</Heading>
 For representing finite sets of positive integers we can use lists.
 However, it we store a lot of these sets then we need to use boolean lists
