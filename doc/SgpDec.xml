@@ -35,6 +35,16 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <Body>
 <!--##### Chapters/sections are in individual xml files. -->
 
+<Chapter> <Heading>Finite Sets</Heading>
+<Section>
+<Heading>Constructors</Heading>
+<#Include Label="FiniteSet">
+</Section>
+
+
+
+</Chapter>
+
 
 <Chapter> <Heading>Words</Heading>
 <Section>
@@ -42,7 +52,7 @@ of the wreath product) can be constructed by explicitly giving the dependency
 In <Package>SgpDec</Package> words are represented as dense lists of positive
 integers.
 The integers usually code the indices of elements of some generator set, thus
-they should be between 1 and the size of the generator set. 
+they should be between 1 and the size of the generator set.
 <#Include Label="Construct">
 </Section>
 
