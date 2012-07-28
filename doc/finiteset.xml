@@ -3,12 +3,14 @@
 <Func Arg="list" Name="FiniteSet" />
 <Func Arg="list,int" Name="FiniteSet" />
 <Description>
-Creates a FiniteSet from a list of integers. The maximal element determines the size of the universe. 
+Creates a FiniteSet from a list of integers.
+The maximal element determines the size of the universe.
 <Example>
-gap> A := FiniteSet([3,2,7,4,5,]);
+gap> A := FiniteSet([3,2,7,4,5]);
 {2,3,4,5,7}
 </Example>
-The alternative way is to give the size of the universe. This way the empty set (of a given universe) can be constructed.
+The alternative way is to give the size of the universe.
+This way the empty set (of a given universe) can be constructed.
 <Example>
 gap> empty := FiniteSet([],7);
 {}
@@ -17,21 +19,22 @@ gap> empty := FiniteSet([],7);
 </ManSection>
 <#/GAPDoc>
 
- <#GAPDoc Label="SizeOfUniverse">
- <ManSection >
- <Func Arg="finiteset" Name="SizeOfUniverse" />
- <Description>
-  Returns the size of the set of which this is a subset. Size() returns the number of elements contained in the set.
- <Example>
- gap> A := FiniteSet([3,2,7,4,5,]);
- gap> SizeOfUniverse(A);
- 7
- gap> Size(A);
- 5
- </Example>
- </Description>
- </ManSection>
- <#/GAPDoc>
+<#GAPDoc Label="SizeOfUniverse">
+<ManSection >
+<Func Arg="finiteset" Name="SizeOfUniverse" />
+<Description>
+Returns the size of the set of which this is a subset.
+<C>Size</C> returns the number of elements contained in the set.
+<Example>
+gap> A := FiniteSet([3,2,7,4,5]);;
+gap> SizeOfUniverse(A);
+7
+gap> Size(A);
+5
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
  <#GAPDoc Label="IsProperFiniteSubset">
  <ManSection >
@@ -66,17 +69,17 @@ gap> empty := FiniteSet([],7);
  <ManSection >
  <Func Arg="trans, finset" Name="Transf2PermOnSet" />
  <Description>
- If the transformation acts as a permutation on the set, 
- then the corresponding permutation is returned. 
+ If the transformation acts as a permutation on the set,
+ then the corresponding permutation is returned.
  </Description>
  </ManSection>
  <#/GAPDoc>
 
- <#GAPDoc Label="IsSingleton">
- <ManSection >
- <Func Arg="finset" Name="IsSingleton" />
- <Description>
-  Returns true if the finite set contains only one element.
- </Description>
- </ManSection>
- <#/GAPDoc>
+<#GAPDoc Label="IsSingleton">
+<ManSection >
+<Func Arg="finset" Name="IsSingleton" />
+<Description>
+Returns true if the finite set contains only one element.
+</Description>
+</ManSection>
+<#/GAPDoc>
