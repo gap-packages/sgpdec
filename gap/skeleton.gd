@@ -17,7 +17,7 @@
 DeclareInfoClass("SkeletonInfoClass");
 
 #the constructor
-DeclareOperation("Skeleton",[IsTransformationSemigroup]);
+DeclareGlobalFunction("Skeleton");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RepresentativesOnDepth");
 DeclareGlobalFunction("ChangeRepresentativeSet");
@@ -42,8 +42,8 @@ DeclareGlobalFunction("HeightOfSet");
 DeclareGlobalFunction("ImageSets");
 DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
+DeclareGlobalFunction("DotSkeleton");
 
 # to be reimplemented
-DeclareGlobalFunction("DotSkeleton");
 DeclareGlobalFunction("DisplaySkeletonRepresentatives");
 DeclareGlobalFunction("ActionMatrix");

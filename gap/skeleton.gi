@@ -160,7 +160,7 @@ fi;
 end;
 MakeReadOnlyGlobal("BySizeSorterAscend");
 
-InstallMethod(Skeleton,[IsTransformationSemigroup],
+InstallGlobalFunction(Skeleton,
 function(ts)
 local sk;
   sk := rec(ts:=ts,

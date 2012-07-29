@@ -9,7 +9,7 @@ SgpDecDocSourceFiles :=
    "../gap/cascadedoperation.xml",
    "finiteset.xml",
    "../gap/subgroupchains.xml",
-   "../gap/skeleton.xml",
+   "skeleton.xml",
    "../gap/holonomy.xml"
    ];
 MakeReadOnlyGVar("SgpDecDocSourceFiles");
