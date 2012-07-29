@@ -164,8 +164,7 @@ InstallGlobalFunction(Skeleton,
 function(ts)
 local sk;
   sk := rec(ts:=ts,
-            degree:=DegreeOfTransformationSemigroup(ts)
-            );
+            degree:=DegreeOfTransformationSemigroup(ts));
   sk.gens := Generators(ts);
   sk.id := IdentityTransformation(sk.degree);
   sk.stateset := FiniteSet([1..sk.degree]);

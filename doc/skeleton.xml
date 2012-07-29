@@ -5,6 +5,52 @@
   The skeleton of a transformation semigroup contains global and local
  information about the action of the semigroup on the state set. These 
  include: 
+<Table Align="|c|c|">
+ <Caption>Fields of the skeleton record</Caption>
+ <HorLine/>
+  <Row>
+   <Item> NAME </Item><Item> PURPOSE </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>ts</C></Item>
+    <Item>the original transformation semigroup</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>gens</C></Item>
+   <Item>generators of the semigroup</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>id</C></Item>
+   <Item>the identity of the corresponding monoid</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>degree</C></Item>
+   <Item>the number of points the semigroup acts on</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>stateset</C></Item>
+   <Item>the state set, <C>[1..degree]</C></Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>singletons</C></Item>
+   <Item>the singleton sets as <C>FiniteSet</C>s</Item>
+  </Row>
+ <HorLine/>
+
+</Table>
+
  <List>
    <Item> Orbits and Strong Orbits.</Item>
    <Item> Covers of the image sets. </Item>
