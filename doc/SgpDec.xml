@@ -65,7 +65,18 @@ For copying an exisiting finite set <C>FiniteSetCopy</C> can be used.
 </Section>
 
 <Section>
+<Heading>Set operations</Heading>
+Most operations for sets are implemented for finite sets.
+The function names have the <C>FiniteSet</C> suffix.
+The other useful convention used is that if the name of the operation is a noun
+then it returns a new instance of a finite set e.g. <C>UnionFiniteSet</C>,
+if it is a verb then it changes the (first) parameter,
+e.g. <C>UniteFiniteSet</C>.
+</Section>
+
+<Section>
 <Heading>Acting on finite sets</Heading>
+<#Include Label="OnFiniteSets">
 <#Include Label="IsIdentityOnFiniteSet">
 </Section>
 
