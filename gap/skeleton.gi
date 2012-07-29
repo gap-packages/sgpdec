@@ -522,16 +522,6 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
       AppendTo(out,"  }\n");
     fi;
   od;
-  #drawing the the same level elements
-  for i in [1..DepthOfSkeleton(sk)] do
-    AppendTo(out, "{rank=same;",String(i),";");
-    for class in SkeletonClassesOnDepth(sk,i) do
-      for node in class do
-            AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
-     od;
-    od;
-    AppendTo(out,"}\n");
-  od;
   #drawing the representatives as rectangles and their covers
   for class in AllRepresentativeSets(sk) do
     AppendTo(out,"\"",FiniteSetPrinter(class,states),
