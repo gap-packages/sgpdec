@@ -469,9 +469,15 @@ end);
 
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
-function(sk,params)
-local  str, i,label,node,out,class,classes,set,states,G;
-
+function(arg)
+local  str, i,label,node,out,class,classes,set,states,G,sk,params;
+  #getting local variables for the arguments
+  sk := arg[1];
+  if IsBound(arg[2]) then
+    params := arg[2];
+  else
+    params := rec();
+  fi;
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph skeleton{\n");
