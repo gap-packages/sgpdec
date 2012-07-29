@@ -29,8 +29,8 @@ local covers, pos, flag,s;
   if Size(set) = 1 then return []; fi;
   covers := [];
   #we search only from this position
-  pos := Position(orderedsubsets, set) - 1;
-  while pos > 0 do
+  pos := Position(orderedsubsets, set) + 1;
+  while pos <= Size(orderedsubsets) do
     if IsProperFiniteSubset(set, orderedsubsets[pos]) then
       flag := true;
       # we check whether the newly found subset is a subset of a cover
@@ -42,7 +42,7 @@ local covers, pos, flag,s;
       od;
       if flag then Add(covers,orderedsubsets[pos]);fi;
     fi;
-    pos := pos - 1;
+    pos := pos + 1;
   od;
   return covers;
 end;
@@ -153,7 +153,7 @@ MakeReadOnlyGlobal("CoversOfSCC");
 #for sorting finitesets, first by size, then by content
 BySizeSorterAscend := function(v,w)
 if Size(v) <> Size(w) then
-  return Size(v)<Size(w);
+  return Size(v)>Size(w);
 else
   return v<w;
 fi;
@@ -176,13 +176,17 @@ local sk;
   #default choice for representatives - the first element
   sk.reps := List(OrbSCC(sk.orb), x->x[1]);
   #the imagesets explicitly in a list
-  sk.sets := ShallowCopy(AsSet(List(sk.orb))); #to make it mutable
-  #and a set, this is a bit crazy, so it should be checked
-  #maybe ordering the other way around would be more efficient
-
+  sk.sets := List(sk.orb);
   #augmenting with the state set and the singletons
-  AddSet(sk.sets,sk.stateset);
-  Perform(sk.singletons, function(y) AddSet(sk.sets,y);end);
+  if not (sk.stateset in sk.orb) then
+    Add(sk.sets,sk.stateset,1);
+  fi;
+  Perform(sk.singletons,
+          function(y)
+            if not(y in sk.orb) then
+              Add(sk.sets,y);
+            fi;
+          end);
   #now sorting properly TODO try to avoid double sorting
   Sort(sk.sets,BySizeSorterAscend);
   sk.inclusionHD := HasseDiagramOfSubsets(sk.sets);
