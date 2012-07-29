@@ -1,7 +1,6 @@
 <#GAPDoc Label="FiniteSet">
 <ManSection >
-<Func Arg="list" Name="FiniteSet" />
-<Func Arg="list,int" Name="FiniteSet" />
+<Func Arg="list [,int]" Name="FiniteSet" />
 <Description>
 Creates a FiniteSet from a list of integers.
 The maximal element determines the size of the universe.
