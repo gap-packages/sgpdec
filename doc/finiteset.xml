@@ -45,6 +45,23 @@ A and B should have the same universal set.
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="OnFiniteSets">
+<ManSection >
+<Func Arg="finset, trans" Name="OnFiniteSets" />
+<Description>
+Returns the resulting set of applying the given transformation to the
+given set. It uses the pointwise action of the transformation.
+<Example>
+gap> OnFiniteSets(FiniteSet([1,2],4),(1,2,3,4));
+{2,3}
+gap> OnFiniteSets(FiniteSet([1,2],4),Transformation([2,2,1,1]));
+{2}
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsIdentityOnFiniteSet">
 <ManSection >
 <Func Arg="trans, finset" Name="IsIdentityOnFiniteSet" />
