@@ -151,14 +151,14 @@ MakeReadOnlyGlobal("CoversOfSCC");
 ###CONSTRUCTOR##################################################################
 
 #for sorting finitesets, first by size, then by content
-BySizeSorterAscend := function(v,w)
-if Size(v) <> Size(w) then
-  return Size(v)>Size(w);
-else
-  return v<w;
-fi;
+DescendingSizeSorter := function(v,w)
+  if Size(v) <> Size(w) then
+    return Size(v)>Size(w);
+  else
+    return v<w;
+  fi;
 end;
-MakeReadOnlyGlobal("BySizeSorterAscend");
+MakeReadOnlyGlobal("DescendingSizeSorter");
 
 InstallGlobalFunction(Skeleton,
 function(ts)
@@ -187,8 +187,8 @@ local sk;
               Add(sk.sets,y);
             fi;
           end);
-  #now sorting properly TODO try to avoid double sorting
-  Sort(sk.sets,BySizeSorterAscend);
+  #now sorting descending by size (natural for the orbit)
+  Sort(sk.sets,DescendingSizeSorter);
   sk.inclusionHD := HasseDiagramOfSubsets(sk.sets);
   sk.geninclusionHD := HasseDiagramByCoverFuncNC([1..Length(sk.reps)],
                                x->CoversOfSCC(sk,x));
