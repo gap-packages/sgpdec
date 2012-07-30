@@ -3,10 +3,10 @@
 <Func Name="Skeleton" Arg="ts"/>
 <Description>
   The skeleton of a transformation semigroup contains global and local
- information about the action of the semigroup on the state set. These 
- include: 
+ information about the action of the semigroup on the state set. THe skeleton
+itself is a record with the following elements:
 <Table Align="|c|c|">
- <Caption>Fields of the skeleton record</Caption>
+ <Caption>Elements of the skeleton record</Caption>
  <HorLine/>
   <Row>
    <Item> NAME </Item><Item> PURPOSE </Item>
@@ -48,26 +48,24 @@
    <Item>the singleton sets as <C>FiniteSet</C>s</Item>
   </Row>
  <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>IN,INw,OUT,OUTw</C></Item>
+   <Item>caches for storing maps from a represetative to a set and vice-versa (transformations and words)</Item>
+  </Row>
+ <HorLine/>
 
 </Table>
 
- <List>
-   <Item> Orbits and Strong Orbits.</Item>
-   <Item> Covers of the image sets. </Item>
-   <Item> Depth (and height) of the skeleton: longest chains of
- generalized inclusion, i.e. subset or image under the action. </Item>   
-   <Item>Permutator Groups </Item> 
- </List> 
-      <Example>
+<Example>
  gap> sk := Skeleton(FullTransformationSemigroup(8));
  Skeleton of  &lt;trans. semigroup of size 16777216 with 4 generators&gt;,
  image sets: 255, equivalence classes: 8, levels: 8
-      </Example> 
-      </Description>
-      </ManSection>
-      <#/GAPDoc>
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
-#
   <#GAPDoc Label="SkeletonClasses">
   <ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
   <Oper Name="SkeletonClasses" Arg="skeleton"/>
