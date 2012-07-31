@@ -336,19 +336,3 @@ InstallMethod( ChooseHashFunction, "for finite sets",
   function(p,hashlen)
     return rec(func := HashFunctionForFiniteSet, data := [101,hashlen]);
 end);
-
-#returns the integer value of the set as a binary number
-#this is unique, unlike the hash value
-InstallGlobalFunction(FiniteSetID,
-function(A)
-local i, sum;
-  sum := 0;
-  for i in [1..Size(A!.blist)] do
-    if A!.blist[i] then
-      sum := sum + 2^(i-1);
-    fi;
-  od;
-  return sum;
-  #here is the nice code, but the above is 18% faster
-  #return Sum(List(AsList(A), x->2^(x-1)));
-end);

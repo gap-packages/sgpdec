@@ -36,7 +36,6 @@ DeclareGlobalFunction("ComplementFiniteSet");
 DeclareGlobalFunction("AllSubsets");
 
 DeclareGlobalFunction("FiniteSetPrinter");
-DeclareGlobalFunction("FiniteSetID");
 
 DeclareGlobalFunction("MinFiniteSet");
 DeclareGlobalFunction("MaxFiniteSet");
