@@ -8,13 +8,21 @@
 ##
 
 ################################################################################
+### FormattedFloat ###########################################################
+#when printing Floats the precision causes lots of trouble
+InstallGlobalFunction(FormattedFloat,
+function(f)
+local i;
+  i := Int(f * 100);
+  return Concatenation(String(Int(i/100)),".",String(i mod 100));
+end);
+
+################################################################################
 ### PERCENTAGESTRING ###########################################################
 
 InstallGlobalFunction(FormattedPercentageString,
 function(n,N)
-local i;
-  i := Int(Int((Float(n)/Float(N)) * 10000));
-  return Concatenation(String(Int(i/100)),".",String(i mod 100),"%");
+  return Concatenation(FormattedFloat((Float(n)/Float(N)) * 100),"%");
 end);
 
 ################################################################################
@@ -53,12 +61,10 @@ function(numofbytes)
   if numofbytes < 1024 then
     return Concatenation(String(numofbytes),"B");
   elif numofbytes >= 1024 and numofbytes < 1024^2 then
-    return Concatenation(String(Round(Float(numofbytes/1024))),"KB");
+    return Concatenation(FormattedFloat(Float(numofbytes/1024)),"KB");
   elif numofbytes >= 1024^2 and numofbytes < 1024^3 then
-    return Concatenation(String(
-                   Float(Round(Float(numofbytes/(1024^2))*10)/10)),"MB");
+    return Concatenation(FormattedFloat(Float(numofbytes/(1024^2))),"MB");
   elif numofbytes >= 1024^3 and numofbytes < 1024^4 then
-    return Concatenation(String(
-                   Float(Round(Float(numofbytes/(1024^3))*100)/100)),"GB");
+    return Concatenation(FormattedFloat(Float(numofbytes/(1024^3))),"GB");
   fi;
 end);
