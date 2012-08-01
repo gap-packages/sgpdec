@@ -12,9 +12,12 @@
 #when printing Floats the precision causes lots of trouble
 InstallGlobalFunction(FormattedFloat,
 function(f)
-local i;
+local i,d,s;
   i := Int(f * 100);
-  return Concatenation(String(Int(i/100)),".",String(i mod 100));
+  d := i mod 100;
+  s := "";
+  if d < 10 then s := "0";fi;
+  return Concatenation(String(Int(i/100)),".",s,String(d));
 end);
 
 ################################################################################
