@@ -28,5 +28,5 @@ SgpDecRunManualExamples := function()
                           "/doc"),
                   "SgpDec.xml",
                   SgpDecDocSourceFiles,
-                  "Section"));
+                  "Section"), rec(width:=80));
 end;

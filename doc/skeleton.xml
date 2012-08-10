@@ -51,16 +51,41 @@ itself is a record with the following elements:
  <HorLine/>
   <Row>
    <Item><C>IN,INw,OUT,OUTw</C></Item>
-   <Item>caches for storing maps from a represetative to a set and vice-versa (transformations and words)</Item>
+   <Item>caches for storing maps from a represetative to a set and vice-versa
+   (transformations and words)
+   </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>inclusionHD</C></Item>
+   <Item><C>HasseDiagram</C> of the inclusion relation on the image sets</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>geninclusionHD</C></Item>
+   <Item><C>HasseDiagram</C> of the generalized inclusion
+   relation on the image sets
+   </Item>
   </Row>
  <HorLine/>
 
 </Table>
 
 <Example>
- gap> sk := Skeleton(FullTransformationSemigroup(8));
- Skeleton of  &lt;trans. semigroup of size 16777216 with 4 generators&gt;,
- image sets: 255, equivalence classes: 8, levels: 8
+gap> sk := Skeleton(FullTransformationSemigroup(3));
+rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3, 
+  depth := 3, depths := [ 1, 2, 3 ], 
+  geninclusionHD := &lt;general mapping: &lt;object&gt; -&gt; &lt;object&gt; &gt;, 
+  gens := [ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1, 3 ] ), 
+      Transformation( [ 1, 2, 1 ] ) ], heights := [ 2, 1, 0 ], 
+  id := Transformation( [ 1 .. 3 ] ), 
+  inclusionHD := &lt;general mapping: &lt;object&gt; -&gt; &lt;object&gt; &gt;, 
+  orb := &lt;closed orbit, 7 points with Schreier tree&gt;, reps := [ 1, 2, 5 ], 
+  sets := [ {1,2,3}, {1,2}, {1,3}, {2,3}, {1}, {2}, {3} ], 
+  singletons := [ {1}, {2}, {3} ], stateset := {1,2,3}, 
+  ts := &lt;monoid with 3 generators&gt; )
 </Example>
 </Description>
 </ManSection>
