@@ -63,8 +63,8 @@ local p,parents;
   parents := PreImages(sk.geninclusionHD, eqclassindx);
   for p in parents do
     if not IsSingleton(sk.orb[sk.reps[p]]) then #if it is not a singleton
-      if sk.height[p] < height+1 then
-        sk.height[p] := height+1;
+      if sk.heights[p] < height+1 then
+        sk.heights[p] := height+1;
         #only call when the height is raised (this saves a lot of calls)
         RecHeight(sk,p,height+1);
       fi;
@@ -77,23 +77,23 @@ DepthCalc := function(sk)
   local leaves, leaf, height, correction;
   #If there is no singleton image, then we need to add one to the depth
   correction := 1;
-  sk.height := ListWithIdenticalEntries(Size(sk.reps), 0);
+  sk.heights := ListWithIdenticalEntries(Size(sk.reps), 0);
   #we start chains from the elements with no children
   leaves := Filtered([1..Length(sk.reps)],
                     x->IsEmpty(Images(sk.geninclusionHD,x)));
   for leaf in leaves do
     if IsSingleton(sk.orb[sk.reps[leaf]]) then
       correction:=0;#there is a singleton image, so no correction needed
-      sk.height[leaf] := 0;
+      sk.heights[leaf] := 0;
       RecHeight(sk,leaf,0);
     else
-      sk.height[leaf] := 1;
+      sk.heights[leaf] := 1;
       RecHeight(sk,leaf,1);
     fi;
   od;
-  height := sk.height[1];
+  height := sk.heights[1];
   #calculating depth based on upside down height
-  sk.depths  := List(sk.height, x-> height-x + 1);
+  sk.depths  := List(sk.heights, x-> height-x + 1);
   sk.depth := Maximum(sk.depths) + correction;
 end;
 MakeReadOnlyGlobal("DepthCalc");
@@ -442,7 +442,7 @@ end);
 InstallGlobalFunction(HeightOfSet,
 function(sk,A)
   if IsSingleton(A) then return 0; fi;
-  return sk.height[OrbSCCLookup(sk.orb)[Position(sk.orb,A)]];
+  return sk.heights[OrbSCCLookup(sk.orb)[Position(sk.orb,A)]];
 end);
 
 InstallGlobalFunction(TopSet,
