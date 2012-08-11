@@ -45,5 +45,4 @@ DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("DotSkeleton");
 
 # to be reimplemented
-DeclareGlobalFunction("DisplaySkeletonRepresentatives");
 DeclareGlobalFunction("ActionMatrix");

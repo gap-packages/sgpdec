@@ -126,10 +126,10 @@ rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3,
 </ManSection>
 <#/GAPDoc>
 
-  <#GAPDoc Label="SkeletonClasses">
-  <ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
-  <Oper Name="SkeletonClasses" Arg="skeleton"/>
-  <Oper Name="SkeletonClassesOnDepth" Arg="skeleton, depth"/>
+<#GAPDoc Label="SkeletonClasses">
+<ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
+<Func Name="SkeletonClasses" Arg="skeleton"/>
+<Func Name="SkeletonClassesOnDepth" Arg="skeleton, depth"/>
   <Description>
   Returns the list of equivalence classes (strongly connected components)
   with the given depth.
@@ -153,55 +153,23 @@ rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3,
   </ManSection>
    <#/GAPDoc>
 
-#
-  <#GAPDoc Label="DisplaySkeletonRepresentatives">
-  <ManSection><Heading>DisplaySkeletonRepresentatives</Heading>
-  <Oper Name="DisplaySkeletonRepresentatives" Arg="skeleton"/>
-  <Description>
-  Quick display of sets that are chosen to be representatives.
-  </Description>
-  </ManSection>
-   <#/GAPDoc>
 
-#
-  <#GAPDoc Label="CoveringSetsOf">
-  <ManSection><Heading>CoveringSetsOf</Heading>
-  <Oper Name="CoveringSetsOf" Arg="skeleton,set"/>
+<#GAPDoc Label="CoveringSetsOf">
+<ManSection><Heading>CoveringSetsOf</Heading>
+<Oper Name="CoveringSetsOf" Arg="skeleton,set"/>
   <Description>
   Returns the set of covering sets of the given set.
   These sets may overlap and their union equals the covered set.
+<Example>
+gap> sk := Skeleton(FullTransformationSemigroup(5));;
+gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));
+[ {1,2}, {1,4}, {2,4} ]
+</Example>
   </Description>
   </ManSection>
    <#/GAPDoc>
 
-#
-  <#GAPDoc Label="InfoOnSet">
-  <ManSection><Heading>InfoOnSet</Heading>
-  <Oper Name="InfoOnSet" Arg="skeleton,set"/>
-  <Description>
-  Returns a record associated to a set in the skeleton with the following fields:
-<Table Align="|c|c|">
- <HorLine/><Row><Item> <C>eqclass</C> </Item><Item>equivalence class of the set</Item> </Row><HorLine/>
- <HorLine/><Row><Item> <C>IN</C> </Item><Item>transformation taking the representative to the set</Item> </Row><HorLine/>
- <HorLine/><Row><Item> <C>INw</C> </Item><Item>a word realizing<C> IN</C></Item> </Row><HorLine/>
- <HorLine/><Row><Item> <C>OUT</C> </Item><Item>transformation taking the set to the representative</Item> </Row><HorLine/>
- <HorLine/><Row><Item> <C>OUTw</C> </Item><Item>a word realizing <C>OUT</C></Item> </Row><HorLine/>
-</Table>
-  </Description>
-  </ManSection>
-   <#/GAPDoc>
 
-#
-  <#GAPDoc Label="IsEquivalent">
-  <ManSection><Heading>IsEquivalent</Heading>
-  <Oper Name="IsEquivalent" Arg="skeleton,A,B"/>
-  <Description>
-  Returns true if A and B are images of each other under the action of the semigroup.
-  </Description>
-  </ManSection>
-   <#/GAPDoc>
-
-#
   <#GAPDoc Label="ActionMatrix">
   <ManSection><Heading>ActionMatrix</Heading>
   <Oper Name="ActionMatrix" Arg="skeleton, equivclass"/>
