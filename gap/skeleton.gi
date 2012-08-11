@@ -235,11 +235,11 @@ local pos;
   sk.OUTw := [];
 end);
 
-InstallGlobalFunction(IsEquivalent,
-function(sk, A, B)
-  return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
-         = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
-end);
+#InstallGlobalFunction(IsEquivalent,
+#function(sk, A, B)
+#  return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
+#         = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
+#end);
 
 ################################################################################
 ### INs and OUTs with a primitive caching method to avoid double calculation ###

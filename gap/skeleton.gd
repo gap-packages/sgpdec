@@ -22,7 +22,7 @@ DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RepresentativesOnDepth");
 DeclareGlobalFunction("ChangeRepresentativeSet");
 DeclareGlobalFunction("AllRepresentativeSets");
-DeclareGlobalFunction("IsEquivalent");
+#DeclareGlobalFunction("IsEquivalent");
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
