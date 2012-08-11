@@ -2,8 +2,12 @@
 <ManSection><Heading>Skeleton</Heading>
 <Func Name="Skeleton" Arg="ts"/>
 <Description>
-  The skeleton of a transformation semigroup contains global and local
- information about the action of the semigroup on the state set. THe skeleton
+  The skeleton of a transformation semigroup <M>(X,S)</M> contains global and
+local
+ information about the action of the semigroup <M>S</M> on the state set <M>X</M>.
+The orbit is a subset of <M>2^X</M>.
+
+The skeleton
 itself is a record with the following elements:
 <Table Align="|c|c|">
  <Caption>Elements of the skeleton record</Caption>
@@ -44,8 +48,30 @@ itself is a record with the following elements:
  <HorLine/>
  <HorLine/>
   <Row>
+   <Item><C>sets</C></Item>
+   <Item>all the images of <M>X</M> under the action of <M>S</M></Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
    <Item><C>singletons</C></Item>
    <Item>the singleton sets as <C>FiniteSet</C>s</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>reps</C></Item>
+   <Item>representatives of the strongly connected components
+   coded as indices in <C>orb</C></Item>
+  </Row>
+ <HorLine/>
+
+ <HorLine/>
+  <Row>
+   <Item><C>depth, depths, heights</C></Item>
+   <Item>the depth of the whole skeleton, depths of representatives,
+   heights of representatives
+   </Item>
   </Row>
  <HorLine/>
  <HorLine/>
@@ -70,9 +96,18 @@ itself is a record with the following elements:
    </Item>
   </Row>
  <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>orb</C></Item>
+   <Item>the orbit with  Schreier tree
+   </Item>
+  </Row>
+ <HorLine/>
 
 </Table>
-
+For the time being these externals are exposed, but they are not meant to be
+manipulated directly. Further developments will most probably hide these record
+fields.
 <Example>
 gap> sk := Skeleton(FullTransformationSemigroup(3));
 rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3, 
