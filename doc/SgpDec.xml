@@ -52,12 +52,9 @@ on the orbit of the state set.
 <#Include Label="CoveringSetsOf">
 <#Include Label="DepthOfSet">
 <#Include Label="TopSet">
-<#Include Label="InfoOnSet">
 <#Include Label="SkeletonClasses">
-<#Include Label="DisplaySkeletonRepresentatives">
-<#Include Label="IsEquivalent">
 <#Include Label="RepresentativeSet">
-<#Include Label="ActionMatrix">
+
 
 The subsemigroup stabilizing a subset X of the state set is called the
 permutator subsemigroup (to avoid name clash). Restricting this permutator to
