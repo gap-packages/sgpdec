@@ -44,7 +44,8 @@ of the wreath product) can be constructed by explicitly giving the dependency
 
 <Chapter>
 <Heading>Holonomy Decomposition</Heading>
-
+The holonomy decomposition is constructed based on the action of the semigroup
+on the orbit of the state set.
 <Section Label="Skeleton">
 <Heading>Skeleton</Heading>
 <#Include Label="Skeleton">
