@@ -49,6 +49,7 @@ on the orbit of the state set.
 <Section Label="Skeleton">
 <Heading>Skeleton</Heading>
 <#Include Label="Skeleton">
+<#Include Label="ImageSets">
 <#Include Label="CoveringSetsOf">
 <#Include Label="DepthOfSet">
 <#Include Label="TopSet">
