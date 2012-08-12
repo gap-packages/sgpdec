@@ -126,6 +126,28 @@ rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3,
 </ManSection>
 <#/GAPDoc>
 
+
+<#GAPDoc Label="ImageSets">
+<ManSection><Heading>ImageSets</Heading>
+<Oper Name="ImageSets" Arg="skeleton"/>
+<Description>
+The set of images of the state set under the semigroup action.
+The corresponding monoid is used so <M>X</M> itself is always included,
+but not all subsets in general.
+<Example>
+gap> S := Semigroup([Transformation([2,3,1,1]),Transformation([3,3,3,4])]);
+&lt;semigroup with 2 generators&gt;
+gap> sk := Skeleton(S);;
+gap> ImageSets(sk);
+[ {1,2,3,4}, {1,2,3}, {3,4}, {3}, {1}, {2} ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+
+
+
 <#GAPDoc Label="SkeletonClasses">
 <ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
 <Func Name="SkeletonClasses" Arg="skeleton"/>
@@ -160,6 +182,7 @@ rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3,
   <Description>
   Returns the set of covering sets of the given set.
   These sets may overlap and their union equals the covered set.
+These are also called tiles <Cite Key="eilenberg"/>.
 <Example>
 gap> sk := Skeleton(FullTransformationSemigroup(5));;
 gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));

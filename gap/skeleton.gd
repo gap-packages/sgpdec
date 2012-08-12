@@ -18,6 +18,7 @@ DeclareInfoClass("SkeletonInfoClass");
 
 #the constructor
 DeclareGlobalFunction("Skeleton");
+DeclareGlobalFunction("ImageSets");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RepresentativesOnDepth");
 DeclareGlobalFunction("ChangeRepresentativeSet");
@@ -39,7 +40,6 @@ DeclareGlobalFunction("DepthOfSkeleton");
 DeclareGlobalFunction("TopSet");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("HeightOfSet");
-DeclareGlobalFunction("ImageSets");
 DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("DotSkeleton");
