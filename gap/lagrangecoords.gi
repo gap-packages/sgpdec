@@ -193,7 +193,7 @@ local coords,i;
     coords[i] :=  PositionCanonical( TransversalsOf(decomp)[i],coords[i]);
   od;
 
-  return CascadedState(CascadeShellOf(decomp),coords);
+  return coords; #CascadedState(CascadeShellOf(decomp),coords);
 end);
 
 InstallGlobalFunction(CascadedState2Perm,
@@ -239,27 +239,27 @@ end);
 InstallMethod(Flatten,
     "flatten a cascaded state",
     true,
-    [IsLagrangeDecomposition,IsCascadedState], 1,
+    [IsLagrangeDecomposition,IsList], 1,
 function(decomp,cs)
   #the Frobenius-Lagrange map TODO transitivity
   return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),());
 end);
 
-InstallMethod(Flatten,
-    "flatten an abstract cascaded state",
-    true,
-    [IsLagrangeDecomposition,IsAbstractCascadedState], 0,
-function(decomp,cs) #TODO!! replace  this with the more efficient one
-local state, flattened,point;
-  flattened := [];
-  for state in States(CascadeShellOf(decomp)) do
-    if state < cs then
-      point := Flatten(decomp,state);
-      if not (point in flattened) then Add(flattened, point); fi;
-    fi;
-  od;
-  return flattened;
-end);
+#InstallMethod(Flatten,
+#    "flatten an abstract cascaded state",
+#    true,
+#    [IsLagrangeDecomposition,IsAbstractCascadedState], 0,
+#function(decomp,cs) #TODO!! replace  this with the more efficient one
+#local state, flattened,point;
+#  flattened := [];
+#  for state in States(CascadeShellOf(decomp)) do
+#    if state < cs then
+#      point := Flatten(decomp,state);
+#      if not (point in flattened) then Add(flattened, point); fi;
+#    fi;
+#  od;
+#  return flattened;
+#end);
 
 ################################################################################
 #####################YEAST PERMUTATIONS#########################################
@@ -319,7 +319,7 @@ end);
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,
-    [IsLagrangeDecomposition,IsCascadedState,IsCascadedState], 0,
+    [IsLagrangeDecomposition,IsList,IsList], 0,
 function(decomp,x,y)
 local tobase, frombase, id;
     # going to the leftmost branch

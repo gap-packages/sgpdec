@@ -223,7 +223,7 @@ end);
 InstallMethod(Flatten,
     "flatten a cascaded state",
     true,
-    [IsHolonomyDecomposition,IsAbstractCascadedState], 1,
+    [IsHolonomyDecomposition,IsDenseList], 1,
 function(hd,cs)
   local coverchain;
   coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
@@ -235,10 +235,10 @@ InstallMethod(Raise,
     true,
     [IsHolonomyDecomposition,IsInt], 1,
 function(hd,k)
-  return CascadedState(CascadeShellOf(hd),
+  return #CascadedState(CascadeShellOf(hd),
                  HolonomySets2Ints(hd,
                          Coordinates(hd,
-                                 RandomCoverChain(hd!.skeleton,k))));
+                                 RandomCoverChain(hd!.skeleton,k)));
 end);
 
 InstallMethod(ComponentActions,
