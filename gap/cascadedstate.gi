@@ -1,14 +1,13 @@
 #############################################################################
 ##
-## cascadedstate.gi           SgpDec package
+## coords.gi           SgpDec package
 ##
 ## Copyright (C) 2008-2012
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Dealing with cascaded states.
+## List of integers as coordinates.
 ##
-
 
 
 ####LOWLEVEL YEAST#####################################
