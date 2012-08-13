@@ -27,3 +27,18 @@ local l;
   return l;
 end;
 MakeReadOnlyGlobal("ActionOn");
+
+#Iterator for PositiveIntegers
+#this to be removed once it gets in GAPlib
+InstallMethod(Iterator,
+    "for `PositiveIntegers'",
+    [ IsPositiveIntegers ],
+        PositiveIntegers -> IteratorByFunctions(
+                rec(
+                    NextIterator := function(iter)
+                      iter!.counter:= iter!.counter + 1;
+                      return iter!.counter;
+                end,
+                IsDoneIterator := ReturnFalse,
+                ShallowCopy := iter -> rec( counter:= iter!.counter ),
+                counter := 0)));# 0, since we first increment then return
