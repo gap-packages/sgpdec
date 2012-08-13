@@ -258,10 +258,10 @@ function( ct )
 end);
 
 #applying a cascade operation to a cascade state
-InstallGlobalFunction(OnCascadedStates,
-function(cs,ct)
-  return CascadedState(CascadeShellOf(cs), OnCoordinates(cs,ct));
-end);
+#InstallGlobalFunction(OnCascadedStates,
+#function(cs,ct)
+#  return OnCoordinates(cs,ct);
+#end);
 
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
@@ -288,7 +288,7 @@ local depfuncvalues,i, ncoords;
 end);
 
 InstallOtherMethod(\^, "acting on cascaded states",
-[IsAbstractCascadedState, IsCascadedTransformation], OnCascadedStates);
+[IsList, IsCascadedTransformation], OnCoordinates);
 
 
 # YEAST for operations flattening - making an ordinary permutation out of the
@@ -329,7 +329,7 @@ FlatActionOnCoordinates := function(csh, flatop, coords)
 local src;
   #pick one source cascaded state (the first in the interval may do)
   src := PositionCanonical(States(csh),
-                     Concretize(CascadedState(csh, coords)));
+                     Concretize(csh, coords));
   #we find the cascaded state corresponding to the flatop image
   return States(csh)[flatop[src]];
 end;

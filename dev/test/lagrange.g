@@ -140,7 +140,7 @@ local i,j,path,decoded,killers,n,c;
   for path in States(CascadeShellOf(decomp)) do
     killers := LevelKillers(decomp,path);
     for i in [1..Length(decomp)] do
-      path := CascadedState(CascadeShellOf(decomp),path) ^ Raise(decomp,killers[i]);
+      path := path ^ Raise(decomp,killers[i]);
       #checking
       for j in [1..i] do
         if path[j] <> 1 then Print("FAIL\n");Error("Lagrange test3 problem!\n");
