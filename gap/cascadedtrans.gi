@@ -257,12 +257,6 @@ function( ct )
   Print("Cascaded operation in ", Name(CascadeShellOf(ct)));
 end);
 
-#applying a cascade operation to a cascade state
-#InstallGlobalFunction(OnCascadedStates,
-#function(cs,ct)
-#  return OnCoordinates(cs,ct);
-#end);
-
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
 local depfuncvalues,i, ncoords;

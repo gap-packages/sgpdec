@@ -11,7 +11,6 @@
 
 DeclareGlobalFunction("IdentityCascadedTransformation");
 DeclareGlobalFunction("CascadedTransformation");
-DeclareGlobalFunction("OnCascadedStates");
 DeclareGlobalFunction("OnCoordinates");
 DeclareGlobalFunction("RandomCascadedTransformation");
 DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
