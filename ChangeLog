@@ -1,3 +1,5 @@
+0.6.59
+	CascadedState is simply replaced by integer lists. Adding the iterator for PositiveIntegers (until it gets into GAPlib). Now using the global random number generator everywhere in the package. DotSkeleton now works without the empty options record and without warnings. FormattedFloat finally works ok. Various renamings, removal of old code, reformatting and updated documentation. SgpDecRunManualExamples added.
 0.6.58
 	Small fixes in naming components. Removing last direct usage of Orb's hashtables. Revamping module dealing with words: removing invertable word functions, rewriting straight word search (major speed boost), rewritten documentation.
 0.6.57
