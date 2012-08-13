@@ -111,12 +111,12 @@ local g,path_of_g, path_of_gh,decoded,h,ghprime,n,c;
   n := Order(OriginalStructureOf(decomp)) ^ 2; 
   #do a full check
   for g in OriginalStructureOf(decomp) do
-    path_of_g := Perm2CascadedState(decomp,g);
+    path_of_g := Perm2Coords(decomp,g);
     #no we have cascs2 as the path representing g, let's multiply it with h
     for h in OriginalStructureOf(decomp) do
       path_of_gh := path_of_g ^ Raise(decomp,h);
       #convert the path back to a permutation
-      ghprime := CascadedState2Perm(decomp,path_of_gh);
+      ghprime := Coords2Perm(decomp,path_of_gh);
  
       if g*h <> ghprime then 
         Print("FAIL\n");Error("Lagrange test2 problem!\n");
