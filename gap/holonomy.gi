@@ -235,10 +235,9 @@ InstallMethod(Raise,
     true,
     [IsHolonomyDecomposition,IsInt], 1,
 function(hd,k)
-  return #CascadedState(CascadeShellOf(hd),
-                 HolonomySets2Ints(hd,
-                         Coordinates(hd,
-                                 RandomCoverChain(hd!.skeleton,k)));
+  return HolonomySets2Ints(hd,
+                 Coordinates(hd,
+                         RandomCoverChain(hd!.skeleton,k)));
 end);
 
 InstallMethod(ComponentActions,
@@ -276,7 +275,7 @@ local action,
                   * s
                   * GetOUT(sk,Q);
         Qs := OnFiniteSets(states[depth], action);
-            # calculating the action on the covers
+        # calculating the action on the covers
         coversetaction := ActionOn(hd!.coords[depth][slot],
                                   action,
                                   OnFiniteSets);
