@@ -16,8 +16,8 @@ DeclareGlobalFunction("Perm2CosetRepr");
 #encoding decoding of coset represntatives - points
 DeclareGlobalFunction("EncodeCosetReprs");
 DeclareGlobalFunction("DecodeCosetReprs");
-DeclareGlobalFunction("Perm2CascadedState");
-DeclareGlobalFunction("CascadedState2Perm");
+DeclareGlobalFunction("Perm2Coords");
+DeclareGlobalFunction("Coords2Perm");
 DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");
 #access functions

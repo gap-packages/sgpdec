@@ -169,7 +169,7 @@ end);
 # Each cascaded state corresponds to one element (in the regular representation)
 #of the group. This function gives the path corresponding to a group element
 #(through the Lagrange-Frobenius map).
-InstallGlobalFunction(Perm2CascadedState,
+InstallGlobalFunction(Perm2Coords,
 function(decomp,g)
 local coords,i;
 
@@ -193,10 +193,10 @@ local coords,i;
     coords[i] :=  PositionCanonical( TransversalsOf(decomp)[i],coords[i]);
   od;
 
-  return coords; #CascadedState(CascadeShellOf(decomp),coords);
+  return coords;
 end);
 
-InstallGlobalFunction(CascadedState2Perm,
+InstallGlobalFunction(Coords2Perm,
 function(decomp,cs)
     return Product(Reversed(DecodeCosetReprs(decomp,cs)),());
 end);
@@ -233,7 +233,7 @@ InstallMethod(Raise,
     true,
     [IsLagrangeDecomposition,IsInt], 0,
 function(decomp,i)
-    return Perm2CascadedState(decomp,decomp!.stabilizertransversalreps[i]);
+    return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
 
 InstallMethod(Flatten,
@@ -345,9 +345,9 @@ InstallOtherMethod(x2y,
     [IsLagrangeDecomposition,IsCascadedTransformation,IsCascadedTransformation],
     0,
 function(decomp,x,y)
-  return x2y(decomp,Perm2CascadedState(decomp,Flatten(decomp,x)),
-             Perm2CascadedState(decomp,Flatten(decomp,y)));
-  #this flattening is stupid but Perm2CascadedState expects flat permutation.
+  return x2y(decomp,Perm2Coords(decomp,Flatten(decomp,x)),
+             Perm2Coords(decomp,Flatten(decomp,y)));
+  #this flattening is stupid but Perm2Coords expects flat permutation.
 end);
 
 ################################################################################
