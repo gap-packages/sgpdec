@@ -1,12 +1,12 @@
 #############################################################################
 ##
-## cascadedstate.gd           SgpDec package
+## coords.gd           SgpDec package
 ##
 ## Copyright (C) 2008-2012
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Declarations for  cascaded states.
+## List of integers as coordinates.
 ##
 
 DeclareGlobalFunction("Concretize");
