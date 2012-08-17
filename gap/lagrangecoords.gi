@@ -231,7 +231,7 @@ end);
 InstallMethod(Raise,
     "raise a state",
     true,
-    [IsLagrangeDecomposition,IsInt], 0,
+    [IsLagrangeDecomposition,IsInt],
 function(decomp,i)
     return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
@@ -239,18 +239,18 @@ end);
 InstallMethod(Flatten,
     "flatten a cascaded state",
     true,
-    [IsLagrangeDecomposition,IsList], 1,
+    [IsLagrangeDecomposition,IsDenseList],
 function(decomp,cs)
   #the Frobenius-Lagrange map TODO transitivity
   return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),());
 end);
 
 #InstallMethod(Flatten,
-#    "flatten an abstract cascaded state",
+#    "for abstract coords in Lagrange decomposition",
 #    true,
-#    [IsLagrangeDecomposition,IsAbstractCascadedState], 0,
+#    [IsLagrangeDecomposition,IsDEnseList],
 #function(decomp,cs) #TODO!! replace  this with the more efficient one
-#local state, flattened,point;
+#local csh;
 #  flattened := [];
 #  for state in States(CascadeShellOf(decomp)) do
 #    if state < cs then
@@ -268,7 +268,7 @@ end);
 InstallMethod(Raise,
     "raise a permutation",
     true,
-    [IsLagrangeDecomposition,IsPerm], 0,
+    [IsLagrangeDecomposition,IsPerm],
 function(decomp,g)
 local j,state,states,fudges,depfunctable,arg;
 
@@ -300,7 +300,7 @@ end);
 InstallMethod(Flatten,
     "flatten a cascaded permutation",
     true,
-    [IsLagrangeDecomposition,IsCascadedTransformation], 0,
+    [IsLagrangeDecomposition,IsCascadedTransformation],
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
                    x-> Flatten(decomp, Raise(decomp,x) ^ co)));
@@ -309,7 +309,7 @@ end);
 InstallMethod(Interpret,
     "interprets a component's state",
     true,
-    [IsLagrangeDecomposition,IsInt,IsInt], 0,
+    [IsLagrangeDecomposition,IsInt,IsInt],
 function(decomp,level,state)
   return TransversalsOf(decomp)[level][state];
 end);
@@ -319,7 +319,7 @@ end);
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,
-    [IsLagrangeDecomposition,IsList,IsList], 0,
+    [IsLagrangeDecomposition,IsList,IsList],
 function(decomp,x,y)
 local tobase, frombase, id;
     # going to the leftmost branch
@@ -333,7 +333,7 @@ end);
 InstallOtherMethod(x2y,
         "finds an original operation taking original state x to y",
         true,
-        [IsLagrangeDecomposition,IsInt,IsInt], 0,
+        [IsLagrangeDecomposition,IsInt,IsInt],
 function(decomp,x,y)
    return x2y(decomp,Raise(decomp,x), Raise(decomp,y));
 end);
@@ -388,7 +388,7 @@ end);
 InstallMethod( ViewObj,
     "displays a Lagrange decomposition",
     true,
-    [IsLagrangeDecomposition], 0,
+    [IsLagrangeDecomposition],
 function( ld )
   Print("Lagrange decomposition of:");
   ViewObj(OriginalStructureOf(ld));Print("\n");
