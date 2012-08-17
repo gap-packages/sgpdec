@@ -1,3 +1,5 @@
+0.6.60
+	Abstract states functionality restored. Unused priority values for methods removed in Lagrange decomposition.
 0.6.59
 	CascadedState is simply replaced by integer lists. Adding the iterator for PositiveIntegers (until it gets into GAPlib). Now using the global random number generator everywhere in the package. DotSkeleton now works without the empty options record and without warnings. FormattedFloat finally works ok. Various renamings, removal of old code, reformatting and updated documentation. SgpDecRunManualExamples added.
 0.6.58
