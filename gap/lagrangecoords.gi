@@ -237,12 +237,22 @@ function(decomp,i)
 end);
 
 InstallMethod(Flatten,
-    "flatten a cascaded state",
+    "for coordinates in Lagrange decomposition",
     true,
     [IsLagrangeDecomposition,IsDenseList],
 function(decomp,cs)
-  #the Frobenius-Lagrange map TODO transitivity
-  return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),());
+local l;
+  if (Length(cs) = Size(decomp)) and (Minimum(cs) > 0) then
+    #the Frobenius-Lagrange map TODO transitivity
+    return 1 ^ Product(Reversed(DecodeCosetReprs(decomp,cs)),());
+  else
+    l := [];
+    Perform(AllConcreteCoords(CascadeShellOf(decomp),cs),
+            function(x) AddSet(l,
+                    1 ^ Product(Reversed(DecodeCosetReprs(decomp,x)),())
+                    );end);
+    return  l;
+  fi;
 end);
 
 #InstallMethod(Flatten,
