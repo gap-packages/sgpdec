@@ -17,20 +17,17 @@
 # it is a valid list of coordinate values.
 InstallOtherMethod(Flatten, "for coordinates",
 [IsCascadeShell,IsDenseList],
-function(csh,  coords )
-  return PositionCanonical(States(csh),coords);
+function(csh, coords)
+local l;
+  if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
+    return PositionCanonical(States(csh),coords);
+  else
+    l := [];
+    Perform(AllConcreteCoords(csh,coords),
+            function(x) AddSet(l,PositionCanonical(States(csh),x));end);
+    return  l;
+  fi;
 end);
-
-#TODO!! Get this back!!
-#InstallOtherMethod(Flatten, "for an abstract cascaded state",
-#[IsAbstractCascadedState],
-#function( acs )
-#local l;
-#  l := [];
-#  Perform(AllConcreteCascadedStates(acs), function(x) AddSet(l,Flatten(x));end);
-#  return  l;
-#end);
-
 
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
@@ -50,11 +47,10 @@ local l;
 end);
 
 InstallGlobalFunction(AllConcreteCoords,
-function(abstract_state)
-local csh, concretestates;
-  csh := CascadeShellOf(abstract_state);
-  concretestates :=  EnumeratorOfCartesianProduct(
-                             List([1..Size(csh)],
+function(csh, abstract_state)
+local concretestates;
+  concretestates := EnumeratorOfCartesianProduct(
+                            List([1..Size(csh)],
     function(x)
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
