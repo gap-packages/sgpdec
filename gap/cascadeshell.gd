@@ -29,7 +29,7 @@ DeclareRepresentation(
           "state_symbol_functions", #the symbols for printing the the states
           "operation_symbol_functions", #the symbols for printing the operations
           "argument_names", #the names argument domains
-          "state_sets", #the original statesets
+          "coordval_sets", #coordinate values (the original statesets of comps)
           "allcoords", #all coordinate tuples (lazy storage)
           "num_of_dependency_entries" #number of distinct dep function arguments
           ]);

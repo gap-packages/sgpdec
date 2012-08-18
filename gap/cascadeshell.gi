@@ -47,7 +47,7 @@ local statesym, opsym, comp,gid;
   statesym := [];
   opsym := [];
   for comp in components do
-     Add(statesym, x->x);
+     Add(statesym, IdFunc);
      Add(opsym, function(x)
        if IsTransformation(x) then
          return SimplerLinearNotation(x);
@@ -67,7 +67,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   if ForAll(components, IsGroup) then
     prodname := "G";
   else
-    prodname := "S";
+    prodname := "sg";
   fi;
   #concatenating component names
   Perform(components,
@@ -85,18 +85,18 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
                       name_of_product := prodname);
 
   #guessing the statesets of the original components
-  cascprodinfo.state_sets := []; #TODO this will be replaced by LambdaDomain
+  cascprodinfo.coordval_sets := []; #TODO this will be replaced by LambdaDomain
   for i in components do
     if IsGroup(i) then
-      Add(cascprodinfo.state_sets,MovedPoints(i));
+      Add(cascprodinfo.coordval_sets,MovedPoints(i));
     else
-      Add(cascprodinfo.state_sets,
+      Add(cascprodinfo.coordval_sets,
           [1..DegreeOfTransformation(Representative(i))]);
     fi;
   od;
 
   #calculating the maximal number of elementary dependencies
-  state_set_sizes := List(cascprodinfo.state_sets, x-> Size(x));
+  state_set_sizes := List(cascprodinfo.coordval_sets, x-> Size(x));
   cascprodinfo.num_of_dependency_entries :=
     Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
@@ -106,13 +106,14 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   str := "";
   for i in [2..Length(components)] do
       if i > 2 then str  := Concatenation(str, " x ");fi;
-      str := Concatenation(str,String(Size(cascprodinfo.state_sets[i-1])));
+      str := Concatenation(str,String(Size(cascprodinfo.coordval_sets[i-1])));
       cascprodinfo.argument_names[i] := str;
   od;
 
   #creating cascade state typed states
   #GENERATING STATES
-  cascprodinfo.allcoords := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
+  cascprodinfo.allcoords :=
+    EnumeratorOfCartesianProduct(cascprodinfo.coordval_sets);
 
   result :=  Objectify(CascadeShellType,cascprodinfo);
 
@@ -127,7 +128,7 @@ InstallGlobalFunction(AllCoords,
 function(csh) return csh!.allcoords; end);
 
 InstallGlobalFunction(CoordValSets,
-function(csh) return csh!.state_sets; end);
+function(csh) return csh!.coordval_sets; end);
 
 InstallGlobalFunction(NumberOfDependencyFunctionArguments,
 function(csh) return csh!.num_of_dependency_entries; end);

@@ -18,7 +18,7 @@ gap> S := Semigroup([Transformation([2,3,2]),Transformation([1,1,2])]);
 gap> G := Group([(1,2,3),(1,4)]);
 Group([ (1,2,3), (1,4) ])
 gap> csh := CascadeShell([G,S,G,S,S]);
-S_S4_sg11_S4_sg11_sg11
+sg_S4_sg11_S4_sg11_sg11
 gap> Display(csh);
 1 (4,S4)
 2 |-(3,sg11)
@@ -30,22 +30,53 @@ gap> Display(csh);
 </ManSection>
 <#/GAPDoc>
 
-      <#GAPDoc Label="CascadedYEAST">
-      <ManSection><Heading>Moving between the 'Flat' and the Cascaded</Heading>
-      <Oper Name="Build" Arg="cascadedstruct,flatobj"/>
-      <Oper Name="BuildNC" Arg="cascadedstruct,flatobj"/>
-      <Oper Name="Collapse" Arg="cascadedobj"/>
-      <Description>
-      A cascaded structure can be viewed as a flat structure: for a flat state/operation
-      one can build a cascaded one, or one can collapse a hierarchical structure. 
-      The non-check version is faster but should be used only when the flat operation is known to be in the cascaded structure.
-      <P/>
+<#GAPDoc Label="SizeOfWreathProduct">
+<ManSection><Heading>Size of the Wreath Product</Heading>
+<Func Name="SizeOfWreathProduct" Arg="cascadeshell"/>
+<Description>
+Returns the size of the wreath product of the components of the
+given cascade shell. The wreath product is the biggest cascaded structure
+that can be built in a shell.
+<Example>
+gap> C2 := CyclicGroup(IsPermGroup,2);
+Group([ (1,2) ])
+gap> csh := CascadeShell([C2,C2,C2]);
+G_C2_C2_C2
+gap> Display(csh);
+1 (2,C2)
+2 |-(2,C2)
+3 |-|-(2,C2)
+gap> SizeOfWreathProduct(csh);
+128
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
-      These operations are defined for both operations and states and can be considered as the
-      low-level version of <C>Raise</C> and <C>Flatten</C> in  <Ref Chap="HierarchicalDecompositions" Style="Text"/>.  
-      </Description>
-      </ManSection>
-      <#/GAPDoc>
+
+<#GAPDoc Label="NumberOfDependencyFunctionArguments">
+<ManSection><Heading>The number of dependency function arguments</Heading>
+<Func Name="NumberOfDependencyFunctionArguments" Arg="cascadeshell"/>
+<Description>
+Returns the number of all possible dependency function arguments across all
+levels.
+<Example>
+gap> C2 := CyclicGroup(IsPermGroup,2);
+Group([ (1,2) ])
+gap> C3 := CyclicGroup(IsPermGroup,3);
+Group([ (1,2,3) ])
+gap> NumberOfDependencyFunctionArguments(CascadeShell([C3]));
+1
+gap> NumberOfDependencyFunctionArguments(CascadeShell([C3,C2]));
+4
+gap> NumberOfDependencyFunctionArguments(CascadeShell([C3,C2,C3]));
+10
+gap> NumberOfDependencyFunctionArguments(CascadeShell([C3,C2,C3,C2]));
+28
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
       <#GAPDoc Label="MonomialGenerators">
       <ManSection><Heading>Constructing monomial generators for the wreath product</Heading>
