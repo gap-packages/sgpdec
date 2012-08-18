@@ -101,13 +101,13 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
     Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
   #constructing argumentnames (for display purposes)
-  cascprodinfo.argument_names := [];
-  cascprodinfo.argument_names[1] := "{}"; #the empty set
+  cascprodinfo.depdom_names := [];
+  cascprodinfo.depdom_names[1] := "{}"; #the empty set
   str := "";
   for i in [2..Length(components)] do
-      if i > 2 then str  := Concatenation(str, " x ");fi;
+      if i > 2 then str  := Concatenation(str, "x");fi;
       str := Concatenation(str,String(Size(cascprodinfo.coordval_sets[i-1])));
-      cascprodinfo.argument_names[i] := str;
+      cascprodinfo.depdom_names[i] := str;
   od;
 
   #creating cascade state typed states
@@ -132,6 +132,9 @@ function(csh) return csh!.coordval_sets; end);
 
 InstallGlobalFunction(NumberOfDependencyFunctionArguments,
 function(csh) return csh!.num_of_dependency_entries; end);
+
+InstallGlobalFunction(NameOfDependencyDomain,
+function(csh,level) return csh!.depdom_names[level]; end);
 
 InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
 function(csh) return csh!.name_of_shell; end);
