@@ -47,7 +47,7 @@ local csh, pairs, identity, value, i, coords;
   pairs := [];
   for i in [1..Length(csh)] do
     identity := One(csh[i]);
-    for coords in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
+    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       value := ct!.depfunc(coords);
       #if it is not the identity of the component
       if identity <> value then
@@ -82,7 +82,8 @@ local deps, level, arg;
   # some trickery is needed as random may return the same element
   while Length(deps) <> numofdeps do
     level := Random(1,Length(csh));
-    arg := Random(EnumeratorOfCartesianProduct(StateSets(csh){[1..level-1]}));
+    arg := Random(EnumeratorOfCartesianProduct(
+                   CoordValSets(csh){[1..level-1]}));
     if not (arg in deps) then
       Add(deps,arg);
     fi;
@@ -151,7 +152,7 @@ function(p,q)
   #getting the family object
   csh := CascadeShellOf(p);
   for i in [1..Length(csh)] do
-    for coords in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
+    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       if p!.depfunc(coords) <> q!.depfunc(coords) then
         return false;
       fi;
@@ -239,7 +240,7 @@ function( ct )
   for i in [1..Length(csh)] do
     Print("Level ",i,": ", csh!.argument_names[i]," -> ",
      csh[i],"\n");
-    for j in EnumeratorOfCartesianProduct(StateSets(csh){[1..(i-1)]}) do
+    for j in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       if not IsOne(ct!.depfunc(j)) then
         Print("[",ConvertCascade2String(j,csh!.state_symbol_functions),
          "] -> ", csh!.operation_symbol_functions[i](ct!.depfunc(j)), "\n");
@@ -338,7 +339,7 @@ ComponentActionForPrefix := function(csh, flatoplist, prefix)
   level := Length(prefix) + 1;
 
   #we need to augment the prefix with each  coordinate
-  for coordval in StateSets(csh)[level] do
+  for coordval in CoordValSets(csh)[level] do
     #augment (we change the argument prefix, but we change it back)
     Add(prefix, coordval);
     # let's just record where did it go
@@ -370,7 +371,7 @@ function(csh, flatop)
 
   #enumerate prefixes for all levels
   for level in [1..Length(csh)] do
-    prefixes := EnumeratorOfCartesianProduct(StateSets(csh){[1..level-1]});
+    prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
     for prefix in prefixes do
       action := ComponentActionForPrefix(csh, flatoplist, prefix);
       if action <> One(csh[level]) then
@@ -408,14 +409,14 @@ function(ct, targetlevel, onlevel)
   #getting the cascade shell of the operation
   csh := CascadeShellOf(ct);
   #all possible arguments up to targetlevel-1
-  args:=EnumeratorOfCartesianProduct(StateSets(csh){[1..(targetlevel-1)]});
+  args:=EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(targetlevel-1)]});
   #so we test for all arguments
   #TODO some optimization may be possible here, not to check any twice
   for arg in args do
     #remember the value
     value := ct!.depfunc(arg);
     #now do the variations
-    for coord in StateSets(csh)[onlevel] do
+    for coord in CoordValSets(csh)[onlevel] do
       arg[onlevel] := coord;
       #if there is a change then we are done!
       if value <>  ct!.depfunc(arg) then
@@ -457,7 +458,7 @@ local pscope,level,prefix,csh;
 
   for level in [1..Length(csh)] do
     for prefix in
-     EnumeratorOfCartesianProduct(StateSets(csh){[1..(level-1)]} ) do
+     EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(level-1)]} ) do
       #if it is not the identity of the component
       if One(csh[level]) <> (ct!.depfunc(prefix)) then
         #then we have at least one here
@@ -488,7 +489,7 @@ function(csh, flatoplist, prefix)
   #now checking: any image should have the same prefix
   #for all possible concretization
   for postfix in EnumeratorOfCartesianProduct(
-   StateSets(csh){[Length(prefix)+1..Length(csh)]}) do
+   CoordValSets(csh){[Length(prefix)+1..Length(csh)]}) do
     coords := ShallowCopy(prefix);
     Append(coords,postfix);
     for i in [1..Length(dest_prefix)] do
@@ -515,7 +516,7 @@ function(csh,flatop)
 
   #enumerate prefixes for all levels
   for level in [1..Length(csh)] do
-    prefixes := EnumeratorOfCartesianProduct(StateSets(csh){[1..level-1]});
+    prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
     for prefix in prefixes do
       if not IsDependencyCompatibleOnPrefix(csh, flatoplist, prefix) then
         return false;

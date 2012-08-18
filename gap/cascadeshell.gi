@@ -126,7 +126,7 @@ end);
 InstallGlobalFunction(AllCoords,
 function(csh) return csh!.allcoords; end);
 
-InstallGlobalFunction(StateSets,
+InstallGlobalFunction(CoordValSets,
 function(csh) return csh!.state_sets; end);
 
 InstallGlobalFunction(NumberOfDependencyFunctionArguments,
@@ -145,7 +145,7 @@ local order,j,i;
   j := 1;
   for i in [1..Size(csh)] do
     order := order * (Size(csh[i])^j);
-    j := j * Size(StateSets(csh)[i]);
+    j := j * Size(CoordValSets(csh)[i]);
   od;
   return order;
 end);
@@ -181,7 +181,7 @@ function(csh)
 local s,i;
   s := "";
   for i in [1..Length(csh)] do
-    Print(i," ", s,"(",Size(StateSets(csh)[i]),",");
+    Print(i," ", s,"(",Size(CoordValSets(csh)[i]),",");
     ViewObj(csh[i]);
     Print(")\n");
     s := Concatenation(s,"|-");
