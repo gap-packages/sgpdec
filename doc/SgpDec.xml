@@ -42,6 +42,9 @@ of the wreath product) can be constructed by explicitly giving the dependency
 
 </Chapter>
 
+ <#Include SYSTEM "cascadedstructs.xml">
+
+
 <Chapter>
 <Heading>Holonomy Decomposition</Heading>
 The holonomy decomposition is constructed based on the action of the semigroup
@@ -59,7 +62,7 @@ on the orbit of the state set.
 
 The subsemigroup stabilizing a subset X of the state set is called the
 permutator subsemigroup (to avoid name clash). Restricting this permutator to
-$X$ gives the permutator group (Generalized Schützenberger group, see  
+$X$ gives the permutator group (Generalized Schützenberger group, see
 <Cite Key="permutator"/> )
 <#Include Label="PermutatorSemigroup">
 <#Include Label="PermutatorGenerators">
