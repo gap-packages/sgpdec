@@ -82,7 +82,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
                       state_symbol_functions := statesymbolfunctions,
                       operation_symbol_functions := operationsymbolfunctions,
                       components := components,
-                      name_of_product := prodname);
+                      name_of_shell := prodname);
 
   #guessing the statesets of the original components
   cascprodinfo.coordval_sets := []; #TODO this will be replaced by LambdaDomain
@@ -134,7 +134,7 @@ InstallGlobalFunction(NumberOfDependencyFunctionArguments,
 function(csh) return csh!.num_of_dependency_entries; end);
 
 InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
-function(csh) return csh!.name_of_product; end);
+function(csh) return csh!.name_of_shell; end);
 
 #this is a huge number even in small cases
 InstallGlobalFunction(SizeOfWreathProduct,

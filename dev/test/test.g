@@ -61,7 +61,7 @@ od;
 
 Print("\nTesting a group cascade ");
 GRP := CascadeShell([Z3,Z2,Z2,Z5]);;
-Print(GRP!.name_of_product,"\n\n");
+Print(Name(GRP),"\n\n");
 
 TestMultiplicationByIdentity(GRP);
 TestYEAST4Operations(GRP);
@@ -70,7 +70,7 @@ TestDependencyExtraction(GRP);
 
 Print("\nTesting a semigroup cascade ");
 SGRP := CascadeShell([Z3,FlipFlop,FlipFlop,Z5]);;
-Print(SGRP!.name_of_product,"\n\n");
+Print(Name(SGRP),"\n\n");
 
 TestMultiplicationByIdentity(SGRP);
 TestYEAST4Operations(SGRP);
