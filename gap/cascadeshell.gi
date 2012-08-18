@@ -123,7 +123,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
 end);
 
 #######################ACCESS METHODS#######################
-InstallGlobalFunction(States,
+InstallGlobalFunction(AllCoords,
 function(csh) return csh!.states; end);
 
 InstallGlobalFunction(StateSets,

@@ -299,7 +299,7 @@ function( ct )
   local csh, states, l, nstate, i;
 
   csh:=CascadeShellOf(ct);
-  states:=States(csh);
+  states:=AllCoords(csh);
 
   #l is the big list for the action
   l := [];
@@ -322,10 +322,10 @@ end);
 FlatActionOnCoordinates := function(csh, flatop, coords)
 local src;
   #pick one source cascaded state (the first in the interval may do)
-  src := PositionCanonical(States(csh),
+  src := PositionCanonical(AllCoords(csh),
                      Concretize(csh, coords));
   #we find the cascaded state corresponding to the flatop image
-  return States(csh)[flatop[src]];
+  return AllCoords(csh)[flatop[src]];
 end;
 MakeReadOnlyGlobal("FlatActionOnCoordinates");
 
@@ -364,7 +364,7 @@ function(csh, flatop)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
-  flatoplist := OnTuples([1..Size(States(csh))], flatop);
+  flatoplist := OnTuples([1..Size(AllCoords(csh))], flatop);
 
   dependencies := [];
 
@@ -481,7 +481,7 @@ InstallGlobalFunction(IsDependencyCompatibleOnPrefix,
 function(csh, flatoplist, prefix)
   local states, dest_prefix, coords, postfix, i;
 
-  states := States(csh);
+  states := AllCoords(csh);
   #get the prefix out of it
   dest_prefix := FlatActionOnCoordinates(csh, flatoplist, prefix)
                  {[1..Length(prefix)]};
@@ -511,7 +511,7 @@ function(csh,flatop)
    local flatoplist, prefixes, level, prefix;
 
   #converting the flat operation to a transformation list
-  flatoplist := OnTuples([1..Size(States(csh))], flatop);
+  flatoplist := OnTuples([1..Size(AllCoords(csh))], flatop);
 
   #enumerate prefixes for all levels
   for level in [1..Length(csh)] do
