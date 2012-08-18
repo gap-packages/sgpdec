@@ -112,7 +112,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
   #creating cascade state typed states
   #GENERATING STATES
-  cascprodinfo.states := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
+  cascprodinfo.allcoords := EnumeratorOfCartesianProduct(cascprodinfo.state_sets);
 
   result :=  Objectify(CascadeShellType,cascprodinfo);
 
@@ -124,7 +124,7 @@ end);
 
 #######################ACCESS METHODS#######################
 InstallGlobalFunction(AllCoords,
-function(csh) return csh!.states; end);
+function(csh) return csh!.allcoords; end);
 
 InstallGlobalFunction(StateSets,
 function(csh) return csh!.state_sets; end);
