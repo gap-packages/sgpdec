@@ -232,30 +232,26 @@ MakeReadOnlyGlobal("ConvertCascade2String");
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedTransformation],
 function( ct )
-  local csh, i, j;
-
-  #getting the info record
+local csh, i, j;
+  #getting the shell
   csh := CascadeShellOf(ct);
-
   for i in [1..Length(csh)] do
-    Print("Level ",i,": ", csh!.argument_names[i]," -> ",
-     csh[i],"\n");
+    Print("#",i,": ", NameOfDependencyDomain(csh,i)," -> ",
+          csh[i],"\n");
     for j in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       if not IsOne(ct!.depfunc(j)) then
         Print("[",ConvertCascade2String(j,csh!.state_symbol_functions),
          "] -> ", csh!.operation_symbol_functions[i](ct!.depfunc(j)), "\n");
       fi;
     od;
-    Print("\n");
   od;
 end);
 
 # Implementing viewobj, printing simple info.
-
-InstallMethod(ViewObj, "displays a cascaded product operation",
+InstallMethod(ViewObj, "cascaded transformation",
 [IsCascadedTransformation],
-function( ct )
-  Print("Cascaded operation in ", Name(CascadeShellOf(ct)));
+function(ct)
+  Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
 end);
 
 InstallGlobalFunction(OnCoordinates,
