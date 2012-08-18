@@ -30,7 +30,7 @@ DeclareRepresentation(
           "operation_symbol_functions", #the symbols for printing the operations
           "argument_names", #the names argument domains
           "state_sets", #the original statesets
-          "states", #states as cascaded states with correct type
+          "allcoords", #all coordinate tuples (lazy storage)
           "num_of_dependency_entries" #number of distinct dep function arguments
           ]);
 
