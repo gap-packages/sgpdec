@@ -73,8 +73,8 @@ function(csh,numofdeps)
 local deps, level, arg;
 
   # sanity check, to avoid infinite loops down below
-  if numofdeps > MaximumNumberOfElementaryDependencies(csh) then
-    numofdeps := MaximumNumberOfElementaryDependencies(csh);
+  if numofdeps > NumberOfDependencyFunctionArguments(csh) then
+    numofdeps := NumberOfDependencyFunctionArguments(csh);
     Print("#W Number of elementary dependencies is set to ", numofdeps,"\n");
   fi;
 

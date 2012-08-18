@@ -9,7 +9,7 @@ local i,id,rnd,irnd;
   Print("checked whether the inverse is really the inverse.\n");
   for i in [1..ITER] do
     rnd := RandomCascadedTransformation(csh,
-                   MaximumNumberOfElementaryDependencies(csh));
+                   NumberOfDependencyFunctionArguments(csh));
     irnd := Inverse(rnd);
     if ((rnd*irnd) <> id) or (id <> (irnd*rnd)) then
       Print("FAIL\n");Error("Inverses do not give identity!\n");
