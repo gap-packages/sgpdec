@@ -16,7 +16,7 @@ DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
 
 #ACCESS FUNCTIONS
 DeclareGlobalFunction("AllCoords");
-DeclareGlobalFunction("StateSets");
+DeclareGlobalFunction("CoordValSets");
 
 DeclareCategory("IsCascadeShell", IsDenseList);
 DeclareProperty("IsCascadedGroupShell", IsCascadeShell);

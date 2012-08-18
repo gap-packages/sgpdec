@@ -55,7 +55,7 @@ local concretestates;
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
       else
-        return StateSets(csh)[x];
+        return CoordValSets(csh)[x];
       fi;
     end));
   return concretestates;
