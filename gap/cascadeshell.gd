@@ -14,6 +14,8 @@ DeclareOperation("CascadeShell",[IsList,IsList,IsList]);
 DeclareGlobalFunction("AllCoords");
 DeclareGlobalFunction("CoordValSets");
 DeclareGlobalFunction("NameOfDependencyDomain");
+DeclareGlobalFunction("CoordValConverter");
+DeclareGlobalFunction("CoordTransConverter");
 DeclareGlobalFunction("SizeOfWreathProduct");
 DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
 
@@ -24,8 +26,8 @@ DeclareRepresentation(
         IsComponentObjectRep,
         [ "components", #the building blocks
           "name_of_shell", #a short name constructed from the components
-          "state_symbol_functions", #the symbols for printing the the states
-          "operation_symbol_functions", #the symbols for printing the operations
+          "coordval_converters", #functions for convert coord vals (e.g. names)
+          "coordtrans_converters", #functions for converting coord trans
           "depdom_names", #the names of dependency domains
           "coordval_sets", #coordinate values (the original statesets of comps)
           "allcoords", #all coordinate tuples (lazy storage)

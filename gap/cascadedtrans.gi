@@ -217,31 +217,33 @@ end);
 
 ##############################################################################
 # for symbol printing prefixes
-ConvertCascade2String := function(coordsprefix, converter)
+ConvertCoords2String := function(csh, coordsprefix)
 local i,str;
   str := "";
   for i in [1..Length(coordsprefix)] do
-    str := Concatenation(str,String(converter[i](coordsprefix[i])));
+    str := Concatenation(str,
+                   String(CoordValConverter(csh,i)(coordsprefix[i])));
     if i < Length(coordsprefix) then str := Concatenation(str,","); fi;
   od;
   return str;
 end;
-MakeReadOnlyGlobal("ConvertCascade2String");
+MakeReadOnlyGlobal("ConvertCoords2String");
 
 # Implementing display, printing nice, human readable format.
 InstallMethod( Display, "for a cascaded op",
 [IsCascadedTransformation],
 function( ct )
-local csh, i, j;
-  #getting the shell
+local csh, i, coords, val;
   csh := CascadeShellOf(ct);
   for i in [1..Length(csh)] do
-    Print("#",i,": ", NameOfDependencyDomain(csh,i)," -> ",
-          csh[i],"\n");
-    for j in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
-      if not IsOne(ct!.depfunc(j)) then
-        Print("[",ConvertCascade2String(j,csh!.state_symbol_functions),
-         "] -> ", csh!.operation_symbol_functions[i](ct!.depfunc(j)), "\n");
+    #printing the function definition
+    Print("#",i,": ",NameOfDependencyDomain(csh,i)," -> ",csh[i],"\n");
+    #looping all possible arguments and display if any
+    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
+      val := ct!.depfunc(coords);
+      if not IsOne(val) then
+        Print("[",ConvertCoords2String(csh, coords),
+         "] -> ", CoordTransConverter(csh,i)(val),"\n");
       fi;
     od;
   od;
