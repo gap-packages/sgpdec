@@ -29,7 +29,7 @@ Name4Component := function(comp)
       SetName(comp, Concatenation("G",String(Order(comp))));
     fi;
   else
-    SetName(comp, Concatenation("S",String(Size(comp))));
+    SetName(comp, Concatenation("sg",String(Size(comp))));
   fi;
   return Name(comp);
 end;
