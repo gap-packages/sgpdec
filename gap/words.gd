@@ -10,8 +10,8 @@
 ##
 
 #words consisting of positive integers only (no inverse operation)
-DeclareGlobalFunction("Construct");
-DeclareGlobalFunction("Trajectory");
+DeclareGlobalFunction("BuildByWord");
+DeclareGlobalFunction("TrajectoryByWord");
 DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
 DeclareGlobalFunction("RandomWord");

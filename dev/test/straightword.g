@@ -19,8 +19,8 @@ local t,w,rw,i;
       Print("FAIL\n");
       Error("Straight word reduction does not produce straight word!\n");
     fi;
-    if Construct(w,gens,One(gens[1]),\*)
-       <> Construct(rw,gens,One(gens[1]),\*) then
+    if BuildByWord(w,gens,One(gens[1]),\*)
+       <> BuildByWord(rw,gens,One(gens[1]),\*) then
       Print("FAIL\n");Error("Reduction does not give identical operation!\n");
     fi;
   od;
