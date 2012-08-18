@@ -59,7 +59,7 @@ end);
 
 #THE MAIN CONSTRUCTOR with all the possible arguments
 InstallMethod(CascadeShell,[IsList,IsList,IsList],
-function(components,statesymbolfunctions,operationsymbolfunctions)
+function(components,coordval_converters,coordtrans_converters)
 local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
   #GENERATING THE NAME
@@ -79,8 +79,8 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   #this is the main record containing information about the cascade product,
   #the initial values do not matter
   cascprodinfo := rec(
-                      state_symbol_functions := statesymbolfunctions,
-                      operation_symbol_functions := operationsymbolfunctions,
+                      coordval_converters := coordval_converters,
+                      coordtrans_converters := coordtrans_converters,
                       components := components,
                       name_of_shell := prodname);
 
@@ -135,6 +135,12 @@ function(csh) return csh!.num_of_dependency_entries; end);
 
 InstallGlobalFunction(NameOfDependencyDomain,
 function(csh,level) return csh!.depdom_names[level]; end);
+
+InstallGlobalFunction(CoordValConverter,
+function(csh,level) return csh!.coordval_converters[level]; end);
+
+InstallGlobalFunction(CoordTransConverter,
+function(csh,level) return csh!.coordtrans_converters[level]; end);
 
 InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
 function(csh) return csh!.name_of_shell; end);
