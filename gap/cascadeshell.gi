@@ -183,8 +183,7 @@ local s,i;
   for i in [1..Length(csh)] do
     Print(i," ", s,"(",Size(StateSets(csh)[i]),",");
     ViewObj(csh[i]);
-    Print(")");
-    if i < Length(csh) then Print("\n");fi;
+    Print(")\n");
     s := Concatenation(s,"|-");
   od;
 end);
