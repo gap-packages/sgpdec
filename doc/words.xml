@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<#GAPDoc Label="Construct">
+<#GAPDoc Label="BuildByWord">
 <ManSection>
-  <Oper Arg="word, generators, start, action" Name="Construct" />
-  <Oper Arg="word, generators, start, action" Name="Trajectory" />
+  <Oper Arg="word, generators, start, action" Name="BuildByWord" />
+  <Oper Arg="word, generators, start, action" Name="TrajectoryByWord" />
   <Description>
 General purpose function for constructing some structure by applying generators
 in the order coded defined by a sequence of integers (words).
 The construction starts at the given element, and the action should be a
 function describing how the generators act on the starting and the subsequent
-points. For an empty word the starting point is returned. Trajectory is the same
-but it returns the whole calculation, not just the final result.
+points. For an empty word the starting point is returned.
+<C>TrajectoryByWord</C> is the same but it returns the whole calculation,
+not just the final result.
 <P></P>
 These functions can be considered to be the generalizations of <Package>Citrus'
 </Package> <Code>EvaluateWord</Code>.
@@ -19,18 +20,18 @@ Calculating a transformation represented by a word:
 gap> gens := [Transformation([2,3,4,1]),
 > Transformation([2,1,3,4]),
 > Transformation([1,1,3,4])];;
-gap> Construct([1,2,1,2,3],gens,IdentityTransformation(4),\*);
+gap> BuildByWord([1,2,1,2,3],gens,IdentityTransformation(4),\*);
 Transformation( [ 1, 4, 1, 3 ] )
 </Example>
     Or acting on some set:
     <Example>
-gap> Construct([1,2,1,2,3],gens,[1,2],OnSets);
+gap> BuildByWord([1,2,1,2,3],gens,[1,2],OnSets);
 [ 1, 4 ]
 </Example>
     The next archetypical programming example demonstrates the flexibility of
 these functions:
     <Example>
-gap> Construct([3,5,9,9,4,6,2,4,8,9,7,1],
+gap> BuildByWord([3,5,9,9,4,6,2,4,8,9,7,1],
 > ["!","W","H","o","e"," ","d","r","l"],
 > "",
 > Concatenation);
@@ -38,7 +39,7 @@ gap> Construct([3,5,9,9,4,6,2,4,8,9,7,1],
 </Example>
     Or we can have the intermediate elements of the construction.
     <Example>
-gap> Trajectory([3,2,1],["c","b","a"],"",Concatenation);
+gap> TrajectoryByWord([3,2,1],["c","b","a"],"",Concatenation);
 [ "", "a", "ab", "abc" ]
 </Example>
   </Description>
@@ -54,7 +55,7 @@ from the given point, i.e. there are no repeated visited nodes.
 <Example>
 gap> w := [1,2,1,2,1,2,1,2];
 [ 1, 2, 1, 2, 1, 2, 1, 2 ]
-gap> Trajectory(w, [(1,2),(1,2,3)],(),\*);
+gap> TrajectoryByWord(w, [(1,2),(1,2,3)],(),\*);
 [ (), (1,2), (1,3), (1,3,2), (), (1,2), (1,3), (1,3,2), () ]
 gap> IsStraightWord(w, [(1,2),(1,2,3)],(),\*);
 false
@@ -75,7 +76,7 @@ gap> w := [1,2,1,2,1,2,1,2];
 [ 1, 2, 1, 2, 1, 2, 1, 2 ]
 gap> rw := Reduce2StraightWord(w, [(1,2),(1,2,3)],(),\*);
 [ 1, 2, 1, 2 ]
-gap> Trajectory(rw, [(1,2),(1,2,3)],(),\*);
+gap> TrajectoryByWord(rw, [(1,2),(1,2,3)],(),\*);
 [ (), (1,2), (1,3), (1,3,2), () ]
 gap> IsStraightWord(rw, [(1,2),(1,2,3)],(),\*);
 true

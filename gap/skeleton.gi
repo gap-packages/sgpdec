@@ -264,7 +264,7 @@ function(sk, A)
 local pos;
   pos := Position(sk.orb, A);
   if not IsBound(sk.IN[pos]) then
-    sk.IN[pos] := Construct(GetINw(sk,A), sk.gens, sk.id, \*);
+    sk.IN[pos] := BuildByWord(GetINw(sk,A), sk.gens, sk.id, \*);
   fi;
   return sk.IN[pos];
 end);
@@ -279,7 +279,7 @@ local pos, scc, n, outw, fg, inw, out,l;
     scc := OrbSCCLookup(sk.orb)[pos];
     outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
                      TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
-    out := Construct(outw, sk.gens, sk.id, \*);
+    out := BuildByWord(outw, sk.gens, sk.id, \*);
     inw := GetINw(sk,A);
     #now doing it properly (Lemma 5.9. in ENA PhD thesis)
     n := First(PositiveIntegers,
@@ -299,7 +299,7 @@ function(sk, A)
 local pos;
   pos := Position(sk.orb, A);
   if not IsBound(sk.OUT[pos]) then
-    sk.OUT[pos] := Construct(GetOUTw(sk,A), sk.gens, sk.id, \*);
+    sk.OUT[pos] := BuildByWord(GetOUTw(sk,A), sk.gens, sk.id, \*);
   fi;
   return sk.OUT[pos];
 end);
@@ -413,14 +413,14 @@ InstallGlobalFunction(PermutatorGenerators,
 function(sk,set)
   return Filtered(Permutators(sk,set),
                  x -> not (IsIdentityOnFiniteSet(
-                         Construct(x, sk.gens, sk.id,\*) ,set)));
+                         BuildByWord(x, sk.gens, sk.id,\*) ,set)));
 end);
 
 InstallGlobalFunction(CoverGroup,
 function(sk,set)
 local gens;
   gens := AsSet(List(List(PermutatorGenerators(sk,set),
-                  x->Construct(x, sk.gens, sk.id,\*)),
+                  x->BuildByWord(x, sk.gens, sk.id,\*)),
                   x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
                 );
   if IsEmpty(gens) then gens := [()]; fi;

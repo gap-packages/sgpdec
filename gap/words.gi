@@ -13,7 +13,7 @@
 ### ALGORITHM FOR WORDS ########################################################
 
 #general construction from a word coding by applying the generators in order
-InstallGlobalFunction(Construct,
+InstallGlobalFunction(BuildByWord,
 function(sequence, generators, start, action)
 local product,i;
   product := start;
@@ -23,8 +23,8 @@ local product,i;
   return product;
 end);
 
-#the same as Construct, but keeping the intermediate points
-InstallGlobalFunction(Trajectory,
+#the same as BuildByWord, but keeping the intermediate points
+InstallGlobalFunction(TrajectoryByWord,
 function(sequence, generators, start,action)
 local trajectory,i;
   trajectory := [start]; #so the images are off by 1
@@ -37,7 +37,7 @@ end);
 InstallGlobalFunction(IsStraightWord,
 function(word, gens, start, action)
 local i,t,trajectory;
-  trajectory := Trajectory(word, gens, start,action);
+  trajectory := TrajectoryByWord(word, gens, start,action);
   #if the first element is also at the end, we remove the last
   if (trajectory[1] = trajectory[Length(trajectory)]) then
     Remove(trajectory);
@@ -76,7 +76,7 @@ MakeReadOnlyGlobal("StraightenWord");
 #this is just a wrapper that calculates the required trajectory
 InstallGlobalFunction(Reduce2StraightWord,
 function(word, gens, point, action)
-  return StraightenWord(word,Trajectory(word,gens,point,action));
+  return StraightenWord(word,TrajectoryByWord(word,gens,point,action));
 end);
 
 #l - length of the word, n - number of generators
