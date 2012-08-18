@@ -20,11 +20,11 @@ InstallOtherMethod(Flatten, "for coordinates",
 function(csh, coords)
 local l;
   if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
-    return PositionCanonical(States(csh),coords);
+    return PositionCanonical(AllCoords(csh),coords);
   else
     l := [];
     Perform(AllConcreteCoords(csh,coords),
-            function(x) AddSet(l,PositionCanonical(States(csh),x));end);
+            function(x) AddSet(l,PositionCanonical(AllCoords(csh),x));end);
     return  l;
   fi;
 end);
@@ -33,7 +33,7 @@ end);
 # state is just the index
 InstallOtherMethod(Raise, "for cascade shell and integer (flat state)",
 [IsDenseList, IsPosInt],
-function( csh, state ) return States(csh)[state]; end);
+function( csh, state ) return AllCoords(csh)[state]; end);
 
 #for abstract positions we put 1 (a surely valid coordinate value) replacing 0
 InstallGlobalFunction(Concretize,

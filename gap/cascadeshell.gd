@@ -15,7 +15,7 @@ DeclareGlobalFunction("SizeOfWreathProduct");
 DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
 
 #ACCESS FUNCTIONS
-DeclareGlobalFunction("States");
+DeclareGlobalFunction("AllCoords");
 DeclareGlobalFunction("StateSets");
 
 DeclareCategory("IsCascadeShell", IsDenseList);
