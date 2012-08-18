@@ -1,3 +1,5 @@
+0.6.61
+	Revising and documenting CascadeShell and further refactoring in order to make SgpDec compatible with all GAP packages. Now LoadAllPackages() has no problems.
 0.6.60
 	Abstract states functionality restored. Unused priority values for methods removed in Lagrange decomposition.
 0.6.59
