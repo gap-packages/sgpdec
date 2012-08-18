@@ -97,7 +97,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
   #calculating the maximal number of elementary dependencies
   state_set_sizes := List(cascprodinfo.state_sets, x-> Size(x));
-  cascprodinfo.maxnum_of_dependency_entries :=
+  cascprodinfo.num_of_dependency_entries :=
     Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
   #constructing argumentnames (for display purposes)
@@ -129,8 +129,8 @@ function(csh) return csh!.states; end);
 InstallGlobalFunction(StateSets,
 function(csh) return csh!.state_sets; end);
 
-InstallGlobalFunction(MaximumNumberOfElementaryDependencies,
-function(csh) return csh!.maxnum_of_dependency_entries; end);
+InstallGlobalFunction(NumberOfDependencyFunctionArguments,
+function(csh) return csh!.num_of_dependency_entries; end);
 
 InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
 function(csh) return csh!.name_of_product; end);
