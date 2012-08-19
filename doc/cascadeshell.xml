@@ -1,17 +1,20 @@
 <#GAPDoc Label="CascadeShell">
 <ManSection><Heading>CascadeShell</Heading>
 <Oper Name="CascadeShell" Arg="components"/>
-<Oper Name="CascadeShell" Arg="components, statesymfuncs, opsymfuncs"/>
+<Oper Name="CascadeShell"
+      Arg="components,coordval_converters,coordtrans_converters"/>
 <Description>
-  <C>CascadeShell</C> builds a cascaded structure from the given list of
-  <C>components</C>. The components are either permutation groups or transformation 
-  semigroups. The cascaded structure itself is just a framework in which 
-  cascaded states and operations can be instantiated, therefore creating a cascaded structure
-  is quick while calculating in it may be very computation intensive.
-  <P/>
-  The symbol functions are lists of functions for each components mapping states and 
-  operations to strings. If they are not specified  the functions return the default string
-  representations of integer numbers.
+<C>CascadeShell</C> builds a cascaded structure from the given list of
+<C>components</C>. The components are either permutation groups or
+transformation semigroups. The cascade shell itself is just a framework in
+which cascaded states and transformations can be instantiated, therefore
+creating a cascade shell is quick while calculating in it may be very
+computation intensive.
+<P/>
+Optionally lists of converter functions for both the coordinate values (the
+states of the components) and the coordinate transformations (the group or
+semigroup elements). These modify how coordinates and dependency functions are
+displayed. Default value is the identity function <C>IdFunc</C>.
 <Example>
 gap> S := Semigroup([Transformation([2,3,2]),Transformation([1,1,2])]);
 &lt;semigroup with 2 generators&gt;
