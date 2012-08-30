@@ -491,6 +491,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   fi;
 
   #defining the hierarchical levels - the nodes are named only by integers
+  #these numbers appear on the side
   AppendTo(out, "{node [shape=plaintext]\n edge [style=invis]\n");
   for i in [1..DepthOfSkeleton(sk)-1] do
     AppendTo(out,Concatenation(String(i),"\n"));
@@ -499,6 +500,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     fi;
   od;
   AppendTo(out,"}\n");
+
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
   for i in [1..Length(classes)] do
@@ -524,6 +526,24 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
       AppendTo(out,"  }\n");
     fi;
   od;
+
+  #drawing the the same level elements
+  for i in [1..DepthOfSkeleton(sk)-1] do
+    AppendTo(out, "{rank=same;",String(i),";");
+    for class in SkeletonClassesOnDepth(sk,i) do
+      for node in class do
+        AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
+      od;
+    od;
+    AppendTo(out,"}\n");
+  od;
+  #singletons
+  AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
+  for node in sk.singletons do
+    AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
+  od;
+  AppendTo(out,"}\n");
+
   #drawing the representatives as rectangles and their covers
   for class in AllRepresentativeSets(sk) do
     AppendTo(out,"\"",FiniteSetPrinter(class,states),
