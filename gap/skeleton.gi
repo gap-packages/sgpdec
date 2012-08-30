@@ -483,13 +483,12 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph skeleton{\n");
-
+  #setting the state names
   if "states" in RecNames(params) then
     states := params.states;
   else
     states := [1..999];
   fi;
-
   #defining the hierarchical levels - the nodes are named only by integers
   #these numbers appear on the side
   AppendTo(out, "{node [shape=plaintext]\n edge [style=invis]\n");
@@ -500,7 +499,6 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     fi;
   od;
   AppendTo(out,"}\n");
-
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
   for i in [1..Length(classes)] do
@@ -526,7 +524,6 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
       AppendTo(out,"  }\n");
     fi;
   od;
-
   #drawing the the same level elements
   for i in [1..DepthOfSkeleton(sk)-1] do
     AppendTo(out, "{rank=same;",String(i),";");
@@ -543,7 +540,6 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
   od;
   AppendTo(out,"}\n");
-
   #drawing the representatives as rectangles and their covers
   for class in AllRepresentativeSets(sk) do
     AppendTo(out,"\"",FiniteSetPrinter(class,states),
@@ -551,9 +547,9 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     for set in CoveringSetsOf(sk, class) do
       AppendTo(out,"\"",FiniteSetPrinter(class,states),
               "\" -> \"",FiniteSetPrinter(set,states),"\"\n");
-      od;
     od;
-    AppendTo(out,"}\n");
-    CloseStream(out);
-    return str;
+  od;
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
 end);
