@@ -155,25 +155,9 @@ gap> ImageSets(sk);
   <Description>
   Returns the list of equivalence classes (strongly connected components)
   with the given depth.
- Each class is a record with the following components:
-<Table Align="|c|c|">
- <HorLine/>
-  <Row>
-   <Item><Code>elems</Code></Item><Item>the elements of the equivalence class</Item>
-  </Row>
- <HorLine/>
-  <Row>
-   <Item><Code>rep</Code></Item><Item>the representative element of the class</Item>
-  </Row>
- <HorLine/>
-  <Row>
-   <Item><Code>depth (height)</Code></Item><Item>the depth (height) of the class, same for all elements</Item>
-  </Row>
- <HorLine/>
-</Table>
   </Description>
-  </ManSection>
-   <#/GAPDoc>
+</ManSection>
+<#/GAPDoc>
 
 
 <#GAPDoc Label="CoveringSetsOf">
