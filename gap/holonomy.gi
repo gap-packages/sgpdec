@@ -421,7 +421,7 @@ function( hd, pos )
   return hd!.cascadeshell[pos];
 end);
 
-InstallMethod(ViewObj,"for a holonomy decomposition",
+InstallMethod(PrintObj,"for a holonomy decomposition",
         [ IsHolonomyDecomposition ],
 function( hd )
   Print("<holonomy decomposition of ",hd!.original, ">");
