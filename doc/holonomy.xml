@@ -6,15 +6,25 @@
   <C>HolonomyDecomposition</C> constructs a hierarchical decomposition for a
   transformation semigroup or for a skeleton if there is already one calculated.
 <Example>
-gap> hd := HolonomyDecomposition(FullTransformationSemigroup(4));
-&lt;holonomy decomposition of &lt;semigroup with 256 elts, 3 gens&gt;&gt;
-gap> Display(hd);
-1: S4
-2: S3
-3: C2
+gap> S := Semigroup([Transformation([2,1,3,5,4,3]),Transformation([6,3,1,6,5,4])]);
+&lt;semigroup with 2 generators&gt;
+gap> hd := HolonomyDecomposition(S);
+&lt;holonomy decomposition of &lt;semigroup with 2 gens&gt;&gt;
 gap> Size(hd);
-3
+5
+gap> Display(hd);
+1: 2
+2: (2,C2) 3
+3: (3,C2)
+4: (3,S3)
+5: (2,C2)
 </Example>
+For displaying the holonomy decomposition the components for a hierarchical
+level are displayed on a line, the parallel components separated by a space
+instead of <M>\times</M> for readability. If the component is a trivial
+group then only the number of points to act on is displayed. If the there is
+a nontrivial group acting, then we indicate the group and the number of points
+it acts on, but we do not indicate the constant maps, as they are always there.
 </Description>
 </ManSection>
 <#/GAPDoc>
