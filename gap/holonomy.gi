@@ -450,8 +450,8 @@ local groupindicators,i;
 
   #just printing all the group indicators
   for i in [1..Length(groupindicators)] do
-    Print(i,": ");
-    Perform(groupindicators[i], function(x) Print(x," ");end);
+    Print(i,":");
+    Perform(groupindicators[i], function(x) Print(" ",x);end);
     if i < Length(groupindicators) then
       Print("\n");
     fi;
