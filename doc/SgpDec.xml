@@ -71,6 +71,12 @@ $X$ gives the permutator group (Generalized Schützenberger group, see
 <#Include Label="CoverGroup">
 </Section>
 
+<Section Label="Holonomy">
+<Heading>Holonomy</Heading>
+<#Include Label="HolonomyDecomposition">
+</Section>
+
+
 </Chapter>
 
 <Chapter> <Heading>Finite Sets</Heading>
