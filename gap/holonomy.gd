@@ -13,10 +13,7 @@ DeclareGlobalFunction("SkeletonOf");
 DeclareGlobalFunction("GroupComponentsOnDepth");
 DeclareGlobalFunction("Coordinates");
 DeclareGlobalFunction("CoverChain");
-DeclareGlobalFunction("ActionInfoOnLevel");
 DeclareGlobalFunction("ChangeCoveredSet");
-DeclareGlobalFunction("DotHolonomy");
-DeclareGlobalFunction("SplashHolonomy");
 
 #TYPE INFO
 DeclareCategory("IsHolonomyDecomposition", IsHierarchicalDecomposition);
