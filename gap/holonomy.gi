@@ -84,44 +84,6 @@ local sets,i, P, skeleton;
   return sets;
 end);
 
-#TODO incorporate this into Display
-InstallGlobalFunction(ActionInfoOnLevel,
-function(hd, level)
-local groups, numofpoints,i, movedpoints, orbitsizes;
-  #first get the groups on this level
-  groups := GroupComponentsOnDepth(hd, level);
-  #then for each group we print the action information
-  for i in [1..Length(groups)] do
-    numofpoints := hd!.shifts[level][i+1] - hd!.shifts[level][i];
-    #getting the orbits, but we are interested only in their sizes,
-    #so we transform them immediately
-    orbitsizes := List(Orbits(groups[i]), x -> Length(x));
-    #this is is zero only if Orbits(..) return an empty list (trivial orbits)
-    movedpoints := Sum(orbitsizes);
-    Print(StructureDescription(groups[i]), " acting on ");
-    Print(numofpoints ," points ");
-    if movedpoints > 0 then
-      if Length(orbitsizes) = 1 then
-         if (numofpoints > movedpoints) then
-           Print("and transitively on ", movedpoints, " points.");
-         else
-           Print("transitively.");
-         fi;
-       else
-        Print("with orbit sizes: ",orbitsizes);
-        if (numofpoints > movedpoints) then
-          Print(", and trivially on ", numofpoints - movedpoints, " point(s).");
-        else
-          Print(".");
-        fi;
-      fi;
-    else
-      Print("trivially.");
-    fi;
-    Print("\n");
-  od;
-end);
-
 #constructing a transformation semigroup out of a list of groups + constants
 #if the groups act on different sets of points, then it is a direct product
 #groups is a list of permutation  groups, n number of points to act on
@@ -427,34 +389,77 @@ function( hd )
   Print("<holonomy decomposition of ",hd!.original, ">");
 end);
 
-#quick print of the components
+NumOfPointsInSlot := function(hd, level, slot)
+  return hd!.shifts[level][slot+1] - hd!.shifts[level][slot];
+end;
+MakeReadOnlyGlobal("NumOfPointsInSlot");
+
+#detailed print of the components
 InstallMethod( Display,"for a holonomy decomposition",
         [ IsHolonomyDecomposition ],
-function( hd )
-local groupindicators,i;
-  if SgpDecOptionsRec.SMALL_GROUPS then
-    groupindicators := List(List([1..Length(hd)], x->
-                               List(GroupComponentsOnDepth(hd,x))),
-                            y -> List(y, z -> StructureDescription(z)));
-  else
-    groupindicators :=
-      List(List([1..Length(hd)],x->
-              List(GroupComponentsOnDepth(hd,x))),y ->
-           List(y,function(z)
-      if Order(z) = 1 then
-        return "I";
+function(hd)
+  local groupnames,level, i,l,groups;
+  groupnames := [];
+  for level in [1..Size(hd)] do
+    l := [];
+    groups := GroupComponentsOnDepth(hd, level);
+    for i in [1..Length(groups)]  do
+      if IsTrivial(groups[i]) then
+        Add(l, String(NumOfPointsInSlot(hd,level,i)));
+      elif SgpDecOptionsRec.SMALL_GROUPS then
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(hd,level,i)),
+                ",", StructureDescription(groups[i]),")"));
       else
-        return Concatenation("G",String(Order(z)));
-      fi;end));
-  fi;
-
-  #just printing all the group indicators
-  for i in [1..Length(groupindicators)] do
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(hd,level,i)),
+                ",G", String(Order(groups[i])),")"));
+      fi;
+    od;
+    Add(groupnames,l);
+  od;
+  for i in [1..Length(groupnames)] do
     Print(i,":");
-    Perform(groupindicators[i], function(x) Print(" ",x);end);
+    Perform(groupnames[i], function(x) Print(" ",x);end);
     Print("\n");
   od;
 end);
+
+#TODO incorporate this into Display
+ActionInfoOnLevel :=
+function(hd, level)
+local groups, numofpoints,i, movedpoints, orbitsizes;
+  #first get the groups on this level
+  groups := GroupComponentsOnDepth(hd, level);
+  #then for each group we print the action information
+  for i in [1..Length(groups)] do
+    numofpoints := hd!.shifts[level][i+1] - hd!.shifts[level][i];
+    #getting the orbits, but we are interested only in their sizes,
+    #so we transform them immediately
+    orbitsizes := List(Orbits(groups[i]), x -> Length(x));
+    #this is is zero only if Orbits(..) return an empty list (trivial orbits)
+    movedpoints := Sum(orbitsizes);
+    Print(StructureDescription(groups[i]), " acting on ");
+    Print(numofpoints ," points ");
+    if movedpoints > 0 then
+      if Length(orbitsizes) = 1 then
+         if (numofpoints > movedpoints) then
+           Print("and transitively on ", movedpoints, " points.");
+         else
+           Print("transitively.");
+         fi;
+       else
+        Print("with orbit sizes: ",orbitsizes);
+        if (numofpoints > movedpoints) then
+          Print(", and trivially on ", numofpoints - movedpoints, " point(s).");
+        else
+          Print(".");
+        fi;
+      fi;
+    else
+      Print("trivially.");
+    fi;
+    Print("\n");
+  od;
+end;
 
 #####DRAWING
 # gone to the skeleton, maybe a completely new view for holonomy will come here
