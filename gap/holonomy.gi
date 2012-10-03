@@ -423,43 +423,5 @@ function(hd)
   od;
 end);
 
-#TODO incorporate this into Display
-ActionInfoOnLevel :=
-function(hd, level)
-local groups, numofpoints,i, movedpoints, orbitsizes;
-  #first get the groups on this level
-  groups := GroupComponentsOnDepth(hd, level);
-  #then for each group we print the action information
-  for i in [1..Length(groups)] do
-    numofpoints := hd!.shifts[level][i+1] - hd!.shifts[level][i];
-    #getting the orbits, but we are interested only in their sizes,
-    #so we transform them immediately
-    orbitsizes := List(Orbits(groups[i]), x -> Length(x));
-    #this is is zero only if Orbits(..) return an empty list (trivial orbits)
-    movedpoints := Sum(orbitsizes);
-    Print(StructureDescription(groups[i]), " acting on ");
-    Print(numofpoints ," points ");
-    if movedpoints > 0 then
-      if Length(orbitsizes) = 1 then
-         if (numofpoints > movedpoints) then
-           Print("and transitively on ", movedpoints, " points.");
-         else
-           Print("transitively.");
-         fi;
-       else
-        Print("with orbit sizes: ",orbitsizes);
-        if (numofpoints > movedpoints) then
-          Print(", and trivially on ", numofpoints - movedpoints, " point(s).");
-        else
-          Print(".");
-        fi;
-      fi;
-    else
-      Print("trivially.");
-    fi;
-    Print("\n");
-  od;
-end;
-
 #####DRAWING
 # gone to the skeleton, maybe a completely new view for holonomy will come here
