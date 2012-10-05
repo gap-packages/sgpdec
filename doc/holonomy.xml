@@ -36,26 +36,30 @@ it acts on, but we do not indicate the constant maps, as they are always there.
  <Func Name="SkeletonOf" Arg="holdecomp"/>
  <Description>
  Returns the underlying <C>Skeleton</C> of the given holonomy decomposition.
- <Example>
-gap> SkeletonOf(hd);
-Skeleton of  &lt;trans. semigroup of size 3125 with 4 generators&gt;,
-image sets: 31, equivalence classes: 5, levels: 4
- </Example> 
  </Description>
  </ManSection>
  <#/GAPDoc>
 
 #############################################################################
- <#GAPDoc Label="GroupComponents">
- <ManSection><Heading>The group components</Heading>
- <Func Name="GroupComponents" Arg="holdecomp, depth"/>
- <Description>
- Returns the list of (parallel) group components on the given depth of a holonomy decomposition. 
- <Example>
- </Example> 
- </Description>
- </ManSection>
- <#/GAPDoc>
+<#GAPDoc Label="GroupComponentsOnDepth">
+<ManSection><Heading>The group components</Heading>
+<Func Name="GroupComponentsOnDepth" Arg="holdecomp, depth"/>
+<Description>
+Returns the list of group components on a given depth of a holonomy
+decomposition.
+<Example>
+gap> hd := HolonomyDecomposition(FullTransformationSemigroup(4));
+&lt;holonomy decomposition of &lt;semigroup with 256 elts, 3 gens&gt;&gt;
+gap> GroupComponentsOnDepth(hd,1);                               
+[ Group([ (3,4), (1,4,3,2) ]) ]
+gap> GroupComponentsOnDepth(hd,2);                               
+[ Group([ (2,3), (1,2), (1,2,3), (1,3,2) ]) ]
+gap> GroupComponentsOnDepth(hd,3);                               
+[ Group([ (1,2) ]) ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
 #############################################################################
  <#GAPDoc Label="Coordinates">
@@ -65,16 +69,6 @@ image sets: 31, equivalence classes: 5, levels: 4
  <Description>
  Lift for states are essentially cover (inclusion) chains to a singleton from the full state set, but 
 they have to be encoded with respect to representative elements. These function convert back and forth.
- </Description>
- </ManSection>
- <#/GAPDoc>
-
-#############################################################################
- <#GAPDoc Label="ActionInfoOnLevel">
- <ManSection><Heading>Information on the action of a component on a level</Heading>
- <Func Name="ActionInfoOnLevel" Arg="holdecomp, level"/>
- <Description>
- This gives textual information on the action of the components on a given level.
  </Description>
  </ManSection>
  <#/GAPDoc>
