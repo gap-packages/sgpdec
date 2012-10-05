@@ -1,3 +1,5 @@
+0.6.64
+	HolonomyInts2Sets, HolonomySets2Ints now public and documented.
 0.6.63
 	Changing to PrintObj needed by GAP 4.5.6 release. Revamping holonomy decomposition display and rewriting corresponding documentation.
 0.6.62
