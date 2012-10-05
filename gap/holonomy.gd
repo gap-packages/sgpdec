@@ -14,6 +14,8 @@ DeclareGlobalFunction("GroupComponentsOnDepth");
 DeclareGlobalFunction("Coordinates");
 DeclareGlobalFunction("CoverChain");
 DeclareGlobalFunction("ChangeCoveredSet");
+DeclareGlobalFunction("HolonomyInts2Sets");
+DeclareGlobalFunction("HolonomySets2Ints");
 
 #TYPE INFO
 DeclareCategory("IsHolonomyDecomposition", IsHierarchicalDecomposition);

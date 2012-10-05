@@ -13,7 +13,8 @@
 # Though the coordinate values are elements of the cover of representative,
 # it still has to be converted to integers, so  a cascade shell can be built
 # decoding: integers -> sets
-HolonomyInts2Sets := function(hd, ints)
+InstallGlobalFunction(HolonomyInts2Sets,
+function(hd, ints)
 local sets, level;
   sets := [];
   for level in [1..Length(ints)] do
@@ -25,10 +26,11 @@ local sets, level;
       fi;
   od;
   return sets;
-end;
+end);
 
 # encoding: sets -> integers
-HolonomySets2Ints := function(hd, sets)
+InstallGlobalFunction(HolonomySets2Ints,
+function(hd, sets)
 local rep,level,ints,slot, sk;
   sk := SkeletonOf(hd);
   rep := TopSet(sk);
@@ -46,7 +48,7 @@ local rep,level,ints,slot, sk;
     fi;
   od;
   return ints;
-end;
+end);
 
 #####
 # CHAIN <-> COORDINATES
