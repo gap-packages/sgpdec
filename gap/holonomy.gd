@@ -16,6 +16,7 @@ DeclareGlobalFunction("CoverChain");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");
+DeclareGlobalFunction("PermutationResetSemigroup");
 
 #TYPE INFO
 DeclareCategory("IsHolonomyDecomposition", IsHierarchicalDecomposition);
