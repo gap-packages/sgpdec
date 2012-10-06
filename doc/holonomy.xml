@@ -178,3 +178,20 @@ gap> AsList(S);
 </Description>
 </ManSection>
 <#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="ShiftGroupAction">
+<ManSection><Heading>Shifting the points a permutation group acts on</Heading>
+<Func Name="ShiftGroupAction" Arg="group, shift"/>
+<Description>
+Shifting the points a permutation group acts on by a given amount.
+<C>PermutationResetSemigroup</C> uses this.
+<Example>
+gap> C2 := CyclicGroup(IsPermGroup,2);
+Group([ (1,2) ])
+gap> ShiftGroupAction(C2,3);
+Group([ (4,5) ])
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
