@@ -104,9 +104,10 @@ end;
 MakeReadOnlyGlobal("HolonomyPermutationReset");
 
 #shifts the points of the action
-# G - permutation group, n - current size of the set acting upon
-ShiftGroupAction :=  function(G,n, shift)
-local gens,origens,i,j;
+# G - permutation group,
+ShiftGroupAction :=  function(G,shift)
+local gens,origens,i,j,n;
+  n := LargestMovedPoint(G);
   origens := GeneratorsOfGroup(G);
   gens := List(origens, x -> [1..n+shift]);#identity maps
   for i in [1..n] do
@@ -148,9 +149,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
       coversets := CoveringSetsOf(holrec.skeleton,rep);
-      Add(groups,
-          ShiftGroupAction(CoverGroup(holrec.skeleton, rep),
-                  Size(coversets),shift));
+      Add(groups,ShiftGroupAction(CoverGroup(holrec.skeleton, rep),shift));
       shift := shift + Size(coversets);
       Add(shifts,shift);
       Add(reps,rep);
