@@ -48,20 +48,22 @@ of the wreath product) can be constructed by explicitly giving the dependency
 <Chapter Label="HierarchicalDecompositions">
 <Heading>Hierarchical Decompositions</Heading>
 <Section Label="sec:hierarchical decomposition">
-<Heading>General Methods</Heading>
+<Heading>Abstract Methods for Hierarchical Decompositions</Heading>
 
 Any hierarchical decomposition is built from a list of components with a fixed order (top to bottom of the hierarchy) thus objects in this category behave like lists, i.e. their components are accessible through their level numbers. 
    The decompositions have the following components: the original structure to be decomposed, the components, and the cascaded structure constructed from the components. 
 
 <#Include Label="DecompositionAccess">
-
 <#Include Label="ComponentActions">
 <#Include Label="Raise">
 <#Include Label="Flatten">
 <#Include Label="Interpret">
-<#Include Label="DependencyClassesOfDecomposition">
-    </Section>
-    </Chapter>
+</Section>
+
+<Section Label="sec:cascadeshell as decomposition">
+<Heading>Cascaded Structures as Decompositions</Heading>
+</Section>
+</Chapter>
 
 <Chapter>
 <Heading>Lagrange Decompositions</Heading>
