@@ -62,7 +62,8 @@ function(arg)
   return SemigroupByGenerators(gens);
 end);
 
-#CONSTRUCTOR##################################################
+################################################################################
+# CONSTRUCTOR ##################################################################
 InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
 function(T) return HolonomyDecomposition(Skeleton(T));end);
 
@@ -116,6 +117,9 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   #the permutation reset semigroups
   return Objectify(HolonomyDecompositionType, holrec);
 end);
+
+################################################################################
+# CODING OF THE HOLONOMY COMPONENT STATES ######################################
 
 # CODEC: INTEGERS <--> SETS
 # Though the coordinate values are elements of the cover of representative,
@@ -194,7 +198,8 @@ local sets,i, P, skeleton;
   return sets;
 end);
 
-##METHODS FROM ABSTRACT DECOMPOSITION########################################
+################################################################################
+# IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallMethod(Interpret,
     "interprets a component's state",
     true,
@@ -357,7 +362,8 @@ function( hd )
     return Semigroup(gens);
 end);
 
-######################ACCESS FUNCTIONS############################
+################################################################################
+# ACCESS FUNCTIONS #############################################################
 InstallGlobalFunction(SkeletonOf,
 function(hd) return hd!.skeleton;end);
 
@@ -386,7 +392,9 @@ local skeleton,oldrep, pos, depth,i, coversets;
   #it does not seem to matter
 end);
 
-####################OLD FUNCTIONS#################################
+################################################################################
+# REIMPLEMENTED GAP OPERATIONS #################################################
+
 # The size of the cascade shell is the number components.
 InstallMethod(Length,"for holonomy decompositions",
         true,[IsHolonomyDecomposition],
@@ -443,6 +451,3 @@ function(hd)
     Print("\n");
   od;
 end);
-
-#####DRAWING
-# gone to the skeleton, maybe a completely new view for holonomy will come here
