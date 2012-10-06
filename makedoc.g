@@ -2,10 +2,9 @@ SgpDecDocSourceFiles :=
   [
    "linearnotation.xml",
    "words.xml",
-   "../gap/decomposition.xml",
+   "decomposition.xml",
    "cascadeshell.xml",
    "../gap/lagrangecoords.xml",
-   "../gap/cascadedstate.xml",
    "../gap/cascadedoperation.xml",
    "finiteset.xml",
    "../gap/subgroupchains.xml",
