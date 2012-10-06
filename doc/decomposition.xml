@@ -1,11 +1,7 @@
 <Chapter Label="HierarchicalDecompositions"> <Heading>Hierarchical Decompositions</Heading>
+<Section Label="sec:hierarchical decomposition"> <Heading>General Methods</Heading>
 
-    <Section Label="sec:hierarchical decomposition"> <Heading>General Methods</Heading>
-
-
-
-
-  Any hierarchical decomposition is built from a list of components with a fixed order (top to bottom of the hierarchy) thus objects in this category behave like lists, i.e. their components are accessible through their level numbers. 
+Any hierarchical decomposition is built from a list of components with a fixed order (top to bottom of the hierarchy) thus objects in this category behave like lists, i.e. their components are accessible through their level numbers. 
    The decompositions have the following components: the original structure to be decomposed, the components, and the cascaded structure constructed from the components. 
 
 <#Include Label="DecompositionAccess">
@@ -26,30 +22,4 @@ This method is implicit in Lagrange's and Frobenius' works, and it is also known
 
 <#Include Label="LevelKillers">
     </Section>
-
-    <Section Label="sec:holonomy decomposition"> <Heading>Holonomy Decomposition for Transformation Semigroups</Heading>
-<#Include Label="HolonomyDecomposition">
-<#Include Label="SkeletonOf">
-<#Include Label="GroupComponents">
-<#Include Label="ActionInfoOnLevel">
-<#Include Label="Coordinates">
- <ManSection><Heading>Collapsing the Whole Cascaded Structure</Heading>
-  <Oper Name="Collapse" Arg="holdecomp"/>
-  <Description>
-For holonomy decompositions there is also a possibility to get the resulting cascaded structure as a non-structured, flat semigroup. Flattening gives a homomorphic image (the original semigroup) of this potentially bigger semigroup. 
-  <Example>
-  gap> T4 := FullTransformationSemigroup(4);;
-  gap> hd := HolonomyDecomposition(T4);;
-  gap> Size(Collapse(hd));
-  360  
-  </Example> 
-  </Description>
-  </ManSection>
-</Section>
-
-<Br/>
-The rest of this chapter goes into the internal details of the holonomy decomposition. 
-
-
- <#Include SYSTEM "skeleton.xml"> 
 </Chapter>
