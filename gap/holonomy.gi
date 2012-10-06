@@ -9,6 +9,125 @@
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
 
+################################################################################
+# CONSTRUCTING HOLONOMY PERMUTATION RESET SEMIGROUPS ###########################
+
+#shifts the points of the action
+# 1st arg G - permutation group,
+# 2nd arg shift - the amount the action is shifted by
+# 3rd arg (optional) n - how many points the group acts on (this could be bigger
+# than what LargestMovedPoint reports)
+ShiftGroupAction :=  function(arg)
+local gens,origens,i,j,n,G,shift;
+  G := arg[1];
+  shift := arg[2];
+  if IsBound(arg[3]) then
+    n := arg[3];
+  else
+    n := LargestMovedPoint(G);
+  fi;
+  origens := GeneratorsOfGroup(G);
+  gens := List(origens, x -> [1..n+shift]);#identity maps
+  for i in [1..n] do
+    for j in [1..Size(gens)] do
+      gens[j][i+shift] := OnPoints(i,origens[j]) + shift;
+    od;
+  od;
+  return Group(List(gens, x -> PermList(x)));
+end;
+MakeReadOnlyGlobal("ShiftGroupAction");
+
+#constructing a transformation semigroup out of a list of groups + constant maps
+# 1st arg: list of permutation groups
+# 2nd arg: optional, vector of shifts, ith entry tells how much
+# the ith grouph is to be shifted, the last element tells the total
+# number of points to act on
+# if your shift vector contains overlaps, then you get soemthing funny
+InstallGlobalFunction(PermutationResetSemigroup,
+function(arg)
+  local gens,shiftedgroups,groups,shifts,n;
+  groups := arg[1];
+  #get the shifts from the second argument
+  if IsBound(arg[2]) then
+    shifts := arg[2];
+  else
+    shifts := [0];
+    Perform(groups,
+            function(G)
+              Add(shifts, shifts[Length(shifts)] + LargestMovedPoint(G));
+            end);
+  fi;
+  n := shifts[Length(shifts)];
+  #now shift the groups
+  shiftedgroups := List([1..Size(groups)],
+                        i->ShiftGroupAction(groups[i],shifts[i]));
+  gens := [];
+  Perform(shiftedgroups, function(G)
+    Append(gens,List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)));end);
+  #the resets (constant maps)
+  Perform([1..n], function(i)
+    Add(gens, Transformation(ListWithIdenticalEntries(n,i)));end);
+  return SemigroupByGenerators(gens);
+end);
+
+#CONSTRUCTOR##################################################
+InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
+function(T) return HolonomyDecomposition(Skeleton(T));end);
+
+InstallOtherMethod(HolonomyDecomposition,[IsRecord], #skeleton is a record now
+function(skeleton)
+local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
+  # 1. put the skeleton into the record
+  holrec := rec(skeleton:=skeleton);
+  holrec.original := skeleton.ts;
+
+  # 2. get the group components
+  Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
+  n := DepthOfSkeleton(holrec.skeleton) - 1;
+  holrec.groupcomponents := [];
+  holrec.reps := [];
+  holrec.coords := [];
+  holrec.allcoords := [];
+  holrec.shifts := [];
+  for depth in [1..n] do
+    groups := [];
+    coords := [];
+    reps := [];
+    shifts := [];
+    shift := 0;
+    Add(shifts,shift);
+
+    Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
+    for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
+      coversets := CoveringSetsOf(holrec.skeleton,rep);
+      Add(groups,CoverGroup(holrec.skeleton, rep));
+          #ShiftGroupAction(CoverGroup(holrec.skeleton, rep),
+          #        shift,
+          #        Size(coversets))); #the last point can be fixed, that's why
+      shift := shift + Size(coversets);
+      Add(shifts,shift);
+      Add(reps,rep);
+      Add(coords,coversets);
+      Info(HolonomyInfoClass, 2, "  ",
+           StructureDescription(groups[Length(groups)])," ",
+           FormattedTimeString(Runtime() -t));t := Runtime();
+    od;
+    Add(holrec.shifts, shifts);
+    Add(holrec.groupcomponents,groups);
+    Add(holrec.reps, reps);
+    Add(holrec.coords,coords);
+    Add(holrec.allcoords,Flat(coords));
+  od;
+
+  #building the cascade shell
+  holrec.cascadeshell :=
+    CascadeShell(List([1..Length(holrec.groupcomponents)],
+            x -> PermutationResetSemigroup(holrec.groupcomponents[x],
+                    holrec.shifts[x])));
+  #the permutation reset semigroups
+  return Objectify(HolonomyDecompositionType, holrec);
+end);
+
 # CODEC: INTEGERS <--> SETS
 # Though the coordinate values are elements of the cover of representative,
 # it still has to be converted to integers, so  a cascade shell can be built
@@ -84,94 +203,6 @@ local sets,i, P, skeleton;
     P := chain[i];
   od;
   return sets;
-end);
-
-#constructing a transformation semigroup out of a list of groups + constants
-#if the groups act on different sets of points, then it is a direct product
-#groups is a list of permutation  groups, n number of points to act on
-HolonomyPermutationReset := function(groups,n)
-local gens;
-  #first the group generators to transformations
-  #(they are shifted properly, so no problem here)
-  gens := [];
-  Perform(groups, function(G)
-    Append(gens,List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)));end);
-  #the resets (constant maps)
-  Perform([1..n], function(i)
-    Add(gens, Transformation(ListWithIdenticalEntries(n,i)));end);
-  return SemigroupByGenerators(gens);
-end;
-MakeReadOnlyGlobal("HolonomyPermutationReset");
-
-#shifts the points of the action
-# G - permutation group,
-ShiftGroupAction :=  function(G,shift)
-local gens,origens,i,j,n;
-  n := LargestMovedPoint(G);
-  origens := GeneratorsOfGroup(G);
-  gens := List(origens, x -> [1..n+shift]);#identity maps
-  for i in [1..n] do
-    for j in [1..Size(gens)] do
-      gens[j][i+shift] := OnPoints(i,origens[j]) + shift;
-    od;
-  od;
-  return Group(List(gens, x -> PermList(x)));
-end;
-MakeReadOnlyGlobal("ShiftGroupAction");
-
-#CONSTRUCTOR##################################################
-InstallMethod(HolonomyDecomposition, [IsTransformationSemigroup],
-function(T) return HolonomyDecomposition(Skeleton(T));end);
-
-InstallOtherMethod(HolonomyDecomposition,[IsRecord], #skeleton is a record now
-function(skeleton)
-local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
-  # 1. put the skeleton into the record
-  holrec := rec(skeleton:=skeleton);
-  holrec.original := skeleton.ts;
-
-  # 2. get the group components
-  Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  n := DepthOfSkeleton(holrec.skeleton) - 1;
-  holrec.groupcomponents := [];
-  holrec.reps := [];
-  holrec.coords := [];
-  holrec.allcoords := [];
-  holrec.shifts := [];
-  for depth in [1..n] do
-    groups := [];
-    coords := [];
-    reps := [];
-    shifts := [];
-    shift := 0;
-    Add(shifts,shift);
-
-    Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
-    for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
-      coversets := CoveringSetsOf(holrec.skeleton,rep);
-      Add(groups,ShiftGroupAction(CoverGroup(holrec.skeleton, rep),shift));
-      shift := shift + Size(coversets);
-      Add(shifts,shift);
-      Add(reps,rep);
-      Add(coords,coversets);
-      Info(HolonomyInfoClass, 2, "  ",
-           StructureDescription(groups[Length(groups)])," ",
-           FormattedTimeString(Runtime() -t));t := Runtime();
-    od;
-    Add(holrec.shifts, shifts);
-    Add(holrec.groupcomponents,groups);
-    Add(holrec.reps, reps);
-    Add(holrec.coords,coords);
-    Add(holrec.allcoords,Flat(coords));
-  od;
-
-  #building the cascade shell
-  holrec.cascadeshell :=
-    CascadeShell(List([1..Length(holrec.groupcomponents)],
-            x -> HolonomyPermutationReset(holrec.groupcomponents[x],
-                    Length(holrec.allcoords[x]))));
-  #the permutation reset semigroups
-  return Objectify(HolonomyDecompositionType, holrec);
 end);
 
 ##METHODS FROM ABSTRACT DECOMPOSITION########################################
