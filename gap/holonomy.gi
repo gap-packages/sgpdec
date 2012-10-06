@@ -15,17 +15,10 @@
 #shifts the points of the action
 # 1st arg G - permutation group,
 # 2nd arg shift - the amount the action is shifted by
-# 3rd arg (optional) n - how many points the group acts on (this could be bigger
-# than what LargestMovedPoint reports)
-ShiftGroupAction :=  function(arg)
-local gens,origens,i,j,n,G,shift;
-  G := arg[1];
-  shift := arg[2];
-  if IsBound(arg[3]) then
-    n := arg[3];
-  else
-    n := LargestMovedPoint(G);
-  fi;
+InstallGlobalFunction(ShiftGroupAction,
+function(G,shift)
+local gens,origens,i,j,n;
+  n := LargestMovedPoint(G);
   origens := GeneratorsOfGroup(G);
   gens := List(origens, x -> [1..n+shift]);#identity maps
   for i in [1..n] do
@@ -34,8 +27,7 @@ local gens,origens,i,j,n,G,shift;
     od;
   od;
   return Group(List(gens, x -> PermList(x)));
-end;
-MakeReadOnlyGlobal("ShiftGroupAction");
+end);
 
 #constructing a transformation semigroup out of a list of groups + constant maps
 # 1st arg: list of permutation groups
@@ -100,10 +92,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
       coversets := CoveringSetsOf(holrec.skeleton,rep);
-      Add(groups,CoverGroup(holrec.skeleton, rep));
-          #ShiftGroupAction(CoverGroup(holrec.skeleton, rep),
-          #        shift,
-          #        Size(coversets))); #the last point can be fixed, that's why
+      Add(groups,CoverGroup(holrec.skeleton, rep));#we keep them unshifted
       shift := shift + Size(coversets);
       Add(shifts,shift);
       Add(reps,rep);
