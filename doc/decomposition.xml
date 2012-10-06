@@ -50,15 +50,3 @@
 # </Description>
 # </ManSection>
 # <#/GAPDoc>
-
-#############################################################################
-##
-##  <#GAPDoc Label="DependencyClassesOfDecomposition">
-##  <ManSection><Heading>Classifying Dependency Types</Heading>
-##  <Func Name="DependencyClassesOfDecomposition" Arg="decomp"/>
-##  <Description>
-##  Clusters the elements of a decomposition's original structure
-##   according to their dependency graph.
-##  </Description>
-##  </ManSection>
-##  <#/GAPDoc>
