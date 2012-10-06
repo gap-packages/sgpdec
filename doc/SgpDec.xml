@@ -78,6 +78,7 @@ $X$ gives the permutator group (Generalized Schützenberger group, see
 <#Include Label="GroupComponentsOnDepth">
 <#Include Label="HolonomyInts2Sets">
 <#Include Label="Coordinates">
+<#Include Label="PermutationResetSemigroup">
 </Section>
 
 
