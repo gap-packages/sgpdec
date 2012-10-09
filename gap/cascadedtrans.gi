@@ -292,6 +292,8 @@ InstallOtherMethod(\^, "acting on cascaded states",
 # GAP convention that operations changing representations should be called
 # AsSomething.
 
+# ENA this will go AsTransformation and possibly no worries about AsPermutation
+
 InstallOtherMethod(Flatten, "for cascaded operation with no decomposition info",
 [IsCascadedTransformation],
 function( ct )
@@ -357,6 +359,9 @@ MakeReadOnlyGlobal("ComponentActionForPrefix");
 #InstallOtherMethod(RaiseNC, "for a cascade shell and object",
 #[IsCascadeShell, IsObject],
 # for the time being just a function
+
+# ENA this will go to AsCascadedTransNC
+
 InstallOtherMethod(RaiseNC, "for a flat transformation with no decomposition",
 [IsCascadeShell,IsObject],
 function(csh, flatop)
@@ -384,6 +389,9 @@ end);
 
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
+
+# ENA this will go to AsCascadedTrans, the method needs to be added in gd
+
 InstallOtherMethod(Raise, "for a flat transformation with no decomposition",
 [IsCascadeShell,IsObject],
 function(csh, flatop)
