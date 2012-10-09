@@ -228,6 +228,9 @@ end);
 
 ################################################################################
 ###############YEAST STATES#####################################################
+
+# ENA this will go to AsCoords
+
 InstallMethod(Raise,
     "raise a state",
     true,
@@ -235,6 +238,8 @@ InstallMethod(Raise,
 function(decomp,i)
     return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
+
+# ENA this will go to AsPoint
 
 InstallMethod(Flatten,
     "for coordinates in Lagrange decomposition",
@@ -274,6 +279,8 @@ end);
 ################################################################################
 #####################YEAST PERMUTATIONS#########################################
 
+# ENA this will go to AsCascadedTrans
+
 #decomp - cascade components of group, g element of the group
 InstallMethod(Raise,
     "raise a permutation",
@@ -306,6 +313,8 @@ local j,state,states,fudges,depfunctable,arg;
 
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
+
+# ENA this will go to AsPermutation
 
 InstallMethod(Flatten,
     "flatten a cascaded permutation",
