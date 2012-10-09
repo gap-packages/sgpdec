@@ -15,6 +15,9 @@
 # order.
 # The actual cascaded states are reused. So the constructor just checks whether
 # it is a valid list of coordinate values.
+
+# ENA this will go to AsPoint (or AsState) method added to gd
+
 InstallOtherMethod(Flatten, "for coordinates",
 [IsCascadeShell,IsDenseList],
 function(csh, coords)
@@ -31,6 +34,9 @@ end);
 
 # Building cascaded states - since the states are stored in a list, the flat
 # state is just the index
+
+# ENA this will go to AsCoords method added to gd
+
 InstallOtherMethod(Raise, "for cascade shell and integer (flat state)",
 [IsDenseList, IsPosInt],
 function( csh, state ) return AllCoords(csh)[state]; end);
