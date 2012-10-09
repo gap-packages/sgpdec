@@ -306,6 +306,9 @@ end);
 
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
+
+# ENA this will go to AsCascadedTrans
+
 InstallMethod(Raise,
     "raise a transformation into holonomy decomposition",
     true,
@@ -334,6 +337,8 @@ local j,tilechain, tilechains, actions,depfunctable,arg, state;
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
+# ENA this will go to AsTransformation
+
 InstallMethod(Flatten,
     "flattens a cascaded operation in holonomy",
     true,
@@ -346,6 +351,8 @@ local l, i;
   od;
   return Transformation(l);
 end);
+
+# ENA this will go to AsSemigroup
 
 #Flattening the whole decomposition (gives back the original semigroup)
 #TODO this should be wrapped in the semigroup homomorphism
