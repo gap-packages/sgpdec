@@ -207,7 +207,7 @@ InstallMethod(Interpret,
 function(hd,level,state)
   return hd!.allcoords[level][state];
 end);
-
+#AsPoint
 InstallMethod(Flatten,
     "flatten a cascaded state",
     true,

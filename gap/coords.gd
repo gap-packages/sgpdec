@@ -11,3 +11,4 @@
 
 DeclareGlobalFunction("Concretize");
 DeclareGlobalFunction("AllConcreteCoords");
+DeclareOperation("AsPoint",[IsDenseList,IsCascadeShell]);
