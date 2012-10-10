@@ -10,30 +10,9 @@
 ##
 
 ################################################################################
-# POINT-COORDINATES HOMOMORPHISM ###############################################
+# ABSTRACT COORDINATES #########################################################
 
-# maps (abstract) coordinates to points
-InstallMethod(AsPoint, "for coordinates in a cascade shell",
-[IsDenseList,IsCascadeShell],
-function(coords,csh)
-local l;
-  if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
-    #if not abstract just return a point
-    return PositionCanonical(AllCoords(csh),coords);
-  else
-    #if abstract return all points fitting the pattern
-    l := [];
-    Perform(AllConcreteCoords(csh,coords),
-            function(x) AddSet(l,PositionCanonical(AllCoords(csh),x));end);
-    return  l;
-  fi;
-end);
-
-# ENA this will go to AsCoords method added to gd
-InstallOtherMethod(Raise, "for lifting a point into a cascade shell",
-[IsDenseList,IsPosInt],
-function(csh,state) return AllCoords(csh)[state]; end);
-
+#making an abstract state into a concrete
 #for abstract positions we put 1 (a surely valid coordinate value) replacing 0
 InstallGlobalFunction(Concretize,
 function(csh, abstract_state)
@@ -59,3 +38,27 @@ local concretestates;
     end));
   return concretestates;
 end);
+
+################################################################################
+# POINT-COORDINATES HOMOMORPHISM ###############################################
+
+# maps (abstract) coordinates to points
+InstallMethod(AsPoint, "for coordinates in a cascade shell",
+[IsDenseList,IsCascadeShell],
+function(coords,csh)
+local l;
+  if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
+    #if not abstract just return a point
+    return PositionCanonical(AllCoords(csh),coords);
+  else
+    #if abstract return all points fitting the pattern
+    l := [];
+    Perform(AllConcreteCoords(csh,coords),
+            function(x) AddSet(l,PositionCanonical(AllCoords(csh),x));end);
+    return  l;
+  fi;
+end);
+
+InstallOtherMethod(AsCoords, "for lifting a point into a cascade shell",
+[IsPosInt,IsCascadeShell],
+function(state,csh) return AllCoords(csh)[state]; end);
