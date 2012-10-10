@@ -111,7 +111,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
   od;
 
   #creating cascade state typed states
-  #GENERATING STATES
+  #GENERATING COORDINATES
   cascprodinfo.allcoords :=
     EnumeratorOfCartesianProduct(cascprodinfo.coordval_sets);
 
