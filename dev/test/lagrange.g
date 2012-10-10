@@ -162,11 +162,13 @@ local G,liftedgens,g,liftedG;
   liftedgens := [];
   for g in GeneratorsOfGroup(G) do
     Add(liftedgens,
-	Raise(decomp,g));    
+	Raise(decomp,g));
   od;
 
   liftedG := Group(liftedgens);
-  if IsomorphismGroups(G,liftedG) = fail then Print("FAIL\n");Error("Lagrange test4 problem!\n");fi;
+  if IsomorphismGroups(G,liftedG) = fail then
+    Print("FAIL\n");Error("Lagrange test4 problem!\n");
+  fi;
   Print("PASSED\n");
   return liftedG;
 end;
