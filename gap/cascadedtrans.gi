@@ -101,7 +101,7 @@ end);
 
 #simple trick for getting the inverse: take the flat inverse instead
 InvCascadedTransformationByYeast := function(cascperm)
-  return RaiseNC(CascadeShellOf(cascperm),
+  return AsCascadedTransNC(CascadeShellOf(cascperm),
                  Inverse(AsTransformation(cascperm)));
 end;
 MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
@@ -284,17 +284,8 @@ end);
 InstallOtherMethod(\^, "acting on cascaded states",
 [IsList, IsCascadedTransformation], OnCoordinates);
 
-
-# YEAST for operations flattening - making an ordinary permutation out of the
-# cascaded one the components are or dered then we do the enumeration then
-# record as a transformation
-
-# JDM this should be called AsTransformation or AsPermutation following the
-# GAP convention that operations changing representations should be called
-# AsSomething.
-
-# ENA this will go AsTransformation and possibly no worries about AsPermutation
-
+################################################################################
+# CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
 InstallGlobalFunction(ImageListOfActionOnCoords,
 function(cascdtrans)
 local csh, states, l, nstate, i;
@@ -323,7 +314,7 @@ InstallOtherMethod(AsPermutation,
         "for cascaded permutation with no decomposition info",
 [IsCascadedTransformation],
 function(ct)
-  #if IsCascadedGroupShell(csh) then
+  #if IsCascadedGroupShell(csh) then TODO maybe check this, give warning
   return PermList(ImageListOfActionOnCoords(ct));
 end);
 
@@ -365,15 +356,10 @@ end;
 MakeReadOnlyGlobal("ComponentActionForPrefix");
 
 #raising a permutation/transformation to its cascaded format
-#InstallOtherMethod(RaiseNC, "for a cascade shell and object",
-#[IsCascadeShell, IsObject],
-# for the time being just a function
-
-# ENA this will go to AsCascadedTransNC
-
-InstallOtherMethod(RaiseNC, "for a flat transformation with no decomposition",
-[IsCascadeShell,IsObject],
-function(csh, flatop)
+InstallOtherMethod(AsCascadedTransNC,
+        "for flat transformation/permutation",
+[IsMultiplicativeElement,IsCascadeShell],
+function(flatop,csh)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
   #getting  the images in a list ( i -> flatoplist[i] )
@@ -399,17 +385,15 @@ end);
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
 
-# ENA this will go to AsCascadedTrans, the method needs to be added in gd
-
-InstallOtherMethod(Raise, "for a flat transformation with no decomposition",
-[IsCascadeShell,IsObject],
-function(csh, flatop)
+InstallOtherMethod(AsCascadedTrans, "for transformation/permutation",
+[IsMultiplicativeElement,IsCascadeShell],
+function(flatop,csh)
   #if it is not compatible
   if not IsDependencyCompatible(csh,flatop) then
     Error("usage: the second argument does not belong to the wreath product");
     return;
   fi;
-  return RaiseNC(csh,flatop);
+  return AsCascadedTransNC(flatop,csh);
 end);
 
 ################################################################################
