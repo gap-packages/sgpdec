@@ -12,6 +12,7 @@
 DeclareGlobalFunction("IdentityCascadedTransformation");
 DeclareGlobalFunction("CascadedTransformation");
 DeclareGlobalFunction("OnCoordinates");
+DeclareGlobalFunction("ImageListOfActionOnCoords");
 DeclareGlobalFunction("RandomCascadedTransformation");
 DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
 DeclareGlobalFunction("DependsOn");

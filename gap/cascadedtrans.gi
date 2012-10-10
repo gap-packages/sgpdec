@@ -102,7 +102,7 @@ end);
 #simple trick for getting the inverse: take the flat inverse instead
 InvCascadedTransformationByYeast := function(cascperm)
   return RaiseNC(CascadeShellOf(cascperm),
-                 Inverse(Flatten(cascperm)));
+                 Inverse(AsTransformation(cascperm)));
 end;
 MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
 
@@ -165,7 +165,8 @@ end);
 InstallOtherMethod(\<, "for cascaded op and cascaded op",
 [IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
-  return Flatten(p) < Flatten(q);
+  return ImageListOfActionOnCoords(p) < ImageListOfActionOnCoords(q);
+  #TODO!!! this can be faster by not doing it full!!!
 end);
 
 InstallOtherMethod(OneOp, "for cascaded op",
@@ -294,30 +295,38 @@ InstallOtherMethod(\^, "acting on cascaded states",
 
 # ENA this will go AsTransformation and possibly no worries about AsPermutation
 
-InstallOtherMethod(Flatten, "for cascaded operation with no decomposition info",
-[IsCascadedTransformation],
-function( ct )
-  local csh, states, l, nstate, i;
+InstallGlobalFunction(ImageListOfActionOnCoords,
+function(cascdtrans)
+local csh, states, l, nstate, i;
 
-  csh:=CascadeShellOf(ct);
+  csh:=CascadeShellOf(cascdtrans);
   states:=AllCoords(csh);
-
   #l is the big list for the action
   l := [];
-
   #going through all possible coordinates and see where they go
   for i in [1..Size(states)] do
     #getting the new state
-    nstate := OnCoordinates(states[i],ct);
+    nstate := OnCoordinates(states[i],cascdtrans);
     Add(l, Position(states,nstate));
   od;
-
-  #now creating a permutation or transformation out of l
-  if IsCascadedGroupShell(csh) then
-    return PermList(l);
-  fi;
-  return Transformation(l);
+  return l;
 end);
+
+InstallOtherMethod(AsTransformation,
+        "for cascaded transformation with no decomposition info",
+[IsCascadedTransformation],
+function(ct)
+  return Transformation(ImageListOfActionOnCoords(ct));
+end);
+
+InstallOtherMethod(AsPermutation,
+        "for cascaded permutation with no decomposition info",
+[IsCascadedTransformation],
+function(ct)
+  #if IsCascadedGroupShell(csh) then
+  return PermList(ImageListOfActionOnCoords(ct));
+end);
+
 
 #do the action on coordinates by a flat operation (list of images)
 FlatActionOnCoordinates := function(csh, flatop, coords)
