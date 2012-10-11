@@ -239,13 +239,11 @@ function(decomp,i)
     return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
 
-# ENA this will go to AsPoint
-
-InstallMethod(Flatten,
+InstallOtherMethod(AsPoint,
     "for coordinates in Lagrange decomposition",
     true,
-    [IsLagrangeDecomposition,IsDenseList],
-function(decomp,cs)
+    [IsDenseList, IsLagrangeDecomposition],
+function(cs,decomp)
 local l;
   if (Length(cs) = Size(decomp)) and (Minimum(cs) > 0) then
     #the Frobenius-Lagrange map TODO transitivity
@@ -259,22 +257,6 @@ local l;
     return  l;
   fi;
 end);
-
-#InstallMethod(Flatten,
-#    "for abstract coords in Lagrange decomposition",
-#    true,
-#    [IsLagrangeDecomposition,IsDEnseList],
-#function(decomp,cs) #TODO!! replace  this with the more efficient one
-#local csh;
-#  flattened := [];
-#  for state in States(CascadeShellOf(decomp)) do
-#    if state < cs then
-#      point := Flatten(decomp,state);
-#      if not (point in flattened) then Add(flattened, point); fi;
-#    fi;
-#  od;
-#  return flattened;
-#end);
 
 ################################################################################
 #####################YEAST PERMUTATIONS#########################################
@@ -322,7 +304,7 @@ InstallMethod(Flatten,
     [IsLagrangeDecomposition,IsCascadedTransformation],
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
-                   x-> Flatten(decomp, Raise(decomp,x) ^ co)));
+                   x-> AsPoint(Raise(decomp,x) ^ co,decomp)));
 end);
 
 InstallMethod(Interpret,

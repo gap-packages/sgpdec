@@ -1,4 +1,3 @@
-
 #########################################################################
 ## Raising/flattening should take us to the original permutation.
 LagrangeTest1a := function(decomp)
@@ -12,12 +11,12 @@ local g,g_,n,c;
   for g in OriginalStructureOf(decomp) do
     g_ := Flatten(decomp, Raise(decomp,g));
     if g <> g_ then
-      Print("FAIL\n");Error("Lagrange test1a YEAST problem! ", g , "<>",g_ ,"\n");
-    else 
+      Print("FAIL\n");
+      Error("Lagrange test1a YEAST problem! ", g , "<>",g_ ,"\n");
+    else
       c := c+1;
       Print("\r", c,"/",n,"\c");
-    fi;    
-
+    fi;
   od;
   Print(" PASSED\n");
 end;
@@ -27,19 +26,18 @@ end;
 LagrangeTest1b := function(decomp)
 local s,n,c;
   Print("TEST 1B:  YEAST for points._________________________________\n");
- Print("p = Flatten(Raise(p)) for all points p of the original group:\n");
+  Print("p = Flatten(Raise(p)) for all points p of the original group:\n");
   #for providing count info
   c := 0;
-  n := Size(MovedPoints(OriginalStructureOf(decomp))); 
+  n := Size(MovedPoints(OriginalStructureOf(decomp)));
   #do a full check for tof the state set
   for s in MovedPoints(OriginalStructureOf(decomp)) do
-    if s <> Flatten(decomp, Raise(decomp,s)) then 
+    if s <> AsPoint(Raise(decomp,s),decomp) then
       Print("FAIL\n");Error("Lagrange test1b YEAST problem!\n");
-    else 
+    else
       c := c+1;
       Print("\r", c,"/",n,"\c");
-    fi;    
-
+    fi;
   od;
   Print(" PASSED\n");
 end;
@@ -52,18 +50,18 @@ local s,g,s_,g_,n,c;
   Print("p ^ g = Flatten( Raise(p) ^ Raise(g) ) for all points p and permutations g:\n");
   #for providing count info
   c := 0;
-  n := Size(MovedPoints(OriginalStructureOf(decomp))) *  Order(OriginalStructureOf(decomp)); 
-
+  n := Size(MovedPoints(OriginalStructureOf(decomp)))
+       *Order(OriginalStructureOf(decomp));
   for g in OriginalStructureOf(decomp) do
-    g_ := Raise(decomp,g);  
+    g_ := Raise(decomp,g);
     for s in MovedPoints(OriginalStructureOf(decomp)) do
       s_ := Raise(decomp,s);
-      if s^g <> Flatten(decomp, s_ ^ g_) then 
-        Print("FAIL\n");Error("Lagrange test1c YEAST problem!\n");  
-      else 
+      if s^g <> AsPoint(s_ ^ g_, decomp) then
+        Print("FAIL\n");Error("Lagrange test1c YEAST problem!\n");
+      else
         c := c+1;
         Print("\r", c,"/",n,"\c");
-      fi;    
+      fi;
     od;
   od;
   Print(" PASSED\n");
