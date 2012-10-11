@@ -52,7 +52,7 @@ for sg in test_semigroups do
   #change a random representative
   #ChangeCoveredSet(hd, Random(ImageSets(SkeletonOf(hd))));
   #DisplaySkeletonRepresentatives(SkeletonOf(hd));
-  holonomy_testCoordinates(hd);
+  HolonomyTestCoordinates(hd);
   holonomy_testAction(hd);
   holonomy_testRaiseFlatten(hd);
   holonomy_testProducts(hd);
