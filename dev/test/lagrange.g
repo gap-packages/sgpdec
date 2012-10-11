@@ -1,9 +1,8 @@
-#########################################################################
-## Raising/flattening should take us to the original permutation.
-LagrangeTest1a := function(decomp)
+################################################################################
+## Lifting and mapping back should take us to the original permutation.
+LagrangeTestGroupElements := function(decomp)
 local g,g_,n,c;
-  Print("TEST 1A: YEAST for group elements. ___________________________\n");
-  Print("g = Flatten(Raise(g)) for all elements g  of the original group:\n");
+  Print("TEST g = AsPermutation(AsCascadedTrans(g))?\n");
   #for providing count info
   c := 0;
   n := Order(OriginalStructureOf(decomp));
@@ -11,8 +10,7 @@ local g,g_,n,c;
   for g in OriginalStructureOf(decomp) do
     g_ := AsPermutation(AsCascadedTrans(g,decomp),decomp);
     if g <> g_ then
-      Print("FAIL\n");
-      Error("Lagrange test1a YEAST problem! ", g , "<>",g_ ,"\n");
+      Error("Lagrange FAIL:", g , "<>",g_ ,"\n");
     else
       c := c+1;
       Print("\r", c,"/",n,"\c");
@@ -22,18 +20,17 @@ local g,g_,n,c;
 end;
 
 #########################################################################
-# Similarly for states
-LagrangeTest1b := function(decomp)
+# Similarly for points
+LagrangeTestPoints := function(decomp)
 local s,n,c;
-  Print("TEST 1B:  YEAST for points._________________________________\n");
-  Print("p = Flatten(Raise(p)) for all points p of the original group:\n");
+  Print("TEST p = AsPoint(AsCoords(p))?\n");
   #for providing count info
   c := 0;
   n := Size(MovedPoints(OriginalStructureOf(decomp)));
   #do a full check for tof the state set
   for s in MovedPoints(OriginalStructureOf(decomp)) do
     if s <> AsPoint(AsCoords(s,decomp),decomp) then
-      Print("FAIL\n");Error("Lagrange test1b YEAST problem!\n");
+      Error("Lagrange FAIL for point: ",s,"!\n");
     else
       c := c+1;
       Print("\r", c,"/",n,"\c");
@@ -44,10 +41,9 @@ end;
 
 #########################################################################
 # and for actions
-LagrangeTest1c := function(decomp)
+LagrangeTestActions := function(decomp)
 local s,g,s_,g_,n,c;
-  Print("TEST 1C: YEAST for actions.______________________________________\n");
-  Print("p ^ g = Flatten( Raise(p) ^ Raise(g) ) for all points p and permutations g:\n");
+  Print("TEST p ^ g = AsPoint(AsCoords(p) ^ AsCascadedTrans(g))?\n");
   #for providing count info
   c := 0;
   n := Size(MovedPoints(OriginalStructureOf(decomp)))
@@ -57,7 +53,7 @@ local s,g,s_,g_,n,c;
     for s in MovedPoints(OriginalStructureOf(decomp)) do
       s_ := AsCoords(s,decomp);
       if s^g <> AsPoint(s_ ^ g_, decomp) then
-        Print("FAIL\n");Error("Lagrange test1c YEAST problem!\n");
+        Error("Lagrange test action  FAIL!\n");
       else
         c := c+1;
         Print("\r", c,"/",n,"\c");
@@ -69,44 +65,41 @@ end;
 
 #########################################################################
 # and for group multiplication
-LagrangeTest1d := function(decomp)
+LagrangeTestMultiplication := function(decomp)
 local h,g,h_,g_,n,c;
-  Print("TEST 1D: YEAST for multiplication.______________________________________\n");
-  Print("g * h = Flatten( Raise(g) * Raise(h) ) for all permutation pairs g and h:\n");
+  Print("g * h = AsPermutation(AsCascadedTrans(g) * AsCascadedTrans(h))?\n");
   #for providing count info
   c := 0;
-  n := Order(OriginalStructureOf(decomp)) ^ 2; 
-
+  n := Order(OriginalStructureOf(decomp)) ^ 2;
   for g in OriginalStructureOf(decomp) do
     g_ := AsCascadedTrans(g,decomp);
     for h in OriginalStructureOf(decomp) do
       h_ := AsCascadedTrans(h,decomp);
       if g*h <> AsPermutation(g_ * h_, decomp) then
-        Print("FAIL\n");Error("Lagrange test1d YEAST problem!\n"); 
-      else 
+        Print("FAIL\n");Error("Lagrange multiplication FAIL!\n");
+      else
         c := c+1;
         Print("\r", c,"/",n,"\c");
-      fi;    
+      fi;
     od;
   od;
   Print(" PASSED\n");
 end;
 
-
-
-
-#########################################################################
-## Basically taking all paths as the right regular representation and do the multiplication there.
-LagrangeTest2 := function(decomp)
+################################################################################
+# Basically taking all paths as the right regular representation and do the
+# multiplication there.
+LagrangeTestCoords := function(decomp)
 local g,path_of_g, path_of_gh,decoded,h,ghprime,n,c;
-  Print("TEST 2: Paths as the Right-Regular representation.______________\n");
-  if Order(OriginalStructureOf(decomp)) <> Size(AllCoords(CascadeShellOf(decomp))) then
+  Print("TEST g*h=Coords2Perm(Perm2Coords(g)^AsCascadedTrans(h))?\n");
+  if Order(OriginalStructureOf(decomp))
+     <> Size(AllCoords(CascadeShellOf(decomp))) then
     Print("NOT APPLICABLE! Order of group and number of paths do not match!\n");
     return;
-  fi; 
+  fi;
   #for providing count info
   c := 0;
-  n := Order(OriginalStructureOf(decomp)) ^ 2; 
+  n := Order(OriginalStructureOf(decomp)) ^ 2;
   #do a full check
   for g in OriginalStructureOf(decomp) do
     path_of_g := Perm2Coords(decomp,g);
@@ -115,23 +108,22 @@ local g,path_of_g, path_of_gh,decoded,h,ghprime,n,c;
       path_of_gh := path_of_g ^ AsCascadedTrans(h,decomp);
       #convert the path back to a permutation
       ghprime := Coords2Perm(decomp,path_of_gh);
- 
-      if g*h <> ghprime then 
+      if g*h <> ghprime then
         Print("FAIL\n");Error("Lagrange test2 problem!\n");
-      else 
+      else
         c := c+1;
         Print("\r", c,"/",n,"\c");
-      fi;    
+      fi;
     od;#h
   od;#g
   Print(" PASSED\n");
 end;
 
-#########################################################################
+################################################################################
 ## Killing by levels.
-LagrangeTest3 := function(decomp)
+LagrangeTestKilling := function(decomp)
 local i,j,path,decoded,killers,n,c;
-  Print("TEST 3: Killing by levels.______________________________________\n");
+  Print("TEST Do level killers give the identity on each level?)\n");
   c := 0;
   n := Size(AllCoords(CascadeShellOf(decomp)));
   #do a full check
@@ -141,63 +133,54 @@ local i,j,path,decoded,killers,n,c;
       path := path ^ AsCascadedTrans(killers[i],decomp);
       #checking
       for j in [1..i] do
-        if path[j] <> 1 then Print("FAIL\n");Error("Lagrange test3 problem!\n");
-	else
-	fi;
+        if path[j] <> 1 then
+          Print("FAIL\n");Error("Lagrange killing by levels FAIL!\n");
+        fi;
       od;
     od;
     c := c+1;
     Print("\r", c,"/",n,"\c");
   od;
-  Print("PASSED\n");
+  Print(" PASSED\n");
 end;
 
 #######################################
-LagrangeTest4 := function(decomp) #TODO it does not work for cyclic groups
+LagrangeTestIsomorphism := function(decomp)
 local G,liftedgens,g,liftedG;
   G := OriginalStructureOf(decomp);
-  Print("Test 4: Isomorphism check");
+  Print("TEST G isomorphic to AsCascadedGroup(G)?\n");
   liftedgens := [];
   for g in GeneratorsOfGroup(G) do
     Add(liftedgens,
-	AsCascadedTrans(g,decomp));
+        AsCascadedTrans(g,decomp));
   od;
-
   liftedG := Group(liftedgens);
   if IsomorphismGroups(G,liftedG) = fail then
-    Print("FAIL\n");Error("Lagrange test4 problem!\n");
+    Error("Lagrange isomorphism FAIL!\n");
   fi;
-  Print("PASSED\n");
+  Print(" PASSED\n");
   return liftedG;
 end;
 
-
 #######################################
-LagrangeTest5 := function(decomp) 
+LagrangeTestX2Y := function(decomp)
 local states,x,y,x_,y_,taxi,c,n;
-
-
-  Print("Test 5: x2y check\n");
+  Print("TEST x2y\n");
   c := 0;
   n := Size(MovedPoints(OriginalStructureOf(decomp))) ^ 2;
-
-
-states := MovedPoints(OriginalStructureOf(decomp));
-
-for x in states do
-  for y in states do
-    x_ := AsCoords(x,decomp);
-    y_ := AsCoords(y,decomp);
-    taxi := x2y(decomp,x_,y_);
-    if y = x ^ taxi then 
-      c := c+1;
-      Print("\r", c,"/",n,"\c");
-    else  
-      Print("FAIL\n");Error("Lagrange test4 problem!\n");
-    fi;
+  states := MovedPoints(OriginalStructureOf(decomp));
+  for x in states do
+    for y in states do
+      x_ := AsCoords(x,decomp);
+      y_ := AsCoords(y,decomp);
+      taxi := x2y(decomp,x_,y_);
+      if y = x ^ taxi then
+        c := c+1;
+        Print("\r", c,"/",n,"\c");
+      else
+        Error("Lagrange X2Y FAIL!\n");
+      fi;
+    od;
   od;
-od;
-
   Print(" PASSED\n");
-
 end;
