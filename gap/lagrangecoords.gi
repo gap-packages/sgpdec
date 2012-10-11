@@ -257,16 +257,14 @@ local l;
 end);
 
 ################################################################################
-#####################YEAST PERMUTATIONS#########################################
-
-# ENA this will go to AsCascadedTrans
+# LIFTING PERMUTATION ##########################################################
 
 #decomp - cascade components of group, g element of the group
-InstallMethod(Raise,
+InstallOtherMethod(AsCascadedTrans,
     "raise a permutation",
     true,
-    [IsLagrangeDecomposition,IsPerm],
-function(decomp,g)
+    [IsPerm,IsLagrangeDecomposition],
+function(g,decomp)
 local j,state,states,fudges,depfunctable,arg;
 
   if g=() then return IdentityCascadedTransformation(CascadeShellOf(decomp));fi;
@@ -294,13 +292,11 @@ local j,state,states,fudges,depfunctable,arg;
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
-# ENA this will go to AsPermutation
-
-InstallMethod(Flatten,
-    "flatten a cascaded permutation",
+InstallOtherMethod(AsPermutation,
+    "for a cascaded permutation",
     true,
-    [IsLagrangeDecomposition,IsCascadedTransformation],
-function(decomp,co)
+    [IsCascadedTransformation,IsLagrangeDecomposition],
+function(co,decomp)
     return PermList(List(OriginalStateSet(decomp),
                    x-> AsPoint(AsCoords(x,decomp) ^ co,decomp)));
 end);
@@ -315,6 +311,7 @@ end);
 
 ################################################################################
 ########X2Y#####################################################################
+#TODO X2Y is just not right at the moment
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,

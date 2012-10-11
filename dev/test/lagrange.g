@@ -9,7 +9,7 @@ local g,g_,n,c;
   n := Order(OriginalStructureOf(decomp));
   #do a full check for the group
   for g in OriginalStructureOf(decomp) do
-    g_ := Flatten(decomp, Raise(decomp,g));
+    g_ := AsPermutation(AsCascadedTrans(g,decomp),decomp);
     if g <> g_ then
       Print("FAIL\n");
       Error("Lagrange test1a YEAST problem! ", g , "<>",g_ ,"\n");
@@ -53,7 +53,7 @@ local s,g,s_,g_,n,c;
   n := Size(MovedPoints(OriginalStructureOf(decomp)))
        *Order(OriginalStructureOf(decomp));
   for g in OriginalStructureOf(decomp) do
-    g_ := Raise(decomp,g);
+    g_ := AsCascadedTrans(g, decomp);
     for s in MovedPoints(OriginalStructureOf(decomp)) do
       s_ := AsCoords(s,decomp);
       if s^g <> AsPoint(s_ ^ g_, decomp) then
@@ -78,10 +78,10 @@ local h,g,h_,g_,n,c;
   n := Order(OriginalStructureOf(decomp)) ^ 2; 
 
   for g in OriginalStructureOf(decomp) do
-    g_ := Raise(decomp,g);
+    g_ := AsCascadedTrans(g,decomp);
     for h in OriginalStructureOf(decomp) do
-      h_ := Raise(decomp,h);  
-      if g*h <> Flatten(decomp, g_ * h_) then 
+      h_ := AsCascadedTrans(h,decomp);
+      if g*h <> AsPermutation(g_ * h_, decomp) then
         Print("FAIL\n");Error("Lagrange test1d YEAST problem!\n"); 
       else 
         c := c+1;
@@ -112,7 +112,7 @@ local g,path_of_g, path_of_gh,decoded,h,ghprime,n,c;
     path_of_g := Perm2Coords(decomp,g);
     #no we have cascs2 as the path representing g, let's multiply it with h
     for h in OriginalStructureOf(decomp) do
-      path_of_gh := path_of_g ^ Raise(decomp,h);
+      path_of_gh := path_of_g ^ AsCascadedTrans(h,decomp);
       #convert the path back to a permutation
       ghprime := Coords2Perm(decomp,path_of_gh);
  
@@ -138,12 +138,12 @@ local i,j,path,decoded,killers,n,c;
   for path in AllCoords(CascadeShellOf(decomp)) do
     killers := LevelKillers(decomp,path);
     for i in [1..Length(decomp)] do
-      path := path ^ Raise(decomp,killers[i]);
+      path := path ^ AsCascadedTrans(killers[i],decomp);
       #checking
       for j in [1..i] do
         if path[j] <> 1 then Print("FAIL\n");Error("Lagrange test3 problem!\n");
-	else 
-	fi;    
+	else
+	fi;
       od;
     od;
     c := c+1;
@@ -160,7 +160,7 @@ local G,liftedgens,g,liftedG;
   liftedgens := [];
   for g in GeneratorsOfGroup(G) do
     Add(liftedgens,
-	Raise(decomp,g));
+	AsCascadedTrans(g,decomp));
   od;
 
   liftedG := Group(liftedgens);
