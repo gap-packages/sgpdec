@@ -227,15 +227,13 @@ local decoded, cosetrepr, builders;
 end);
 
 ################################################################################
-###############YEAST STATES#####################################################
+# COORDINATIZING POINTS ########################################################
 
-# ENA this will go to AsCoords
-
-InstallMethod(Raise,
-    "raise a state",
+InstallOtherMethod(AsCoords,
+    "for a point",
     true,
-    [IsLagrangeDecomposition,IsInt],
-function(decomp,i)
+    [IsInt,IsLagrangeDecomposition],
+function(i,decomp)
     return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
 
@@ -304,7 +302,7 @@ InstallMethod(Flatten,
     [IsLagrangeDecomposition,IsCascadedTransformation],
 function(decomp,co)
     return PermList(List(OriginalStateSet(decomp),
-                   x-> AsPoint(Raise(decomp,x) ^ co,decomp)));
+                   x-> AsPoint(AsCoords(x,decomp) ^ co,decomp)));
 end);
 
 InstallMethod(Interpret,

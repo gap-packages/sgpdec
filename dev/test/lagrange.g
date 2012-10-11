@@ -32,7 +32,7 @@ local s,n,c;
   n := Size(MovedPoints(OriginalStructureOf(decomp)));
   #do a full check for tof the state set
   for s in MovedPoints(OriginalStructureOf(decomp)) do
-    if s <> AsPoint(Raise(decomp,s),decomp) then
+    if s <> AsPoint(AsCoords(s,decomp),decomp) then
       Print("FAIL\n");Error("Lagrange test1b YEAST problem!\n");
     else
       c := c+1;
@@ -55,7 +55,7 @@ local s,g,s_,g_,n,c;
   for g in OriginalStructureOf(decomp) do
     g_ := Raise(decomp,g);
     for s in MovedPoints(OriginalStructureOf(decomp)) do
-      s_ := Raise(decomp,s);
+      s_ := AsCoords(s,decomp);
       if s^g <> AsPoint(s_ ^ g_, decomp) then
         Print("FAIL\n");Error("Lagrange test1c YEAST problem!\n");
       else
@@ -186,8 +186,8 @@ states := MovedPoints(OriginalStructureOf(decomp));
 
 for x in states do
   for y in states do
-    x_ := Raise(decomp,x);
-    y_ := Raise(decomp,y);
+    x_ := AsCoords(x,decomp);
+    y_ := AsCoords(y,decomp);
     taxi := x2y(decomp,x_,y_);
     if y = x ^ taxi then 
       c := c+1;
