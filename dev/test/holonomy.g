@@ -25,18 +25,17 @@ local i,numofstates, t, cascadedt,cs,cs_,chain;
   Print("raising state and operation, do the action and flatten the result to check...\n");
   numofstates := Size(TopSet(SkeletonOf(hd)));
   for t in  OriginalStructureOf(hd) do
-    cascadedt := Raise(hd,t );
+    cascadedt := AsCascadedTrans(t,hd);
     for i in [1..numofstates] do
       for chain in AllCoverChainsToSet(SkeletonOf(hd), FiniteSet([i],numofstates)) do 
-        cs := HolonomySets2Ints(hd, Coordinates(hd,chain));#do all chains instead of raise
-        #cs := Raise(hd,i); 
-        if i <> Flatten(hd, cs) then
+        cs := HolonomySets2Ints(hd, Coordinates(hd,chain));
+        if i <> AsPoint(cs, hd) then
           Print("FAIL\n");
           Error("HOLONOMY a cascaded lift failed!\n"); 
         fi;
    
         cs_ := cs ^ cascadedt;
-        if i^t <> Flatten(hd, cs_) then
+        if i^t <> AsPoint(cs_,hd) then
           Print("FAIL\n");
           Error("HOLONOMY cascaded action for ", t ," failed! for state ",i, " coded as ",chain,"\n"); 
         fi;
@@ -52,7 +51,7 @@ holonomy_testRaiseFlatten := function(hd)
 local t;
   Print("flattening and raising all semigroup elements and testing for equality...\n");
   for t in AsList(OriginalStructureOf(hd)) do
-        if t <> Flatten(hd, Raise(hd,t)) then
+        if t <> AsTransformation(AsCascadedTrans(t,hd),hd) then
           Print("FAIL\n");
           Error("HOLONOMY raising/flattening operations failed!\n"); 
         else
@@ -70,9 +69,10 @@ local i,t,u,sgelements;
   for i in [1..100] do
     t := Random(sgelements);
     u := Random(sgelements);
-    if t*u <> Flatten(hd, Raise(hd,t) * Raise(hd,u)) then
+    if t*u <> AsTransformation(
+               AsCascadedTrans(t,hd) * AsCascadedTrans(u,hd),hd) then
       Print(LinearNotation(t),"*",LinearNotation(u)," FAIL\n");
-      Error("HOLONOMY products failed!\n"); 
+      Error("HOLONOMY products failed!\n");
     else
       Print("#\c");
     fi;
@@ -87,9 +87,10 @@ local i,t,u,sgelements;
   Print("testing all cascaded operation products whether they map down to the corresponding flat product...\n");
     for t in sgelements do
       for u  in sgelements do
-        if t*u <> Flatten(hd, Raise(hd,t) * Raise(hd,u)) then
+        if t*u <> AsTransformation(
+               AsCascadedTrans(t,hd) * AsCascadedTrans(u,hd),hd) then
           Print(LinearNotation(t),"*",LinearNotation(u)," FAIL\n");
-          Error("HOLONOMY products failed!\n"); 
+          Error("HOLONOMY products failed!\n");
         else
           Print("#\c");
        fi;
@@ -97,7 +98,3 @@ local i,t,u,sgelements;
     od;
   Print("\nPASSED\n");
 end;
-
-
-
-

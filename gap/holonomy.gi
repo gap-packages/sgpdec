@@ -208,21 +208,21 @@ function(hd,level,state)
   return hd!.allcoords[level][state];
 end);
 #AsPoint
-InstallMethod(Flatten,
+InstallOtherMethod(AsPoint,
     "flatten a cascaded state",
     true,
-    [IsHolonomyDecomposition,IsDenseList], 1,
-function(hd,cs)
+    [IsDenseList,IsHolonomyDecomposition],
+function(cs,hd)
   local coverchain;
   coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
   return AsList(coverchain[Length(coverchain)])[1];
 end);
 
-InstallMethod(Raise,
+InstallOtherMethod(AsCoords,
     "raise a flat state into holonomy decomposition",
     true,
-    [IsHolonomyDecomposition,IsInt], 1,
-function(hd,k)
+    [IsInt, IsHolonomyDecomposition],
+function(k,hd)
   return HolonomySets2Ints(hd,
                  Coordinates(hd,
                          RandomCoverChain(hd!.skeleton,k)));
@@ -309,11 +309,11 @@ end);
 
 # ENA this will go to AsCascadedTrans
 
-InstallMethod(Raise,
-    "raise a transformation into holonomy decomposition",
+InstallOtherMethod(AsCascadedTrans,
+    "for a transformation lifting into holonomy decomposition",
     true,
-    [IsHolonomyDecomposition,IsTransformation], 1,
-function(decomp,t)
+    [IsTransformation,IsHolonomyDecomposition],
+function(t,decomp)
 local j,tilechain, tilechains, actions,depfunctable,arg, state;
   if IsOne(t) then
     return IdentityCascadedTransformation(CascadeShellOf(decomp));
@@ -337,34 +337,30 @@ local j,tilechain, tilechains, actions,depfunctable,arg, state;
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
-# ENA this will go to AsTransformation
-
-InstallMethod(Flatten,
+InstallOtherMethod(AsTransformation,
     "flattens a cascaded operation in holonomy",
     true,
-    [IsHolonomyDecomposition,IsCascadedTransformation], 1,
-function(hd,co)
+    [IsCascadedTransformation, IsHolonomyDecomposition],
+function(co,hd)
 local l, i;
   l := [];
   for i in AsList(TopSet(SkeletonOf(hd))) do
-    l[i] := Flatten(hd,Raise(hd,i) ^ co);
+    l[i] := AsPoint(AsCoords(i,hd) ^ co,hd);
   od;
   return Transformation(l);
 end);
 
-# ENA this will go to AsSemigroup
-
 #Flattening the whole decomposition (gives back the original semigroup)
 #TODO this should be wrapped in the semigroup homomorphism
-InstallOtherMethod(Flatten,
+InstallOtherMethod(AsSemigroup,
     "flattening a hierarchical decomposition",
     true,
-    [IsHolonomyDecomposition], 0,
+    [IsHolonomyDecomposition],
 function( hd )
     local g,gens;
     gens := [];
     for g in GeneratorsOfSemigroup(OriginalStructureOf((hd))) do
-        Add(gens,Flatten(Raise(hd,g)));
+        Add(gens,AsTransformation(AsCascadedTrans(g,hd)));
     od;
     return Semigroup(gens);
 end);
