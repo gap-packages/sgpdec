@@ -311,7 +311,7 @@ end);
 
 ################################################################################
 ########X2Y#####################################################################
-#TODO X2Y is just not right at the moment
+#TODO X2Y is just not in the right format at the moment
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,
@@ -331,7 +331,7 @@ InstallOtherMethod(x2y,
         true,
         [IsLagrangeDecomposition,IsInt,IsInt],
 function(decomp,x,y)
-   return x2y(decomp,Raise(decomp,x), Raise(decomp,y));
+   return x2y(decomp,AsCoords(x,decomp), AsCoords(y,decomp));
 end);
 
 #this is purely for checking as it is easy to do this in the flat group
@@ -341,8 +341,8 @@ InstallOtherMethod(x2y,
     [IsLagrangeDecomposition,IsCascadedTransformation,IsCascadedTransformation],
     0,
 function(decomp,x,y)
-  return x2y(decomp,Perm2Coords(decomp,Flatten(decomp,x)),
-             Perm2Coords(decomp,Flatten(decomp,y)));
+  return x2y(decomp,Perm2Coords(decomp,AsPermutation(x,decomp)),
+             Perm2Coords(decomp,AsPermutation(y,decomp)));
   #this flattening is stupid but Perm2Coords expects flat permutation.
 end);
 
