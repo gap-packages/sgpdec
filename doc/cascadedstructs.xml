@@ -1,0 +1,23 @@
+<Chapter Label="ch:CascadedStructures">
+<Heading>Cascaded Structures as Coordinate Sytems</Heading>
+
+Cascaded structures are composite structures that can be built from permutation
+groups and/or
+transformation semigroups. They are groups and semigroups themselves but they
+act on coordinate tuples not on points and they retain the component actions.
+
+
+<Section Label="sec:cascade shell">
+<Heading>CascadeShell</Heading>
+The components are given a list where the order does matter. The first one is
+the top level, least-dependent component.
+The cascade shell  should be thought only as a framework in which
+we can coordinatize states and transformations.
+<#Include Label="CascadeShell">
+<#Include Label="CoordValSets">
+<#Include Label="AllCoords">
+<#Include Label="SizeOfWreathProduct">
+<#Include Label="NumberOfDependencyFunctionArguments">
+</Section>
+
+</Chapter>

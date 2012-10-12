@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Book SYSTEM "gapdoc.dtd">
+
+<Book Name="SgpDec">
+
+<TitlePage>
+<Title>The <Package>SgpDec</Package> Package</Title>
+<Version>Version 0.7</Version>
+<Author>Attila Egri-Nagy <Email>A.Egri-Nagy@herts.ac.uk</Email></Author>
+<Author>Chrystopher L. Nehaniv<Email>C.L.Nehaniv@herts.ac.uk</Email></Author>
+<Author>James Mitchell<Email>jdm3@st-and.ac.uk</Email></Author>
+
+<TitleComment>
+Hierarchical composition and decomposition of finite permutation groups and
+transformation semigroups.
+</TitleComment>
+
+<Abstract>
+This  <Package>GAP4.5</Package> package contains a computational implementation
+of hierarchical decompositions of transformation semigroups
+(Krohn-Rhodes theory) and permutation groups. Cascaded structures (substructures
+of the wreath product) can be constructed by explicitly giving the dependency
+ functions between the components or can be obtained by the decomposition
+ algorithms (holonomy for semigroups, Lagrange decompositon for groups).
+</Abstract>
+
+<Copyright>&copyright; Attila Egri-Nagy, Chrystopher L. Nehaniv, James Mitchell.
+</Copyright>
+
+</TitlePage>
+
+<TableOfContents/>
+
+
+<Body>
+<!--##### Chapters/sections are in individual xml files. -->
+
+<Chapter> <Heading>Introduction</Heading>
+
+ <#Include SYSTEM "install.xml">
+ <#Include SYSTEM "conf.xml">
+
+</Chapter>
+
+<#Include SYSTEM "cascadedstructs.xml">
+
+
+<Chapter Label="HierarchicalDecompositions">
+<Heading>Hierarchical Decompositions</Heading>
+<Section Label="sec:hierarchical decomposition">
+<Heading>Abstract Methods for Hierarchical Decompositions</Heading>
+
+Any hierarchical decomposition is built from a list of components with a fixed order (top to bottom of the hierarchy) thus objects in this category behave like lists, i.e. their components are accessible through their level numbers. 
+   The decompositions have the following components: the original structure to be decomposed, the components, and the cascaded structure constructed from the components. 
+
+<#Include Label="DecompositionAccess">
+<#Include Label="ComponentActions">
+<#Include Label="Raise">
+<#Include Label="Flatten">
+<#Include Label="Interpret">
+</Section>
+
+<Section Label="sec:cascadeshell as decomposition">
+<Heading>Cascaded Structures as Decompositions</Heading>
+</Section>
+</Chapter>
+
+<Chapter>
+<Heading>Lagrange Decompositions</Heading>
+
+    <Section Label="sec:lagrange decomposition"> <Heading>Lagrange Decomposition for Permutation Groups</Heading>
+Corresponding to a subgroup chain this decomposition constructs the components as coset actions. 
+This method is implicit in Lagrange's and Frobenius' works, and it is also known as Krasner-Kaloujnine embedding <Cite Key="KrasnerKaloujnine"/>).
+ <Cite Key="sgc2009"/>
+<!--
+<#Include Label="LagrangeDecomposition">
+<#Include Label="LagrangeAccess">
+
+<#Include Label="LevelKillers">
+-->
+    </Section>
+</Chapter>
+
+<Chapter>
+<Heading>Holonomy Decomposition</Heading>
+The holonomy decomposition is constructed based on the action of the semigroup
+on the orbit of the state set.
+<Section Label="Skeleton">
+<Heading>Skeleton</Heading>
+<#Include Label="Skeleton">
+<#Include Label="ImageSets">
+<#Include Label="CoveringSetsOf">
+<#Include Label="DepthOfSet">
+<#Include Label="TopSet">
+<#Include Label="SkeletonClasses">
+<#Include Label="RepresentativeSet">
+
+
+The subsemigroup stabilizing a subset X of the state set is called the
+permutator subsemigroup (to avoid name clash). Restricting this permutator to
+$X$ gives the permutator group (Generalized Schützenberger group, see
+<Cite Key="permutator"/> )
+<#Include Label="PermutatorSemigroup">
+<#Include Label="PermutatorGenerators">
+<#Include Label="AllPermutators">
+<#Include Label="PermutatorGroup">
+<#Include Label="CoverGroup">
+</Section>
+
+<Section Label="Holonomy">
+<Heading>Holonomy</Heading>
+<#Include Label="HolonomyDecomposition">
+<#Include Label="SkeletonOf">
+<#Include Label="GroupComponentsOnDepth">
+<#Include Label="HolonomyInts2Sets">
+<#Include Label="Coordinates">
+<#Include Label="PermutationResetSemigroup">
+<#Include Label="ShiftGroupAction">
+</Section>
+
+
+</Chapter>
+
+<Chapter> <Heading>Finite Sets</Heading>
+For representing finite sets of positive integers we can use lists.
+However, it we store a lot of these sets then we need to use boolean lists
+to save space. On the other hand dealing with boolean lists would provide
+an inelegant solution for the <Package>SgpDec</Package> user.
+That is why we introduce this new data type.
+Many set operations are reimplemented and a few specialized functions
+used in decompositions are also included.
+<Section>
+<Heading>Constructors</Heading>
+<#Include Label="FiniteSet">
+If the underlying <C>BList</C> is constructed beforehand, then
+<C>FiniteSetByBlist</C> can be used to wrap the boolean list.
+For copying an exisiting finite set <C>FiniteSetCopy</C> can be used.
+</Section>
+
+<Section>
+<Heading>Properties of finite sets</Heading>
+<#Include Label="SizeOfUniverse">
+<#Include Label="IsSingleton">
+</Section>
+
+<Section>
+<Heading>Set operations</Heading>
+Most operations for sets are implemented for finite sets.
+The function names have the <C>FiniteSet</C> suffix.
+The other useful convention used is that if the name of the operation is a noun
+then it returns a new instance of a finite set e.g. <C>UnionFiniteSet</C>,
+if it is a verb then it changes the (first) parameter,
+e.g. <C>UniteFiniteSet</C>.
+</Section>
+
+<Section>
+<Heading>Acting on finite sets</Heading>
+<#Include Label="OnFiniteSets">
+<#Include Label="IsIdentityOnFiniteSet">
+</Section>
+
+</Chapter>
+
+
+<Chapter> <Heading>Words</Heading>
+<Section>
+<Heading>Words as list of integers</Heading>
+In <Package>SgpDec</Package> words are represented as dense lists of positive
+integers.
+The integers usually code the indices of elements of some generator set, thus
+they should be between 1 and the size of the generator set.
+<#Include Label="BuildByWord">
+</Section>
+
+<Section>
+<Heading>Straight words</Heading>
+If a word constructs a trajectory without repeated elements then we say that
+it is straight (the start point can be repeated at the end)
+<Cite Key="straightwords2010"/> .
+Note that the word itself can contain repeated symbols.
+<#Include Label="IsStraightWord">
+<#Include Label="Reduce2StraightWord">
+</Section>
+
+<Section>
+<Heading>Enumerating straight words</Heading>
+A backtrack algorithm is used to go through the straight words.
+Whenever the search finds a straight word a processor function is called.
+Using these plugins  the backtrack algorithm can do many different things
+with the results.
+
+<#Include Label="StraightWords">
+<#Include Label="SWP_Printer">
+<#Include Label="SWP_SimpleCollector">
+<#Include Label="SWP_WordPointPairCollector">
+<#Include Label="SWP_Search">
+</Section>
+</Chapter>
+
+<Chapter> <Heading>Misc</Heading>
+<Section>
+
+<Heading>Linear notation for transformations</Heading>
+Following the notation described in <Cite Key="ClassicalTransSemigroups2009"/> we use a one-line compact notation for finite transformations. 
+<#Include Label="LinearNotation">
+</Section>
+</Chapter>
+
+</Body>
+
+<Bibliography Databases="SGPDEC" />
+</Book>
