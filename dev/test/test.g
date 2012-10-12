@@ -1,4 +1,4 @@
-#just loading group information
+# quick but comprehensive test for establishing correctness of the algorithms
 
 LoadPackage("sgpdec");
 #just aliases
@@ -46,16 +46,21 @@ od;
 #TestPermutator(FiniteSet([1,2,3,4],5),GeneratorsOfSemigroup(T5));
 #TestPermutator(FiniteSet([4,5],6),becks);
 
-Print("\nTesting holonomy.\n");
+Print("\n#### TESTING HOLONOMY DECOMPOSITIONS ######################\n");
 for sg in test_semigroups do
+  Print("\n");Display(sg);
   hd := HolonomyDecomposition(sg);
-  #change a random representative
+  #change a random representative TODO! this is broken!
   #ChangeCoveredSet(hd, Random(ImageSets(SkeletonOf(hd))));
   #DisplaySkeletonRepresentatives(SkeletonOf(hd));
   HolonomyTestCoordinates(hd);
-  holonomy_testAction(hd);
-  holonomy_testRaiseFlatten(hd);
-  holonomy_testProducts(hd);
+  HolonomyTestAction(hd);
+  HolonomyTestSemigroupElements(hd);
+  if Size(sg) <= 11 then
+    HolonomyTestAllProducts(hd);
+  else
+    HolonomyTestSomeProducts(hd,100);
+  fi;
 od;
 
 

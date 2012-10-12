@@ -19,54 +19,55 @@ local chain, modchain, point, degree,c;
   Print(" PASSED\n");
 end;
 
-#do the action flat, then the corresponding raised action and flatten, is it the same?
-holonomy_testAction := function(hd)
+# testing the coordinatized action. Is it really a homomorphism?
+HolonomyTestAction := function(hd)
 local i,numofstates, t, cascadedt,cs,cs_,chain,c,n;
-  Print("raising state and operation, do the action and flatten the result to check...\n");
+  Print("TEST i^t=AsPoint(AsCoords(i)^AsCascadedTrans(t))?\n");
   numofstates := Size(TopSet(SkeletonOf(hd)));
   n := numofstates * Size(OriginalStructureOf(hd));
   c := 0;
   for t in  OriginalStructureOf(hd) do
     cascadedt := AsCascadedTrans(t,hd);
     for i in [1..numofstates] do
-      for chain in AllCoverChainsToSet(SkeletonOf(hd), FiniteSet([i],numofstates)) do 
+      for chain in AllCoverChainsToSet(SkeletonOf(hd),
+              FiniteSet([i],numofstates)) do
         cs := HolonomySets2Ints(hd, Coordinates(hd,chain));
         if i <> AsPoint(cs, hd) then
           Error("HOLONOMY  coordinate lift FAIL!\n");
         fi;
         cs_ := cs ^ cascadedt;
         if i^t <> AsPoint(cs_,hd) then
-          Print("FAIL\n");
-          Error("HOLONOMY cascaded action for ", t ," failed! for state ",i, " coded as ",chain,"\n"); 
+          Error("HOLONOMY action ",t," FAIL! State ",i," coded as ",chain,"\n");
         fi;
       od;
       c := c+1;Print("\r", c,"/",n,"\c");
     od;
   od;
-  Print("\nPASSED\n");
+  Print(" PASSED\n");
 end;
 
-
-holonomy_testRaiseFlatten := function(hd)
-local t;
-  Print("flattening and raising all semigroup elements and testing for equality...\n");
+HolonomyTestSemigroupElements := function(hd)
+local t,n,c;
+  Print("TEST t=AsTransformation(AsCascadedTrans(t))\n");
+  n := Size(OriginalStructureOf(hd));
+  c := 0;
   for t in AsList(OriginalStructureOf(hd)) do
-        if t <> AsTransformation(AsCascadedTrans(t,hd),hd) then
-          Print("FAIL\n");
-          Error("HOLONOMY raising/flattening operations failed!\n"); 
-        else
-          Print("#\c");
-        fi;
+    if t <> AsTransformation(AsCascadedTrans(t,hd),hd) then
+      Error("HOLONOMY semigroup elements FAIL!\n");
+    else
+      c := c+1;Print("\r", c,"/",n,"\c");
+    fi;
   od;
-        Print("\nPASSED\n");
+  Print(" PASSED\n");
 end;
 
 #just testing a few but not all
-holonomy_testProducts := function(hd)
-local i,t,u,sgelements;
+HolonomyTestSomeProducts := function(hd,n)
+local i,t,u,sgelements,c;
   sgelements := AsList(OriginalStructureOf(hd));
-  Print("testing 100 random cascaded products whether they map down to the corresponding flat product...\n");
-  for i in [1..100] do
+  Print("TEST t*u=AsTransformation(AsCascadedTrans(t)*AsCascadedTrans(u))?\n");
+  c := 0;
+  for i in [1..n] do
     t := Random(sgelements);
     u := Random(sgelements);
     if t*u <> AsTransformation(
@@ -74,27 +75,29 @@ local i,t,u,sgelements;
       Print(LinearNotation(t),"*",LinearNotation(u)," FAIL\n");
       Error("HOLONOMY products failed!\n");
     else
-      Print("#\c");
+      c := c+1;Print("\r", c,"/",n,"\c");
     fi;
   od;
-  Print("\nPASSED\n");
+  Print(" PASSED\n");
 end;
 
 #this could be very long computation
-holonomy_testAllProducts := function(hd)
-local i,t,u,sgelements;
+HolonomyTestAllProducts := function(hd)
+local i,t,u,sgelements,c;
   sgelements := AsList(OriginalStructureOf(hd));
-  Print("testing all cascaded operation products whether they map down to the corresponding flat product...\n");
-    for t in sgelements do
-      for u  in sgelements do
-        if t*u <> AsTransformation(
-               AsCascadedTrans(t,hd) * AsCascadedTrans(u,hd),hd) then
-          Print(LinearNotation(t),"*",LinearNotation(u)," FAIL\n");
-          Error("HOLONOMY products failed!\n");
-        else
-          Print("#\c");
-       fi;
-      od;
+  Print("TEST t*u=AsTransformation(AsCascadedTrans(t)*AsCascadedTrans(u))?\n");
+  n := Size(sgelements)^2;
+  c := 0;
+  for t in sgelements do
+    for u  in sgelements do
+      if t*u <> AsTransformation(
+                 AsCascadedTrans(t,hd) * AsCascadedTrans(u,hd),hd) then
+        Print(LinearNotation(t),"*",LinearNotation(u)," FAIL\n");
+        Error("HOLONOMY products failed!\n");
+      else
+        c := c+1;Print("\r", c,"/",n,"\c");
+      fi;
     od;
-  Print("\nPASSED\n");
+  od;
+  Print(" PASSED\n");
 end;
