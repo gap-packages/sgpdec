@@ -227,25 +227,21 @@ local decoded, cosetrepr, builders;
 end);
 
 ################################################################################
-###############YEAST STATES#####################################################
+# COORDINATIZING POINTS ########################################################
 
-# ENA this will go to AsCoords
-
-InstallMethod(Raise,
-    "raise a state",
+InstallOtherMethod(AsCoords,
+    "for a point",
     true,
-    [IsLagrangeDecomposition,IsInt],
-function(decomp,i)
+    [IsInt,IsLagrangeDecomposition],
+function(i,decomp)
     return Perm2Coords(decomp,decomp!.stabilizertransversalreps[i]);
 end);
 
-# ENA this will go to AsPoint
-
-InstallMethod(Flatten,
+InstallOtherMethod(AsPoint,
     "for coordinates in Lagrange decomposition",
     true,
-    [IsLagrangeDecomposition,IsDenseList],
-function(decomp,cs)
+    [IsDenseList, IsLagrangeDecomposition],
+function(cs,decomp)
 local l;
   if (Length(cs) = Size(decomp)) and (Minimum(cs) > 0) then
     #the Frobenius-Lagrange map TODO transitivity
@@ -260,33 +256,15 @@ local l;
   fi;
 end);
 
-#InstallMethod(Flatten,
-#    "for abstract coords in Lagrange decomposition",
-#    true,
-#    [IsLagrangeDecomposition,IsDEnseList],
-#function(decomp,cs) #TODO!! replace  this with the more efficient one
-#local csh;
-#  flattened := [];
-#  for state in States(CascadeShellOf(decomp)) do
-#    if state < cs then
-#      point := Flatten(decomp,state);
-#      if not (point in flattened) then Add(flattened, point); fi;
-#    fi;
-#  od;
-#  return flattened;
-#end);
-
 ################################################################################
-#####################YEAST PERMUTATIONS#########################################
-
-# ENA this will go to AsCascadedTrans
+# LIFTING PERMUTATION ##########################################################
 
 #decomp - cascade components of group, g element of the group
-InstallMethod(Raise,
+InstallOtherMethod(AsCascadedTrans,
     "raise a permutation",
     true,
-    [IsLagrangeDecomposition,IsPerm],
-function(decomp,g)
+    [IsPerm,IsLagrangeDecomposition],
+function(g,decomp)
 local j,state,states,fudges,depfunctable,arg;
 
   if g=() then return IdentityCascadedTransformation(CascadeShellOf(decomp));fi;
@@ -314,15 +292,13 @@ local j,state,states,fudges,depfunctable,arg;
   return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
 end);
 
-# ENA this will go to AsPermutation
-
-InstallMethod(Flatten,
-    "flatten a cascaded permutation",
+InstallOtherMethod(AsPermutation,
+    "for a cascaded permutation",
     true,
-    [IsLagrangeDecomposition,IsCascadedTransformation],
-function(decomp,co)
+    [IsCascadedTransformation,IsLagrangeDecomposition],
+function(co,decomp)
     return PermList(List(OriginalStateSet(decomp),
-                   x-> Flatten(decomp, Raise(decomp,x) ^ co)));
+                   x-> AsPoint(AsCoords(x,decomp) ^ co,decomp)));
 end);
 
 InstallMethod(Interpret,
@@ -335,6 +311,7 @@ end);
 
 ################################################################################
 ########X2Y#####################################################################
+#TODO X2Y is just not in the right format at the moment
 InstallOtherMethod(x2y,
     "finds a cascaded operation taking cascaded state x to y",
     true,
@@ -354,7 +331,7 @@ InstallOtherMethod(x2y,
         true,
         [IsLagrangeDecomposition,IsInt,IsInt],
 function(decomp,x,y)
-   return x2y(decomp,Raise(decomp,x), Raise(decomp,y));
+   return x2y(decomp,AsCoords(x,decomp), AsCoords(y,decomp));
 end);
 
 #this is purely for checking as it is easy to do this in the flat group
@@ -364,8 +341,8 @@ InstallOtherMethod(x2y,
     [IsLagrangeDecomposition,IsCascadedTransformation,IsCascadedTransformation],
     0,
 function(decomp,x,y)
-  return x2y(decomp,Perm2Coords(decomp,Flatten(decomp,x)),
-             Perm2Coords(decomp,Flatten(decomp,y)));
+  return x2y(decomp,Perm2Coords(decomp,AsPermutation(x,decomp)),
+             Perm2Coords(decomp,AsPermutation(y,decomp)));
   #this flattening is stupid but Perm2Coords expects flat permutation.
 end);
 

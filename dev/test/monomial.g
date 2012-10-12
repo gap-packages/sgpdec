@@ -3,7 +3,7 @@ local csh, mgs, gens,S;
   csh := CascadeShell(components);
   mgs := MonomialWreathProductGenerators(csh);
   Print(Size(mgs), " monomial generators.\n");
-  gens := List(mgs, x-> Flatten(x));
+  gens := List(mgs, x-> AsTransformation(x));
   S := Semigroup(gens);
   if (Size(S) <> SizeOfWreathProduct(csh)) then
     Print("FAIL\n");

@@ -52,7 +52,7 @@ for sg in test_semigroups do
   #change a random representative
   #ChangeCoveredSet(hd, Random(ImageSets(SkeletonOf(hd))));
   #DisplaySkeletonRepresentatives(SkeletonOf(hd));
-  holonomy_testCoordinates(hd);
+  HolonomyTestCoordinates(hd);
   holonomy_testAction(hd);
   holonomy_testRaiseFlatten(hd);
   holonomy_testProducts(hd);
@@ -88,14 +88,14 @@ Print("\nTesting Lagrange Group coordinates \n");
 for G in test_groups do
   Print("\n Decomposing ",StructureDescription(G),"\n");
   decomp := LagrangeDecomposition(G);
-  LagrangeTest1a(decomp);
-  LagrangeTest1b(decomp);
-  LagrangeTest1c(decomp);
-  LagrangeTest1d(decomp);
-  LagrangeTest2(decomp);
-  LagrangeTest3(decomp);
-  LagrangeTest4(decomp);
-  LagrangeTest5(decomp);
+  LagrangeTestGroupElements(decomp);
+  LagrangeTestPoints(decomp);
+  LagrangeTestActions(decomp);
+  LagrangeTestMultiplication(decomp);
+  LagrangeTestCoords(decomp);
+  LagrangeTestKilling(decomp);
+  LagrangeTestIsomorphism(decomp);
+  LagrangeTestX2Y(decomp);
 od;
-
+#Dump the random seed in case there was something interesting.
 Print("#Random seed:", SEED, "\n");
