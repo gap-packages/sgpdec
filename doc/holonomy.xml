@@ -195,3 +195,26 @@ Group([ (4,5) ])
 </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="HolonomyEmbedding">
+<ManSection><Heading>Embedding of the original semigroup into the holonomy decomposition</Heading>
+<Oper Name="AsPoint" Arg="cascadedstate, holonomydecomp"/>
+<Oper Name="AsCoords" Arg="point, holonomydecomp"/>
+<Oper Name="AsTransformation" Arg="cascadedtrans, holonomydecomp"/>
+<Oper Name="AsCascadedTrans" Arg="permutation, holonomydecomp"/>
+<Description>
+These are the operations to move between the original and the cascaded
+product produced by the decomposition algorithm.
+<Example>
+gap> hd := HolonomyDecomposition(FullTransformationSemigroup(5));
+&lt;holonomy decomposition of &lt;semigroup with 3125 elts, 3 gens&gt;&gt;
+gap> 5 = AsPoint(AsCoords(5,hd),hd);                             
+true
+gap> ct := AsCascadedTrans(Transformation([2,3,2,3,1]),hd);      
+Cascaded transformation in sg_sg125_sg28_sg9_sg4
+gap> AsTransformation(ct,hd);                                    
+Transformation( [ 2, 3, 2, 3, 1 ] )
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>

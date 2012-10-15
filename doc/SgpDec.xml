@@ -112,6 +112,10 @@ $X$ gives the permutator group (Generalized Schützenberger group, see
 <#Include Label="ShiftGroupAction">
 </Section>
 
+    <Section Label="sec:holonomy isomorphism"> <Heading>Establishing the Embedding</Heading>
+<#Include Label="HolonomyEmbedding">
+  </Section>
+
 
 </Chapter>
 
