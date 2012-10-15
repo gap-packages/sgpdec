@@ -4,7 +4,7 @@ SgpDecDocSourceFiles :=
    "words.xml",
    "decomposition.xml",
    "cascadeshell.xml",
-   "../gap/lagrangecoords.xml",
+   "lagrangecoords.xml",
    "../gap/cascadedoperation.xml",
    "finiteset.xml",
    "../gap/subgroupchains.xml",
@@ -20,7 +20,11 @@ SgpDecMakeDoc := function()
 end;
 
 SgpDecRunManualExamples := function()
+  #to have the same output
   SizeScreen([80]);
+  #to have no profile info
+  SetInfoLevel(LagrangeDecompositionInfoClass,0);
+  SetInfoLevel(HolonomyInfoClass,0);
   RunExamples(
           ExtractExamples(
                   Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,

@@ -1,0 +1,53 @@
+<#GAPDoc Label="LagrangeDecomposition">
+<ManSection><Heading>Lagrange Decomposition</Heading>
+<Oper Name="LagrangeDecomposition" Arg="permgroup"/>
+<Oper Name="LagrangeDecomposition" Arg="permgroup, subgroupchain"/>
+<Description>
+  <C>LagrangeDecomposition</C> constructs a hierarchical decomposition for a permutation 
+  group based on a chain of subgroups of G. 
+  If the chain is not specified, &GAP;'s <C>ChiefSeries</C> is used to calculate the chain.
+  <Example>
+gap> S4:=SymmetricGroup(IsPermGroup,4);
+Sym( [ 1 .. 4 ] )
+gap> ld := LagrangeDecomposition(S4);
+Lagrange decomposition of:S4
+G_C2_C3_C2 x C2
+gap> ld := LagrangeDecomposition(S4,CompositionSeries(S4));
+Lagrange decomposition of:S4
+G_C2_C3_C2_C2
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LevelKillers">
+<ManSection><Heading>Killing coordinates</Heading>
+<Func Name="LevelKillers" Arg="decomp, cascadedstate"/>
+<Description>
+<C>LevelKillers</C> returns a list of permutation, one for each level.
+Lifted to the decomposition and applied top-down (i.e. from index 1 to n)
+it transforms the coordinate value to
+the base value 1.
+<Example>
+gap> D12 := DihedralGroup(IsPermGroup,12);
+Group([ (1,2,3,4,5,6), (2,6)(3,5) ])
+gap> ld := LagrangeDecomposition(D12);
+Lagrange decomposition of:D12
+G_C2_C2_C3
+gap> LevelKillers(ld,[2,1,3]);
+[ (2,6)(3,5), (), (1,5,3)(2,6,4) ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LagrangeAccess">
+<ManSection><Heading>Accessing Lagrange decomposition internals</Heading>
+<Func Name="SeriesOf" Arg="lagrangedecomp"/>
+<Func Name="TransversalsOf" Arg="lagrangedecomp"/>
+<Description>
+Access to the underlying series, and for each level to the transversals
+in a Lagrange decomposition.
+</Description>
+</ManSection>
+<#/GAPDoc>

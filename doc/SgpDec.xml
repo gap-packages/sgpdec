@@ -63,12 +63,12 @@ Any hierarchical decomposition is built from a list of components with a fixed o
 Corresponding to a subgroup chain this decomposition constructs the components as coset actions. 
 This method is implicit in Lagrange's and Frobenius' works, and it is also known as Krasner-Kaloujnine embedding <Cite Key="KrasnerKaloujnine"/>).
  <Cite Key="sgc2009"/>
-<!--
+
 <#Include Label="LagrangeDecomposition">
 <#Include Label="LagrangeAccess">
 
 <#Include Label="LevelKillers">
--->
+
     </Section>
 </Chapter>
 
