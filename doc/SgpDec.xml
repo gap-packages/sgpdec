@@ -16,9 +16,9 @@ transformation semigroups.
 </TitleComment>
 
 <Abstract>
-This  <Package>GAP4.5</Package> package contains a computational implementation
+This  <Package>GAP4.5</Package> package contains computational implementations
 of hierarchical decompositions of transformation semigroups
-(Krohn-Rhodes theory) and permutation groups. Cascaded structures (substructures
+(Krohn-Rhodes theory) and permutation groups. Cascade products (substructures
 of the wreath product) can be constructed by explicitly giving the dependency
  functions between the components or can be obtained by the decomposition
  algorithms (holonomy for semigroups, Lagrange decompositon for groups).
@@ -33,17 +33,13 @@ of the wreath product) can be constructed by explicitly giving the dependency
 
 
 <Body>
-<!--##### Chapters/sections are in individual xml files. -->
 
 <Chapter> <Heading>Introduction</Heading>
-
  <#Include SYSTEM "install.xml">
  <#Include SYSTEM "conf.xml">
-
 </Chapter>
 
-<#Include SYSTEM "cascadedstructs.xml">
-
+<#Include SYSTEM "cascadeproduct.xml">
 
 <Chapter Label="HierarchicalDecompositions">
 <Heading>Hierarchical Decompositions</Heading>
@@ -54,15 +50,10 @@ Any hierarchical decomposition is built from a list of components with a fixed o
    The decompositions have the following components: the original structure to be decomposed, the components, and the cascaded structure constructed from the components. 
 
 <#Include Label="DecompositionAccess">
-<#Include Label="ComponentActions">
-<#Include Label="Raise">
-<#Include Label="Flatten">
+<!--TODO this does not work as defined!<#Include Label="ComponentActions">-->
 <#Include Label="Interpret">
 </Section>
 
-<Section Label="sec:cascadeshell as decomposition">
-<Heading>Cascaded Structures as Decompositions</Heading>
-</Section>
 </Chapter>
 
 <Chapter>
