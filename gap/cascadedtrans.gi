@@ -633,7 +633,7 @@ function(ct)
     for coord in dep[1] do
       newnn := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newnn," [label=\"",
-                      String(csh!.state_symbol_functions[level](coord)),
+                      String(csh!.coordval_converters[level](coord)),
                       "\"]");
       if not (edge in edges) then
         # we just add the full edge
@@ -652,7 +652,7 @@ function(ct)
 
     #putting the proper label there as we are at the end of the coordinates
     vertexlabels.(coordsname) := Concatenation(" [label=\"",
-            String(csh!.operation_symbol_functions[level](dep[2])),"\"]");
+            String(csh!.coordtrans_converters[level](dep[2])),"\"]");
   od;
   # finally writing them into the dot file
   for i in [1..Size(vertices)] do
