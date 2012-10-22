@@ -3,16 +3,11 @@
 
 <Heading> Subgroup Chains  </Heading>
 
-Subgroup chains for permutation groups define the backbone of a decomposition. Thus, having the right coordinate system equals to  have the right subgroup chain. 
+
 
 <Section Label="Interactive Constructions">
 <Heading> Interactive Constructions </Heading>
 
-Subgroup chains can be created interactively, step-by-step.
-
-<#Include Label="iCreateSubnormalChain">
-<#Include Label="iCreateMaximalSubgroupChain">
-<#Include Label="iStretchSubNormalChain">
 </Section>
 </Chapter>
 
