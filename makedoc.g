@@ -5,7 +5,7 @@ SgpDecDocSourceFiles :=
    "decomposition.xml",
    "cascadeshell.xml",
    "lagrangecoords.xml",
-   "../gap/cascadedoperation.xml",
+   "cascadedtrans.xml",
    "finiteset.xml",
    "../gap/subgroupchains.xml",
    "skeleton.xml",
