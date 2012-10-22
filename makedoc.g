@@ -7,7 +7,7 @@ SgpDecDocSourceFiles :=
    "lagrangecoords.xml",
    "cascadedtrans.xml",
    "finiteset.xml",
-   "../gap/subgroupchains.xml",
+   "subgroupchains.xml",
    "skeleton.xml",
    "holonomy.xml"
    ];
