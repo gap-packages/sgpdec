@@ -29,7 +29,8 @@ Therefore the valid concrete coordinate values are positive integers.
 
 <Section Label="sec:cascaded trans">
 <Heading>Cascaded Transformations</Heading>
-
+<#Include Label="IsCascadedTransformation">
+<#Include Label="IdentityCascadedTransformation">
 </Section>
 
 
