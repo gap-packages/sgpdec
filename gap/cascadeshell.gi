@@ -102,7 +102,7 @@ local cascprodinfo,prodname,i,str,result,state_set_sizes;
 
   #constructing argumentnames (for display purposes)
   cascprodinfo.depdom_names := [];
-  cascprodinfo.depdom_names[1] := "{}"; #the empty set
+  cascprodinfo.depdom_names[1] := ""; #no dep func on the top level
   str := "";
   for i in [2..Length(components)] do
       if i > 2 then str  := Concatenation(str, "x");fi;
