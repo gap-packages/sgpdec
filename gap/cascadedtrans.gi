@@ -238,13 +238,21 @@ local csh, i, coords, val;
   csh := CascadeShellOf(ct);
   for i in [1..Length(csh)] do
     #printing the function definition
-    Print("#",i,": ",NameOfDependencyDomain(csh,i)," -> ",csh[i],"\n");
+    if i = 1 then #the top level is not a function application mathematically
+      Print("#",i,": ", csh[i],"\n");
+    else
+      Print("#",i,": ",NameOfDependencyDomain(csh,i)," -> ",csh[i],"\n");
+    fi;
     #looping all possible arguments and display if any
     for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       val := ct!.depfunc(coords);
       if not IsOne(val) then
-        Print("[",ConvertCoords2String(csh, coords),
-         "] -> ", CoordTransConverter(csh,i)(val),"\n");
+        if i = 1 then #the top level is not a math function application
+          Print(CoordTransConverter(csh,i)(val),"\n");
+        else
+          Print("[",ConvertCoords2String(csh, coords),
+                "] -> ", CoordTransConverter(csh,i)(val),"\n");
+        fi;
       fi;
     od;
   od;

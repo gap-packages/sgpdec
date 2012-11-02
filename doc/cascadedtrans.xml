@@ -21,7 +21,7 @@ G_C5_C5
 gap> id := IdentityCascadedTransformation(csh);
 Cascaded transformation in G_C5_C5
 gap> Display(id);
-#1: {} -> C5
+#1: C5
 #2: 5 -> C5
 </Example>
 </Description>
