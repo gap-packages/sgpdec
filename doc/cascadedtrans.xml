@@ -32,9 +32,13 @@ gap> Display(id);
 <ManSection><Heading>Creating a Random Operation</Heading>
 <Func Name="RandomCascadedTransformation" Arg="cascadeshell,numofdeps"/>
 <Description>
-  Creates a random cascaded operation for a given cascaded structure.
-  The number of elementary dependecies should also be given. This is a maximum number,
-  and it is not guaranteed to have that many.
+Creates a random cascaded operation in a given cascade shell.
+The number of elementary dependecies should also be given. This is a maximum number,
+and it is not guaranteed to have that many. If the given argument exceeds the
+maximum number then a warning is given. For finding out this limit use
+<Ref Func="NumberOfDependencyFunctionArguments"/>
+<!--<Example>
+</Example>-->
 </Description>
 </ManSection>
 <#/GAPDoc>
@@ -43,10 +47,10 @@ gap> Display(id);
 <ManSection><Heading>Extracting Dependencies</Heading>
 <Func Name="DependencyMapsFromCascadedTransformation" Arg="casctrans"/>
 <Description>
-  Extracts dependencies from a cascaded operation. The dependencies then can be
-  modified and fed back into <C>DefineCascadedTransformation</C>.
-  Note that the cascaded structure need not be given as the operation already 
-  knows about it.
+Extracts dependencies from a cascaded operation. The dependencies then can be
+modified and fed back into <Ref Func="DefineCascadedTransformation"/>.
+Note that the cascaded transformation knows about the cascadeshell it is
+defined in.
 </Description>
 </ManSection>
 <#/GAPDoc>

@@ -31,6 +31,8 @@ Therefore the valid concrete coordinate values are positive integers.
 <Heading>Cascaded Transformations</Heading>
 <#Include Label="IsCascadedTransformation">
 <#Include Label="IdentityCascadedTransformation">
+<#Include Label="RandomCascadedTransformation">
+<#Include Label="DependencyMapsFromCascadedTransformation">
 </Section>
 
 
