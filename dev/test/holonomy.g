@@ -83,7 +83,7 @@ end;
 
 #this could be very long computation
 HolonomyTestAllProducts := function(hd)
-local i,t,u,sgelements,c;
+local i,t,u,sgelements,c,n;
   sgelements := AsList(OriginalStructureOf(hd));
   Print("TEST t*u=AsTransformation(AsCascadedTrans(t)*AsCascadedTrans(u))?\n");
   n := Size(sgelements)^2;
