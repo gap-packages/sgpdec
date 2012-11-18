@@ -31,7 +31,7 @@ Read("holonomy.g");;
 ############MAIN########################################
 ########################################################
 Print("\nTesting lazily evaluated cartesian product list.\n");
-TestLazyCartesian();
+TestCartesianEnumerator();
 
 Print("\nTesting straight words.\n");
 #TestStraightWords(pocket_cube_gens, 3333);
