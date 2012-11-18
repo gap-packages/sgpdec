@@ -1,7 +1,7 @@
-TestLazyCartesian := function()
+TestCartesianEnumerator := function()
 local lc,i,t;
   t := Runtime();
-  lc := LazyCartesian([
+  lc := EnumeratorOfCartesianProduct([
                 [1..55],
                 ['a','b','c'],
                 [1..33],
@@ -9,9 +9,9 @@ local lc,i,t;
             ]);
   for i in [1..Length(lc)] do
     if (i = PositionCanonical(lc,lc[i])) then
-	if (i mod 1000) = 0 then Print("#\c");fi;
-    else 
-      Print("FAIL\n");Error("Lazy cartesian inconsistent!\n"); 
+      if (i mod 1000) = 0 then Print("#\c");fi;
+    else
+      Print("FAIL\n");Error("Cartesian enumerator inconsistent!\n");
     fi;
   od;
   Print("PASSED in",Runtime() - t,"ms\n");
