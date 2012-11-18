@@ -45,7 +45,13 @@ local csh, pairs, identity, value, i, coords;
   csh := CascadeShellOf(ct);
   #pairs initialized
   pairs := [];
-  for i in [1..Length(csh)] do
+  #first doing the the top level
+  value := ct!.depfunc([]);
+  if value <> Identity(csh[1]) then
+    Add(pairs,[[],value]);
+  fi;
+  #then the deeper levels
+  for i in [2..Length(csh)] do
     identity := One(csh[i]);
     for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       value := ct!.depfunc(coords);
@@ -82,8 +88,12 @@ local deps, level, arg;
   # some trickery is needed as random may return the same element
   while Length(deps) <> numofdeps do
     level := Random(1,Length(csh));
-    arg := Random(EnumeratorOfCartesianProduct(
-                   CoordValSets(csh){[1..level-1]}));
+    if (level = 1) then
+      arg := [];
+    else
+      arg := Random(EnumeratorOfCartesianProduct(
+                     CoordValSets(csh){[1..level-1]}));
+    fi;
     if not (arg in deps) then
       Add(deps,arg);
     fi;
@@ -93,6 +103,7 @@ local deps, level, arg;
   # number of dependencies
   deps := List(deps,
                arg->[arg,Random(csh[Length(arg)+1])]);
+  #ShowDependencies(DependencyTable(deps));
   return CascadedTransformation(csh,DependencyTable(deps));
 end);
 
@@ -151,7 +162,12 @@ function(p,q)
   local csh, i, coords;
   #getting the family object
   csh := CascadeShellOf(p);
-  for i in [1..Length(csh)] do
+  #first comparing the the top level
+  if p!.depfunc([]) <> q!.depfunc([]) then
+    return false;
+  fi;
+  #then the deeper levels
+  for i in [2..Length(csh)] do
     for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       if p!.depfunc(coords) <> q!.depfunc(coords) then
         return false;
@@ -377,7 +393,12 @@ function(flatop,csh)
 
   #enumerate prefixes for all levels
   for level in [1..Length(csh)] do
-    prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
+    #hacking the fix for the upstream changes EnumeratorOfCartesianProduct
+    if level = 1 then
+      prefixes := [ [] ];
+    else
+      prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
+    fi;
     for prefix in prefixes do
       action := ComponentActionForPrefix(csh, flatoplist, prefix);
       if action <> One(csh[level]) then
