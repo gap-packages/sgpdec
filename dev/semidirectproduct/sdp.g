@@ -5,6 +5,10 @@ local l,n;
   return MappingByFunction(Domain(l), Domain([1..n]), g->Position(l,g));
 end;
 
+PrintMappings := function(genmap)
+  Perform(Source(genmap), function(x)Print(x,"->",Image(genmap,x),"\n") ;end);
+end;
+
 # G top level group
 # phi: G -> Aut(N)
 # N bottom level group
