@@ -1,3 +1,10 @@
+Elts2Points := function(G)
+local l,n;
+  l := AsList(G);
+  n := Size(l);
+  return MappingByFunction(Domain(l), Domain([1..n]), g->Position(l,g));
+end;
+
 # G top level group
 # phi: G -> Aut(N)
 # N bottom level group
