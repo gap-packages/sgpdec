@@ -1,6 +1,6 @@
 Elts2Points := function(G)
 local l,n;
-  l := AsList(G);
+  l := AsSortedList(G);
   n := Size(l);
   return MappingByFunction(Domain(l), Domain([1..n]), g->Position(l,g));
 end;
@@ -8,6 +8,16 @@ end;
 PrintMappings := function(genmap)
   Perform(Source(genmap), function(x)Print(x,"->",Image(genmap,x),"\n") ;end);
 end;
+
+RegHom := function(G)
+  local l,n,Ggens, Rgens;
+  l :=  AsSortedList(G);
+  n := Size(l);
+  Ggens := GeneratorsOfGroup(G);
+  Rgens := List(Ggens, g -> PermList(ActionOn(l,g,OnRight)));
+  return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
+end;
+
 
 # G top level group
 # phi: G -> Aut(N)
