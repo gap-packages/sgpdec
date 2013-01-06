@@ -2,7 +2,7 @@ Elts2Points := function(G)
 local l,n;
   l := AsSortedList(G);
   n := Size(l);
-  return MappingByFunction(Domain(l), Domain([1..n]), g->Position(l,g));
+  return MappingByFunction(G, Domain([1..n]), g->Position(l,g));
 end;
 
 PrintMappings := function(genmap)
@@ -18,6 +18,10 @@ RegHom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
+Reg2Points := function(G)
+  return CompositionMapping(Elts2Points(G),
+                 InverseGeneralMapping(RegHom(G)));
+end;
 
 # G top level group
 # phi: G -> Aut(N)
