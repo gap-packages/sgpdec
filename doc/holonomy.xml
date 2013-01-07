@@ -1,0 +1,220 @@
+<#GAPDoc Label="HolonomyDecomposition">
+<ManSection><Heading>Holonomy Decomposition</Heading>
+<Oper Name="HolonomyDecomposition" Arg="ts"/>
+<Oper Name="HolonomyDecomposition" Arg="skeleton"/>
+<Description>
+  <C>HolonomyDecomposition</C> constructs a hierarchical decomposition for a
+  transformation semigroup or for a skeleton if there is already one calculated.
+<Example>
+gap> S := Semigroup([Transformation([2,1,3,5,4,3]),Transformation([6,3,1,6,5,4])]);
+&lt;semigroup with 2 generators&gt;
+gap> hd := HolonomyDecomposition(S);
+&lt;holonomy decomposition of &lt;semigroup with 2 gens&gt;&gt;
+gap> Size(hd);
+5
+gap> Display(hd);
+1: 2
+2: (2,C2) 3
+3: (3,C2)
+4: (3,S3)
+5: (2,C2)
+</Example>
+For displaying the holonomy decomposition the components for a hierarchical
+level are displayed on a line, the parallel components separated by a space
+instead of <M>\times</M> for readability. If the component is a trivial
+group then only the number of points to act on is displayed. If the there is
+a nontrivial group acting, then we indicate the group and the number of points
+it acts on, but we do not indicate the constant maps, as they are always there.
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+
+#############################################################################
+ <#GAPDoc Label="SkeletonOf">
+ <ManSection><Heading>Underlying skeleton</Heading>
+ <Func Name="SkeletonOf" Arg="holdecomp"/>
+ <Description>
+ Returns the underlying <C>Skeleton</C> of the given holonomy decomposition.
+ </Description>
+ </ManSection>
+ <#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="GroupComponentsOnDepth">
+<ManSection><Heading>The group components</Heading>
+<Func Name="GroupComponentsOnDepth" Arg="holdecomp, depth"/>
+<Description>
+Returns the list of group components on a given depth of a holonomy
+decomposition.
+<Example>
+gap> hd := HolonomyDecomposition(FullTransformationSemigroup(4));
+&lt;holonomy decomposition of &lt;semigroup with 256 elts, 3 gens&gt;&gt;
+gap> GroupComponentsOnDepth(hd,1);                               
+[ Group([ (3,4), (1,4,3,2) ]) ]
+gap> GroupComponentsOnDepth(hd,2);                               
+[ Group([ (2,3), (1,2), (1,2,3), (1,3,2) ]) ]
+gap> GroupComponentsOnDepth(hd,3);                               
+[ Group([ (1,2) ]) ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="HolonomyInts2Sets">
+<ManSection><Heading>Cover Chains and Coordinates</Heading>
+<Func Name="HolonomyInts2Sets" Arg="holdecomp, ints"/>
+<Func Name="HolonomySets2Ints" Arg="holdecomp, sets"/>
+<Description>
+In the holonomy decomposition states of the components are subsets of the
+original state set. However in the cascaded structure these component states
+are coded by integers.
+These functions convert back and forth.
+<Example>
+gap> hd := HolonomyDecomposition(SingularSemigroup(4));
+&lt;holonomy decomposition of &lt;semigroup with 12 gens&gt;&gt;
+gap> Display(hd);                                      
+1: 4
+2: (3,S3)
+3: (2,C2)
+gap> setcoords := HolonomyInts2Sets(hd,[4,2,2]);       
+[ {2,3,4}, {1,3}, {3} ]
+gap> HolonomySets2Ints(hd,setcoords);                  
+[ 4, 2, 2 ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="Coordinates">
+<ManSection><Heading>Cover Chains and Coordinates</Heading>
+<Func Name="Coordinates" Arg="holdecomp, coverchain"/>
+<Func Name="CoverChain" Arg="holdecomp, coordinates"/>
+<Description>
+Lift for states are essentially cover (inclusion) chains to a singleton from
+the full state set, but they have to be encoded with respect to representative
+elements. Note that cover chains can be shorter than the size of the
+decomposition since there could be levels "jumped over". In that case
+the coordinate value can be any set, or just padded with zero.
+These functions convert back and forth.
+<Example>
+gap> S := Semigroup([
+> Transformation([1,2,1,1]),
+> Transformation([4,4,4,3]),
+> Transformation([3,3,4,4]),
+> Transformation([4,4,1,2]),
+> Transformation([2,1,4,4])]);
+&lt;semigroup with 5 generators&gt;
+gap> hd := HolonomyDecomposition(S);
+&lt;holonomy decomposition of &lt;semigroup with 5 gens&gt;&gt;
+gap> Display(hd);
+1: 2
+2: (3,C2)
+3: (2,C2)
+4: (2,C2)
+5: (2,C2)
+gap> setcoords := HolonomyInts2Sets(hd, [1,3,2,2,1]);
+[ {1,2,4}, {2,4}, {4}, {4}, {1} ]
+gap> chain := CoverChain(hd, setcoords);             
+[ {1,2,4}, {2,4}, {4} ]
+gap> Coordinates(hd,chain);             
+[ {1,2,4}, {2,4}, {4}, 0, 0 ]
+gap> CoverChain(hd, Coordinates(hd,chain));
+[ {1,2,4}, {2,4}, {4} ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="PermutationResetSemigroup">
+<ManSection><Heading>Permutation Reset Transformation Semigroups</Heading>
+<Func Name="PermutationResetSemigroup" Arg="groups[, shifts]"/>
+<Description>
+Constructing a transformation semigroup out of a list of groups + constant maps
+(resets).
+This is how the holonomy components are built together from the parallel group
+components.
+The first argument contains a list of permutation groups.
+The second argument is  optional. It is  vector of shifts: the  <M>i</M>th entry
+ tells how much the <M>i</M>th grouph is to be shifted.
+The last element of the shift vector tells the total number of points to act on.
+If not given, the function tries to figure out the shifts by using
+<C> LargestMovedPoint</C>.
+If your shift vector contains overlaps, then you get soemthing funny, like
+overwritten group components.
+<Example>
+gap> C3:=CyclicGroup(IsPermGroup,3);                 
+Group([ (1,2,3) ])
+gap> C2:=CyclicGroup(IsPermGroup,2);                 
+Group([ (1,2) ])
+gap> S := PermutationResetSemigroup([C3,C2]);        
+&lt;semigroup with 7 generators&gt;
+gap> AsList(S);                              
+[ Transformation( [ 1, 2, 3, 4, 5 ] ), Transformation( [ 3, 1, 2, 4, 5 ] ), 
+  Transformation( [ 2, 3, 1, 4, 5 ] ), Transformation( [ 1, 2, 3, 5, 4 ] ), 
+  Transformation( [ 3, 1, 2, 5, 4 ] ), Transformation( [ 2, 3, 1, 5, 4 ] ), 
+  Transformation( [ 1, 1, 1, 1, 1 ] ), Transformation( [ 2, 2, 2, 2, 2 ] ), 
+  Transformation( [ 3, 3, 3, 3, 3 ] ), Transformation( [ 4, 4, 4, 4, 4 ] ), 
+  Transformation( [ 5, 5, 5, 5, 5 ] ) ]
+gap> S := PermutationResetSemigroup([C2,C2],[2,5,8]);
+&lt;semigroup with 10 generators&gt;
+gap> AsList(S);                                      
+[ Transformation( [ 1, 2, 3, 4, 5, 6, 7, 8 ] ), 
+  Transformation( [ 1, 2, 4, 3, 5, 6, 7, 8 ] ), 
+  Transformation( [ 1, 2, 3, 4, 5, 7, 6, 8 ] ), 
+  Transformation( [ 1, 2, 4, 3, 5, 7, 6, 8 ] ), 
+  Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1 ] ), 
+  Transformation( [ 2, 2, 2, 2, 2, 2, 2, 2 ] ), 
+  Transformation( [ 3, 3, 3, 3, 3, 3, 3, 3 ] ), 
+  Transformation( [ 4, 4, 4, 4, 4, 4, 4, 4 ] ), 
+  Transformation( [ 5, 5, 5, 5, 5, 5, 5, 5 ] ), 
+  Transformation( [ 6, 6, 6, 6, 6, 6, 6, 6 ] ), 
+  Transformation( [ 7, 7, 7, 7, 7, 7, 7, 7 ] ), 
+  Transformation( [ 8, 8, 8, 8, 8, 8, 8, 8 ] ) ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+#############################################################################
+<#GAPDoc Label="ShiftGroupAction">
+<ManSection><Heading>Shifting the points a permutation group acts on</Heading>
+<Func Name="ShiftGroupAction" Arg="group, shift"/>
+<Description>
+Shifting the points a permutation group acts on by a given amount.
+<C>PermutationResetSemigroup</C> uses this.
+<Example>
+gap> C2 := CyclicGroup(IsPermGroup,2);
+Group([ (1,2) ])
+gap> ShiftGroupAction(C2,3);
+Group([ (4,5) ])
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HolonomyEmbedding">
+<ManSection><Heading>Embedding of the original semigroup into the holonomy decomposition</Heading>
+<Oper Name="AsPoint" Arg="cascadedstate, holonomydecomp"/>
+<Oper Name="AsCoords" Arg="point, holonomydecomp"/>
+<Oper Name="AsTransformation" Arg="cascadedtrans, holonomydecomp"/>
+<Oper Name="AsCascadedTrans" Arg="permutation, holonomydecomp"/>
+<Description>
+These are the operations to move between the original and the cascaded
+product produced by the decomposition algorithm.
+<Example>
+gap> hd := HolonomyDecomposition(FullTransformationSemigroup(5));
+&lt;holonomy decomposition of &lt;semigroup with 3125 elts, 3 gens&gt;&gt;
+gap> 5 = AsPoint(AsCoords(5,hd),hd);                             
+true
+gap> ct := AsCascadedTrans(Transformation([2,3,2,3,1]),hd);      
+Cascaded transformation in sg_sg125_sg28_sg9_sg4
+gap> AsTransformation(ct,hd);                                    
+Transformation( [ 2, 3, 2, 3, 1 ] )
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
