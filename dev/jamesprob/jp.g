@@ -8,3 +8,24 @@ UndirEdges := function(n)
   od;
   return edges;
 end;
+
+CountStronglyConnectedComps := function(n)
+  local undedges,conf,c,gr,m;
+  c := 0;
+  undedges := UndirEdges(n);
+  m := Size(undedges);
+  for conf in EnumeratorOfCartesianProduct(List([1..m], x->[true, false])) do
+    #Display(conf);
+    gr := List([1..m], function(x)
+      if conf[x] then return undedges[x];else return Reversed(undedges[x]);fi;end);
+    #Display(gr);
+    gr := List(gr, x-> Tuple(x));
+#    Display(Size(EquivalenceClasses(
+#               StronglyConnectedComponents(BinaryRelationByElements(Domain([1..n]),gr)))));
+    if Size(EquivalenceClasses(
+               StronglyConnectedComponents(BinaryRelationByElements(Domain([1..n]),gr)))) = 1 then
+      c := c + 1;
+    fi;
+  od;
+  Display(c);
+end;
