@@ -18,6 +18,19 @@ RegHom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
+RegHomHom := function(hom)
+  local G,H,rG,rH,rGhom,rHhom;
+  G := Source(hom);
+  H := Range(hom);
+  rGhom := RegHom(G);
+  rHhom := RegHom(H);
+  rG := Range(rGhom);
+  rH := Range(rHhom);
+  return GroupHomomorphismByImages(rG,rH, GeneratorsOfGroup(rG),
+                 List(GeneratorsOfGroup(G), g->Image(rHhom,Image(hom,g))));
+end;
+
+
 Reg2Points := function(G)
   return CompositionMapping(Elts2Points(G),
                  InverseGeneralMapping(RegHom(G)));
