@@ -60,3 +60,7 @@ SemidirectCascade := function(G,phi,N)
   rN := Range(RegHom(N));
   csh := CascadeShell([rG,rN]);
 end;
+
+
+AutZ3 := AutomorphismGroup(Z3);
+Z2toAutZ3 := GroupHomomorphismByImages(Z2,A,[(1,2)], [AsList(AutZ3)[2]]);
