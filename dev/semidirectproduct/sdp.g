@@ -123,6 +123,24 @@ SemidirectCascade := function(G,phi,N)
   return  List(l, x -> CascadedTransformation(csh, x));
 end;
 
+AllSemidirectProducts := function(G,N)
+  local l,A,hom, gens, P1, P2;
+  l := [];
+  A := AutomorphismGroup(N);
+  for hom in AllHomomorphismClasses(G,A) do
+    P1 := SemidirectProduct(G,hom,N);
+    Print(StructureDescription(P1)," - ");
+    gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
+    P2 := Group(gens);
+    Print(StructureDescription(P2), IdSmallGroup(P2)," ");
+    if IdSmallGroup(P1) = IdSmallGroup(P2) then
+      Print("OK\n");
+    else
+      Print("FAIL\n");
+    fi;
+  od;
+end;
+
 AutZ3 := AutomorphismGroup(Z3);
 lAutZ3 := AsList(AutZ3);
 
