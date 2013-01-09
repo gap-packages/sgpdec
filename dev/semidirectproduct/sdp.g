@@ -114,12 +114,3 @@ AllSemidirectProducts := function(G,N)
     fi;
   od;
 end;
-
-AutZ3 := AutomorphismGroup(Z3);
-lAutZ3 := AsList(AutZ3);
-
-Z2toAutZ3 := GroupHomomorphismByImages(Z2,AutZ3,[(1,2)], [lAutZ3[2]]);
-S3toAutZ3 := GroupHomomorphismByImages(S3,
-                     AutZ3,
-                     [(1,2,3),(1,2)],
-                     [lAutZ3[1],lAutZ3[2]] );
