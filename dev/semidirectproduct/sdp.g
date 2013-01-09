@@ -19,16 +19,16 @@ RegHom := function(G)
 end;
 
 #given a homomorphism, make it into homomorphism between regular representations
-RegHomHom := function(hom)
-  local G,H,rG,rH,rHhom;
-  G := Source(hom);
-  H := Range(hom);
-  rHhom := RegHom(H);
-  rG := Range(RegHom(G));
-  rH := Range(rHhom);
-  return GroupHomomorphismByImages(rG,rH, GeneratorsOfGroup(rG),
-                 List(GeneratorsOfGroup(G), g->Image(rHhom,Image(hom,g))));
-end;
+#RegHomHom := function(hom)
+#  local G,H,rG,rH,rHhom;
+#  G := Source(hom);
+#  H := Range(hom);
+#  rHhom := RegHom(H);
+#  rG := Range(RegHom(G));
+#  rH := Range(rHhom);
+#  return GroupHomomorphismByImages(rG,rH, GeneratorsOfGroup(rG),
+#                 List(GeneratorsOfGroup(G), g->Image(rHhom,Image(hom,g))));
+#end;
 
 
 Reg2Points := function(G)
@@ -92,13 +92,26 @@ end;
 SemidirectCascade := function(G,phi,N)
   local rG,
         rN,
-        csh;
+        csh,l,rphi,gens,i;
   rG := Range(RegHom(G));
   rN := Range(RegHom(N));
   csh := CascadeShell([rG,rN]);
+  l := [];
+  for i in AllCoords(csh) do
+    Add(l,SemidirectElementDepFuncT(i,
+            Reg2Points(rG),
+            Reg2Points(rN),
+            rphi,
+            csh));
+  od;
+  gens := List(l, x -> CascadedTransformation(csh, x));
 end;
 
-
-
 AutZ3 := AutomorphismGroup(Z3);
-Z2toAutZ3 := GroupHomomorphismByImages(Z2,AutZ3,[(1,2)], [AsList(AutZ3)[2]]);
+lAutZ3 := AsList(AutZ3);
+
+Z2toAutZ3 := GroupHomomorphismByImages(Z2,AutZ3,[(1,2)], [lAutZ3[2]]);
+S3toAutZ3 := GroupHomomorphismByImages(S3,
+                     AutZ3,
+                     [(1,2,3),(1,2)],
+                     [lAutZ3[1],lAutZ3[2]] );
