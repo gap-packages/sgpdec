@@ -85,6 +85,13 @@ local j,states, actions,depfunctable,arg, state;
   return depfunctable;
 end;
 
+RegularizeAutomorphism := function(aut)
+  local G,rh;
+  G := Source(aut);
+  rh := RegHom(G);
+  return CompositionMapping(rh,
+                 CompositionMapping(aut, InverseGeneralMapping(rh)));
+end;
 
 # G top level group
 # phi: G -> Aut(N)
@@ -92,11 +99,20 @@ end;
 SemidirectCascade := function(G,phi,N)
   local rG,
         rN,
-        csh,l,rphi,gens,i;
+        csh,l,rphi,tmp,i,autgens,gens;
   rG := Range(RegHom(G));
   rN := Range(RegHom(N));
   csh := CascadeShell([rG,rN]);
   l := [];
+  tmp := CompositionMapping(phi,InverseGeneralMapping(RegHom(G)));
+  #get the generator of the automorphism group
+  gens := GeneratorsOfGroup(Source(phi));
+  autgens := List(gens,g -> RegularizeAutomorphism(Image(phi,g)));
+  rphi := GroupHomomorphismByImages(
+                  Source(tmp),
+                  Group(autgens),
+                  GeneratorsOfGroup(Source(tmp)),
+                  autgens);
   for i in AllCoords(csh) do
     Add(l,SemidirectElementDepFuncT(i,
             Reg2Points(rG),
@@ -104,7 +120,7 @@ SemidirectCascade := function(G,phi,N)
             rphi,
             csh));
   od;
-  gens := List(l, x -> CascadedTransformation(csh, x));
+  return  List(l, x -> CascadedTransformation(csh, x));
 end;
 
 AutZ3 := AutomorphismGroup(Z3);
