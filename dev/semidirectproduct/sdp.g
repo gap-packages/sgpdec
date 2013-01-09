@@ -18,35 +18,9 @@ RegHom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
-#given a homomorphism, make it into homomorphism between regular representations
-#RegHomHom := function(hom)
-#  local G,H,rG,rH,rHhom;
-#  G := Source(hom);
-#  H := Range(hom);
-#  rHhom := RegHom(H);
-#  rG := Range(RegHom(G));
-#  rH := Range(rHhom);
-#  return GroupHomomorphismByImages(rG,rH, GeneratorsOfGroup(rG),
-#                 List(GeneratorsOfGroup(G), g->Image(rHhom,Image(hom,g))));
-#end;
-
-
 Reg2Points := function(G)
   return CompositionMapping(Elts2Points(G),
                  InverseGeneralMapping(RegHom(G)));
-end;
-
-SDAct := function(x1,x2,rG2p, rN2p, rphi)
-  local nx,h1,n1,h2,n2,theta;
-  nx := [];
-  h1 := PreImage(rG2p, x1[1]);
-  h2 := PreImage(rG2p, x2[1]);
-  nx[1] := h1 * h2;
-  n1 := PreImage(rN2p, x1[2]);
-  n2 := PreImage(rN2p, x2[2]);
-  theta := Image(rphi, h1);
-  nx[2] := n1 * Image(theta, n2);
-  return nx;
 end;
 
 SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
