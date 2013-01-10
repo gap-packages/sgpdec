@@ -23,6 +23,12 @@ Reg2Points := function(G)
                  InverseGeneralMapping(RegHom(G)));
 end;
 
+ActionIsom := function(G)
+  local stab,stabrt;
+  stab := Stabilizer(G,1);
+  stabrt :=
+end;
+
 SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
   local ca, h1,h2,n2,theta;
   ca := [];
