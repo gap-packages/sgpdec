@@ -62,6 +62,28 @@ SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
   return ca;
 end;
 
+SDElementDepFuncT := function(t,G2p,p2G, N2p,p2N, phi, csh)
+local j,states, actions,depfunctable,arg, state;
+
+  #the states
+  states := AllCoords(csh);
+  #the lookup for the new dependencies
+  depfunctable := [];
+  #we go through all states
+  for state in states  do
+    actions := SDCompActs(state,t,G2p,p2G, N2p,p2N, phi);
+    #examine whether there is a nontrivial action, then add
+    for j in [1..Length(actions)] do
+      if not IsOne(actions[j]) then
+        arg := state{[1..(j-1)]};
+        RegisterNewDependency(depfunctable, arg, actions[j]);
+      fi;
+    od;
+  od;
+  return depfunctable;
+end;
+
+
 SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, csh)
 local j,states, actions,depfunctable,arg, state;
 
@@ -90,6 +112,31 @@ RegularizeAutomorphism := function(aut)
   return CompositionMapping(rh,
                  CompositionMapping(aut, InverseGeneralMapping(rh)));
 end;
+
+SDCascade  := function(G,phi,N)
+  local G2p,p2G,
+            N2p,p2N,csh,l,rphi,tmp,i,autgens,gens,genGcoords, genHcoords,rGhom, rNhom;
+  csh := CascadeShell([G,N]);
+  l := [];
+  tmp := ActionIsom(G);
+  G2p := tmp[1];
+  p2G := tmp[2];
+  tmp := ActionIsom(N);
+  N2p := tmp[1];
+  p2N := tmp[2];
+  genGcoords := List(GeneratorsOfGroup(G), g -> [Image(G2p,g),1]);
+  genHcoords := List(GeneratorsOfGroup(N), n -> [1,Image(N2p,n)]);
+  for i in Concatenation(genGcoords,genHcoords) do
+  #for i in AllCoords(csh) do #gencoords do
+    Add(l,SDElementDepFuncT(i,
+            G2p,p2G,
+            N2p,p2N,
+            phi,
+            csh));
+  od;
+  return  List(l, x -> CascadedTransformation(csh, x));
+end;
+
 
 # G top level group
 # phi: G -> Aut(N)
