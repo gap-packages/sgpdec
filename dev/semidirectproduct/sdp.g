@@ -32,6 +32,21 @@ ActionIsom := function(G)
           MappingByFunction(Domain(MovedPoints(G)),G,invf)];
 end;
 
+SDCompActs := function(x1,x2,G2p,p2G, N2p,p2N, phi)
+  local ca, g1,g2,n2,theta;
+  ca := [];
+  g1 := Image(p2G, x1[1]);
+  g2 := Image(p2G, x2[1]);
+  #top level action
+  ca[1] := g2;
+  #n1 does not matter
+  n2 := Image(p2N, x2[2]);
+  theta := Image(phi, g1);
+  #bottom level action
+  ca[2] := Image(theta, n2);
+  return ca;
+end;
+
 SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
   local ca, h1,h2,n2,theta;
   ca := [];
