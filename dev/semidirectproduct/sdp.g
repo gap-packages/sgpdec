@@ -1,4 +1,4 @@
-#mapping group elements bijectively to an index integer
+#bijective mapping group elements bijectively to an index integer
 #based on the positions in the ordered list of the elements
 Elts2Points := function(G)
 local l,n;
@@ -75,7 +75,8 @@ end;
 SemidirectCascade := function(G,phi,N)
   local rG,
         rN,
-        csh,l,rphi,tmp,i,autgens,gens,genGcoords, genHcoords,rGhom, rNhom;
+        csh,
+        l,rphi,tmp,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
   rGhom := RegHom(G);
   rNhom := RegHom(N);
   rG := Range(rGhom);
@@ -91,8 +92,10 @@ SemidirectCascade := function(G,phi,N)
                   Group(autgens),
                   GeneratorsOfGroup(Source(tmp)),
                   autgens);
-  genGcoords := List(GeneratorsOfGroup(rG), g -> [Image(Reg2Points(G),g),1]);
-  genHcoords := List(GeneratorsOfGroup(rN), h -> [1,Image(Reg2Points(N),h)]);
+  rG2p := Reg2Points(G);
+  rN2p := Reg2Points(N);
+  genGcoords := List(GeneratorsOfGroup(rG), g->[Image(rG2p,g),Image(rN2p,())]);
+  genHcoords := List(GeneratorsOfGroup(rN), h->[Image(rG2p,()),Image(rN2p,h)]);
   for i in Concatenation(genGcoords,genHcoords) do
   #for i in AllCoords(csh) do #gencoords do
     Add(l,SemidirectElementDepFuncT(i,
