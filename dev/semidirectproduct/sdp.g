@@ -24,9 +24,12 @@ Reg2Points := function(G)
 end;
 
 ActionIsom := function(G)
-  local stab,stabrt;
-  stab := Stabilizer(G,1);
-  stabrt :=
+  local stabrt,f,invf;
+  stabrt := RightTransversal(G,Stabilizer(G,1));
+  f := function(g) return  PositionCanonical(stabrt,g);end;
+  invf := function(p) return stabrt[p];end;
+  return [MappingByFunction(G, Domain(MovedPoints(G)),f,invf),
+          MappingByFunction(Domain(MovedPoints(G)),G,invf)];
 end;
 
 SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
