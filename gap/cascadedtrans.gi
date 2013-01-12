@@ -256,6 +256,11 @@ local csh, i, coords, val;
     #printing the function definition
     if i = 1 then #the top level is not a function application mathematically
       Print("#",i,": ", csh[i],"\n");
+      #do the first level here
+      val := ct!.depfunc([]);
+      if not IsOne(val) then
+        Print(CoordTransConverter(csh,i)(val),"\n");
+      fi;
     else
       Print("#",i,": ",NameOfDependencyDomain(csh,i)," -> ",csh[i],"\n");
     fi;
@@ -263,12 +268,8 @@ local csh, i, coords, val;
     for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
       val := ct!.depfunc(coords);
       if not IsOne(val) then
-        if i = 1 then #the top level is not a math function application
-          Print(CoordTransConverter(csh,i)(val),"\n");
-        else
-          Print("[",ConvertCoords2String(csh, coords),
-                "] -> ", CoordTransConverter(csh,i)(val),"\n");
-        fi;
+        Print("[",ConvertCoords2String(csh, coords),
+              "] -> ", CoordTransConverter(csh,i)(val),"\n");
       fi;
     od;
   od;
