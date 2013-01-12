@@ -117,7 +117,7 @@ CheckAllSemidirectProducts := function(G,N)
   A := AutomorphismGroup(N);
   for hom in AllHomomorphismClasses(G,A) do
     P1 := SemidirectProduct(G,hom,N);
-    Print(StructureDescription(P1),"#", Order(P1), " - \c");
+    Print(StructureDescription(P1),"#", Order(P1), " = \c");
     gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
     P2 := Group(gens);
     Print(StructureDescription(P2),"#", Order(P2)," \c");
