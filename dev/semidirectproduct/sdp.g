@@ -103,8 +103,8 @@ SemidirectCascade := function(G,phi,N)
   for i in Concatenation(genGcoords,genHcoords) do
   #for i in AllCoords(csh) do #gencoords do
     Add(l,SemidirectElementDepFuncT(i,
-            Reg2Points(rG),
-            Reg2Points(rN),
+            rG2p,
+            rN2p,
             rphi,
             csh));
   od;
@@ -117,15 +117,16 @@ CheckAllSemidirectProducts := function(G,N)
   A := AutomorphismGroup(N);
   for hom in AllHomomorphismClasses(G,A) do
     P1 := SemidirectProduct(G,hom,N);
-    Print(StructureDescription(P1),"#", Order(P1), " - ");
+    Print(StructureDescription(P1),"#", Order(P1), " - \c");
     gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
     P2 := Group(gens);
-    Print(StructureDescription(P2),"#", Order(P2), IdSmallGroup(P2)," ");
-    if IdSmallGroup(P1) = IdSmallGroup(P2) then
-      Print("OK\n");
-    else
-      Print("FAIL\n");
+    Print(StructureDescription(P2),"#", Order(P2)," \c");
+    #if IdSmallGroup(P1) <> IdSmallGroup(P2) then
+    if IsomorphismGroups(P1, P2) = fail then
+      Print("***FAIL***\n");
       #PrintMappings(hom);
+    else
+      Print("\n");
     fi;
   od;
 end;
