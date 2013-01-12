@@ -60,12 +60,14 @@ local j,states, actions,depfunctable,arg, state;
   return depfunctable;
 end;
 
-RegularizeAutomorphism := function(aut)
-  local G,rh;
-  G := Source(aut);
-  rh := RegHom(G);
-  return CompositionMapping(rh,
-                 CompositionMapping(aut, InverseGeneralMapping(rh)));
+#converting a group automorphism to a the corresponding
+#automorphism on the regular representation
+RegularizeAutomorphism := function(aut,reghom)
+  #local G,rh;
+  #G := Source(aut);
+  #rh := RegHom(G);
+  return CompositionMapping(reghom,
+                 CompositionMapping(aut, InverseGeneralMapping(reghom)));
 end;
 
 
@@ -76,21 +78,23 @@ SemidirectCascade := function(G,phi,N)
   local rG,
         rN,
         csh,
-        l,rphi,tmp,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
+        l,rphi,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
   rGhom := RegHom(G);
   rNhom := RegHom(N);
   rG := Range(rGhom);
   rN := Range(rNhom);
   csh := CascadeShell([rG,rN]);
   l := [];
-  tmp := CompositionMapping(phi,InverseGeneralMapping(rGhom));
-  #get the generator of the automorphism group
-  gens := GeneratorsOfGroup(Source(phi));
-  autgens := List(gens,g -> RegularizeAutomorphism(Image(phi,g)));
+  #get the generator sets
+  gens := GeneratorsOfGroup(G);
+  autgens := List(gens,g -> Image(phi,g));
+  #make both sets regular
+  gens := List(gens, g -> Image(rGhom,g));
+  autgens := List(autgens, a -> RegularizeAutomorphism(a,rNhom));
   rphi := GroupHomomorphismByImages(
-                  Source(tmp),
+                  rG,
                   Group(autgens),
-                  GeneratorsOfGroup(Source(tmp)),
+                  gens,
                   autgens);
   rG2p := Reg2Points(G);
   rN2p := Reg2Points(N);
@@ -121,7 +125,7 @@ CheckAllSemidirectProducts := function(G,N)
       Print("OK\n");
     else
       Print("FAIL\n");
-      PrintMappings(hom);
+      #PrintMappings(hom);
     fi;
   od;
 end;
