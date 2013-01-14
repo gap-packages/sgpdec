@@ -17,6 +17,8 @@ RegHom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
+Reg := function(G) return Range(RegHom(G)); end;
+
 #elements of the regular representation coded as integers
 Reg2Points := function(G)
   return CompositionMapping(Elts2Points(G),
@@ -38,6 +40,27 @@ SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
   return ca;
 end;
 
+SDActionCoords := function(x1,x2,rG2p, rN2p, rphi)
+  local acts;
+  acts := SDComponentActions(x1,x2,rG2p, rN2p, rphi);
+  acts[1] := Image(rG2p,PreImage(rG2p,x1[1])*acts[1]);
+  acts[2] := Image(rN2p,PreImage(rN2p,x1[2])*acts[2]);
+  return acts;
+end;
+
+SDFlatAction := function(t,rG2p, rN2p, rphi, csh)
+local i,states, nstate, state,fla;
+
+  #the states
+states := AllCoords(csh);
+fla := [];
+  #we  states
+  for i in [1..Size(states)]  do
+    nstate  := SDActionCoords(states[i],t,rG2p,rN2p, rphi);
+    Add(fla, Position(states,nstate));
+  od;
+  return fla;
+end;
 
 SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, csh)
 local j,states, actions,depfunctable,arg, state;
@@ -115,7 +138,7 @@ CheckAllSemidirectProducts := function(G,N)
   local l,A,hom, gens, P1, P2;
   l := [];
   A := AutomorphismGroup(N);
-  for hom in AllHomomorphismClasses(G,A) do
+  for hom in AllHomomorphisms(G,A) do #AllHomomorphismClasses(G,A) do
     P1 := SemidirectProduct(G,hom,N);
     Print(StructureDescription(P1),"#", Order(P1), " = \c");
     gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
