@@ -1,4 +1,4 @@
-#bijective mapping group elements bijectively to an index integer
+#mapping group elements bijectively to an index integer
 #based on the positions in the ordered list of the elements
 Elts2Points := function(G)
 local l,n;
@@ -13,7 +13,7 @@ RegHom := function(G)
   l :=  AsSortedList(G);
   n := Size(l);
   Ggens := GeneratorsOfGroup(G);
-  Rgens := List(Ggens, g -> PermList(ActionOn(l,g,OnRight)));
+  Rgens := List(Ggens, g -> PermList(ActionOn(l,g,OnLeftInverse)));
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
@@ -138,7 +138,7 @@ CheckAllSemidirectProducts := function(G,N)
   local l,A,hom, gens, P1, P2;
   l := [];
   A := AutomorphismGroup(N);
-  for hom in AllHomomorphisms(G,A) do #AllHomomorphismClasses(G,A) do
+  for hom in AllHomomorphismClasses(G,A) do
     P1 := SemidirectProduct(G,hom,N);
     Print(StructureDescription(P1),"#", Order(P1), " = \c");
     gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
