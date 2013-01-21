@@ -1,5 +1,5 @@
 #############################################################################
-##
+## 
 ## holonomy.gd           SgpDec package
 ##
 ## Copyright (C) 2008-2012
@@ -40,3 +40,9 @@ HolonomyDecompositionType  := NewType(
     IsHolonomyDecomposition and IsHolonomyDecompositionRep);
 
 DeclareInfoClass("HolonomyInfoClass");
+
+#HolonomyGroup(hd, level, slot) - acting on coded states
+#HolonomyStateSet - coded state set
+#DecodedHolonomyStateSet
+#PermutatorSet union of DecodedHolonomyStateSet
+#PermutatorGenerators/GeneratorWords
