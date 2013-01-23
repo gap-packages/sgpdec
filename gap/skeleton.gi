@@ -381,6 +381,7 @@ local permutators,i,j,nset,scc,word;
   #we grab the equivalence class of the set, its strongly connected component
   scc := List(OrbSCC(sk.orb)[OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
               x->sk.orb[x]);
+  Sort(scc); #for quicker lookup
   #for all elements of the equivalence class of the set
   for i in [1..Length(scc)] do
     #for all generators
@@ -388,11 +389,9 @@ local permutators,i,j,nset,scc,word;
       #we hit an element in the class by a generator
       nset := OnFiniteSets(scc[i],sk.gens[j]);
       #if it stays in the class then it will give rise to a permutator
-      if nset in scc then #this could be optimized TODO
+      if nset in scc then
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
-        #if not (word in permutators) then
-          AddSet(permutators, word);#
-        #fi;
+        AddSet(permutators, word);
       fi;
     od;
   od;
