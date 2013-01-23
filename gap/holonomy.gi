@@ -198,6 +198,15 @@ local sets,i, P, skeleton;
   return sets;
 end);
 
+#all coordinate lifts of a point
+InstallGlobalFunction(AllHolonomyLifts,
+function(hd, point)
+local sk;
+  sk := SkeletonOf(hd);
+  return List(AllCoverChainsToSet(sk, FiniteSet([point],sk.degree)),
+            c -> HolonomySets2Ints(hd,Coordinates(hd,c)));
+end);
+
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallMethod(Interpret,
