@@ -373,12 +373,12 @@ local coll,i;
   return coll;
 end);
 
-InstallGlobalFunction(Permutators,
+InstallGlobalFunction(PermutatorGeneratorWords,
 function(sk,set)
 local permutators,i,j,nset,scc,word;
   permutators := [];
-  Sort(permutators);
 
+  #we grab the equivalence class of the set, its strongly connected component
   scc := List(OrbSCC(sk.orb)[OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
               x->sk.orb[x]);
   #for all elements of the equivalence class of the set
@@ -390,9 +390,9 @@ local permutators,i,j,nset,scc,word;
       #if it stays in the class then it will give rise to a permutator
       if nset in scc then #this could be optimized TODO
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
-        if not (word in permutators) then
-          Add(permutators, word, PositionSorted(permutators, word));
-        fi;
+        #if not (word in permutators) then
+          AddSet(permutators, word);#
+        #fi;
       fi;
     od;
   od;
