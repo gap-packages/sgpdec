@@ -373,10 +373,13 @@ local coll,i;
   return coll;
 end);
 
-InstallGlobalFunction(PermutatorGeneratorWords,
+################################################################################
+### PERMUTATOR #################################################################
+################################################################################
+InstallGlobalFunction(RoundTripWords,
 function(sk,set)
-local permutators,i,j,nset,scc,word;
-  permutators := [];
+local roundtrips,i,j,nset,scc,word;
+  roundtrips := [];
 
   #we grab the equivalence class of the set, its strongly connected component
   scc := List(OrbSCC(sk.orb)[OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
@@ -391,41 +394,48 @@ local permutators,i,j,nset,scc,word;
       #if it stays in the class then it will give rise to a permutator
       if nset in scc then
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
-        AddSet(permutators, word);
+        AddSet(roundtrips, word);
       fi;
     od;
   od;
-  #conjugation here
-  permutators := List(permutators,
+  #conjugation here - we have to relocate the roundtrips to the set
+  roundtrips := List(roundtrips,
                       x -> Concatenation(GetOUTw(sk,set), x, GetINw(sk,set)));
   if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
     #reducing on sets yield alien actions
-    permutators := List(permutators,
+    roundtrips := List(roundtrips,
                         x -> Reduce2StraightWord(x, sk.gens, sk.id, \*));
-    # straightening may introduce duplicates
-    permutators := DuplicateFreeList(permutators);
+    # straightening may introduce duplicates #TODO Does it really?
+    roundtrips := DuplicateFreeList(roundtrips);
   fi;
-  return permutators;
+  return roundtrips;
+end);
+
+InstallGlobalFunction(PermutatorGeneratorWords,
+function(sk,set)
+  return Filtered(RoundTripWords(sk,set),
+                 w -> not (IsIdentityOnFiniteSet(
+                         BuildByWord(w, sk.gens, sk.id,\*) ,set)));
 end);
 
 InstallGlobalFunction(PermutatorGenerators,
 function(sk,set)
-  return Filtered(Permutators(sk,set),
-                 x -> not (IsIdentityOnFiniteSet(
-                         BuildByWord(x, sk.gens, sk.id,\*) ,set)));
+  return List(PermutatorGeneratorWords(sk,set),
+              w -> BuildByWord(w, sk.gens, sk.id,\*));
 end);
+
 
 InstallGlobalFunction(CoverGroup,
 function(sk,set)
 local gens;
-  gens := AsSet(List(List(PermutatorGenerators(sk,set),
-                  x->BuildByWord(x, sk.gens, sk.id,\*)),
+  gens := AsSet(List(PermutatorGenerators(sk,set),
                   x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
                 );
   if IsEmpty(gens) then gens := [()]; fi;
   return Group(gens);
 end);
 
+################################################################################
 InstallGlobalFunction(DepthOfSkeleton,
 function(sk)
   return sk.depth;
