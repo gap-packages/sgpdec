@@ -376,6 +376,7 @@ end);
 ################################################################################
 ### PERMUTATOR #################################################################
 ################################################################################
+#roundtrips from the representative conjugated to the given set
 InstallGlobalFunction(RoundTripWords,
 function(sk,set)
 local roundtrips,i,j,nset,scc,word;
@@ -411,11 +412,17 @@ local roundtrips,i,j,nset,scc,word;
   return roundtrips;
 end);
 
+#roundtrip words filtered for not being the identity
 InstallGlobalFunction(PermutatorGeneratorWords,
 function(sk,set)
-  return Filtered(RoundTripWords(sk,set),
-                 w -> not (IsIdentityOnFiniteSet(
-                         BuildByWord(w, sk.gens, sk.id,\*) ,set)));
+  local roundtripwords, permgenwords;
+  roundtripwords := RoundTripWords(sk,set);
+  permgenwords := Filtered(roundtripwords,
+                          w -> not (IsIdentityOnFiniteSet(
+                                  BuildByWord(w, sk.gens, sk.id,\*) ,set)));
+  Info(SkeletonInfoClass, 2, "Nontrivial permutators/roundtrips: ",
+       Size(permgenwords), "/", Size(roundtripwords));
+  return permgenwords;
 end);
 
 InstallGlobalFunction(PermutatorGenerators,
