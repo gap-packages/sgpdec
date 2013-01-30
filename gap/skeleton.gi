@@ -425,7 +425,7 @@ function(sk,set)
 end);
 
 
-InstallGlobalFunction(CoverGroup,
+InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
 local gens;
   gens := AsSet(List(PermutatorGenerators(sk,set),
@@ -517,7 +517,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     od;
     AppendTo(out,"color=\"black\";");
     if DepthOfSet(sk, node) < DepthOfSkeleton(sk) then
-      G := CoverGroup(sk, node);
+      G := HolonomyGroup@(sk, node);
       if not IsTrivial(G) then
         AppendTo(out,"style=\"filled\";fillcolor=\"lightgrey\";");
         if SgpDecOptionsRec.SMALL_GROUPS then

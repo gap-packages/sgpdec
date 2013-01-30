@@ -46,7 +46,7 @@ DeclareGlobalFunction("PermutatorGeneratorWords");
 DeclareGlobalFunction("PermutatorGenerators");
 DeclareGlobalFunction("PermutatorSemigroup");
 DeclareGlobalFunction("PermutatorGroup");
-DeclareGlobalFunction("CoverGroup");
+DeclareGlobalFunction("HolonomyGroup@");
 
 # to be reimplemented
 DeclareGlobalFunction("ActionMatrix");
