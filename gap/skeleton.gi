@@ -441,6 +441,19 @@ function(sk,set)
   return GeneratorsOfSemigroup(PermutatorSemigroup(sk,set));
 end);
 
+InstallGlobalFunction(PermutatorGroup,
+function(sk,set)
+local permgens,gens,n;
+  permgens := PermutatorGenerators(sk,set);
+  gens := AsSet(List(permgens,
+               t -> AsPermutation(RestrictedTransformation(t,AsList(set)))));
+  Info(SkeletonInfoClass, 2,
+       "Permutator group generators/Permutators generators: ",
+       Size(permgens), "/", Size(gens));
+  return Group(gens);
+end);
+
+
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
 local gens;
