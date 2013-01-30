@@ -433,7 +433,11 @@ local permgens,gens;
   gens := DuplicateFreeList(permgens);
   Info(SkeletonInfoClass, 2, "Permutator generators/Nonidentity roundtrips: ",
        Size(permgens), "/", Size(gens));
-  return Semigroup(gens);
+  if IsEmpty(gens) then
+    return Semigroup(IdentityTransformation(sk.degree));
+  else
+    return Semigroup(gens);
+  fi;
 end);
 
 InstallGlobalFunction(PermutatorGenerators,
@@ -453,15 +457,29 @@ local permgens,gens,n;
   return Group(gens);
 end);
 
+InstallGlobalFunction(PermutatorHolonomyHomomorphism,
+function(sk,set)
+  local permgroup,imggens,homgens;
+  permgroup := PermutatorGroup(sk,set);
+  imggens := List(GeneratorsOfGroup(permgroup),
+                  g->PermList(ActionOn(CoveringSetsOf(sk,set),g,OnFiniteSets)));
+  homgens := DuplicateFreeList(imggens);
+  return GroupHomomorphismByImages(permgroup,
+                 Group(homgens),
+                 GeneratorsOfGroup(permgroup),
+                 imggens);
+end);
+
 
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
-local gens;
-  gens := AsSet(List(PermutatorGenerators(sk,set),
-                  x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
-                );
-  if IsEmpty(gens) then gens := [()]; fi;
-  return Group(gens);
+#local gens;
+#  gens := AsSet(List(PermutatorGenerators(sk,set),
+#                  x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
+#                );
+#  if IsEmpty(gens) then gens := [()]; fi;
+#  return Group(gens);
+  return Image(PermutatorHolonomyHomomorphism(sk,set));
 end);
 
 ################################################################################

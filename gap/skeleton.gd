@@ -46,6 +46,7 @@ DeclareGlobalFunction("PermutatorGeneratorWords");
 DeclareGlobalFunction("PermutatorGenerators");
 DeclareGlobalFunction("PermutatorSemigroup");
 DeclareGlobalFunction("PermutatorGroup");
+DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
 DeclareGlobalFunction("HolonomyGroup@");
 
 DeclareInfoClass("SkeletonInfoClass");
