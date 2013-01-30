@@ -433,6 +433,7 @@ local permgens,gens;
   gens := DuplicateFreeList(permgens);
   Info(SkeletonInfoClass, 2, "Permutator generators/Nonidentity roundtrips: ",
        Size(permgens), "/", Size(gens));
+  #we have to make a monoid at least to have at least a generator
   if IsEmpty(gens) then
     return Semigroup(IdentityTransformation(sk.degree));
   else
@@ -452,7 +453,7 @@ local permgens,gens,n;
   gens := AsSet(List(permgens,
                t -> AsPermutation(RestrictedTransformation(t,AsList(set)))));
   Info(SkeletonInfoClass, 2,
-       "Permutator group generators/Permutators generators: ",
+       "Permutator group generators/Semigroup generators: ",
        Size(permgens), "/", Size(gens));
   return Group(gens);
 end);
