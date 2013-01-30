@@ -425,12 +425,21 @@ function(sk,set)
   return permgenwords;
 end);
 
-InstallGlobalFunction(PermutatorGenerators,
+InstallGlobalFunction(PermutatorSemigroup,
 function(sk,set)
-  return List(PermutatorGeneratorWords(sk,set),
-              w -> BuildByWord(w, sk.gens, sk.id,\*));
+local permgens,gens;
+  permgens := List(PermutatorGeneratorWords(sk,set),
+                   w -> BuildByWord(w, sk.gens, sk.id,\*));
+  gens := DuplicateFreeList(permgens);
+  Info(SkeletonInfoClass, 2, "Permutator generators/Nonidentity roundtrips: ",
+       Size(permgens), "/", Size(gens));
+  return Semigroup(gens);
 end);
 
+InstallGlobalFunction(PermutatorGenerators,
+function(sk,set)
+  return GeneratorsOfSemigroup(PermutatorSemigroup(sk,set));
+end);
 
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
