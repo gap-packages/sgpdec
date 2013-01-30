@@ -33,7 +33,6 @@ DeclareGlobalFunction("RandomCoverChain");
 DeclareGlobalFunction("AllCoverChainsToSet");
 DeclareGlobalFunction("AllCoverChains");
 DeclareGlobalFunction("NumberOfCoverChainsToSet");
-DeclareGlobalFunction("CoverGroup");
 DeclareGlobalFunction("DepthOfSkeleton");
 DeclareGlobalFunction("TopSet");
 DeclareGlobalFunction("DepthOfSet");
@@ -42,10 +41,12 @@ DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("DotSkeleton");
 #PERMUTATORS
-DeclareGlobalFunction("Permutators");
-DeclareGlobalFunction("PermutatorGenerators");
-
+DeclareGlobalFunction("RoundTripWords");
 DeclareGlobalFunction("PermutatorGeneratorWords");
+DeclareGlobalFunction("PermutatorGenerators");
+DeclareGlobalFunction("PermutatorSemigroup");
+DeclareGlobalFunction("PermutatorGroup");
+DeclareGlobalFunction("CoverGroup");
 
 # to be reimplemented
 DeclareGlobalFunction("ActionMatrix");
