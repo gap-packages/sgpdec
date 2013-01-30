@@ -2,26 +2,27 @@ TestSkeletonCoveringSets := function(sk)
 local point, tiles;
   for point in ImageSets(sk) do
     tiles := CoveringSetsOf(sk,point);
-    if IsSingleton(point) then 
+    if IsSingleton(point) then
       if not IsEmpty(tiles) then
-        Print("FAIL\n");Error("Skeleton: singleton set tiled!\n"); 
+        Print("FAIL\n");Error("Skeleton: singleton set covered!\n");
       fi;
     else
-      if UnionFiniteSet(tiles) <> point then 
-        Print("FAIL\n");Error("Skeleton: tiles do not cover!\n"); 
+      if UnionFiniteSet(tiles) <> point then
+        Print("FAIL\n");Error("Skeleton: covers do not cover!\n");
       fi;
     fi;
   od;
 end;
 
 TestSkeletonINOUTs := function(sk)
-local img;  
-  Print("INOUT");  
+local img;
+  Print("INOUT");
   for img in ImageSets(sk) do
-    if IsIdentityOnFiniteSet(GetIN(sk,img)*GetOUT(sk,img), RepresentativeSet(sk,img)) then
+    if IsIdentityOnFiniteSet(GetIN(sk,img)*GetOUT(sk,img),
+               RepresentativeSet(sk,img)) then
       Print("#\c");
     else
-      Print("FAIL\n");Error("Skeleton: INOUTs don't give the identity!\n"); 
+      Print("FAIL\n");Error("Skeleton: INOUTs don't give the identity!\n");
     fi;
   od;
   Print("\nIN");
@@ -29,7 +30,7 @@ local img;
     if OnFiniteSets(RepresentativeSet(sk,img), GetIN(sk,img)) = img then
       Print("#\c");
     else
-      Print("FAIL\n");Error("Skeleton: IN does not go into the set!\n"); 
+      Print("FAIL\n");Error("Skeleton: IN does not go into the set!\n");
     fi;
   od;
   Print("\nOUT");
@@ -37,10 +38,10 @@ local img;
     if OnFiniteSets(img, GetOUT(sk,img)) = RepresentativeSet(sk,img) then
       Print("#\c");
     else
-      Print("FAIL\n");Error("Skeleton: OUT does not go into the representative!\n"); 
+      Print("FAIL\n");
+      Error("Skeleton: OUT does not go into the representative!\n");
     fi;
   od;
-  
 end;
 
 TestSkeleton := function(ts)
@@ -53,5 +54,3 @@ local t,sk;
 
   Print("PASSED in ",Runtime() - t,"ms\n");
 end;
-
-
