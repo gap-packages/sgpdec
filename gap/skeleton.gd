@@ -48,5 +48,7 @@ DeclareGlobalFunction("PermutatorSemigroup");
 DeclareGlobalFunction("PermutatorGroup");
 DeclareGlobalFunction("HolonomyGroup@");
 
+DeclareInfoClass("SkeletonInfoClass");
+
 # to be reimplemented
 DeclareGlobalFunction("ActionMatrix");
