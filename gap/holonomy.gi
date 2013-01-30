@@ -93,7 +93,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
       coversets := CoveringSetsOf(holrec.skeleton,rep);
-      Add(groups,CoverGroup(holrec.skeleton, rep));#we keep them unshifted
+      Add(groups,HolonomyGroup@(holrec.skeleton, rep));#stored unshifted
       shift := shift + Size(coversets);
       Add(shifts,shift);
       Add(reps,rep);
