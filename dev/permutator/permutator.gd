@@ -11,22 +11,6 @@
 ##
 ## Depends on straight words.
 
-
-##  <#GAPDoc Label="AllPermutatorsByFullEnumeration">
-##  <ManSection><Heading>AllPermutatorsByFullEnumeration</Heading>
-##  <Func Name="AllPermutatorsByFullEnumeration" Arg="finset,transfs"/>
-##  <Description>
-##  Returns the set of all permutators of  
-##  the given subset, but the underlying algorithm fully enumerates the semigroup.
-##  This can be used for checking the results of more efficient algorithms.
-##  <Example>
-##  </Example>
-##  </Description>
-##  </ManSection>
-##   <#/GAPDoc>
-DeclareGlobalFunction("AllPermutatorsByFullEnumeration");
-
-
 ##  <#GAPDoc Label="PermutatorSplitter">
 ##  <ManSection><Heading>PermutatorSplitter</Heading>
 ##  <Func Name="PermutatorSplitter" Arg="word, finset, transfs"/>
@@ -51,5 +35,3 @@ DeclareGlobalFunction("PermutatorSplitter");
 ##  </ManSection>
 ##   <#/GAPDoc>
 DeclareGlobalFunction("IsMinimalPermutator");
-
-
