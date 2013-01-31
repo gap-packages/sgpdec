@@ -92,7 +92,7 @@ on the orbit of the state set.
 <#Include Label="Skeleton">
 <#Include Label="ImageSets">
 <#Include Label="CoveringSetsOf">
-<#Include Label="DepthOfSet">
+<#Include Label="SkeletonDepth">
 <#Include Label="TopSet">
 <#Include Label="SkeletonClasses">
 <#Include Label="RepresentativeSet">
