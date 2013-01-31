@@ -42,7 +42,7 @@ local chunks,i,t,lastsplit;
   i := 1;
   lastsplit := 0;
   while i <= Length(word) do 
-    t := Construct(word{[1..i]},transfs,One(transfs[1]),\*); 
+    t := BuildByWord(word{[1..i]},transfs,One(transfs[1]),\*); 
     if finset * t = finset then
       Add(chunks, word{[lastsplit+1..i]});
       lastsplit := i;
