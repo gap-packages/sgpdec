@@ -43,7 +43,7 @@ itself is a record with the following elements:
  <HorLine/>
   <Row>
    <Item><C>stateset</C></Item>
-   <Item>the state set, <C>[1..degree]</C></Item>
+   <Item>the state set, list of integers <C>[1..degree]</C></Item>
   </Row>
  <HorLine/>
  <HorLine/>
@@ -65,7 +65,6 @@ itself is a record with the following elements:
    coded as indices in <C>orb</C></Item>
   </Row>
  <HorLine/>
-
  <HorLine/>
   <Row>
    <Item><C>depth, depths, heights</C></Item>
@@ -144,9 +143,6 @@ gap> ImageSets(sk);
 </Description>
 </ManSection>
 <#/GAPDoc>
-
-
-
 
 <#GAPDoc Label="SkeletonClasses">
 <ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
@@ -246,17 +242,6 @@ gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));
   </ManSection>
    <#/GAPDoc>
 
-#
-  <#GAPDoc Label="AllPermutators">
-  <ManSection><Heading>AllPermutators</Heading>
-  <Func Name="AllPermutators" Arg="skeleton, finiteset"/>
-  <Description>
- Same as  <C>PermutatorSemigroup</C> but it returns all permutator elements stored explicitly in a list.
-  </Description>
-  </ManSection>
-   <#/GAPDoc>
-
-#
   <#GAPDoc Label="PermutatorGroup">
   <ManSection><Heading>PermutatorGroup</Heading>
   <Func Name="PermutatorGroup" Arg="skeleton, finiteset"/>

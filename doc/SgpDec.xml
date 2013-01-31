@@ -88,7 +88,7 @@ Subgroup chains can be created interactively, step-by-step.
 The holonomy decomposition is constructed based on the action of the semigroup
 on the orbit of the state set.
 <Section Label="Skeleton">
-<Heading>Skeleton</Heading>
+<Heading>The skeleton of the semigroup action on the state set</Heading>
 <#Include Label="Skeleton">
 <#Include Label="ImageSets">
 <#Include Label="CoveringSetsOf">
@@ -104,7 +104,6 @@ $X$ gives the permutator group (Generalized Schützenberger group, see
 <Cite Key="permutator"/> )
 <#Include Label="PermutatorSemigroup">
 <#Include Label="PermutatorGenerators">
-<#Include Label="AllPermutators">
 <#Include Label="PermutatorGroup">
 <#Include Label="CoverGroup">
 </Section>
