@@ -185,11 +185,19 @@ gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));
    <#/GAPDoc>
 
 #
-  <#GAPDoc Label="DepthOfSet">
+  <#GAPDoc Label="SkeletonDepth">
   <ManSection><Heading>DepthOfSet</Heading>
   <Oper Name="DepthOfSet" Arg="skeleton,set"/>
+  <Func Name="DepthOfSkeleton" Arg="skeleton"/>
   <Description>
-  Returns the depth of the given set.
+  Returns the depth of the given set. The depth of the skeleton is the number of hierarchical levels + 1.
+<Example>
+gap> sk := Skeleton(Semigroup(Transformation([1,2,1,2,4,5,6])));;
+gap> DepthOfSet(sk,FiniteSet([1,2,4,5],7));
+3
+gap> DepthOfSkeleton(sk);                       
+6
+</Example>
   </Description>
   </ManSection>
    <#/GAPDoc>
@@ -200,21 +208,16 @@ gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));
   <Oper Name="TopSet" Arg="skeleton"/>
   <Description>
   Returns the unique set with depth 1, i.e. the full state set.
+<Example>
+gap> sk := Skeleton(FullTransformationSemigroup(7));;
+gap> TopSet(sk);                                     
+{1,2,3,4,5,6,7}
+</Example>
   </Description>
   </ManSection>
    <#/GAPDoc>
 
-#
-  <#GAPDoc Label="DepthOfSkeleton">
-  <ManSection><Heading>DepthOfSkeleton</Heading>
-  <Func Name="DepthOfSkeleton" Arg="skeleton"/>
-  <Description>
-  Returns the depth of the skeleton (the number of hierarchical levels + 1).
-  </Description>
-  </ManSection>
-   <#/GAPDoc>
 
-#
   <#GAPDoc Label="PermutatorGenerators">
   <ManSection><Heading>PermutatorGenerators</Heading>
   <Func Name="Permutators" Arg="skeleton, finiteset"/>
