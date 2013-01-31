@@ -11,30 +11,6 @@
 ## 
 ## Depends on straight words.
 
-#finding permutator elements by full enumeration of the elements of the transformation semigroup
-#useful for testing the more efficient algorithms
-InstallGlobalFunction(AllPermutatorsByFullEnumeration,
-function(finiteset, ts)
-local permutators, transformation, semigroup;
-  #2nd parameter is either a set of generators or a transformation semigroup, we need the semigroup
-  if IsList(ts) then 
-    semigroup := SemigroupByGenerators(ts);
-  else
-    semigroup := ts;
-  fi;  
- 
-  permutators := [];
-  #full enumeration
-  for transformation in semigroup do
-    if OnFiniteSets(finiteset,transformation) = finiteset then
-      Add(permutators, transformation);
-    fi;  
-  od;
-  return permutators;
-end
-);
-
-
 InstallGlobalFunction(PermutatorSplitter,
 function(word, finset, transfs)
 local chunks,i,t,lastsplit;
