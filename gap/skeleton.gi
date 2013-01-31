@@ -445,6 +445,7 @@ local permgens,gens,n, roundtrips, permgenwords;
   fi;
 end);
 
+#TODO are all these isomorphisms?
 InstallGlobalFunction(PermutatorHolonomyHomomorphism,
 function(sk,set)
   local permgroup,imggens,homgens;
@@ -457,7 +458,6 @@ function(sk,set)
                  GeneratorsOfGroup(permgroup),
                  imggens);
 end);
-
 
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
