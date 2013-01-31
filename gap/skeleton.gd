@@ -42,9 +42,7 @@ DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("DotSkeleton");
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
-DeclareGlobalFunction("PermutatorGeneratorWords");
-DeclareGlobalFunction("PermutatorGenerators");
-DeclareGlobalFunction("PermutatorSemigroup");
+DeclareGlobalFunction("PermutatorSemigroupElts");
 DeclareGlobalFunction("PermutatorGroup");
 DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
 DeclareGlobalFunction("HolonomyGroup@");

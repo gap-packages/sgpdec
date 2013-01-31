@@ -412,50 +412,37 @@ local roundtrips,i,j,nset,scc,word;
   return roundtrips;
 end);
 
-#roundtrip words filtered for not being the identity
-InstallGlobalFunction(PermutatorGeneratorWords,
+#TODO this is brute force! any other idea?
+InstallGlobalFunction(PermutatorSemigroupElts,
 function(sk,set)
-  local roundtripwords, permgenwords;
-  roundtripwords := RoundTripWords(sk,set);
-  permgenwords := Filtered(roundtripwords,
-                          w -> not (IsIdentityOnFiniteSet(
-                                  BuildByWord(w, sk.gens, sk.id,\*) ,set)));
-  Info(SkeletonInfoClass, 2, "Nontrivial permutators/roundtrips: ",
-       Size(permgenwords), "/", Size(roundtripwords));
-  return permgenwords;
-end);
-
-InstallGlobalFunction(PermutatorSemigroup,
-function(sk,set)
-local permgens,gens;
-  permgens := List(PermutatorGeneratorWords(sk,set),
-                   w -> BuildByWord(w, sk.gens, sk.id,\*));
-  gens := DuplicateFreeList(permgens);
-  Info(SkeletonInfoClass, 2, "Permutator generators/Nonidentity roundtrips: ",
-       Size(permgens), "/", Size(gens));
-  #we have to make a monoid at least to have at least a generator
-  if IsEmpty(gens) then
-    return Semigroup(IdentityTransformation(sk.degree));
-  else
-    return Semigroup(gens);
-  fi;
-end);
-
-InstallGlobalFunction(PermutatorGenerators,
-function(sk,set)
-  return GeneratorsOfSemigroup(PermutatorSemigroup(sk,set));
+local permutators, transformation;
+  permutators := [];
+  for transformation in sk.ts do
+    if OnFiniteSets(set,transformation) = set then
+      Add(permutators, transformation);
+    fi;
+  od;
+  return permutators;
 end);
 
 InstallGlobalFunction(PermutatorGroup,
 function(sk,set)
-local permgens,gens,n;
-  permgens := PermutatorGenerators(sk,set);
+local permgens,gens,n, roundtrips, permgenwords;
+  roundtrips := List(RoundTripWords(sk,set),
+                     w->BuildByWord(w, sk.gens, sk.id,\*));
+  permgens := Filtered(roundtrips, w -> not (IsIdentityOnFiniteSet(w,set)));
+  Info(SkeletonInfoClass, 2, "Nonidentity roundtrips/all roundtrips: ",
+       Size(permgens), "/", Size(roundtrips));
   gens := AsSet(List(permgens,
-               t -> AsPermutation(RestrictedTransformation(t,AsList(set)))));
+                  t -> AsPermutation(RestrictedTransformation(t,AsList(set)))));
   Info(SkeletonInfoClass, 2,
-       "Permutator group generators/Semigroup generators: ",
-       Size(permgens), "/", Size(gens));
-  return Group(gens);
+       "Permutator group generators/nonidentity roundtrips: ",
+       Size(gens), "/", Size(permgens));
+  if IsEmpty(gens) then
+    return Group(());
+  else
+    return Group(gens);
+  fi;
 end);
 
 InstallGlobalFunction(PermutatorHolonomyHomomorphism,
@@ -474,12 +461,6 @@ end);
 
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
-#local gens;
-#  gens := AsSet(List(PermutatorGenerators(sk,set),
-#                  x->PermList(ActionOn(CoveringSetsOf(sk,set),x,OnFiniteSets)))
-#                );
-#  if IsEmpty(gens) then gens := [()]; fi;
-#  return Group(gens);
   return Image(PermutatorHolonomyHomomorphism(sk,set));
 end);
 
