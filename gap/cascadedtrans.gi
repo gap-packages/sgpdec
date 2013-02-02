@@ -282,6 +282,13 @@ function(ct)
   Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
 end);
 
+InstallMethod(PrintObj, "cascaded transformation",
+[IsCascadedTransformation],ViewObj);
+#function(ct)
+#  Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
+#end);
+
+
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
 local depfuncvalues,i, ncoords;
