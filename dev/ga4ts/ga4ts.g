@@ -9,3 +9,8 @@ PointMutation := function(gens)
   ngens[i] := Transformation(l);
   return ngens;
 end;
+
+PointMutationTS := function(ts)
+  return Semigroup(PointMutation(
+                 GeneratorsOfSemigroup(ts)));
+end;
