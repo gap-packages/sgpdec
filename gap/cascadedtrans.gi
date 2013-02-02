@@ -294,7 +294,7 @@ local depfuncvalues,i, ncoords;
     if IsTransformation(depfuncvalues[i])
        and RankOfTransformation(depfuncvalues[i])=1 then
       #the value of the constant transformation
-      ncoords[i] :=  depfuncvalues[i]![1][1];
+      ncoords[i] :=  1^depfuncvalues[i];#![1][1];
     elif coords[i] = 0 then
       #TODO potential problem here when acting on 0, i.e. the set of all states
       # since a general transformation may reduce the set
