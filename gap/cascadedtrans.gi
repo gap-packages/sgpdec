@@ -128,7 +128,8 @@ function(list, numofdeps)
     od;
     func[k][j]:=Random(list[k]);
   od;
-  
+ 
+  # create f
   f:=Objectify(CascadedTransformationType, rec());
   SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
   SetComponentDomainsOfCascadedTransformation(f, coll);
