@@ -2,6 +2,44 @@
 # some technical code - likely to be replaced by GAP library calls (once found)
 ################################################################################
 
+
+InstallMethod(TransformationOp, "for object, list, function",
+[IsObject, IsList, IsFunction],
+function(f, D, act)
+  local perm, out, new, i, pnt;
+
+  perm:=();
+
+  if IsPlistRep(D) and Length(D)>2 and CanEasilySortElements(D[1]) then
+    if not IsSSortedList(D) then
+      D:=ShallowCopy(D);
+      perm:=Sortex(D);
+      D:=Immutable(D);
+      SetIsSSortedList(D, true);
+    fi;
+  fi;
+
+  out:=EmptyPlist(Length(D));
+  i:=0;
+
+  for pnt in D do
+    new:=PositionCanonical(D, act(pnt, f));
+    if new=fail then
+      return fail;
+    fi;
+    i:=i+1;
+    out[i]:=new;
+  od;
+
+  out:=Transformation(out);
+
+  if not IsOne(perm) then
+    out:=out^(perm^-1);
+  fi;
+
+  return out;
+end);
+
 #This is in 4.6
 if not IsBound(NumberElement_Cartesian) then
 BindGlobal( "NumberElement_Cartesian", 

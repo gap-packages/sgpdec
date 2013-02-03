@@ -338,7 +338,7 @@ end);
 InstallOtherMethod(\<, "for cascaded op and cascaded op",
 [IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
-  return ImageListOfActionOnCoords(p) < ImageListOfActionOnCoords(q);
+  return AsTransformation(p) < AsTransformation(q);
   #TODO!!! this can be faster by not doing it full!!!
 end);
 
@@ -421,37 +421,21 @@ end);
 
 ################################################################################
 # CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
-InstallGlobalFunction(ImageListOfActionOnCoords,
-function(cascdtrans)
-local csh, states, l, nstate, i;
-
-  csh:=CascadeShellOf(cascdtrans);
-  states:=AllCoords(csh);
-  #l is the big list for the action
-  l := [];
-  #going through all possible coordinates and see where they go
-  for i in [1..Size(states)] do
-    #getting the new state
-    nstate := OnCoordinates(states[i],cascdtrans);
-    Add(l, Position(states,nstate));
-  od;
-  return l;
-end);
 
 InstallOtherMethod(AsTransformation,
-        "for cascaded transformation with no decomposition info",
+        "for cascaded transformation",
 [IsCascadedTransformation],
 function(ct)
-  return Transformation(ImageListOfActionOnCoords(ct));
+return TransformationOp(ct, DomainOfCascadedTransformation(ct),OnCoordinates);
 end);
 
-InstallOtherMethod(AsPermutation,
-        "for cascaded permutation with no decomposition info",
-[IsCascadedTransformation],
-function(ct)
+#InstallOtherMethod(AsPermutation,
+#        "for cascaded permutation with no decomposition info",
+#[IsCascadedTransformation],
+#function(ct)
   #if IsCascadedGroupShell(csh) then TODO maybe check this, give warning
-  return PermList(ImageListOfActionOnCoords(ct));
-end);
+#  return PermList(ImageListOfActionOnCoords(ct));
+#end);
 
 
 #do the action on coordinates by a flat operation (list of images)

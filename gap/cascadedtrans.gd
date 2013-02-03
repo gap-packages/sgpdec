@@ -35,7 +35,6 @@ DeclareOperation("CascadeShellOf",[IsObject]);
 
 DeclareGlobalFunction("IdentityCascadedTransformation");
 DeclareGlobalFunction("OnCoordinates");
-DeclareGlobalFunction("ImageListOfActionOnCoords");
 DeclareGlobalFunction("RandomCascadedTransformation");
 DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
 DeclareGlobalFunction("DependsOn");
