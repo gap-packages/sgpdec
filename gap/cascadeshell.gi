@@ -10,6 +10,44 @@
 ## Used for defining cascaded structures.
 ##
 
+
+InstallGlobal(CascadedWreathProduct, 
+function(arg)
+  
+  check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
+
+  if Length(arg)=1 
+    if not check(arg[1]) then 
+      arg:=arg[1];
+    else
+      Error("the argument should be a list of length at least two ",
+      " consisting of transformation semigroups or perm groups,");
+      return;
+  fi;
+
+  if not ForAll(arg, check) then 
+    Error("the argument should be a list of length at least two ",
+    " consisting of transformation semigroups or perm groups,");
+    return;
+  fi;
+
+  record:=rec(components:=arg, domains:=[]);
+  
+  for x in arg do 
+    if IsTransformationSemigroup(x) then 
+      Add(record.domains, [1..DegreeOfTransformationSemigroup(x)]);
+    else 
+      Add(record.domains, MovedPoints(x));
+    fi;
+  od;
+
+  record.enum:=EnumeratorOfCartesianProduct(record.domains);
+  # get the generators, create the object using the family of the generators,
+  # and a new type (as in semigroups.gi) ...
+  out:=Objectify();
+
+end);
+
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
 # Constructing a short name for a component

@@ -15,8 +15,9 @@
 
 #for creating cascade permutations by giving dependency function maps in a
 #dependency function table
+
 InstallGlobalFunction(CascadedTransformation,
-function(csh,depfunctable)
+function()
 local  depfunc;
   # a function that returns the value corresponding to the argument if found,
   # otherwise the identity - embedded function

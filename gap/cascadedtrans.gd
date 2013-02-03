@@ -8,6 +8,17 @@
 ##
 ## Cascaded permutations and transformations.
 ##
+
+DeclareCategory("IsCascadedTransformation", IsMultiplicativeElementWithOne and IsAssociativeElement);
+DeclareCategoryCollections("IsCascadedTransformation");
+
+BindGlobal("CascadedTransformationFamily", NewFamily("CascadedTransformationFamily",
+ IsCascadedTransformation, CanEasilySortElements, CanEasilySortElements));
+
+BindGlobal("CascadedTransformationType", NewType(CascadedTransformationFamily,
+ IsCascadedTransformation and IsAssociativeElement));
+
+
 DeclareOperation("CascadeShellOf",[IsObject]);
 
 DeclareGlobalFunction("IdentityCascadedTransformation");
@@ -29,7 +40,6 @@ DeclareOperation("AsCascadedTransNC",[IsMultiplicativeElement,IsCascadeShell]);
 
 #we need the 'WithInverse' property to build groups of cascaded
 #transformation though not all of them have inverses
-DeclareCategory("IsCascadedTransformation", IsMultiplicativeElementWithInverse);
 
 CascadedTransformationFamily := NewFamily("CascadedTransformationFamily",
                                    IsCascadedTransformation);

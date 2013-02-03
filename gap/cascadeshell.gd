@@ -10,6 +10,17 @@
 ## Used for defining cascaded structures.
 ##
 
+DeclareGlobalFunction("CascadedWreathProduct");
+DeclareSynonymAttr("IsCascadedWreathProduct", IsSemigroup and
+        IsCascadedTransformationCollection);
+
+#DeclareRepresentation("IsCascadedStructureRep", 
+#IsComponentObjectRep and IsAttributeStoringRep and IsSemigroup, 
+#[ "components", # the underlying perm groups or transformation semigroups
+#  "domains",    # the domains of the actions of the underlying semigroups
+#  "enum"       # enumerator of the domain of the wreath product
+#]);
+
 DeclareOperation("CascadeShell",[IsList,IsList,IsList]);
 DeclareGlobalFunction("AllCoords");
 DeclareGlobalFunction("CoordValSets");
