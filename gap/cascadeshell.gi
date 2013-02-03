@@ -10,29 +10,22 @@
 ## Used for defining cascaded structures.
 ##
 
-InstallOtherMethod(DomainsOfCascadeProductComponents,[IsList],
+InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
+        [IsListOrCollection],
+function(l)
+  return not IsEmpty(l) and
+         IsDenseList(l) and
+         ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
+end);
+
+InstallOtherMethod(DomainsOfCascadeProductComponents,
+        [IsListOrCollection],
 function(comps)
-  local check, domains, comp;
-
-  #check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
-
-  #if Length(arg)=1 then
-  #  if not check(arg[1]) then
-  #    arg:=arg[1];
-      
- #   else
- #     Error("the argument should be a list of length at least two ",
- #           " consisting of transformation semigroups or perm groups,");
- #     return;
- #   fi;
- # fi;  
-  #TODO IsListOfPermGroupsAndTransformationSemigroups property of lists
-#  if not ForAll(arg, check) then
-#    Error("the argument should be a list of length at least two ",
-#          " consisting of transformation semigroups or perm groups,");
-#    return;
-#  fi;
-
+  local domains, comp;
+  if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
+    Error("not components");
+    return;
+  fi;
   domains:=[];
   for comp in comps do
     if IsTransformationSemigroup(comp) then
