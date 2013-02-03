@@ -173,7 +173,7 @@ InstallMethod(PrintObj, "for a cascaded transformation",
 
 #
 
-OnCoordinates2:=
+InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
   local dep, copy, out, len, i;
 
@@ -187,32 +187,6 @@ function(coords, ct)
     copy[i]:=coords[i];
   od;
   return out;
-end;
-
-#
-
-InstallGlobalFunction(OnCoordinates,
-function(coords, ct)
-  local dft, depfuncvalues, ncoords, i;
-
-  dft := DependencyFunction(ct);
-  depfuncvalues := List([1..Size(coords)], x-> coords{[1..x-1]}^dft);
-  ncoords := [];
-  for i in [1..Size(coords)] do
-    #if it is a constant map (required for permutation reset automata)
-    if IsTransformation(depfuncvalues[i])
-       and RankOfTransformation(depfuncvalues[i])=1 then
-      #the value of the constant transformation
-      ncoords[i] :=  1^depfuncvalues[i];
-    elif coords[i] = 0 then
-      #TODO potential problem here when acting on 0, i.e. the set of all states
-      # since a general transformation may reduce the set
-      ncoords[i] :=  0;
-    else
-      ncoords[i] := OnPoints(coords[i], depfuncvalues[i]);
-    fi;
-  od;
-  return ncoords;
 end);
 
 #multiplication of cascaded operations - it is a tricky one, since it just
