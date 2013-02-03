@@ -2,43 +2,115 @@
 # some technical code - likely to be replaced by GAP library calls (once found)
 ################################################################################
 
-#just a wrapper of dust's LazyCartesian until the enumerator is implemented
-InstallGlobalFunction(EnumeratorOfCartesianProduct,
-function(arg)
+#This is in 4.6
+if not IsBound(NumberElement_Cartesian) then
+BindGlobal( "NumberElement_Cartesian", 
+function(enum, x)    
+  local n, mults, colls, sum, pos, i;
 
-  if Length(arg)=1 then
-    return CallFuncList(LazyCartesian, arg);
+  n:=enum!.n;
+  mults:=enum!.mults;
+  colls:=enum!.colls;
+
+  if Length(x)<>n then 
+    return fail;
   fi;
 
-  return LazyCartesian(arg);
+  sum:=0;
+  for i in [1..n-1] do 
+    pos:=Position(colls[i], x[i])-1;
+    if pos=fail then 
+      return fail;
+    fi;
+    sum:=sum+pos*mults[i];
+  od;
+  
+  pos:=Position(colls[n], x[n]);
+  
+  if pos=fail then 
+    return fail;
+  fi;
+
+  return sum+pos;
 end);
+fi;
 
-################################################################################
-# turning the action of a permutation on some points into a permutation
-# used for acting on cosets, finite sets
-# TODO Is there a GAP function to do this?
-ActionOn := function(points,g,action)
-local l;
-  l := [];
-  Perform([1..Length(points)],
-          function(i)
-            Add(l, PositionCanonical(points, action(points[i],g)));
-          end);
-  return l;
-end;
-MakeReadOnlyGlobal("ActionOn");
+if not IsBound(ElementNumber_Cartesian) then
+BindGlobal( "ElementNumber_Cartesian", 
+function(enum, x)
+  local n, mults, out, i, colls;
 
-#Iterator for PositiveIntegers
-#this to be removed once it gets in GAPlib
-InstallMethod(Iterator,
-    "for `PositiveIntegers'",
-    [ IsPositiveIntegers ],
-        PositiveIntegers -> IteratorByFunctions(
-                rec(
-                    NextIterator := function(iter)
-                      iter!.counter:= iter!.counter + 1;
-                      return iter!.counter;
-                end,
-                IsDoneIterator := ReturnFalse,
-                ShallowCopy := iter -> rec( counter:= iter!.counter ),
-                counter := 0)));# 0, since we first increment then return
+  if x>Length(enum) then 
+    return fail;
+  fi;
+
+  x:=x-1;
+
+  n:=enum!.n;
+  mults:=enum!.mults;
+  colls:=enum!.colls;
+  out:=EmptyPlist(n);
+
+  for i in [1..n-1] do
+    out[i]:=QuoInt(x, mults[i]);
+    x:=x-out[i]*mults[i];
+    out[i]:=colls[i][out[i]+1];
+  od;
+  out[n]:=colls[n][x+1];
+
+  return out;
+end);
+fi;
+
+if not IsBound(EnumeratorOfCartesianProduct2) then
+BindGlobal( "EnumeratorOfCartesianProduct2",
+  function(colls)
+    local new_colls, mults, k, i, j;
+    
+    if not ForAll(colls, IsCollection) and ForAll(colls, IsFinite) then
+      Error( "usage: each argument must be a finite collection," );
+      return;
+    fi;
+    new_colls:=[]; 
+    for i in [1..Length(colls)] do 
+      if IsDomain(colls[i]) then 
+        new_colls[i]:=Enumerator(colls[i]);
+      else
+        new_colls[i]:=colls[i];
+      fi;
+    od;
+
+    mults:=List(new_colls, Length);
+    for i in [1..Length(new_colls)-1] do 
+      k:=1;
+      for j in [i+1..Length(new_colls)] do 
+        k:=k*Length(new_colls[j]);
+      od;
+      mults[i]:=k;
+    od;
+    mults[Length(new_colls)]:=0;
+
+    return EnumeratorByFunctions(ListsFamily, 
+      rec( NumberElement := NumberElement_Cartesian,
+           ElementNumber := ElementNumber_Cartesian,
+           mults:=mults,
+           n:=Length(colls),
+           colls:=new_colls,
+           Length:=enum-> Maximum([mults[1],1])*Length(new_colls[1])));
+  end);
+fi;
+
+if not ISBOUNDENUMERATORCARTESIANPRODUCT then
+InstallGlobalFunction( "EnumeratorOfCartesianProduct",
+    function( arg )
+    # this mimics usage of functions Cartesian and Cartesian2
+    if IsEmpty(arg) or ForAny(arg, IsEmpty) then 
+      return EmptyPlist(0);
+    elif Length( arg ) = 1  then
+        return EnumeratorOfCartesianProduct2( arg[1] );
+    else
+        return EnumeratorOfCartesianProduct2( arg );
+    fi;
+    return;
+  end);
+ fi;

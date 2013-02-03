@@ -1,8 +1,7 @@
 
 
-if not IsBound(IsTransformationCollColl) then 
-  DeclareCategoryCollections("IsTransformationCollection");
+ISBOUNDENUMERATORCARTESIANPRODUCT := true;
+if not IsBound(EnumeratorOfCartesianProduct) then
+  ISBOUNDENUMERATORCARTESIANPRODUCT := false;
+  DeclareGlobalFunction("EnumeratorOfCartesianProduct");
 fi;
-
-DeclareGlobalFunction("EnumeratorOfCartesianProduct");
-
