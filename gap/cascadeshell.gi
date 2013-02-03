@@ -11,29 +11,30 @@
 ##
 
 InstallOtherMethod(DomainsOfCascadeProductComponents,[IsList],
-function(arg)
+function(comps)
   local check, domains, comp;
 
-  check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
+  #check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
 
-  if Length(arg)=1 then
-    if not check(arg[1]) then
-      arg:=arg[1];
-    fi;
-  else
-    Error("the argument should be a list of length at least two ",
-          " consisting of transformation semigroups or perm groups,");
-    return;
-  fi;
-
-  if not ForAll(arg, check) then
-    Error("the argument should be a list of length at least two ",
-          " consisting of transformation semigroups or perm groups,");
-    return;
-  fi;
+  #if Length(arg)=1 then
+  #  if not check(arg[1]) then
+  #    arg:=arg[1];
+      
+ #   else
+ #     Error("the argument should be a list of length at least two ",
+ #           " consisting of transformation semigroups or perm groups,");
+ #     return;
+ #   fi;
+ # fi;  
+  #TODO IsListOfPermGroupsAndTransformationSemigroups property of lists
+#  if not ForAll(arg, check) then
+#    Error("the argument should be a list of length at least two ",
+#          " consisting of transformation semigroups or perm groups,");
+#    return;
+#  fi;
 
   domains:=[];
-  for comp in arg do
+  for comp in comps do
     if IsTransformationSemigroup(comp) then
       Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
     else
