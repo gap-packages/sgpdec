@@ -204,9 +204,9 @@ function(p,q)
     ncoords := OnCoordinates(coords,p);
     actions2 := List([1..n], x -> ncoords{[1..x-1]}^qdft);
     for i in [1..n] do
-      if not IsOne(actions2[i]) then
+      if not IsOne(actions[i]*actions2[i]) then
         #we have duplicates, but I will take care of that
-        AddSet(deps, [coords{[1..i-1]}, actions2[i]]);
+        AddSet(deps, [coords{[1..i-1]}, actions[i]*actions2[i]]);
       fi;
     od;
   od;
