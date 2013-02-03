@@ -40,8 +40,6 @@ DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
 DeclareGlobalFunction("DependsOn");
 DeclareGlobalFunction("DependencyGraph");
 DeclareGlobalFunction("ProjectedScope");
-DeclareGlobalFunction("IsDependencyCompatible");
-DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascadedTransformation");
 #DeclareOperation("AsCascadedTrans",[IsMultiplicativeElement,IsCascadeShell]);
