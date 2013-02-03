@@ -85,11 +85,9 @@ function(coll, depfunc)
   f:=Objectify(CascadedTransformationType, rec());
   SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
   SetComponentDomainsOfCascadedTransformation(f, coll);
-  SetDependencyFunction(f, [func, enum]);
+  SetDependencyFunction(f, CreateDependencyFunction(func, enum));
   return f;
 end);
-
-
 
 #
 
