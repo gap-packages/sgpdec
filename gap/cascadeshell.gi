@@ -10,36 +10,42 @@
 ## Used for defining cascaded structures.
 ##
 
+InstallOtherMethod(DomainsOfCascadeProductComponents,[IsList],
+function(arg)
+  local check,comp,domains;
+
+  check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
+
+  if Length(arg)=1 then
+    if not check(arg[1]) then
+      arg:=arg[1];
+    fi;
+  else
+    Error("the argument should be a list of length at least two ",
+          " consisting of transformation semigroups or perm groups,");
+    return;
+  fi;
+
+  if not ForAll(arg, check) then
+    Error("the argument should be a list of length at least two ",
+          " consisting of transformation semigroups or perm groups,");
+    return;
+  fi;
+
+  for comp in arg do
+    if IsTransformationSemigroup(comp) then
+      Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
+    else
+      Add(domains, MovedPoints(comp));
+    fi;
+  od;
+  return domains;
+end);
+
 
 InstallGlobal(CascadedWreathProduct, 
 function(arg)
   
-  check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
-
-  if Length(arg)=1 
-    if not check(arg[1]) then 
-      arg:=arg[1];
-    else
-      Error("the argument should be a list of length at least two ",
-      " consisting of transformation semigroups or perm groups,");
-      return;
-  fi;
-
-  if not ForAll(arg, check) then 
-    Error("the argument should be a list of length at least two ",
-    " consisting of transformation semigroups or perm groups,");
-    return;
-  fi;
-
-  record:=rec(components:=arg, domains:=[]);
-  
-  for x in arg do 
-    if IsTransformationSemigroup(x) then 
-      Add(record.domains, [1..DegreeOfTransformationSemigroup(x)]);
-    else 
-      Add(record.domains, MovedPoints(x));
-    fi;
-  od;
 
   record.enum:=EnumeratorOfCartesianProduct(record.domains);
   # get the generators, create the object using the family of the generators,
@@ -73,7 +79,7 @@ Name4Component := function(comp)
 end;
 MakeReadOnlyGlobal("Name4Component");
 
-InstallMethod(IsCascadedGroupShell,[IsCascadeShell],
+InstallMethod(IsCascadedGroupShell,[IsList],
 csh -> ForAll(csh!.components, IsGroup));
 
 # SIMPLIFIED CONSTRUCTOR
@@ -180,7 +186,7 @@ function(csh,level) return csh!.coordval_converters[level]; end);
 InstallGlobalFunction(CoordTransConverter,
 function(csh,level) return csh!.coordtrans_converters[level]; end);
 
-InstallOtherMethod(Name,"for cascade shells",[IsCascadeShell],
+InstallOtherMethod(Name,"for cascade shells",[IsList],
 function(csh) return csh!.name_of_shell; end);
 
 #this is a huge number even in small cases
@@ -200,7 +206,7 @@ end);
 
 #######################OLD METHODS#############################
 # The size of the cascade shell is the number components.
-InstallMethod(Length,"for cascade shells",true,[IsCascadeShell],
+InstallMethod(Length,"for cascade shells",true,[IsList],
 function(csh)
   return Length(csh!.components);
 end);
@@ -208,7 +214,7 @@ end);
 # for accessing the list elements
 InstallOtherMethod( \[\],
     "for cascade shells",
-    [ IsCascadeShell, IsPosInt ],
+    [ IsList, IsPosInt ],
 function( csh, pos )
 return csh!.components[pos];
 end);
@@ -218,13 +224,13 @@ end);
 InstallMethod( ViewObj,
     "for a cascade shell",
     true,
-    [IsCascadeShell],
+    [IsList],
 function(csh) Print(Name(csh));end);
 
 InstallMethod(Display,
     "for a cascade shell",
     true,
-    [IsCascadeShell],
+    [IsList],
 function(csh)
 local s,i;
   s := "";

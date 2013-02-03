@@ -37,8 +37,8 @@ DeclareGlobalFunction("IsDependencyCompatibleOnPrefix");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascadedTransformation");
 #TODO IsMultiplicativeElement - IS there sg more spec shared by trans&perms?
-DeclareOperation("AsCascadedTrans",[IsMultiplicativeElement,IsCascadeShell]);
-DeclareOperation("AsCascadedTransNC",[IsMultiplicativeElement,IsCascadeShell]);
+DeclareOperation("AsCascadedTrans",[IsMultiplicativeElement,IsList]);
+DeclareOperation("AsCascadedTransNC",[IsMultiplicativeElement,IsList]);
 
 #we need the 'WithInverse' property to build groups of cascaded
 #transformation though not all of them have inverses

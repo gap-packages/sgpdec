@@ -387,7 +387,7 @@ MakeReadOnlyGlobal("ComponentActionForPrefix");
 #raising a permutation/transformation to its cascaded format
 InstallOtherMethod(AsCascadedTransNC,
         "for flat transformation/permutation",
-[IsMultiplicativeElement,IsCascadeShell],
+[IsMultiplicativeElement,IsList],
 function(flatop,csh)
   local flatoplist, dependencies, prefixes, action, level, prefix;
 
@@ -420,7 +420,7 @@ end);
 #TODO!! to check whether the action is in the component
 
 InstallOtherMethod(AsCascadedTrans, "for transformation/permutation",
-[IsMultiplicativeElement,IsCascadeShell],
+[IsMultiplicativeElement,IsList],
 function(flatop,csh)
   #if it is not compatible
   if not IsDependencyCompatible(csh,flatop) then
