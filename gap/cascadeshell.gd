@@ -18,7 +18,7 @@ DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
 DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
-DeclareAttribute("CascadeProductComponents", IsCascadeProduct);
+DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeProduct);
 
