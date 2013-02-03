@@ -80,12 +80,34 @@ function(coll, depfunc)
   for x in depfunc do
     func[Length(x[1])+1][Position(enum[Length(x[1])+1], x[1])]:=x[2];
   od;
+  ShrinkAllocationPlist(func);
 
   f:=Objectify(CascadedTransformationType, rec());
   SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
   SetComponentDomainsOfCascadedTransformation(f, coll);
   SetDependencyFunction(f, CreateDependencyFunction(func, enum));
   return f;
+end);
+
+# either: 
+# 1) cascaded trans and func; or
+# 2) domain, component domains, prefix domain, func
+
+InstallGlobalFunction(CreateCascadedTransformation, 
+function(arg)
+  local f;
+
+  if Length(arg)=2 then # cascaded trans and func
+    return CreateCascadedTransformation(DomainOfCascadedTransformation(arg[1]), 
+     ComponentDomainsOfCascadedTransformation(arg[1]),   
+     PrefixDomainOfCascadedTransformation(arg[1]), arg[2]);
+  fi;
+    
+  f:=Objectify(CascadedTransformationType, rec());
+  SetDomainOfCascadedTransformation(f, arg[1]);
+  SetComponentDomainsOfCascadedTransformation(f, arg[2]);
+  SetPrefixDomainOfCascadedTransformation(f, arg[3]);
+  SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
 end);
 
 #
@@ -146,8 +168,8 @@ InstallMethod(ViewObj, "for a cascaded transformation",
 function(f)
   local prefix, midfix, suffix, x;
 
-  prefix:="<cascaded transformation on ";
-  midfix:="";
+  prefix:="<cascaded transformation";
+  midfix:=" on ";
   
   for x in ComponentDomainsOfCascadedTransformation(f) do 
     Append(midfix, String(x));
@@ -161,6 +183,9 @@ function(f)
   Print(prefix);
   if Length(prefix)+Length(midfix)+Length(suffix)<=SizeScreen()[1] then
     Print(midfix);
+  else 
+    midfix:=" on ";
+
   fi;
   Print(suffix);
   return;
@@ -189,38 +214,39 @@ function(coords, ct)
   return out;
 end);
 
-#multiplication of cascaded operations - it is a tricky one, since it just
-#combines together the functions without building a dependency table
-InstallOtherMethod(\*, "multiplying cascaded transformations", IsIdenticalObj,
-[IsCascadedTransformation, IsCascadedTransformation],
-function(p,q)
-  local deps,i,dom, coords, actions, actions2, ncoords, n, pdft, qdft;
+#
 
-  dom := DomainOfCascadedTransformation(p);
-  pdft := DependencyFunction(p);
-  qdft := DependencyFunction(q);
-  deps := [];
-  n := Length(Representative(dom));
-  #this is redundant and wasteful at the moment
-  #but it should do the job
-  for coords in dom do
-    actions := List([1..n], x -> coords{[1..x-1]}^pdft);
-    ncoords := OnCoordinates(coords,p);
-    actions2 := List([1..n], x -> ncoords{[1..x-1]}^qdft);
-    for i in [1..n] do
-      if not IsOne(actions[i]*actions2[i]) then
-        #we have duplicates, but I will take care of that
-        AddSet(deps, [coords{[1..i-1]}, actions[i]*actions2[i]]);
-      fi;
-    od;
-  od;
-  #this is wasteful because shared internals are not shared
-  return CascadedTransformationNC(ComponentDomainsOfCascadedTransformation(p),
-                 deps);
+InstallOtherMethod(AsTransformation,
+"for cascaded transformation",
+[IsCascadedTransformation],
+function(ct)
+return TransformationOp(ct, DomainOfCascadedTransformation(ct), OnCoordinates);
 end);
 
-################################################################################
-######MONOMIAL GENERATORS#######################################################
+#
+
+InstallMethod(\*, "for cascaded transformations", IsIdenticalObj,
+[IsCascadedTransformation, IsCascadedTransformation],
+function(f,g)
+  local dep_f, enum, func, fg, i, j;
+  
+  dep_f:=DependencyFunction(f);
+  enum:=dep_f!.enum;
+
+  func:=List(enum, x-> EmptyPlist(Length(x)));
+
+  for i in [1..Length(enum)] do 
+    for j in [1..Length(enum[i])] do 
+      func[i][j]:=enum[i][j]^dep_f*OnCoordinates(enum[i][j], g)^dep_f;
+    od;
+  od;
+  fg:=Objectify(CascadedTransformationType, rec());
+  SetDomainOfCascadedTransformation(fg, DomainOfCascadedTransformation(f));
+  SetComponentDomainsOfCascadedTransformation(fg, 
+   ComponentDomainsOfCascadedTransformation(f));
+  SetDependencyFunction(fg, CreateDependencyFunction(func, enum));
+  return fg;      
+end);
 
 # MonomialGenerators require the orbits of singletons under semigroup action
 SingletonOrbits := function(T)
@@ -233,6 +259,7 @@ local i, sets,o;
     od;
     return sets;
 end;
+
 MakeReadOnlyGlobal("SingletonOrbits");
 
 #constructing monomial generators for the wreath product
@@ -242,15 +269,13 @@ InstallGlobalFunction(MonomialWreathProductGenerators,
 function(comps)
 local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       orbitreprs, orbits, orbit, orbrep;
-
   prefixes := [ [] ]; #the top level
   mongens := [];
 
   for depth in [1..Length(comps)] do
     #getting the component generators
     gens := GeneratorsOfSemigroup(comps[depth]);
-
-    #adding dependencies to coordinate fragments (prefixes) on current level
+  #adding dependencies to coordinate fragments (prefixes) on current level
     for prefix in prefixes do
       Perform(gens,
         function(g)
@@ -260,8 +285,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
                       [[prefix,g]]));
         end);
     od;
-
-    #getting the orbit reprs on level
+#getting the orbit reprs on level
     orbitreprs := [];
     if IsGroup(comps[depth]) then
       Perform(Orbits(comps[depth]),
@@ -281,17 +305,67 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
         newprefix := ShallowCopy(prefix);
         Add(newprefix, orbrep);
         Add(newprefixes, newprefix);
-      od;
-    od;
-    prefixes := newprefixes;
+ prefixes := newprefixes;
   od;
   return mongens;
+
+#
+
+InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
+[IsCascadeProduct],
+function(s)
+  local t, inv;
+  t:=Semigroup(GeneratorsOfSemigroup(s), AsTransformation);
+  inv:=function(f)
+    local prefix, dom, n, func, visited, one, i, x, m, pos, j;
+    prefix:=PrefixDomainOfCascadeProduct(s);
+    dom:=DomainOfCascadeProduct(s);
+    n:=NrComponentsOfCascadeProduct(s);
+    func:=List(prefix, x-> EmptyPlist(Length(x)));
+    visited:=List([1..Length(prefix)], x-> BlistList([1..Length(x)], []));
+    one:=List([1..Length(prefix)], x-> 
+     BlistList([1..Length(x)], [1..Length(x)]));
+    
+    for i in [1..DegreeOfTransformation(f)] do 
+      x:=ShallowCopy(dom[i]);
+      m:=n;
+      Remove(x, m);
+      pos:=Position(prefix[m], x);
+      
+      while not visited[m][pos] do 
+        func[m][pos][dom[i][m]]:=dom[i][m]^f;
+        if func[m][pos][dom[i][m]]<>dom[i][m] then 
+          one[m][pos]:=false;
+        fi;
+        visited[m][pos]:=true;
+        m:=m-1;
+        Remove(x, m);
+        pos:=Position(prefix[m], x);
+      od;
+    od;
+    
+    #post process
+
+    for i in [1..Length(func)] do 
+      for j in [1..Length(func[i])] do 
+        if one[i][j] then 
+          Unbind(func[i][j]);
+        elif IsPermGroup(ComponentsOfCascadeProduct(s)[i]) then 
+          func[i][j]:=PermList(func[i][j]);
+        else
+          func[i][j]:=TransformationNC(func[i][j]);
+        fi;
+      od;
+    od;
+
+    return CreateCascadedTransformation(f, func);
+  end;
+
+  return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
 end);
 
 # old
 # YEP THIS IS THE MARKER BETWEEN NEW AND OLD
-
-
 
 ################################################################################
 ####REIMPLEMENTED OPERATIONS####################################################
@@ -309,17 +383,6 @@ InstallOtherMethod(\<, "for cascaded op and cascaded op",
 function(p,q)
   return AsTransformation(p) < AsTransformation(q);
   #TODO!!! this can be faster by not doing it full!!!
-end);
-
-
-################################################################################
-# CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
-
-InstallOtherMethod(AsTransformation,
-        "for cascaded transformation",
-[IsCascadedTransformation],
-function(ct)
-return TransformationOp(ct, DomainOfCascadedTransformation(ct),OnCoordinates);
 end);
 
 ################################################################################
