@@ -182,7 +182,7 @@ function(coords, ct)
   copy:=EmptyPlist(len);
   out:=EmptyPlist(len);
 
-  for i in [1..len] do 
+  for i in [1..len] do
     out[i]:=coords[i]^(copy^dep);
     copy[i]:=coords[i];
   od;
@@ -222,95 +222,6 @@ end);
 # old
 # YEP THIS IS THE MARKER BETWEEN NEW AND OLD
 
-################################################################################
-####CONSTRUCTING CASCADED OPERATIONS############################################
-
-#for creating cascade permutations by giving dependency function maps in a
-#dependency function table
-
-# returns a list containing
-# coordinateprefix-component element pairs (when it is not the identity of
-# the component) note that this returns concrete states now
-# very simple brute force algorithm
-InstallGlobalFunction(DependencyMapsFromCascadedTransformation,
-function(ct)
-local csh, pairs, identity, value, i, coords;
-  #getting reference to the cascaded object
-  csh := CascadeShellOf(ct);
-  #pairs initialized
-  pairs := [];
-  #first doing the the top level
-  value := ct!.depfunc([]);
-  if value <> Identity(csh[1]) then
-    Add(pairs,[[],value]);
-  fi;
-  #then the deeper levels
-  for i in [2..Length(csh)] do
-    identity := One(csh[i]);
-    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
-      value := ct!.depfunc(coords);
-      #if it is not the identity of the component
-      if identity <> value then
-        #then record the dependency map
-        Add(pairs,[coords,value]);
-      fi;
-    od;
-  od;
-  return pairs;
-end);
-
-# for creating the identity cascaded permutation in a given family of cascaded
-# product elements no dependencies, just the component's identtiy is returned
-InstallGlobalFunction(IdentityCascadedTransformation,
-function(csh)
-  return fail; #CascadedTransformation(csh,DependencyTable([]));
-end);
-
-# creating random dependency functions
-# the number of nontrivial entries has to be specified
-##############ALGORITHMS TO GET THE INVERSE####################################
-# We have different algorithms here. The fastest is plugged in the real Inverse.
-
-#simple trick for getting the inverse: take the flat inverse instead
-#InvCascadedTransformationByYeast := function(cascperm)
-#  return AsCascadedTransNC(CascadeShellOf(cascperm),
-#                 Inverse(AsTransformation(cascperm)));
-#end;
-#MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
-
-# calculating the powers until inverse found, this is of course very slow
-InvCascadedTransformationByPowers := function(cascperm)
-local pow, id, prevpow;
-  pow := cascperm;
-  id := IdentityCascadedTransformation(CascadeShellOf(cascperm));
-  repeat
-    prevpow := pow;
-    pow := pow * cascperm;
-  until id = pow;
-  return prevpow;
-end;
-MakeReadOnlyGlobal("InvCascadedTransformationByPowers");
-
-# transform the argument of the dependency and invert the value
-InvCascadedTransformationByDependencies := function(cascperm)
-local invmaps, dep;
-
-  invmaps := [];
-  for dep in DependencyMapsFromCascadedTransformation(cascperm) do
-    Add(invmaps,
-        [List([1..Size(dep[1])],
-              x-> dep[1][x]^(cascperm!.depfunc(dep[1]{[1..x-1]}))),
-         Inverse(dep[2])
-         ]);
-  od;
-  return CascadedTransformation(CascadeShellOf(cascperm),
-                fail);# DependencyTable(invmaps));
-end;
-MakeReadOnlyGlobal("InvCascadedTransformationByDependencies");
-
-#here we just plug one algorithm in
-InstallOtherMethod(InverseOp, "for a cascaded perm",
-        [IsCascadedTransformation],InvCascadedTransformationByDependencies);
 
 
 ################################################################################
@@ -320,22 +231,7 @@ InstallOtherMethod(InverseOp, "for a cascaded perm",
 InstallOtherMethod(\=, "for cascaded op and cascaded op", IsIdenticalObj,
 [IsCascadedTransformation, IsCascadedTransformation],
 function(p,q)
-  local csh, i, coords;
-  #getting the family object
-  csh := CascadeShellOf(p);
-  #first comparing the the top level
-  if p!.depfunc([]) <> q!.depfunc([]) then
-    return false;
-  fi;
-  #then the deeper levels
-  for i in [2..Length(csh)] do
-    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
-      if p!.depfunc(coords) <> q!.depfunc(coords) then
-        return false;
-      fi;
-    od;
-  od;
-  return true;
+  return "TODO!";
 end);
 
 # comparison, less than, just a trick flattening and do the comparison there
@@ -346,82 +242,6 @@ function(p,q)
   #TODO!!! this can be faster by not doing it full!!!
 end);
 
-InstallOtherMethod(OneOp, "for cascaded op",
-[IsCascadedTransformation],
-function(ct)
-  return IdentityCascadedTransformation(CascadeShellOf(ct));
-end);
-
-
-InstallOtherMethod(\^, "exponent for cascaded operation",
-[IsCascadedTransformation, IsInt],
-function(p, n)
-  local result, multiplier, i;
-
-  result := IdentityCascadedTransformation(CascadeShellOf(p));
-  if n < 0 then
-    multiplier := Inverse(p);
-  else
-    multiplier := p;
-  fi;
-  for i in [1..AbsoluteValue(n)] do
-    result := result * multiplier;
-  od;
-  return result;
-end);
-
-##############################################################################
-# for symbol printing prefixes
-ConvertCoords2String := function(csh, coordsprefix)
-local i,str;
-  str := "";
-  for i in [1..Length(coordsprefix)] do
-    str := Concatenation(str,
-                   String(CoordValConverter(csh,i)(coordsprefix[i])));
-    if i < Length(coordsprefix) then str := Concatenation(str,","); fi;
-  od;
-  return str;
-end;
-MakeReadOnlyGlobal("ConvertCoords2String");
-
-# Implementing display, printing nice, human readable format.
-InstallMethod( Display, "for a cascaded op",
-[IsCascadedTransformation],
-function( ct )
-local csh, i, coords, val;
-  csh := CascadeShellOf(ct);
-  for i in [1..Length(csh)] do
-    #printing the function definition
-    if i = 1 then #the top level is not a function application mathematically
-      Print("#",i,": ", csh[i],"\n");
-      #do the first level here
-      val := ct!.depfunc([]);
-      if not IsOne(val) then
-        Print(CoordTransConverter(csh,i)(val),"\n");
-      fi;
-    else
-      Print("#",i,": ",NameOfDependencyDomain(csh,i)," -> ",csh[i],"\n");
-    fi;
-    #looping all possible arguments and display if any
-    for coords in EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(i-1)]}) do
-      val := ct!.depfunc(coords);
-      if not IsOne(val) then
-        Print("[",ConvertCoords2String(csh, coords),
-              "] -> ", CoordTransConverter(csh,i)(val),"\n");
-      fi;
-    od;
-  od;
-end);
-
-# Implementing viewobj, printing simple info.
-#function(ct)
-#  Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
-#end);
-
-
-
-#InstallOtherMethod(\^, "acting on cascaded states",
-#[IsList, IsCascadedTransformation], OnCoordinates);
 
 ################################################################################
 # CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
