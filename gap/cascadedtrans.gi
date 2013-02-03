@@ -92,16 +92,18 @@ end);
 
 InstallGlobalFunction(RandomCascadedTransformation,
 function(list, numofdeps)
-  local coll, enum, tup, func, i, j, max;
+  local coll, enum, tup, func, len, j, k, l, f, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
-    Error();
+    Error("insert meaningful error message,");
     return;
   fi;
 
   coll:=DomainsOfCascadeProductComponents(list); 
+  
+  # create the enumerator for the dependency func
   enum:=EmptyPlist(Length(coll)+1);
-  enum[1]:=[];
+  enum[1]:=[[]];
   
   tup:=[];
   
@@ -110,21 +112,28 @@ function(list, numofdeps)
     Add(enum, EnumeratorOfCartesianProduct(tup));
   od;
 
+  # create the function
   func:=List(enum, x-> EmptyPlist(Length(x)));
+  len:=Sum(List(enum, Length));
+  numofdeps:=Minimum([len, numofdeps]);
 
-  # sanity check, to avoid infinite loops down below
-  if numofdeps > max then
-    numofdeps := max;
-    Info(InfoWarning, 1, 
-     "the number of elementary dependencies is set to ", numofdeps);
-  fi;
-
-  i:=1; j:=1;
-
-  while i<>numofdeps do
-    
+  j:=1; 
+  for i in [1..numofdeps] do 
+    k:=Random(j,len);
+    j:=k; 
+    l:=1;
+    while k>Length(enum[l]) do 
+      k:=k-Length(enum[l]);
+      l:=l+1;
+    od;
+    func[l][k]:=Random(list[l]);
   od;
-
+  
+  f:=Objectify(CascadedTransformationType, rec());
+  SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
+  SetComponentDomainsOfCascadedTransformation(f, coll);
+  SetDependencyFunction(f, CreateDependencyFunction(func, enum));
+  return f;
 end);
 
 
