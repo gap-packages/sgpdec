@@ -92,16 +92,18 @@ end);
 
 InstallGlobalFunction(RandomCascadedTransformation,
 function(list, numofdeps)
-  local coll, enum, tup, func, i, j, max;
+  local coll, enum, tup, func, len, x, j, k, f, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
-    Error();
+    Error("insert meaningful error message,");
     return;
   fi;
 
   coll:=DomainsOfCascadeProductComponents(list); 
+  
+  # create the enumerator for the dependency func
   enum:=EmptyPlist(Length(coll)+1);
-  enum[1]:=[];
+  enum[1]:=[[]];
   
   tup:=[];
   
@@ -110,23 +112,30 @@ function(list, numofdeps)
     Add(enum, EnumeratorOfCartesianProduct(tup));
   od;
 
+  # create the function
   func:=List(enum, x-> EmptyPlist(Length(x)));
+  len:=Sum(List(enum, Length));
+  numofdeps:=Minimum([len, numofdeps]);
 
-  # sanity check, to avoid infinite loops down below
-  if numofdeps > max then
-    numofdeps := max;
-    Info(InfoWarning, 1, 
-     "the number of elementary dependencies is set to ", numofdeps);
-  fi;
-
-  i:=1; j:=1;
-
-  while i<>numofdeps do
-    
+  x:=[1..len];
+  for i in [1..numofdeps] do 
+    j:=Random(x);
+    RemoveSet(x, j);
+    k:=1;
+    while j>Length(enum[k]) do 
+      j:=j-Length(enum[k]);
+      k:=k+1;
+    od;
+    func[k][j]:=Random(list[k]);
   od;
-
+ 
+  # create f
+  f:=Objectify(CascadedTransformationType, rec());
+  SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
+  SetComponentDomainsOfCascadedTransformation(f, coll);
+  SetDependencyFunction(f, CreateDependencyFunction(func, enum));
+  return f;
 end);
-
 
 #JDM install CascadedTransformation, check args are sensible.
 
@@ -157,13 +166,34 @@ function(f)
   return;
 end);
 
-InstallMethod(PrintObj, "for a cascaded transformation",
-[IsCascadedTransformation],ViewObj);
+#
 
+InstallMethod(PrintObj, "for a cascaded transformation",
+[IsCascadedTransformation], ViewObj);
+
+#
+
+OnCoordinates2:=
+function(coords, ct)
+  local dep, copy, out, len, i;
+
+  dep:=DependencyFunction(ct);
+  len:=Length(coords);
+  copy:=EmptyPlist(len);
+  out:=EmptyPlist(len);
+
+  for i in [1..len] do 
+    out[i]:=coords[i]^(copy^dep);
+    copy[i]:=coords[i];
+  od;
+  return out;
+end;
+
+#
 
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
-local depfuncvalues,i, ncoords,dft;
+  local dft, depfuncvalues, ncoords, i;
 
   dft := DependencyFunction(ct);
   depfuncvalues := List([1..Size(coords)], x-> coords{[1..x-1]}^dft);
