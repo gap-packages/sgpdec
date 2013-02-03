@@ -44,7 +44,7 @@ end);
 
 # maps (abstract) coordinates to points
 InstallMethod(AsPoint, "for coordinates in a cascade shell",
-[IsDenseList,IsCascadeShell],
+[IsDenseList,IsList],
 function(coords,csh)
 local l;
   if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
@@ -60,5 +60,5 @@ local l;
 end);
 
 InstallOtherMethod(AsCoords, "for lifting a point into a cascade shell",
-[IsPosInt,IsCascadeShell],
+[IsPosInt,IsList],
 function(state,csh) return AllCoords(csh)[state]; end);
