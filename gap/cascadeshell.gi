@@ -74,101 +74,13 @@ Name4Component := function(comp)
 end;
 MakeReadOnlyGlobal("Name4Component");
 
-#InstallMethod(IsCascadedGroupShell,[IsList],
-#csh -> ForAll(csh!.components, IsGroup));
+# TODO this is for the number of dependency entries
+#  state_set_sizes := List(cascprodinfo.coordval_sets, x-> Size(x));
+#  cascprodinfo.num_of_dependency_entries :=
+#    Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
-# SIMPLIFIED CONSTRUCTOR
-# calling the main with default identity functions
-InstallOtherMethod(CascadeShell,[IsList],
-function(components)
-local statesym, opsym, comp,gid;
-
-  statesym := [];
-  opsym := [];
-  for comp in components do
-     Add(statesym, IdFunc);
-     Add(opsym, function(x)
-       if IsTransformation(x) then
-         return SimplerLinearNotation(x);
-       else
-         return x; fi;end);
-  od;
-  return CascadeShell(components,statesym,opsym);
-end);
-
-#THE MAIN CONSTRUCTOR with all the possible arguments
-InstallMethod(CascadeShell,[IsList,IsList,IsList],
-function(components,coordval_converters,coordtrans_converters)
-local cascprodinfo,prodname,i,str,result,state_set_sizes;
-
-  #GENERATING THE NAME
-  #deciding whether it is a group or not and set the name accordingly
-  if ForAll(components, IsGroup) then
-    prodname := "G";
-  else
-    prodname := "sg";
-  fi;
-  #concatenating component names
-  Perform(components,
-          function(c)
-            prodname := Concatenation(prodname,"_", Name4Component(c));
-          end);
-
-  #BUILDING THE INFO RECORD
-  #this is the main record containing information about the cascade product,
-  #the initial values do not matter
-  cascprodinfo := rec(
-                      coordval_converters := coordval_converters,
-                      coordtrans_converters := coordtrans_converters,
-                      components := components,
-                      name_of_shell := prodname);
-
-  #guessing the statesets of the original components
-  cascprodinfo.coordval_sets := []; #TODO this will be replaced by LambdaDomain
-  for i in components do
-    if IsGroup(i) then
-      Add(cascprodinfo.coordval_sets,MovedPoints(i));
-    else
-      Add(cascprodinfo.coordval_sets,
-          [1..DegreeOfTransformation(Representative(i))]);
-    fi;
-  od;
-
-  #calculating the maximal number of elementary dependencies
-  state_set_sizes := List(cascprodinfo.coordval_sets, x-> Size(x));
-  cascprodinfo.num_of_dependency_entries :=
-    Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
-
-  #constructing argumentnames (for display purposes)
-  cascprodinfo.depdom_names := [];
-  cascprodinfo.depdom_names[1] := ""; #no dep func on the top level
-  str := "";
-  for i in [2..Length(components)] do
-      if i > 2 then str  := Concatenation(str, "x");fi;
-      str := Concatenation(str,String(Size(cascprodinfo.coordval_sets[i-1])));
-      cascprodinfo.depdom_names[i] := str;
-  od;
-
-  #creating cascade state typed states
-  #GENERATING COORDINATES
-  cascprodinfo.allcoords :=
-    EnumeratorOfCartesianProduct(cascprodinfo.coordval_sets);
-
-  result :=  Objectify(CascadeShellType,cascprodinfo);
-
-  #making it immutable TODO this may not work
-  cascprodinfo := Immutable(cascprodinfo);
-
-  return result;
-end);
 
 #######################ACCESS METHODS#######################
-InstallGlobalFunction(AllCoords,
-function(csh) return csh!.allcoords; end);
-
-InstallGlobalFunction(CoordValSets,
-function(csh) return csh!.coordval_sets; end);
-
 InstallGlobalFunction(NumberOfDependencyFunctionArguments,
 function(csh) return csh!.num_of_dependency_entries; end);
 
