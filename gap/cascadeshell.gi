@@ -10,11 +10,17 @@
 ## Used for defining cascaded structures.
 ##
 
+InstallOtherMethod(IsListOfPermGroupsAndTransformationSemigroups,
+        [IsListOrCollection],
+function(l)
+  return not IsEmpty(l) and
+         IsDenseList(l) and
+         ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
+end);
+
 InstallOtherMethod(DomainsOfCascadeProductComponents,[IsList],
 function(comps)
-  local check, domains, comp;
-
-  #check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
+  local domains, comp;
 
   #if Length(arg)=1 then
   #  if not check(arg[1]) then
@@ -27,11 +33,6 @@ function(comps)
  #   fi;
  # fi;  
   #TODO IsListOfPermGroupsAndTransformationSemigroups property of lists
-#  if not ForAll(arg, check) then
-#    Error("the argument should be a list of length at least two ",
-#          " consisting of transformation semigroups or perm groups,");
-#    return;
-#  fi;
 
   domains:=[];
   for comp in comps do

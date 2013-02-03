@@ -15,6 +15,8 @@ DeclareCategoryCollections("IsCascadedTransformation");
 DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
         IsCascadedTransformationCollection);
 
+DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
+        IsListOrCollection);
 DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("CascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
