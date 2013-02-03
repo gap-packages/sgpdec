@@ -20,6 +20,7 @@ DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
 DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
+DeclareAttribute("PrefixDomainOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeProduct);
 DeclareAttribute("NrComponentsOfCascadeProduct", IsCascadeProduct);
 
