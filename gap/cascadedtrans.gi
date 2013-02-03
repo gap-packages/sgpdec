@@ -82,11 +82,8 @@ function(coll, depfunc)
   od;
   ShrinkAllocationPlist(func);
 
-  f:=Objectify(CascadedTransformationType, rec());
-  SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
-  SetComponentDomainsOfCascadedTransformation(f, coll);
-  SetDependencyFunction(f, CreateDependencyFunction(func, enum));
-  return f;
+  return CreateCascadedTransformation(EnumeratorOfCartesianProduct(coll), coll,
+  enum, func);
 end);
 
 # either: 
@@ -108,6 +105,7 @@ function(arg)
   SetComponentDomainsOfCascadedTransformation(f, arg[2]);
   SetPrefixDomainOfCascadedTransformation(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
+  return f;
 end);
 
 #
@@ -151,12 +149,8 @@ function(list, numofdeps)
     func[k][j]:=Random(list[k]);
   od;
  
-  # create f
-  f:=Objectify(CascadedTransformationType, rec());
-  SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
-  SetComponentDomainsOfCascadedTransformation(f, coll);
-  SetDependencyFunction(f, CreateDependencyFunction(func, enum));
-  return f;
+  return CreateCascadedTransformation(EnumeratorOfCartesianProduct(coll), 
+   coll, enum, func);
 end);
 
 #JDM install CascadedTransformation, check args are sensible.
@@ -231,7 +225,7 @@ function(f,g)
   local dep_f, enum, func, fg, i, j;
   
   dep_f:=DependencyFunction(f);
-  enum:=dep_f!.enum;
+  enum:=PrefixDomainOfCascadedTransformation(f);
 
   func:=List(enum, x-> EmptyPlist(Length(x)));
 
@@ -240,12 +234,7 @@ function(f,g)
       func[i][j]:=enum[i][j]^dep_f*OnCoordinates(enum[i][j], g)^dep_f;
     od;
   od;
-  fg:=Objectify(CascadedTransformationType, rec());
-  SetDomainOfCascadedTransformation(fg, DomainOfCascadedTransformation(f));
-  SetComponentDomainsOfCascadedTransformation(fg, 
-   ComponentDomainsOfCascadedTransformation(f));
-  SetDependencyFunction(fg, CreateDependencyFunction(func, enum));
-  return fg;      
+  return CreateCascadedTransformation(f, func);      
 end);
 
 # MonomialGenerators require the orbits of singletons under semigroup action
@@ -317,16 +306,15 @@ InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 [IsCascadeProduct],
 function(s)
   local t, inv;
-  t:=Semigroup(GeneratorsOfSemigroup(s), AsTransformation);
+  t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
   inv:=function(f)
     local prefix, dom, n, func, visited, one, i, x, m, pos, j;
     prefix:=PrefixDomainOfCascadeProduct(s);
     dom:=DomainOfCascadeProduct(s);
     n:=NrComponentsOfCascadeProduct(s);
     func:=List(prefix, x-> EmptyPlist(Length(x)));
-    visited:=List([1..Length(prefix)], x-> BlistList([1..Length(x)], []));
-    one:=List([1..Length(prefix)], x-> 
-     BlistList([1..Length(x)], [1..Length(x)]));
+    visited:=List(prefix, x-> BlistList([1..Length(x)], []));
+    one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     
     for i in [1..DegreeOfTransformation(f)] do 
       x:=ShallowCopy(dom[i]);

@@ -10,6 +10,10 @@
 ## Used for defining cascaded structures.
 ##
 
+InstallMethod(DomainOfCascadeProduct, 
+[IsCascadeProduct],
+x-> DomainOfCascadedTransformation(Representative(x)));
+
 InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
         [IsListOrCollection],
 function(l)
@@ -17,6 +21,13 @@ function(l)
          IsDenseList(l) and
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
+
+InstallMethod(PrefixDomainOfCascadeProduct,
+[IsCascadeProduct],
+function(cascprod)
+  return PrefixDomainOfCascadedTransformation(Representative(cascprod));
+end);
+
 
 InstallOtherMethod(NrComponentsOfCascadeProduct,
         [IsCascadeProduct],
