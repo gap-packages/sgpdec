@@ -12,7 +12,7 @@
 
 InstallOtherMethod(DomainsOfCascadeProductComponents,[IsList],
 function(arg)
-  local check,comp,domains;
+  local check, domains, comp;
 
   check:=x-> IsTransformationSemigroup(x) and IsPermGroup(x);
 
@@ -32,6 +32,7 @@ function(arg)
     return;
   fi;
 
+  domains:=[];
   for comp in arg do
     if IsTransformationSemigroup(comp) then
       Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
@@ -42,15 +43,15 @@ function(arg)
   return domains;
 end);
 
+#
 
-InstallGlobal(CascadedWreathProduct, 
+InstallGlobalFunction(CascadeProduct, 
 function(arg)
-  
 
-  record.enum:=EnumeratorOfCartesianProduct(record.domains);
+  #record.enum:=EnumeratorOfCartesianProduct(record.domains);
   # get the generators, create the object using the family of the generators,
   # and a new type (as in semigroups.gi) ...
-  out:=Objectify();
+  #out:=Objectify();
 
 end);
 
@@ -79,8 +80,8 @@ Name4Component := function(comp)
 end;
 MakeReadOnlyGlobal("Name4Component");
 
-InstallMethod(IsCascadedGroupShell,[IsList],
-csh -> ForAll(csh!.components, IsGroup));
+#InstallMethod(IsCascadedGroupShell,[IsList],
+#csh -> ForAll(csh!.components, IsGroup));
 
 # SIMPLIFIED CONSTRUCTOR
 # calling the main with default identity functions
