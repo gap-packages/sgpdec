@@ -18,17 +18,16 @@
 
 InstallGlobalFunction(CascadedTransformationNC,
 function(coll, depfunc)
-local  depfunc;
-  depfunc := function(args)
-    local value;
-    value := SearchDepFuncTable(depfunctable, args);
-    if value <> fail then
-      return value;
-    fi;
-    return One(csh[Length(args)+1]);
-  end;
-  return Objectify(CascadedTransformationType,
-                    rec(csh:=csh, depfunc:=depfunc));
+  local enum, func, x;
+  
+  enum:=EnumeratorOfCartesianProduct(DomainsOfCascadeProductComponents(coll));
+  func:=EmptyPlist(Length(enum));
+
+  for x in depfunc do
+    func[Position(enum, x[1])]:=x[2];
+  od;
+
+  return Objectify(CascadedTransformationType, rec(enum:=enum, depfunc:=func));
 end);
 
 # returns a list containing
@@ -108,11 +107,11 @@ end);
 # We have different algorithms here. The fastest is plugged in the real Inverse.
 
 #simple trick for getting the inverse: take the flat inverse instead
-InvCascadedTransformationByYeast := function(cascperm)
-  return AsCascadedTransNC(CascadeShellOf(cascperm),
-                 Inverse(AsTransformation(cascperm)));
-end;
-MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
+#InvCascadedTransformationByYeast := function(cascperm)
+#  return AsCascadedTransNC(CascadeShellOf(cascperm),
+#                 Inverse(AsTransformation(cascperm)));
+#end;
+#MakeReadOnlyGlobal("InvCascadedTransformationByYeast");
 
 # calculating the powers until inverse found, this is of course very slow
 InvCascadedTransformationByPowers := function(cascperm)
@@ -385,51 +384,51 @@ end;
 MakeReadOnlyGlobal("ComponentActionForPrefix");
 
 #raising a permutation/transformation to its cascaded format
-InstallOtherMethod(AsCascadedTransNC,
-        "for flat transformation/permutation",
-[IsMultiplicativeElement,IsList],
-function(flatop,csh)
-  local flatoplist, dependencies, prefixes, action, level, prefix;
-
-  #getting  the images in a list ( i -> flatoplist[i] )
-  flatoplist := OnTuples([1..Size(AllCoords(csh))], flatop);
-
-  dependencies := [];
-
-  #enumerate prefixes for all levels
-  for level in [1..Length(csh)] do
-    #hacking the fix for the upstream changes EnumeratorOfCartesianProduct
-    if level = 1 then
-      prefixes := [ [] ];
-    else
-      prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
-    fi;
-    for prefix in prefixes do
-      action := ComponentActionForPrefix(csh, flatoplist, prefix);
-      if action <> One(csh[level]) then
-         Add(dependencies,[prefix,action]);
-      fi;
-    od;
-  od;
-
-  #after the recursion done we have the defining elementary dependencies
-  return CascadedTransformation(csh,DependencyTable(dependencies));
-end);
+# InstallOtherMethod(AsCascadedTransNC,
+#         "for flat transformation/permutation",
+# [IsMultiplicativeElement,IsCascadeShell],
+# function(flatop,csh)
+#   local flatoplist, dependencies, prefixes, action, level, prefix;
+# 
+#   #getting  the images in a list ( i -> flatoplist[i] )
+#   flatoplist := OnTuples([1..Size(AllCoords(csh))], flatop);
+# 
+#   dependencies := [];
+# 
+#   #enumerate prefixes for all levels
+#   for level in [1..Length(csh)] do
+#     #hacking the fix for the upstream changes EnumeratorOfCartesianProduct
+#     if level = 1 then
+#       prefixes := [ [] ];
+#     else
+#       prefixes := EnumeratorOfCartesianProduct(CoordValSets(csh){[1..level-1]});
+#     fi;
+#     for prefix in prefixes do
+#       action := ComponentActionForPrefix(csh, flatoplist, prefix);
+#       if action <> One(csh[level]) then
+#          Add(dependencies,[prefix,action]);
+#       fi;
+#     od;
+#   od;
+# 
+#   #after the recursion done we have the defining elementary dependencies
+#   return CascadedTransformation(csh,DependencyTable(dependencies));
+# end);
 
 #raising a permutation/transformation to its cascaded format
 #TODO!! to check whether the action is in the component
 
-InstallOtherMethod(AsCascadedTrans, "for transformation/permutation",
-[IsMultiplicativeElement,IsList],
-function(flatop,csh)
-  #if it is not compatible
-  if not IsDependencyCompatible(csh,flatop) then
-    Error("usage: the second argument does not belong to the wreath product");
-    return;
-  fi;
-  return AsCascadedTransNC(flatop,csh);
-end);
-
+# InstallOtherMethod(AsCascadedTrans, "for transformation/permutation",
+# [IsMultiplicativeElement,IsCascadeShell],
+# function(flatop,csh)
+#   #if it is not compatible
+#   if not IsDependencyCompatible(csh,flatop) then
+#     Error("usage: the second argument does not belong to the wreath product");
+#     return;
+#   fi;
+#   return AsCascadedTransNC(flatop,csh);
+# end);
+# 
 ################################################################################
 ##########DEPENDENCIES##########################################################
 
