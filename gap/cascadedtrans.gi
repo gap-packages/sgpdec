@@ -48,7 +48,6 @@ function(tup, depfunc)
   if pos=fail then 
     return fail;
   fi;
-  
 
   if not IsBound(func[i][pos]) then 
     return ();
@@ -67,7 +66,7 @@ function(coll, depfunc)
   fi;
 
   enum:=EmptyPlist(Length(coll)+1);
-  enum[1]:=[];
+  enum[1]:=[[]];
   
   tup:=[];
   
