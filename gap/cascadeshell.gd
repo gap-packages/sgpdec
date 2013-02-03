@@ -21,6 +21,7 @@ DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("CascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
 
+#TO BE REMOVED
 DeclareGlobalFunction("AllCoords");
 DeclareGlobalFunction("CoordValSets");
 DeclareGlobalFunction("NameOfDependencyDomain");

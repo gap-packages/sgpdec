@@ -81,12 +81,6 @@ MakeReadOnlyGlobal("Name4Component");
 
 
 #######################ACCESS METHODS#######################
-InstallGlobalFunction(AllCoords,
-function(csh) return csh!.allcoords; end);
-
-InstallGlobalFunction(CoordValSets,
-function(csh) return csh!.coordval_sets; end);
-
 InstallGlobalFunction(NumberOfDependencyFunctionArguments,
 function(csh) return csh!.num_of_dependency_entries; end);
 
