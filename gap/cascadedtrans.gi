@@ -173,7 +173,7 @@ local depfuncvalues,i, ncoords,dft;
     if IsTransformation(depfuncvalues[i])
        and RankOfTransformation(depfuncvalues[i])=1 then
       #the value of the constant transformation
-      ncoords[i] :=  1^depfuncvalues[i];#![1][1];
+      ncoords[i] :=  1^depfuncvalues[i];
     elif coords[i] = 0 then
       #TODO potential problem here when acting on 0, i.e. the set of all states
       # since a general transformation may reduce the set
@@ -185,9 +185,36 @@ local depfuncvalues,i, ncoords,dft;
   return ncoords;
 end);
 
+#multiplication of cascaded operations - it is a tricky one, since it just
+#combines together the functions without building a dependency table
+InstallOtherMethod(\*, "multiplying cascaded transformations", IsIdenticalObj,
+[IsCascadedTransformation, IsCascadedTransformation],
+function(p,q)
+  local deps,i,dom, coords, actions, actions2, ncoords, n, pdft, qdft;
+
+  dom := DomainOfCascadedTransformation(p);
+  pdft := DependencyFunction(p);
+  qdft := DependencyFunction(q);
+  deps := [];
+  n := Length(Representative(dom));
+  #this is redundant and wasteful at the moment
+  #but it should do the job
+  for coords in dom do
+    actions := List([1..n], x -> coords{[1..x-1]}^pdft);
+    ncoords := OnCoordinates(coords,p);
+    actions2 := List([1..n], x -> ncoords{[1..x-1]}^qdft);
+    for i in [1..n] do
+      if not IsOne(actions2[i]) then
+        AddSet(deps, [coords{[1..i-1]}, actions2[i]]);
+      fi;
+    od;
+  od;
+  return CascadedTransformationNC(ComponentDomainsOfCascadedTransformation(p),
+                 deps);
+end);
 
 # old
-
+# YEP THIS IS THE MARKER BETWEEN NEW AND OLD
 
 ################################################################################
 ####CONSTRUCTING CASCADED OPERATIONS############################################
@@ -319,29 +346,6 @@ function(ct)
   return IdentityCascadedTransformation(CascadeShellOf(ct));
 end);
 
-#multiplication of cascaded operations - it is a tricky one, since it just
-#combines together the functions without building a dependency table
-InstallOtherMethod(\*, "multiplying cascaded operations", IsIdenticalObj,
-[IsCascadedTransformation, IsCascadedTransformation],
-function(p,q)
-  local csh, depfunct;
-
-  #getting the info record as it contains the componentinfo
-  csh := CascadeShellOf(p);
-
-  # constructing the dependency function of acting by q on arguments premoved
-  # by p one dependency function is enough for all levels
-  depfunct := function(args)
-  local  newargs;
-    newargs := OnCoordinates(args,p);
-    # the product operation is the action of p on the arguments multiplied by
-    # the action of q on the p-moved args
-    return p!.depfunc(args) * q!.depfunc(newargs);
-  end;
-
-  return Objectify(CascadedTransformationType,
-                   rec(csh:=csh, depfunc:= depfunct));
-end);
 
 InstallOtherMethod(\^, "exponent for cascaded operation",
 [IsCascadedTransformation, IsInt],
