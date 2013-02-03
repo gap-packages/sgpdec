@@ -205,7 +205,7 @@ end);
 # product elements no dependencies, just the component's identtiy is returned
 InstallGlobalFunction(IdentityCascadedTransformation,
 function(csh)
-  return CascadedTransformation(csh,DependencyTable([]));
+  return fail; #CascadedTransformation(csh,DependencyTable([]));
 end);
 
 # creating random dependency functions
@@ -246,7 +246,7 @@ local invmaps, dep;
          ]);
   od;
   return CascadedTransformation(CascadeShellOf(cascperm),
-                 DependencyTable(invmaps));
+                fail);# DependencyTable(invmaps));
 end;
 MakeReadOnlyGlobal("InvCascadedTransformationByDependencies");
 
@@ -408,8 +408,8 @@ local depfuncvalues,i, ncoords;
   return ncoords;
 end);
 
-InstallOtherMethod(\^, "acting on cascaded states",
-[IsList, IsCascadedTransformation], OnCoordinates);
+#InstallOtherMethod(\^, "acting on cascaded states",
+#[IsList, IsCascadedTransformation], OnCoordinates);
 
 ################################################################################
 # CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
@@ -701,7 +701,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       Perform(gens,
               function(g)
                  Add(mongens,
-                     CascadedTransformation(csh,DependencyTable([[prefix,g]])));
+                     fail);#CascadedTransformation(csh,DependencyTable([[prefix,g]])));
                end);
     od;
 
