@@ -10,9 +10,14 @@
 ## Used for defining cascaded structures.
 ##
 
-DeclareGlobalFunction("CascadedWreathProduct");
-DeclareSynonymAttr("IsCascadedWreathProduct", IsSemigroup and
+DeclareGlobalFunction("CascadeProduct");
+DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
         IsCascadedTransformationCollection);
+
+DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
+DeclareAttribute("CascadeProductComponents" IsCascadeProduct);
+DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
+
 
 #DeclareRepresentation("IsCascadedStructureRep", 
 #IsComponentObjectRep and IsAttributeStoringRep and IsSemigroup, 
