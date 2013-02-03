@@ -23,11 +23,15 @@ DeclareGlobalFunction("CascadedTransformationNC");
 DeclareGlobalFunction("CascadedTransformation");
 DeclareAttribute("DomainOfCascadedTransformation", IsCascadedTransformation);
 DeclareAttribute("DependencyFunction", IsCascadedTransformation);
-DeclareAttribute("ComponentDomainsOfCascadedTransformation", IsCascadedTransformation);
+DeclareAttribute("ComponentDomainsOfCascadedTransformation",
+IsCascadedTransformation);
+DeclareAttribute("PrefixDomainOfCascadedTransformation",
+IsCascadedTransformation);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadedTransformation);
 
 DeclareCategory("IsDependencyFunc", IsRecord);
 DeclareGlobalFunction("CreateDependencyFunction");
+DeclareGlobalFunction("CreateCascadedTransformation");
 
 #old
 
