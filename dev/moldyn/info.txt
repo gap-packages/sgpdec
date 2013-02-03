@@ -1,0 +1,5 @@
+These scripts are for checking the idea of 'symmetric group; measures the stability of the reaction network.
+
+moldyn.g - Gillespie algorithm like method, each collision is an edge, but the result is only about the graph structure, not the group.
+
+molhists.g - measuring the ratio of group elements among all possible collision histories
