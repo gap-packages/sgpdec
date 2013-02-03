@@ -89,11 +89,9 @@ Transformation Semigroups",
 Dependencies := rec(
  GAP := ">= 4.5",
  NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
-                  ["citrus", ">=0.9"], #orbit algorithms
-                   ["dust", ">=0.1"], #fancy data structures
                    ["orb", ">=4.5"] #hashtable functionalities
                    ],
- SuggestedOtherPackages := [ ["viz", ">=0.2"]], #Draw, Splash]
+ SuggestedOtherPackages := [],#["viz", ">=0.2"]], #Draw, Splash]
  ExternalConditions := [ ]
 ),
 
