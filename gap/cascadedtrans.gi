@@ -285,6 +285,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
                       [[prefix,g]]));
         end);
     od;
+    od;
 #getting the orbit reprs on level
     orbitreprs := [];
     if IsGroup(comps[depth]) then
@@ -306,9 +307,10 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
         Add(newprefix, orbrep);
         Add(newprefixes, newprefix);
  prefixes := newprefixes;
+    od;
   od;
   return mongens;
-
+end);
 #
 
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
