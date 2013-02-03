@@ -18,6 +18,8 @@ BindGlobal("CascadedTransformationFamily", NewFamily("CascadedTransformationFami
 BindGlobal("CascadedTransformationType", NewType(CascadedTransformationFamily,
  IsCascadedTransformation and IsAssociativeElement));
 
+DeclareOperation("CascadedDomain", [IsList]);
+
 
 DeclareOperation("CascadeShellOf",[IsObject]);
 

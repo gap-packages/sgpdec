@@ -16,21 +16,17 @@
 #for creating cascade permutations by giving dependency function maps in a
 #dependency function table
 
-InstallGlobalFunction(CascadedTransformation,
-function()
+InstallGlobalFunction(CascadedTransformationNC,
+function(coll, depfunc)
 local  depfunc;
-  # a function that returns the value corresponding to the argument if found,
-  # otherwise the identity - embedded function
   depfunc := function(args)
     local value;
     value := SearchDepFuncTable(depfunctable, args);
     if value <> fail then
       return value;
     fi;
-    #returning identity based on the component
     return One(csh[Length(args)+1]);
   end;
-  #creating the instance
   return Objectify(CascadedTransformationType,
                     rec(csh:=csh, depfunc:=depfunc));
 end);
