@@ -92,7 +92,7 @@ end);
 
 InstallGlobalFunction(RandomCascadedTransformation,
 function(list, numofdeps)
-  local coll, enum, tup, func, len, j, k, l, f, i;
+  local coll, enum, tup, func, len, x, j, k, f, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
     Error("insert meaningful error message,");
@@ -117,16 +117,16 @@ function(list, numofdeps)
   len:=Sum(List(enum, Length));
   numofdeps:=Minimum([len, numofdeps]);
 
-  j:=1; 
+  x:=[1..len];
   for i in [1..numofdeps] do 
-    k:=Random(j,len);
-    j:=k; 
-    l:=1;
-    while k>Length(enum[l]) do 
-      k:=k-Length(enum[l]);
-      l:=l+1;
+    j:=Random(x);
+    RemoveSet(x, j);
+    k:=1;
+    while j>Length(enum[k]) do 
+      j:=j-Length(enum[k]);
+      k:=k+1;
     od;
-    func[l][k]:=Random(list[l]);
+    func[k][j]:=Random(list[k]);
   od;
   
   f:=Objectify(CascadedTransformationType, rec());
@@ -135,7 +135,6 @@ function(list, numofdeps)
   SetDependencyFunction(f, CreateDependencyFunction(func, enum));
   return f;
 end);
-
 
 #JDM install CascadedTransformation, check args are sensible.
 
