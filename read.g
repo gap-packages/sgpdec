@@ -12,7 +12,3 @@ ReadPackage("SgpDec","/gap/decomposition.gi");
 ReadPackage("SgpDec","/gap/cascadedtrans.gi");
 ReadPackage("SgpDec","/gap/coords.gi");
 ReadPackage("SgpDec","/gap/cascadeshell.gi");
-ReadPackage("SgpDec","/gap/subgroupchains.gi");
-ReadPackage("SgpDec","/gap/lagrangecoords.gi");
-ReadPackage("SgpDec","/gap/skeleton.gi");
-ReadPackage("SgpDec","/gap/holonomy.gi");

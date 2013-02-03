@@ -4,7 +4,7 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.6.67",
+Version := "0.7",
 
 Date := "23/01/2013",
 
@@ -89,7 +89,7 @@ Transformation Semigroups",
 Dependencies := rec(
  GAP := ">= 4.5",
  NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
-                   ["citrus", ">=0.9"], #orbit algorithms
+                  ["citrus", ">=0.9"], #orbit algorithms
                    ["dust", ">=0.1"], #fancy data structures
                    ["orb", ">=4.5"] #hashtable functionalities
                    ],
