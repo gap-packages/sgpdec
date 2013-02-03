@@ -9,6 +9,53 @@
 ##############################################################################
 ###
 
+InstallGlobalFunction(CreateDependencyFunction, 
+function(func, enum)
+  local record;
+
+  record:=rec(func:=func, enum:=enum);
+  return Objectify(NewType(CollectionsFamily(FamilyObj(func[2])),
+   IsDependencyFunc), record);
+end);
+
+#
+
+InstallMethod(ViewObj, "for a dependency func",
+[IsDependencyFunc],
+function(x)
+  Print("<dependency function>");
+  return;
+end);
+
+#
+
+InstallOtherMethod(\^, "for a tuple and dependency func",
+[IsCyclotomicCollection, IsDependencyFunc],
+function(tup, depfunc)
+  local func, enum, i, pos;
+  
+  func:=depfunc!.func;
+  enum:=depfunc!.enum;
+
+  i:=Length(tup)+1;
+  
+  if not IsBound(enum[i]) then 
+    return fail;
+  fi;
+  
+  pos:=Position(enum[i], tup);
+  
+  if pos=fail then 
+    return fail;
+  fi;
+  
+
+  if not IsBound(func[i][pos]) then 
+    return ();
+  fi;
+  return func[i][pos];
+end);
+
 # Cascaded permutations and transformations.
 
 InstallGlobalFunction(CascadedTransformationNC,
@@ -29,18 +76,20 @@ function(coll, depfunc)
     Add(enum, EnumeratorOfCartesianProduct(tup));
   od;
 
-  func:=EmptyPlist(Sum(List(enum, Length)));
+  func:=List(enum, x-> EmptyPlist(Length(x)));
 
   for x in depfunc do
-    func[Position(enum[Length(x[1])+1], x[1])]:=x[2];
+    func[Length(x[1])+1][Position(enum[Length(x[1])+1], x[1])]:=x[2];
   od;
 
   f:=Objectify(CascadedTransformationType, rec());
   SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
   SetComponentDomainsOfCascadedTransformation(f, coll);
-  SetDependencyFunction(f, func);
+  SetDependencyFunction(f, [func, enum]);
   return f;
 end);
+
+
 
 #
 

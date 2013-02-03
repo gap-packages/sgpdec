@@ -26,6 +26,9 @@ DeclareAttribute("DependencyFunction", IsCascadedTransformation);
 DeclareAttribute("ComponentDomainsOfCascadedTransformation", IsCascadedTransformation);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadedTransformation);
 
+DeclareCategory("IsDependencyFunc", IsRecord);
+DeclareGlobalFunction("CreateDependencyFunction");
+
 #old
 
 DeclareOperation("CascadeShellOf",[IsObject]);
