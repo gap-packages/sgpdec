@@ -23,9 +23,9 @@ SgpDecRunManualExamples := function()
   #to have the same output
   SizeScreen([80]);
   #to have no profile info
-  SetInfoLevel(LagrangeDecompositionInfoClass,0);
-  SetInfoLevel(HolonomyInfoClass,0);
-  SetInfoLevel(SkeletonInfoClass,0);
+#  SetInfoLevel(LagrangeDecompositionInfoClass,0);
+#  SetInfoLevel(HolonomyInfoClass,0);
+#  SetInfoLevel(SkeletonInfoClass,0);
   RunExamples(
           ExtractExamples(
                   Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
