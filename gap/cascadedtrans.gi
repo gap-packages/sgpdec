@@ -45,8 +45,11 @@ function(f)
   
   for x in ComponentDomainsOfCascadedTransformation(f) do 
     Append(midfix, String(x));
+    Append(midfix, ", ");
   od;
-  
+  Remove(midfix, Length(midfix));
+  Remove(midfix, Length(midfix));
+
   suffix:=">";
 
   Print(prefix);
