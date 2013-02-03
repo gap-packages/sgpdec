@@ -18,6 +18,13 @@ function(l)
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
 
+InstallOtherMethod(NrComponentsOfCascadeProduct,
+        [IsCascadeProduct],
+function(cascprod)
+  return Size(ComponentDomainsOfCascadedTransformation(
+                 Representative(cascprod)));
+end);
+
 InstallOtherMethod(DomainsOfCascadeProductComponents,
         [IsListOrCollection],
 function(comps)
