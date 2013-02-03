@@ -1,0 +1,5 @@
+
+<Section Label="sec:drawing"> <Heading>Visualization of Cascaded Structures</Heading>
+<#Include Label="Draw">
+<#Include Label="Splash">
+</Section>

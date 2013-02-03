@@ -1,0 +1,4 @@
+Tasks to be carried out:
+
+- For cascaded structures implementing the possibility of using a smaller stateset (e.g. the set of chains for holonomy).
+- For drawing and splashing add the arguments (the structure is sort of there by accepting a record as an argument).
