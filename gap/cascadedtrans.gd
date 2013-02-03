@@ -8,6 +8,7 @@
 ##
 ## Cascaded permutations and transformations.
 ##
+DeclareOperation("CascadeShellOf",[IsObject]);
 
 DeclareGlobalFunction("IdentityCascadedTransformation");
 DeclareGlobalFunction("CascadedTransformation");
