@@ -30,7 +30,7 @@ end);
 #
 
 InstallOtherMethod(\^, "for a tuple and dependency func",
-[IsCyclotomicCollection, IsDependencyFunc],
+[IsList, IsDependencyFunc],
 function(tup, depfunc)
   local func, enum, i, pos;
   
@@ -93,15 +93,25 @@ end);
 
 InstallGlobalFunction(RandomCascadedTransformation,
 function(list, numofdeps)
-  local dom, max, depfunc;
+  local coll, enum, tup, func, i, j, max;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
     Error();
     return;
   fi;
 
-  dom:=DomainsOfCascadeProductComponents(list);
-  max:=Product(List(dom, x-> Length));
+  coll:=DomainsOfCascadeProductComponents(list); 
+  enum:=EmptyPlist(Length(coll)+1);
+  enum[1]:=[];
+  
+  tup:=[];
+  
+  for i in [1..Length(coll)-1] do 
+    Add(tup, coll[i]);
+    Add(enum, EnumeratorOfCartesianProduct(tup));
+  od;
+
+  func:=List(enum, x-> EmptyPlist(Length(x)));
 
   # sanity check, to avoid infinite loops down below
   if numofdeps > max then
@@ -110,8 +120,12 @@ function(list, numofdeps)
      "the number of elementary dependencies is set to ", numofdeps);
   fi;
 
-  depfunc:=EmptyPlist(max);
-  #return CascadedTransformation(csh,DependencyTable(deps));
+  i:=1; j:=1;
+
+  while i<>numofdeps do
+    
+  od;
+
 end);
 
 
