@@ -160,6 +160,32 @@ end);
 InstallMethod(PrintObj, "for a cascaded transformation",
 [IsCascadedTransformation],ViewObj);
 
+
+InstallGlobalFunction(OnCoordinates,
+function(coords, ct)
+local depfuncvalues,i, ncoords,dft;
+
+  dft := DependencyFunction(ct);
+  depfuncvalues := List([1..Size(coords)], x-> coords{[1..x-1]}^dft);
+  ncoords := [];
+  for i in [1..Size(coords)] do
+    #if it is a constant map (required for permutation reset automata)
+    if IsTransformation(depfuncvalues[i])
+       and RankOfTransformation(depfuncvalues[i])=1 then
+      #the value of the constant transformation
+      ncoords[i] :=  1^depfuncvalues[i];#![1][1];
+    elif coords[i] = 0 then
+      #TODO potential problem here when acting on 0, i.e. the set of all states
+      # since a general transformation may reduce the set
+      ncoords[i] :=  0;
+    else
+      ncoords[i] := OnPoints(coords[i], depfuncvalues[i]);
+    fi;
+  od;
+  return ncoords;
+end);
+
+
 # old
 
 
@@ -383,29 +409,6 @@ end);
 #end);
 
 
-InstallGlobalFunction(OnCoordinates,
-function(coords, ct)
-local depfuncvalues,i, ncoords;
-
-  depfuncvalues := List([1..Size(coords)],
-                        x->ct!.depfunc(coords{[1..x-1]}));
-  ncoords := [];
-  for i in [1..Size(coords)] do
-    #if it is a constant map (required for permutation reset automata)
-    if IsTransformation(depfuncvalues[i])
-       and RankOfTransformation(depfuncvalues[i])=1 then
-      #the value of the constant transformation
-      ncoords[i] :=  1^depfuncvalues[i];#![1][1];
-    elif coords[i] = 0 then
-      #TODO potential problem here when acting on 0, i.e. the set of all states
-      # since a general transformation may reduce the set
-      ncoords[i] :=  0;
-    else
-      ncoords[i] := OnPoints(coords[i], depfuncvalues[i]);
-    fi;
-  od;
-  return ncoords;
-end);
 
 #InstallOtherMethod(\^, "acting on cascaded states",
 #[IsList, IsCascadedTransformation], OnCoordinates);
