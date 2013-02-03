@@ -11,20 +11,13 @@
 ##
 
 DeclareGlobalFunction("CascadeProduct");
+DeclareCategoryCollections("IsCascadedTransformation");
 DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
         IsCascadedTransformationCollection);
 
 DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
-DeclareAttribute("CascadeProductComponents" IsCascadeProduct);
+DeclareAttribute("CascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
-
-
-#DeclareRepresentation("IsCascadedStructureRep", 
-#IsComponentObjectRep and IsAttributeStoringRep and IsSemigroup, 
-#[ "components", # the underlying perm groups or transformation semigroups
-#  "domains",    # the domains of the actions of the underlying semigroups
-#  "enum"       # enumerator of the domain of the wreath product
-#]);
 
 DeclareOperation("CascadeShell",[IsList,IsList,IsList]);
 DeclareGlobalFunction("AllCoords");
