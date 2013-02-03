@@ -3,6 +3,7 @@
 ################################################################################
 
 #This is in 4.6
+if not IsBound(NumberElement_Cartesian) then
 BindGlobal( "NumberElement_Cartesian", 
 function(enum, x)    
   local n, mults, colls, sum, pos, i;
@@ -32,7 +33,9 @@ function(enum, x)
 
   return sum+pos;
 end);
+fi;
 
+if not IsBound(ElementNumber_Cartesian) then
 BindGlobal( "ElementNumber_Cartesian", 
 function(enum, x)
   local n, mults, out, i, colls;
@@ -57,7 +60,9 @@ function(enum, x)
 
   return out;
 end);
+fi;
 
+if not IsBound(EnumeratorOfCartesianProduct2) then
 BindGlobal( "EnumeratorOfCartesianProduct2",
   function(colls)
     local new_colls, mults, k, i, j;
@@ -93,7 +98,9 @@ BindGlobal( "EnumeratorOfCartesianProduct2",
            colls:=new_colls,
            Length:=enum-> Maximum([mults[1],1])*Length(new_colls[1])));
   end);
-    
+fi;
+
+if not ISBOUNDENUMERATORCARTESIANPRODUCT then
 InstallGlobalFunction( "EnumeratorOfCartesianProduct",
     function( arg )
     # this mimics usage of functions Cartesian and Cartesian2
@@ -105,4 +112,5 @@ InstallGlobalFunction( "EnumeratorOfCartesianProduct",
         return EnumeratorOfCartesianProduct2( arg );
     fi;
     return;
-end);
+  end);
+ fi;
