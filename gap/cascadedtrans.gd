@@ -21,6 +21,9 @@ BindGlobal("CascadedTransformationType", NewType(CascadedTransformationFamily,
 
 DeclareGlobalFunction("CascadedTransformationNC");
 DeclareGlobalFunction("CascadedTransformation");
+DeclareAttribute("DomainOfCascadedTransformation", IsCascadedTransformation);
+DeclareAttribute("DependencyFunction", IsCascadedTransformation);
+DeclareAttribute("ComponentDomainsOfCascadedTransformation", IsCascadedTransformation);
 
 #old
 

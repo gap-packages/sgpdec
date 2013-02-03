@@ -10,25 +10,64 @@
 ###
 ### Cascaded permutations and transformations.
 
-################################################################################
-####CONSTRUCTING CASCADED OPERATIONS############################################
-
-#for creating cascade permutations by giving dependency function maps in a
-#dependency function table
-
 InstallGlobalFunction(CascadedTransformationNC,
 function(coll, depfunc)
-  local enum, func, x;
-  
-  enum:=EnumeratorOfCartesianProduct(DomainsOfCascadeProductComponents(coll));
+  local enum, func, f, x;
+ 
+  if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
+    enum:=EnumeratorOfCartesianProduct(DomainsOfCascadeProductComponents(coll));
+  elif IsCyclotomicCollColl(coll) then 
+    enum:=EnumeratorOfCartesianProduct(coll);
+  fi;
+
   func:=EmptyPlist(Length(enum));
 
   for x in depfunc do
     func[Position(enum, x[1])]:=x[2];
   od;
 
-  return Objectify(CascadedTransformationType, rec(enum:=enum, depfunc:=func));
+  f:=Objectify(CascadedTransformationType, rec());
+  SetDomainOfCascadedTransformation(f, enum);
+  SetComponentDomainsOfCascadedTransformation(f, enum!.colls);
+  SetDependencyFunction(f, func);
+  return f;
 end);
+
+#
+
+InstallMethod(ViewObj, "for a cascaded transformation",
+[IsCascadedTransformation],
+function(f)
+  local prefix, midfix, suffix, x;
+
+  prefix:="<cascaded transformation on ";
+  midfix:="";
+  
+  for x in ComponentDomainsOfCascadedTransformation(f) do 
+    Append(midfix, String(x));
+  od;
+  
+  suffix:=">";
+
+  Print(prefix);
+  if Length(prefix)+Length(midfix)+Length(suffix)<=SizeScreen()[1] then
+    Print(midfix);
+  fi;
+  Print(suffix);
+  return;
+end);
+
+InstallMethod(PrintObj, "for a cascaded transformation",
+[IsCascadedTransformation],ViewObj);
+
+# old
+
+
+################################################################################
+####CONSTRUCTING CASCADED OPERATIONS############################################
+
+#for creating cascade permutations by giving dependency function maps in a
+#dependency function table
 
 # returns a list containing
 # coordinateprefix-component element pairs (when it is not the identity of
@@ -272,14 +311,6 @@ local csh, i, coords, val;
 end);
 
 # Implementing viewobj, printing simple info.
-InstallMethod(ViewObj, "cascaded transformation",
-[IsCascadedTransformation],
-function(ct)
-  Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
-end);
-
-InstallMethod(PrintObj, "cascaded transformation",
-[IsCascadedTransformation],ViewObj);
 #function(ct)
 #  Print("Cascaded transformation in ", Name(CascadeShellOf(ct)));
 #end);
