@@ -8,30 +8,67 @@
 ###
 ##############################################################################
 ###
-### Cascaded permutations and transformations.
+
+# Cascaded permutations and transformations.
 
 InstallGlobalFunction(CascadedTransformationNC,
 function(coll, depfunc)
-  local enum, func, f, x;
+  local enum, tup, func, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    enum:=EnumeratorOfCartesianProduct(DomainsOfCascadeProductComponents(coll));
-  elif IsCyclotomicCollColl(coll) then 
-    enum:=EnumeratorOfCartesianProduct(coll);
+    coll:=DomainsOfCascadeProductComponents(coll);
   fi;
 
-  func:=EmptyPlist(Length(enum));
+  enum:=EmptyPlist(Length(coll)+1);
+  enum[1]:=[];
+  
+  tup:=[];
+  
+  for i in [1..Length(coll)-1] do 
+    Add(tup, coll[i]);
+    Add(enum, EnumeratorOfCartesianProduct(tup));
+  od;
+
+  func:=EmptyPlist(Sum(List(enum, Length)));
 
   for x in depfunc do
-    func[Position(enum, x[1])]:=x[2];
+    func[Position(enum[Length(x[1])+1], x[1])]:=x[2];
   od;
 
   f:=Objectify(CascadedTransformationType, rec());
-  SetDomainOfCascadedTransformation(f, enum);
-  SetComponentDomainsOfCascadedTransformation(f, enum!.colls);
+  SetDomainOfCascadedTransformation(f, EnumeratorOfCartesianProduct(coll));
+  SetComponentDomainsOfCascadedTransformation(f, coll);
   SetDependencyFunction(f, func);
   return f;
 end);
+
+#
+
+InstallGlobalFunction(RandomCascadedTransformation,
+function(list, numofdeps)
+  local dom, max, depfunc;
+
+  if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
+    Error();
+    return;
+  fi;
+
+  dom:=DomainsOfCascadeProductComponents(list);
+  max:=Product(List(dom, x-> Length));
+
+  # sanity check, to avoid infinite loops down below
+  if numofdeps > max then
+    numofdeps := max;
+    Info(InfoWarning, 1, 
+     "the number of elementary dependencies is set to ", numofdeps);
+  fi;
+
+  depfunc:=EmptyPlist(max);
+  #return CascadedTransformation(csh,DependencyTable(deps));
+end);
+
+
+#JDM install CascadedTransformation, check args are sensible.
 
 #
 
@@ -112,39 +149,6 @@ end);
 
 # creating random dependency functions
 # the number of nontrivial entries has to be specified
-InstallGlobalFunction(RandomCascadedTransformation,
-function(csh,numofdeps)
-local deps, level, arg;
-
-  # sanity check, to avoid infinite loops down below
-  if numofdeps > NumberOfDependencyFunctionArguments(csh) then
-    numofdeps := NumberOfDependencyFunctionArguments(csh);
-    Print("#W Number of elementary dependencies is set to ", numofdeps,"\n");
-  fi;
-
-  deps := [];
-  # some trickery is needed as random may return the same element
-  while Length(deps) <> numofdeps do
-    level := Random(1,Length(csh));
-    if (level = 1) then
-      arg := [];
-    else
-      arg := Random(EnumeratorOfCartesianProduct(
-                     CoordValSets(csh){[1..level-1]}));
-    fi;
-    if not (arg in deps) then
-      Add(deps,arg);
-    fi;
-  od;
-
-  # now putting the actions there - this may still give identity and reduce the
-  # number of dependencies
-  deps := List(deps,
-               arg->[arg,Random(csh[Length(arg)+1])]);
-  #ShowDependencies(DependencyTable(deps));
-  return CascadedTransformation(csh,DependencyTable(deps));
-end);
-
 ##############ALGORITHMS TO GET THE INVERSE####################################
 # We have different algorithms here. The fastest is plugged in the real Inverse.
 

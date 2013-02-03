@@ -20,6 +20,9 @@ DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
 DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("CascadeProductComponents", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
+DeclareAttribute("NrDependencyFuncArgs", IsCascadeProduct);
+
+#old
 
 DeclareOperation("CascadeShell",[IsList,IsList,IsList]);
 DeclareGlobalFunction("AllCoords");
@@ -28,7 +31,6 @@ DeclareGlobalFunction("NameOfDependencyDomain");
 DeclareGlobalFunction("CoordValConverter");
 DeclareGlobalFunction("CoordTransConverter");
 DeclareGlobalFunction("SizeOfWreathProduct");
-DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
 
 DeclareCategory("IsCascadeShell", IsDenseList);
 DeclareProperty("IsCascadedGroupShell", IsCascadeShell);

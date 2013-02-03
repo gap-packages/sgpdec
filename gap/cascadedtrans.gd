@@ -24,6 +24,7 @@ DeclareGlobalFunction("CascadedTransformation");
 DeclareAttribute("DomainOfCascadedTransformation", IsCascadedTransformation);
 DeclareAttribute("DependencyFunction", IsCascadedTransformation);
 DeclareAttribute("ComponentDomainsOfCascadedTransformation", IsCascadedTransformation);
+DeclareAttribute("NrDependencyFuncArgs", IsCascadedTransformation);
 
 #old
 
