@@ -394,8 +394,8 @@ local depfuncvalues,i, ncoords;
   return ncoords;
 end);
 
-InstallOtherMethod(\^, "acting on cascaded states",
-[IsList, IsCascadedTransformation], OnCoordinates);
+#InstallOtherMethod(\^, "acting on cascaded states",
+#[IsList, IsCascadedTransformation], OnCoordinates);
 
 ################################################################################
 # CASCADED TRANSFORMATION --> TRANSFORMATION, PERMUTATION HOMOMORPHISMS ########
