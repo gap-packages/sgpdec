@@ -10,17 +10,55 @@
 ## Used for defining cascade structures.
 ##
 
+# 
+
+InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+[IsCascadeProduct],
+function(s)
+  local func, n, out, i, j;
+  
+  func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+  n:=NrComponentsOfCascadeProduct(s);
+  out:=EmptyPlist(n);
+
+  #setup
+  for i in [1..n] do 
+    if IsTransformationCollection(func[1][i]) then 
+      out[i]:=Semigroup(func[1][i], rec(small:=true)); 
+    else
+      out[i]:=Group(());
+    fi;
+  od;
+
+  for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+    for j in [1..n] do 
+      if IsSemigroup(out[i]) then 
+        out[i]:=ClosureSemigroup(out[i], func[i][j]);
+      else
+        out[i]:=ClosureGroup(out[i], func[i][j]);
+      fi;
+    od;
+  od;
+
+  return out; 
+end);
+#
+
 InstallMethod(DomainOfCascadeProduct,
 [IsCascadeProduct],
 x-> DomainOfCascadeTransformation(Representative(x)));
 
+#
+
 InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
-        [IsListOrCollection],
+[IsListOrCollection],
 function(l)
   return not IsEmpty(l) and
          IsDenseList(l) and
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
+
+#
 
 InstallMethod(PrefixDomainOfCascadeProduct,
 [IsCascadeProduct],
@@ -28,16 +66,19 @@ function(cascprod)
   return PrefixDomainOfCascadeTransformation(Representative(cascprod));
 end);
 
+#
 
 InstallOtherMethod(NrComponentsOfCascadeProduct,
-        [IsCascadeProduct],
+[IsCascadeProduct],
 function(cascprod)
   return Size(ComponentDomainsOfCascadeTransformation(
                  Representative(cascprod)));
 end);
 
+#
+
 InstallOtherMethod(DomainsOfCascadeProductComponents,
-        [IsListOrCollection],
+[IsListOrCollection],
 function(comps)
   local domains, comp;
   if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
@@ -56,6 +97,20 @@ function(comps)
 end);
 
 #
+
+InstallMethod(ViewObj, "for a cascade product",
+[IsCascadeProduct],
+function(s)
+  Print("<cascade transformation semigroup with ",
+   Length(GeneratorsOfSemigroup(s)), " generator");
+  if Length(GeneratorsOfSemigroup(s))>1 then 
+    Print("s");
+  fi;
+  Print(">");
+  return;
+end);
+
+# old
 
 InstallGlobalFunction(CascadeProduct, 
 function(arg)
