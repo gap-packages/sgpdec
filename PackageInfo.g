@@ -80,8 +80,7 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Hierarchical Decompositions of Finite Permutation Groups and \
-Transformation Semigroups",
+  LongTitle := "Hierarchical Decompositions and Coordinate Systems",
   Autoload  := true
 ),
 
