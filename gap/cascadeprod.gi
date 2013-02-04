@@ -12,6 +12,7 @@
 
 # 
 
+if GAPInfo.Version="4.dev" then 
 InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
 [IsCascadeProduct],
 function(s)
@@ -42,6 +43,38 @@ function(s)
 
   return out; 
 end);
+else #JDM not yet done!
+InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+[IsCascadeProduct],
+function(s)
+  local func, n, out, i, j;
+  
+  func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+  n:=NrComponentsOfCascadeProduct(s);
+  out:=EmptyPlist(n);
+
+  #setup
+  for i in [1..n] do 
+    if IsTransformationCollection(func[1][i]) then 
+      out[i]:=Semigroup(func[1][i], rec(small:=true)); 
+    else
+      out[i]:=Group(());
+    fi;
+  od;
+
+  for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+    for j in [1..n] do 
+      if IsSemigroup(out[i]) then 
+        out[i]:=ClosureSemigroup(out[i], func[i][j]);
+      else
+        out[i]:=ClosureGroup(out[i], func[i][j]);
+      fi;
+    od;
+  od;
+
+  return out; 
+end);
+fi;
 #
 
 InstallMethod(DomainOfCascadeProduct,

@@ -222,16 +222,17 @@ end);
 InstallMethod(\*, "for cascade transformations", IsIdenticalObj,
 [IsCascadeTransformation, IsCascadeTransformation],
 function(f,g)
-  local dep_f, enum, func, fg, i, j;
+  local dep_f, dep_g, prefix, func, i, j;
   
   dep_f:=DependencyFunction(f);
-  enum:=PrefixDomainOfCascadeTransformation(f);
+  dep_g:=DependencyFunction(g);
+  prefix:=PrefixDomainOfCascadeTransformation(f);
 
-  func:=List(enum, x-> EmptyPlist(Length(x)));
+  func:=List(prefix, x-> EmptyPlist(Length(x)));
 
-  for i in [1..Length(enum)] do 
-    for j in [1..Length(enum[i])] do 
-      func[i][j]:=enum[i][j]^dep_f*OnCoordinates(enum[i][j], g)^dep_f;
+  for i in [1..Length(prefix)] do 
+    for j in [1..Length(prefix[i])] do 
+      func[i][j]:=prefix[i][j]^dep_f*OnCoordinates(prefix[i][j], f)^dep_g;
     od;
   od;
   return CreateCascadeTransformation(f, func);      
@@ -335,7 +336,6 @@ function(s)
     od;
     
     #post process
-  Error();
     for i in [1..Length(func)] do 
       for j in [1..Length(func[i])] do 
         if one[i][j] then 
