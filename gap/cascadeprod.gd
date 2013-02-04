@@ -32,3 +32,5 @@ DeclareGlobalFunction("CoordValConverter");
 DeclareGlobalFunction("CoordTransConverter");
 DeclareGlobalFunction("SizeOfWreathProduct");
 DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
+
+DeclareAttribute("ComponentDomainsOfCascadeProduct", IsCascadeProduct);
