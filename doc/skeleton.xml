@@ -1,0 +1,281 @@
+<#GAPDoc Label="Skeleton">
+<ManSection><Heading>Skeleton</Heading>
+<Func Name="Skeleton" Arg="ts"/>
+<Description>
+  The skeleton of a transformation semigroup <M>(X,S)</M> contains global and
+local
+ information about the action of the semigroup <M>S</M> on the state set <M>X</M>.
+The orbit is a subset of <M>2^X</M>.
+
+The skeleton
+itself is a record with the following elements:
+<Table Align="|c|c|">
+ <Caption>Elements of the skeleton record</Caption>
+ <HorLine/>
+  <Row>
+   <Item> NAME </Item><Item> PURPOSE </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>ts</C></Item>
+    <Item>the original transformation semigroup</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>gens</C></Item>
+   <Item>generators of the semigroup</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>id</C></Item>
+   <Item>the identity of the corresponding monoid</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>degree</C></Item>
+   <Item>the number of points the semigroup acts on</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>stateset</C></Item>
+   <Item>the state set, list of integers <C>[1..degree]</C></Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>sets</C></Item>
+   <Item>all the images of <M>X</M> under the action of <M>S</M></Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>singletons</C></Item>
+   <Item>the singleton sets as <C>FiniteSet</C>s</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>reps</C></Item>
+   <Item>representatives of the strongly connected components
+   coded as indices in <C>orb</C></Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>depth, depths, heights</C></Item>
+   <Item>the depth of the whole skeleton, depths of representatives,
+   heights of representatives
+   </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>IN,INw,OUT,OUTw</C></Item>
+   <Item>caches for storing maps from a represetative to a set and vice-versa
+   (transformations and words)
+   </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>inclusionHD</C></Item>
+   <Item><C>HasseDiagram</C> of the inclusion relation on the image sets</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>geninclusionHD</C></Item>
+   <Item><C>HasseDiagram</C> of the generalized inclusion
+   relation on the image sets
+   </Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item><C>orb</C></Item>
+   <Item>the orbit with  Schreier tree
+   </Item>
+  </Row>
+ <HorLine/>
+
+</Table>
+For the time being these externals are exposed, but they are not meant to be
+manipulated directly. Further developments will most probably hide these record
+fields.
+<Example>
+gap> sk := Skeleton(FullTransformationSemigroup(3));
+rec( IN := [  ], INw := [  ], OUT := [  ], OUTw := [  ], degree := 3, 
+  depth := 3, depths := [ 1, 2, 3 ], 
+  geninclusionHD := &lt;general mapping: &lt;object&gt; -&gt; &lt;object&gt; &gt;, 
+  gens := [ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1, 3 ] ), 
+      Transformation( [ 1, 2, 1 ] ) ], heights := [ 2, 1, 0 ], 
+  id := Transformation( [ 1 .. 3 ] ), 
+  inclusionHD := &lt;general mapping: &lt;object&gt; -&gt; &lt;object&gt; &gt;, 
+  orb := &lt;closed orbit, 7 points with Schreier tree&gt;, reps := [ 1, 2, 5 ], 
+  sets := [ {1,2,3}, {1,2}, {1,3}, {2,3}, {1}, {2}, {3} ], 
+  singletons := [ {1}, {2}, {3} ], stateset := {1,2,3}, 
+  ts := &lt;monoid with 3 generators&gt; )
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="ImageSets">
+<ManSection><Heading>ImageSets</Heading>
+<Oper Name="ImageSets" Arg="skeleton"/>
+<Description>
+The set of images of the state set under the semigroup action.
+The corresponding monoid is used so <M>X</M> itself is always included,
+but not all subsets in general.
+<Example>
+gap> S := Semigroup([Transformation([2,3,1,1]),Transformation([3,3,3,4])]);
+&lt;semigroup with 2 generators&gt;
+gap> sk := Skeleton(S);;
+gap> ImageSets(sk);
+[ {1,2,3,4}, {1,2,3}, {3,4}, {3}, {1}, {2} ]
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SkeletonClasses">
+<ManSection><Heading>Equivalence Classes in the Skeleton</Heading>
+<Func Name="SkeletonClasses" Arg="skeleton"/>
+<Func Name="SkeletonClassesOnDepth" Arg="skeleton, depth"/>
+  <Description>
+  Returns the list of equivalence classes (strongly connected components)
+  with the given depth.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="CoveringSetsOf">
+<ManSection><Heading>CoveringSetsOf</Heading>
+<Oper Name="CoveringSetsOf" Arg="skeleton,set"/>
+  <Description>
+  Returns the set of covering sets of the given set.
+  These sets may overlap and their union equals the covered set.
+These are also called tiles <Cite Key="eilenberg"/>.
+<Example>
+gap> sk := Skeleton(FullTransformationSemigroup(5));;
+gap> CoveringSetsOf(sk, FiniteSet([1,2,4],5));
+[ {1,2}, {1,4}, {2,4} ]
+</Example>
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+
+  <#GAPDoc Label="ActionMatrix">
+  <ManSection><Heading>ActionMatrix</Heading>
+  <Oper Name="ActionMatrix" Arg="skeleton, equivclass"/>
+  <Description>
+  Returns the adjacency matrix of the equivalence class,
+ i.e. the (i,j) entry contains the number of generators taking
+ the ith element to the jth element in the equivalence class.  
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+#
+  <#GAPDoc Label="SkeletonDepth">
+  <ManSection><Heading>DepthOfSet</Heading>
+  <Oper Name="DepthOfSet" Arg="skeleton,set"/>
+  <Func Name="DepthOfSkeleton" Arg="skeleton"/>
+  <Description>
+  Returns the depth of the given set. The depth of the skeleton is the number of hierarchical levels + 1.
+<Example>
+gap> sk := Skeleton(Semigroup(Transformation([1,2,1,2,4,5,6])));;
+gap> DepthOfSet(sk,FiniteSet([1,2,4,5],7));
+3
+gap> DepthOfSkeleton(sk);                       
+6
+</Example>
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+#
+  <#GAPDoc Label="TopSet">
+  <ManSection><Heading>TopSet</Heading>
+  <Oper Name="TopSet" Arg="skeleton"/>
+  <Description>
+  Returns the unique set with depth 1, i.e. the full state set.
+<Example>
+gap> sk := Skeleton(FullTransformationSemigroup(7));;
+gap> TopSet(sk);                                     
+{1,2,3,4,5,6,7}
+</Example>
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+
+  <#GAPDoc Label="PermutatorGenerators">
+  <ManSection><Heading>PermutatorGenerators</Heading>
+  <Func Name="Permutators" Arg="skeleton, finiteset"/>
+  <Func Name="PermutatorGenerators" Arg="skeleton, finiteset"/>
+  <Description>
+  <C>Permutators</C> returns a set of permutators acting on a finite set
+ calculated from the maps between the elements of an equivalence class 
+ (as described in <Cite Key="permutator"/>).  
+  The permutator are coded as words 
+ (the indices of the generators of the underlying ts are the symbols).
+  <C>PermutatorGenerators</C> filters out the permutator words acting as the identity.
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+#
+  <#GAPDoc Label="PermutatorSemigroup">
+  <ManSection><Heading>PermutatorSemigroup</Heading>
+  <Func Name="PermutatorSemigroup" Arg="skeleton, finiteset"/>
+  <Description>
+  Returns the permutator semigroup  of the given finite set <M>Y</M> induced by the original transformation semigroup <M>S</M> of the skeleton.
+ <Math>$\text{Perm}(Y) = \{s\in S: Y\cdot s=Y  \}$</Math> 
+ The semigroup is given as a <C>TransformationSemigroup</C>, thus there is a chance that a small set of generators exist. 
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+  <#GAPDoc Label="PermutatorGroup">
+  <ManSection><Heading>PermutatorGroup</Heading>
+  <Func Name="PermutatorGroup" Arg="skeleton, finiteset"/>
+  <Description>
+ The maximal subsemigroup of the permutator semigroup which is also a group. 
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+#
+  <#GAPDoc Label="CoverGroup">
+  <ManSection><Heading>CoverGroup</Heading>
+  <Func Name="CoverGroup" Arg="skeleton, finiteset"/>
+  <Description>
+  The maximal group acting on the covering sets of <M>Y</M> induced by the original semigroup <M>S</M>. It is a homomorphic image of 
+ the permutator group. For the holonomy decomposition these will be the holonomy group components
+ (acting on the covering sets of <M>Y</M> in the skeleton).
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
+
+#
+  <#GAPDoc Label="RepresentativeSet">
+  <ManSection><Heading>Representatives for equivalence classes</Heading>
+  <Func Name="RepresentativeSet" Arg="skeleton, finiteset"/>
+  <Func Name="ChangeRepresentativeSet" Arg="skeleton, finiteset"/>
+  <Description>
+  We choose a representative finite set for each  equivalence classes. Given an 
+ arbitrary finite set we can ask for the representative.
+ We can also change the representative (this is not a trivial operation as buses and trains, the mapping intra and inter the classes, 
+ must be recalculated). 
+  </Description>
+  </ManSection>
+   <#/GAPDoc>
