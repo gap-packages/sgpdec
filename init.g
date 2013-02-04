@@ -5,6 +5,6 @@ ReadPackage("SgpDec","/gap/util.gd");
 ReadPackage("SgpDec","/gap/temp.gd");
 ReadPackage("SgpDec","/gap/linearnotation.gd");
 ReadPackage("SgpDec","/gap/words.gd");
-ReadPackage("SgpDec","/gap/cascadedtrans.gd");
-ReadPackage("SgpDec","/gap/cascadeshell.gd");
+ReadPackage("SgpDec","/gap/cascadetrans.gd");
+ReadPackage("SgpDec","/gap/cascadeprod.gd");
 ReadPackage("SgpDec","/gap/coords.gd");
