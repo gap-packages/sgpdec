@@ -63,7 +63,7 @@ fi;
 
 InstallMethod(DomainOfCascadeProduct,
 [IsCascadeProduct],
-x-> DomainOfCascadeTransformation(Representative(x)));
+x-> DomainOfCascade(Representative(x)));
 
 #
 
@@ -80,7 +80,7 @@ end);
 InstallMethod(PrefixDomainOfCascadeProduct,
 [IsCascadeProduct],
 function(cascprod)
-  return PrefixDomainOfCascadeTransformation(Representative(cascprod));
+  return PrefixDomainOfCascade(Representative(cascprod));
 end);
 
 #
@@ -88,7 +88,7 @@ end);
 InstallOtherMethod(NrComponentsOfCascadeProduct,
 [IsCascadeProduct],
 function(cascprod)
-  return Size(ComponentDomainsOfCascadeTransformation(
+  return Size(ComponentDomainsOfCascade(
                  Representative(cascprod)));
 end);
 
@@ -260,5 +260,5 @@ end);
 InstallOtherMethod(ComponentDomainsOfCascadeProduct,
         [IsCascadeProduct],
 function(cascprod)
-  return ComponentDomainsOfCascadeTransformation(Representative(cascprod));
+  return ComponentDomainsOfCascade(Representative(cascprod));
 end);
