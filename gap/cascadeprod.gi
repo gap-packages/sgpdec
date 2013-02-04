@@ -166,3 +166,9 @@ local s,i;
     s := Concatenation(s,"|-");
   od;
 end);
+
+InstallOtherMethod(DomainsOfCascadeProductComponents,
+        [IsCascadeProduct],
+function(cascprod)
+  return ComponentDomainsOfCascadeTransformation(Representative(cascprod));
+end);
