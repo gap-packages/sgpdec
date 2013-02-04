@@ -317,6 +317,7 @@ function(s)
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     
     for i in [1..DegreeOfTransformation(f)] do 
+      Error();
       x:=ShallowCopy(dom[i]);
       m:=n;
       Remove(x, m);
@@ -351,7 +352,8 @@ function(s)
       od;
     od;
 
-    return CreateCascadeTransformation(f, func);
+    return CreateCascadeTransformation(dom,
+     DomainsOfCascadeProductComponents(s), prefix, func);
   end;
 
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
