@@ -1,6 +1,6 @@
 #############################################################################
 ###
-##W  cascadedtrans.gi
+##W  cascadetrans.gi
 ##Y  Copyright (C) 2011-12
 ##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
@@ -55,9 +55,9 @@ function(tup, depfunc)
   return func[i][pos];
 end);
 
-# Cascaded permutations and transformations.
+# Cascade permutations and transformations.
 
-InstallGlobalFunction(CascadedTransformationNC,
+InstallGlobalFunction(CascadeTransformationNC,
 function(coll, depfunc)
   local enum, tup, func, f, i, x;
  
@@ -82,35 +82,35 @@ function(coll, depfunc)
   od;
   ShrinkAllocationPlist(func);
 
-  return CreateCascadedTransformation(EnumeratorOfCartesianProduct(coll), coll,
+  return CreateCascadeTransformation(EnumeratorOfCartesianProduct(coll), coll,
   enum, func);
 end);
 
 # either: 
-# 1) cascaded trans and func; or
+# 1) cascade trans and func; or
 # 2) domain, component domains, prefix domain, func
 
-InstallGlobalFunction(CreateCascadedTransformation, 
+InstallGlobalFunction(CreateCascadeTransformation, 
 function(arg)
   local f;
 
-  if Length(arg)=2 then # cascaded trans and func
-    return CreateCascadedTransformation(DomainOfCascadedTransformation(arg[1]), 
-     ComponentDomainsOfCascadedTransformation(arg[1]),   
-     PrefixDomainOfCascadedTransformation(arg[1]), arg[2]);
+  if Length(arg)=2 then # cascade trans and func
+    return CreateCascadeTransformation(DomainOfCascadeTransformation(arg[1]), 
+     ComponentDomainsOfCascadeTransformation(arg[1]),   
+     PrefixDomainOfCascadeTransformation(arg[1]), arg[2]);
   fi;
     
-  f:=Objectify(CascadedTransformationType, rec());
-  SetDomainOfCascadedTransformation(f, arg[1]);
-  SetComponentDomainsOfCascadedTransformation(f, arg[2]);
-  SetPrefixDomainOfCascadedTransformation(f, arg[3]);
+  f:=Objectify(CascadeTransformationType, rec());
+  SetDomainOfCascadeTransformation(f, arg[1]);
+  SetComponentDomainsOfCascadeTransformation(f, arg[2]);
+  SetPrefixDomainOfCascadeTransformation(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
   return f;
 end);
 
 #
 
-InstallGlobalFunction(RandomCascadedTransformation,
+InstallGlobalFunction(RandomCascadeTransformation,
 function(list, numofdeps)
   local coll, enum, tup, func, len, x, j, k, f, i;
 
@@ -149,23 +149,23 @@ function(list, numofdeps)
     func[k][j]:=Random(list[k]);
   od;
  
-  return CreateCascadedTransformation(EnumeratorOfCartesianProduct(coll), 
+  return CreateCascadeTransformation(EnumeratorOfCartesianProduct(coll), 
    coll, enum, func);
 end);
 
-#JDM install CascadedTransformation, check args are sensible.
+#JDM install CascadeTransformation, check args are sensible.
 
 #
 
-InstallMethod(ViewObj, "for a cascaded transformation",
-[IsCascadedTransformation],
+InstallMethod(ViewObj, "for a cascade transformation",
+[IsCascadeTransformation],
 function(f)
   local prefix, midfix, suffix, x;
 
-  prefix:="<cascaded transformation";
+  prefix:="<cascade transformation";
   midfix:=" on ";
   
-  for x in ComponentDomainsOfCascadedTransformation(f) do 
+  for x in ComponentDomainsOfCascadeTransformation(f) do 
     Append(midfix, String(x));
     Append(midfix, ", ");
   od;
@@ -187,8 +187,8 @@ end);
 
 #
 
-InstallMethod(PrintObj, "for a cascaded transformation",
-[IsCascadedTransformation], ViewObj);
+InstallMethod(PrintObj, "for a cascade transformation",
+[IsCascadeTransformation], ViewObj);
 
 #
 
@@ -211,21 +211,21 @@ end);
 #
 
 InstallOtherMethod(AsTransformation,
-"for cascaded transformation",
-[IsCascadedTransformation],
+"for cascade transformation",
+[IsCascadeTransformation],
 function(ct)
-return TransformationOp(ct, DomainOfCascadedTransformation(ct), OnCoordinates);
+return TransformationOp(ct, DomainOfCascadeTransformation(ct), OnCoordinates);
 end);
 
 #
 
-InstallMethod(\*, "for cascaded transformations", IsIdenticalObj,
-[IsCascadedTransformation, IsCascadedTransformation],
+InstallMethod(\*, "for cascade transformations", IsIdenticalObj,
+[IsCascadeTransformation, IsCascadeTransformation],
 function(f,g)
   local dep_f, enum, func, fg, i, j;
   
   dep_f:=DependencyFunction(f);
-  enum:=PrefixDomainOfCascadedTransformation(f);
+  enum:=PrefixDomainOfCascadeTransformation(f);
 
   func:=List(enum, x-> EmptyPlist(Length(x)));
 
@@ -234,7 +234,7 @@ function(f,g)
       func[i][j]:=enum[i][j]^dep_f*OnCoordinates(enum[i][j], g)^dep_f;
     od;
   od;
-  return CreateCascadedTransformation(f, func);      
+  return CreateCascadeTransformation(f, func);      
 end);
 
 # MonomialGenerators require the orbits of singletons under semigroup action
@@ -269,7 +269,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       Perform(gens,
         function(g)
           Add(mongens,
-              CascadedTransformationNC(
+              CascadeTransformationNC(
                       DomainsOfCascadeProductComponents(comps),
                       [[prefix,g]]));
         end);
@@ -348,7 +348,7 @@ function(s)
       od;
     od;
 
-    return CreateCascadedTransformation(f, func);
+    return CreateCascadeTransformation(f, func);
   end;
 
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
@@ -361,15 +361,15 @@ end);
 ####REIMPLEMENTED OPERATIONS####################################################
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
-InstallOtherMethod(\=, "for cascaded op and cascaded op", IsIdenticalObj,
-[IsCascadedTransformation, IsCascadedTransformation],
+InstallOtherMethod(\=, "for cascade op and cascade op", IsIdenticalObj,
+[IsCascadeTransformation, IsCascadeTransformation],
 function(p,q)
   return "TODO!";
 end);
 
 # comparison, less than, just a trick flattening and do the comparison there
-InstallOtherMethod(\<, "for cascaded op and cascaded op",
-[IsCascadedTransformation, IsCascadedTransformation],
+InstallOtherMethod(\<, "for cascade op and cascade op",
+[IsCascadeTransformation, IsCascadeTransformation],
 function(p,q)
   return AsTransformation(p) < AsTransformation(q);
   #TODO!!! this can be faster by not doing it full!!!
@@ -405,7 +405,7 @@ function(ct, targetlevel, onlevel)
   return false;
 end);
 
-# it creates the graph of actual dependencies for a cascaded operation
+# it creates the graph of actual dependencies for a cascade operation
 InstallGlobalFunction(DependencyGraph,
 function(ct)
   local graph, i, j;
@@ -422,7 +422,7 @@ function(ct)
   return AsSortedList(graph);
 end);
 
-# returns a list of levels where the given cascaded operation has non-trivial
+# returns a list of levels where the given cascade operation has non-trivial
 # action(s).
 InstallGlobalFunction(ProjectedScope,
 function(ct)
@@ -452,7 +452,7 @@ end);
 
 ################################################################################
 ########### DRAWING ############################################################
-InstallGlobalFunction(DotCascadedTransformation,
+InstallGlobalFunction(DotCascadeTransformation,
 function(ct)
   local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
         level, newnn, edge, i, dep, coord;
@@ -469,7 +469,7 @@ function(ct)
   vertexlabels := rec();#HTCreate("a string");
   edges := [];
   #extracting dependencies
-  deps := DependencyMapsFromCascadedTransformation(ct);
+  deps := DependencyMapsFromCascadeTransformation(ct);
   coordsname := "n";
   Add(vertices, coordsname);
   #adding a default label

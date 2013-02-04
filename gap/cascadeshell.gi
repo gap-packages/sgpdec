@@ -7,12 +7,12 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## An empty shell defined by an ordered list of components.
-## Used for defining cascaded structures.
+## Used for defining cascade structures.
 ##
 
-InstallMethod(DomainOfCascadeProduct, 
+InstallMethod(DomainOfCascadeProduct,
 [IsCascadeProduct],
-x-> DomainOfCascadedTransformation(Representative(x)));
+x-> DomainOfCascadeTransformation(Representative(x)));
 
 InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
         [IsListOrCollection],
@@ -25,14 +25,14 @@ end);
 InstallMethod(PrefixDomainOfCascadeProduct,
 [IsCascadeProduct],
 function(cascprod)
-  return PrefixDomainOfCascadedTransformation(Representative(cascprod));
+  return PrefixDomainOfCascadeTransformation(Representative(cascprod));
 end);
 
 
 InstallOtherMethod(NrComponentsOfCascadeProduct,
         [IsCascadeProduct],
 function(cascprod)
-  return Size(ComponentDomainsOfCascadedTransformation(
+  return Size(ComponentDomainsOfCascadeTransformation(
                  Representative(cascprod)));
 end);
 
@@ -118,7 +118,7 @@ function(csh) return csh!.name_of_shell; end);
 InstallGlobalFunction(SizeOfWreathProduct,
 function(csh)
 local order,j,i;
-  #calculating the order of the cascaded state set
+  #calculating the order of the cascade state set
   order := 1;
   #j is the number of possible arguments on a given depth, i.e.\ the exponent
   j := 1;
