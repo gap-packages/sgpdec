@@ -365,7 +365,7 @@ end);
 InstallOtherMethod(\=, "for cascade op and cascade op", IsIdenticalObj,
 [IsCascadeTransformation, IsCascadeTransformation],
 function(p,q)
-  return "TODO!";
+  return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
 end);
 
 # comparison, less than, just a trick flattening and do the comparison there
@@ -373,7 +373,6 @@ InstallOtherMethod(\<, "for cascade op and cascade op",
 [IsCascadeTransformation, IsCascadeTransformation],
 function(p,q)
   return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
-  #TODO!!! this can be faster by not doing it full!!!
 end);
 
 ################################################################################
