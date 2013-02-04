@@ -105,6 +105,7 @@ function(arg)
   SetComponentDomainsOfCascadeTransformation(f, arg[2]);
   SetPrefixDomainOfCascadeTransformation(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
+  SetNrComponentsOfCascadeTransformation(f, Length(arg[2]));
   return f;
 end);
 
@@ -166,28 +167,32 @@ end);
 InstallMethod(ViewObj, "for a cascade transformation",
 [IsCascadeTransformation],
 function(f)
-  local prefix, midfix, suffix, x;
+  local str, x;
 
-  prefix:="<cascade transformation";
-  midfix:=" on ";
+  str:="<cascade with ";
+  Append(str, String(NrComponentsOfCascadeTransformation(f)));
+  Append(str, " levels");
   
-  for x in ComponentDomainsOfCascadeTransformation(f) do 
-    Append(midfix, String(x));
-    Append(midfix, ", ");
-  od;
-  Remove(midfix, Length(midfix));
-  Remove(midfix, Length(midfix));
-
-  suffix:=">";
-
-  Print(prefix);
-  if Length(prefix)+Length(midfix)+Length(suffix)<=SizeScreen()[1] then
-    Print(midfix);
-  else 
-    midfix:=" on ";
-
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeTransformation(f)*3)-12
+   then
+    Append(str, " with (");
+    for x in ComponentDomainsOfCascadeTransformation(f) do
+      Append(str, String(Length(x)));
+      Append(str, ", ");
+    od;
+    Remove(str, Length(str));
+    Remove(str, Length(str));
+    Append(str, ") pts");
   fi;
-  Print(suffix);
+  if Length(str)<SizeScreen()[1]-
+   Length(String(NrDependenciesOfCascadeTransformation(f)))-8 then 
+    Append(str, ", ");
+    Append(str, String(NrDependenciesOfCascadeTransformation(f)));
+    Append(str, " dependencies");
+  fi;
+ 
+  Append(str, ">");
+  Print(str);
   return;
 end);
 
@@ -195,6 +200,17 @@ end);
 
 InstallMethod(PrintObj, "for a cascade transformation",
 [IsCascadeTransformation], ViewObj);
+
+#
+
+InstallMethod(NrDependenciesOfCascadeTransformation, 
+"for a cascade transformation",
+[IsCascadeTransformation],
+function(f)
+
+  return Sum(List(DependencyFunction(f)!.func, 
+   x-> Number([1..Length(x)], i-> IsBound(x[i]))));
+end);
 
 #
 
