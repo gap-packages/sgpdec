@@ -1,0 +1,22 @@
+IMPLEMENTATION FILES *.gi
+
+The file starts with the new functions, then the reimplemented methods, clearly separated by a banner.
+
+LOOP VARIABLES
+
+For looping through integers {i,j,k,l} should be used. For looping some other typed elements a telltale name should be used. e.g. 'for repr in cosetreprs'.
+
+VERBOSITY
+
+Informal printouts should be restricted to one line only. (easy to comment out)
+
+DEFAULT VARIABLES
+
+decomp - HierarchicalDecomposition
+cstr - CascadedStructure
+cs - CascadedState
+co - CascadedOperation
+
+!. ACCESS
+
+Accessing record elements via !. should appear only in access functions.
