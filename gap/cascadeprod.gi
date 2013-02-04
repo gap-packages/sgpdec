@@ -7,29 +7,57 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 
-InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-[IsCascadeProduct],
-function(s)
-  local func, n, out, i, j, x;
-  
-  func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-  n:=NrComponentsOfCascadeProduct(s);
-  out:=List([1..n], x->[]);
+if GAPInfo.Version="4.dev" then 
+  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+  [IsCascadeProduct],
+  function(s)
+    local func, n, out, i, j, x;
+    
+    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+    n:=NrComponentsOfCascadeProduct(s);
+    out:=List([1..n], x->[]);
 
-  for i in [1..Length(GeneratorsOfSemigroup(s))] do 
-    for j in [1..n] do
-      if not IsEmpty(func[i][j]) then
-        if out[j]=[] then 
-          out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
-        else
-          out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
+    for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+      for j in [1..n] do
+        if not IsEmpty(func[i][j]) then
+          if out[j]=[] then 
+            out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
+          else
+            out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
+          fi;
         fi;
-      fi;
+      od;
     od;
-  od;
 
-  return out; 
-end);
+    return out; 
+  end);
+else
+  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+  [IsCascadeProduct],
+  function(s)
+    local func, n, out, i, j, x;
+    
+    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+    n:=NrComponentsOfCascadeProduct(s);
+    out:=List([1..n], x->[]);
+
+    for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+      for j in [1..n] do
+        Append(out[i], Compacted(func[i][j]));
+      od;
+    od;
+
+    Apply(out, 
+      function(x)
+        if not x=[] then 
+          return Semigroup(x); 
+        else 
+          return x; 
+        fi; 
+      end);
+    return out; 
+  end);
+fi;
 
 #
 
