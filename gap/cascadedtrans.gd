@@ -1,51 +1,51 @@
 #############################################################################
 ##
-## cascadedtrans.gd           SgpDec package
+## cascadetrans.gd           SgpDec package
 ##
 ## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## 2008-2012
 ##
-## Cascaded permutations and transformations.
+## Cascade permutations and transformations.
 ##
 
-DeclareCategory("IsCascadedTransformation", IsMultiplicativeElementWithOne and
+DeclareCategory("IsCascadeTransformation", IsMultiplicativeElementWithOne and
 IsAssociativeElement and IsAttributeStoringRep);
 
-BindGlobal("CascadedTransformationFamily",
-NewFamily("CascadedTransformationFamily",
- IsCascadedTransformation, CanEasilySortElements, CanEasilySortElements));
+BindGlobal("CascadeTransformationFamily",
+NewFamily("CascadeTransformationFamily",
+ IsCascadeTransformation, CanEasilySortElements, CanEasilySortElements));
 
-BindGlobal("CascadedTransformationType", NewType(CascadedTransformationFamily,
- IsCascadedTransformation and IsAssociativeElement));
+BindGlobal("CascadeTransformationType", NewType(CascadeTransformationFamily,
+ IsCascadeTransformation and IsAssociativeElement));
 
-DeclareGlobalFunction("CascadedTransformationNC");
-DeclareGlobalFunction("CascadedTransformation");
-DeclareAttribute("DomainOfCascadedTransformation", IsCascadedTransformation);
-DeclareAttribute("DependencyFunction", IsCascadedTransformation);
-DeclareAttribute("ComponentDomainsOfCascadedTransformation",
-IsCascadedTransformation);
-DeclareAttribute("PrefixDomainOfCascadedTransformation",
-IsCascadedTransformation);
-DeclareAttribute("NrDependencyFuncArgs", IsCascadedTransformation);
+DeclareGlobalFunction("CascadeTransformationNC");
+DeclareGlobalFunction("CascadeTransformation");
+DeclareAttribute("DomainOfCascadeTransformation", IsCascadeTransformation);
+DeclareAttribute("DependencyFunction", IsCascadeTransformation);
+DeclareAttribute("ComponentDomainsOfCascadeTransformation",
+IsCascadeTransformation);
+DeclareAttribute("PrefixDomainOfCascadeTransformation",
+IsCascadeTransformation);
+DeclareAttribute("NrDependencyFuncArgs", IsCascadeTransformation);
 
 DeclareCategory("IsDependencyFunc", IsRecord);
 DeclareGlobalFunction("CreateDependencyFunction");
-DeclareGlobalFunction("CreateCascadedTransformation");
+DeclareGlobalFunction("CreateCascadeTransformation");
 
 #old
 
 DeclareOperation("CascadeShellOf",[IsObject]);
 
-DeclareGlobalFunction("IdentityCascadedTransformation");
+DeclareGlobalFunction("IdentityCascadeTransformation");
 DeclareGlobalFunction("OnCoordinates");
-DeclareGlobalFunction("RandomCascadedTransformation");
-DeclareGlobalFunction("DependencyMapsFromCascadedTransformation");
+DeclareGlobalFunction("RandomCascadeTransformation");
+DeclareGlobalFunction("DependencyMapsFromCascadeTransformation");
 DeclareGlobalFunction("DependsOn");
 DeclareGlobalFunction("DependencyGraph");
 DeclareGlobalFunction("ProjectedScope");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
-DeclareGlobalFunction("DotCascadedTransformation");
-#DeclareOperation("AsCascadedTrans",[IsMultiplicativeElement,IsCascadeShell]);
-#DeclareOperation("AsCascadedTransNC",[IsMultiplicativeElement,IsCascadeShell]);
+DeclareGlobalFunction("DotCascadeTransformation");
+#DeclareOperation("AsCascadeTrans",[IsMultiplicativeElement,IsCascadeShell]);
+#DeclareOperation("AsCascadeTransNC",[IsMultiplicativeElement,IsCascadeShell]);
 

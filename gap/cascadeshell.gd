@@ -7,13 +7,13 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## An empty shell defined by an ordered list of components.
-## Used for defining cascaded structures.
+## Used for defining cascade structures.
 ##
 
 DeclareGlobalFunction("CascadeProduct");
-DeclareCategoryCollections("IsCascadedTransformation");
+DeclareCategoryCollections("IsCascadeTransformation");
 DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
-        IsCascadedTransformationCollection);
+        IsCascadeTransformationCollection);
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
