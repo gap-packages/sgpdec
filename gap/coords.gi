@@ -53,11 +53,11 @@ end);
 
 # maps (abstract) coordinates to points
 InstallMethod(AsPoint, "for coordinates in a cascade product",
-[IsDenseList,IsCascadeProduct],
+[IsDenseList,IsCascadeSemigroup],
 function(coords,cascprod)
   local l,domains,dom;
-  domains := ComponentDomainsOfCascadeProduct(cascprod);
-  dom := DomainOfCascadeProduct(cascprod);
+  domains := ComponentDomainsOfCascadeSemigroup(cascprod);
+  dom := DomainOfCascadeSemigroup(cascprod);
   if (Length(coords) = Size(domains)) and (Minimum(coords) > 0) then
     #if not abstract just return a point
     return PositionCanonical(dom,coords);
@@ -71,7 +71,7 @@ function(coords,cascprod)
 end);
 
 InstallOtherMethod(AsCoords, "for lifting a point into a cascade shell",
-[IsPosInt,IsCascadeProduct],
+[IsPosInt,IsCascadeSemigroup],
 function(state,cascprod)
-  return DomainOfCascadeProduct(cascprod)[state];
+  return DomainOfCascadeSemigroup(cascprod)[state];
 end);
