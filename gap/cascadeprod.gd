@@ -11,9 +11,9 @@
 ##
 
 DeclareGlobalFunction("CascadeProduct");
-DeclareCategoryCollections("IsCascadeTransformation");
+DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
-        IsCascadeTransformationCollection);
+        IsCascadeCollection);
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);

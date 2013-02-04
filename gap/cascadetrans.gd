@@ -9,44 +9,44 @@
 ## Cascade permutations and transformations.
 ##
 
-DeclareCategory("IsCascadeTransformation", IsMultiplicativeElementWithOne and
+DeclareCategory("IsCascade", IsMultiplicativeElementWithOne and
 IsAssociativeElement and IsAttributeStoringRep);
 
-BindGlobal("CascadeTransformationFamily",
-NewFamily("CascadeTransformationFamily",
- IsCascadeTransformation, CanEasilySortElements, CanEasilySortElements));
+BindGlobal("CascadeFamily",
+NewFamily("CascadeFamily",
+ IsCascade, CanEasilySortElements, CanEasilySortElements));
 
-BindGlobal("CascadeTransformationType", NewType(CascadeTransformationFamily,
- IsCascadeTransformation and IsAssociativeElement));
+BindGlobal("CascadeType", NewType(CascadeFamily,
+ IsCascade and IsAssociativeElement));
 
-DeclareGlobalFunction("CascadeTransformationNC");
-DeclareGlobalFunction("CascadeTransformation");
-DeclareAttribute("DomainOfCascadeTransformation", IsCascadeTransformation);
-DeclareAttribute("DependencyFunction", IsCascadeTransformation);
-DeclareAttribute("NrComponentsOfCascadeTransformation",
-IsCascadeTransformation);
-DeclareAttribute("NrDependenciesOfCascadeTransformation",
-IsCascadeTransformation);
-DeclareAttribute("ComponentDomainsOfCascadeTransformation",
-IsCascadeTransformation);
-DeclareAttribute("PrefixDomainOfCascadeTransformation",
-IsCascadeTransformation);
-DeclareAttribute("NrDependencyFuncArgs", IsCascadeTransformation);
+DeclareGlobalFunction("CascadeNC");
+DeclareGlobalFunction("Cascade");
+DeclareAttribute("DomainOfCascade", IsCascade);
+DeclareAttribute("DependencyFunction", IsCascade);
+DeclareAttribute("NrComponentsOfCascade",
+IsCascade);
+DeclareAttribute("NrDependenciesOfCascade",
+IsCascade);
+DeclareAttribute("ComponentDomainsOfCascade",
+IsCascade);
+DeclareAttribute("PrefixDomainOfCascade",
+IsCascade);
+DeclareAttribute("NrDependencyFuncArgs", IsCascade);
 
 DeclareCategory("IsDependencyFunc", IsRecord);
 DeclareGlobalFunction("CreateDependencyFunction");
-DeclareGlobalFunction("CreateCascadeTransformation");
+DeclareGlobalFunction("CreateCascade");
 
 #old
 
 #DeclareOperation("CascadeShellOf",[IsObject]);
 
-DeclareGlobalFunction("IdentityCascadeTransformation");
+DeclareGlobalFunction("IdentityCascade");
 DeclareGlobalFunction("OnCoordinates");
-DeclareGlobalFunction("RandomCascadeTransformation");
-DeclareGlobalFunction("DependencyMapsFromCascadeTransformation");
+DeclareGlobalFunction("RandomCascade");
+DeclareGlobalFunction("DependencyMapsFromCascade");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
-DeclareGlobalFunction("DotCascadeTransformation");
+DeclareGlobalFunction("DotCascade");
 #DeclareOperation("AsCascadeTrans",[IsMultiplicativeElement,IsCascadeShell]);
 #DeclareOperation("AsCascadeTransNC",[IsMultiplicativeElement,IsCascadeShell]);
 

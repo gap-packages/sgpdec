@@ -57,7 +57,7 @@ end);
 
 # Cascade permutations and transformations.
 
-InstallGlobalFunction(CascadeTransformationNC,
+InstallGlobalFunction(CascadeNC,
 function(coll, depfunc)
   local enum, tup, func, f, i, x;
  
@@ -82,7 +82,7 @@ function(coll, depfunc)
   od;
   ShrinkAllocationPlist(func);
 
-  return CreateCascadeTransformation(EnumeratorOfCartesianProduct(coll), coll,
+  return CreateCascade(EnumeratorOfCartesianProduct(coll), coll,
   enum, func);
 end);
 
@@ -90,28 +90,28 @@ end);
 # 1) cascade trans and func; or
 # 2) domain, component domains, prefix domain, func
 
-InstallGlobalFunction(CreateCascadeTransformation, 
+InstallGlobalFunction(CreateCascade, 
 function(arg)
   local f;
 
   if Length(arg)=2 then # cascade trans and func
-    return CreateCascadeTransformation(DomainOfCascadeTransformation(arg[1]), 
-     ComponentDomainsOfCascadeTransformation(arg[1]),   
-     PrefixDomainOfCascadeTransformation(arg[1]), arg[2]);
+    return CreateCascade(DomainOfCascade(arg[1]), 
+     ComponentDomainsOfCascade(arg[1]),   
+     PrefixDomainOfCascade(arg[1]), arg[2]);
   fi;
     
-  f:=Objectify(CascadeTransformationType, rec());
-  SetDomainOfCascadeTransformation(f, arg[1]);
-  SetComponentDomainsOfCascadeTransformation(f, arg[2]);
-  SetPrefixDomainOfCascadeTransformation(f, arg[3]);
+  f:=Objectify(CascadeType, rec());
+  SetDomainOfCascade(f, arg[1]);
+  SetComponentDomainsOfCascade(f, arg[2]);
+  SetPrefixDomainOfCascade(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
-  SetNrComponentsOfCascadeTransformation(f, Length(arg[2]));
+  SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);
 
 #
 
-InstallGlobalFunction(RandomCascadeTransformation,
+InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
   local coll, enum, tup, func, len, x, j, k, val, i;
 
@@ -156,27 +156,27 @@ function(list, numofdeps)
     fi;
   od;
  
-  return CreateCascadeTransformation(EnumeratorOfCartesianProduct(coll), 
+  return CreateCascade(EnumeratorOfCartesianProduct(coll), 
    coll, enum, func);
 end);
 
-#JDM install CascadeTransformation, check args are sensible.
+#JDM install Cascade, check args are sensible.
 
 #
 
 InstallMethod(ViewObj, "for a cascade transformation",
-[IsCascadeTransformation],
+[IsCascade],
 function(f)
   local str, x;
 
   str:="<cascade with ";
-  Append(str, String(NrComponentsOfCascadeTransformation(f)));
+  Append(str, String(NrComponentsOfCascade(f)));
   Append(str, " levels");
   
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeTransformation(f)*3)-12
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascade(f)*3)-12
    then
     Append(str, " with (");
-    for x in ComponentDomainsOfCascadeTransformation(f) do
+    for x in ComponentDomainsOfCascade(f) do
       Append(str, String(Length(x)));
       Append(str, ", ");
     od;
@@ -185,9 +185,9 @@ function(f)
     Append(str, ") pts");
   fi;
   if Length(str)<SizeScreen()[1]-
-   Length(String(NrDependenciesOfCascadeTransformation(f)))-8 then 
+   Length(String(NrDependenciesOfCascade(f)))-8 then 
     Append(str, ", ");
-    Append(str, String(NrDependenciesOfCascadeTransformation(f)));
+    Append(str, String(NrDependenciesOfCascade(f)));
     Append(str, " dependencies");
   fi;
  
@@ -199,13 +199,13 @@ end);
 #
 
 InstallMethod(PrintObj, "for a cascade transformation",
-[IsCascadeTransformation], ViewObj);
+[IsCascade], ViewObj);
 
 #
 
-InstallMethod(NrDependenciesOfCascadeTransformation, 
+InstallMethod(NrDependenciesOfCascade, 
 "for a cascade transformation",
-[IsCascadeTransformation],
+[IsCascade],
 function(f)
 
   return Sum(List(DependencyFunction(f)!.func, 
@@ -234,21 +234,21 @@ end);
 
 InstallOtherMethod(AsTransformation,
 "for cascade transformation",
-[IsCascadeTransformation],
+[IsCascade],
 function(ct)
-return TransformationOp(ct, DomainOfCascadeTransformation(ct), OnCoordinates);
+return TransformationOp(ct, DomainOfCascade(ct), OnCoordinates);
 end);
 
 #
 
 InstallMethod(\*, "for cascade transformations", IsIdenticalObj,
-[IsCascadeTransformation, IsCascadeTransformation],
+[IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, prefix, func, x, i, j;
   
   dep_f:=DependencyFunction(f);
   dep_g:=DependencyFunction(g);
-  prefix:=PrefixDomainOfCascadeTransformation(f);
+  prefix:=PrefixDomainOfCascade(f);
 
   func:=List(prefix, x-> EmptyPlist(Length(x)));
 
@@ -260,7 +260,7 @@ function(f,g)
       fi;
     od;
   od;
-  return CreateCascadeTransformation(f, func);      
+  return CreateCascade(f, func);      
 end);
 
 # MonomialGenerators require the orbits of singletons under semigroup action
@@ -295,7 +295,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
       Perform(gens,
         function(g)
           Add(mongens,
-              CascadeTransformationNC(
+              CascadeNC(
                       ComponentDomainsOfCascadeProduct	(comps),
                       [[prefix,g]]));
         end);
@@ -373,7 +373,7 @@ function(s)
       od;
     od;
 
-    return CreateCascadeTransformation(dom,
+    return CreateCascade(dom,
      ComponentDomainsOfCascadeProduct(s), prefix, func);
   end;
 
@@ -388,21 +388,21 @@ end);
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
 InstallOtherMethod(\=, "for cascade op and cascade op", IsIdenticalObj,
-        [IsCascadeTransformation, IsCascadeTransformation],
+        [IsCascade, IsCascade],
         function(p,q)
   return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
 end);
 
 # comparison, less than, just a trick flattening and do the comparison there
 InstallOtherMethod(\<, "for cascade op and cascade op",
-[IsCascadeTransformation, IsCascadeTransformation],
+[IsCascade, IsCascade],
 function(p,q)
   return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
 end);
 
 ################################################################################
 ########### DRAWING ############################################################
-InstallGlobalFunction(DotCascadeTransformation,
+InstallGlobalFunction(DotCascade,
 function(ct)
   local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
         level, newnn, edge, i, dep, coord;
@@ -419,7 +419,7 @@ function(ct)
   vertexlabels := rec();#HTCreate("a string");
   edges := [];
   #extracting dependencies
-  deps := DependencyMapsFromCascadeTransformation(ct);
+  deps := DependencyMapsFromCascade(ct);
   coordsname := "n";
   Add(vertices, coordsname);
   #adding a default label
