@@ -376,88 +376,13 @@ function(p,q)
 end);
 
 ################################################################################
-##########DEPENDENCIES##########################################################
-
-# checks whether the target level depends on onlevel in ct.  simply follows
-# the definition and varies one level
-InstallGlobalFunction(DependsOn,
-function(ct, targetlevel, onlevel)
-  local csh, args, value, arg, coord;
-
-  #getting the cascade shell of the operation
-  csh := CascadeShellOf(ct);
-  #all possible arguments up to targetlevel-1
-  args:=EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(targetlevel-1)]});
-  #so we test for all arguments
-  #TODO some optimization may be possible here, not to check any twice
-  for arg in args do
-    #remember the value
-    value := ct!.depfunc(arg);
-    #now do the variations
-    for coord in CoordValSets(csh)[onlevel] do
-      arg[onlevel] := coord;
-      #if there is a change then we are done!
-      if value <>  ct!.depfunc(arg) then
-        return true;
-      fi;
-    od;
-  od;
-  return false;
-end);
-
-# it creates the graph of actual dependencies for a cascade operation
-InstallGlobalFunction(DependencyGraph,
-function(ct)
-  local graph, i, j;
-
-  graph := [];
-  # checking all directed pairs systematically
-  for i in [2..Length(CascadeShellOf(ct))] do
-    for j in [1..i-1] do
-      if DependsOn(ct,i,j) then
-        Add(graph,[i,j]);
-      fi;
-    od;
-  od;
-  return AsSortedList(graph);
-end);
-
-# returns a list of levels where the given cascade operation has non-trivial
-# action(s).
-InstallGlobalFunction(ProjectedScope,
-function(ct)
-local pscope,level,prefix,csh;
-
-  #getting the info object
-  csh := CascadeShellOf(ct);
-
-  #we suppose there is no action
-  pscope := FiniteSet([],Length(csh));
-
-  for level in [1..Length(csh)] do
-    for prefix in
-     EnumeratorOfCartesianProduct(CoordValSets(csh){[1..(level-1)]} ) do
-      #if it is not the identity of the component
-      if One(csh[level]) <> (ct!.depfunc(prefix)) then
-        #then we have at least one here
-        Add(pscope,level);
-        #so we can leave the loop
-        break; #JDM is this right? This only breaks out of the inner loop not
-        # the outer loop and so this doesn't result in a value being returned
-      fi;
-    od;
-  od;
-  return pscope;
-end);
-
-################################################################################
 ########### DRAWING ############################################################
 InstallGlobalFunction(DotCascadeTransformation,
 function(ct)
   local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
         level, newnn, edge, i, dep, coord;
 
-  csh := CascadeShellOf(ct);
+  #csh := CascadeShellOf(ct);
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");

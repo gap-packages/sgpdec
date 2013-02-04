@@ -35,15 +35,12 @@ DeclareGlobalFunction("CreateCascadeTransformation");
 
 #old
 
-DeclareOperation("CascadeShellOf",[IsObject]);
+#DeclareOperation("CascadeShellOf",[IsObject]);
 
 DeclareGlobalFunction("IdentityCascadeTransformation");
 DeclareGlobalFunction("OnCoordinates");
 DeclareGlobalFunction("RandomCascadeTransformation");
 DeclareGlobalFunction("DependencyMapsFromCascadeTransformation");
-DeclareGlobalFunction("DependsOn");
-DeclareGlobalFunction("DependencyGraph");
-DeclareGlobalFunction("ProjectedScope");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascadeTransformation");
 #DeclareOperation("AsCascadeTrans",[IsMultiplicativeElement,IsCascadeShell]);
