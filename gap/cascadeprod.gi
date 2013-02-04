@@ -167,7 +167,14 @@ local s,i;
   od;
 end);
 
+#TODO naming issue here - decide for one only
 InstallOtherMethod(DomainsOfCascadeProductComponents,
+        [IsCascadeProduct],
+function(cascprod)
+  return ComponentDomainsOfCascadeTransformation(Representative(cascprod));
+end);
+
+InstallOtherMethod(ComponentDomainsOfCascadeProduct,
         [IsCascadeProduct],
 function(cascprod)
   return ComponentDomainsOfCascadeTransformation(Representative(cascprod));

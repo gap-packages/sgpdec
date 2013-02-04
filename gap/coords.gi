@@ -52,10 +52,11 @@ end);
 # POINT-COORDINATES HOMOMORPHISM ###############################################
 
 # maps (abstract) coordinates to points
-InstallMethod(AsPoint, "for coordinates in a cascade shell",
+InstallMethod(AsPoint, "for coordinates in a cascade product",
 [IsDenseList,IsList],
-function(coords,csh)
-local l;
+function(coords,cascprod)
+  local l,domains,csh;
+  domains := 0;
   if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
     #if not abstract just return a point
     return PositionCanonical(AllCoords(csh),coords);
