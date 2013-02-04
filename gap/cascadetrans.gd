@@ -23,6 +23,10 @@ DeclareGlobalFunction("CascadeTransformationNC");
 DeclareGlobalFunction("CascadeTransformation");
 DeclareAttribute("DomainOfCascadeTransformation", IsCascadeTransformation);
 DeclareAttribute("DependencyFunction", IsCascadeTransformation);
+DeclareAttribute("NrComponentsOfCascadeTransformation",
+IsCascadeTransformation);
+DeclareAttribute("NrDependenciesOfCascadeTransformation",
+IsCascadeTransformation);
 DeclareAttribute("ComponentDomainsOfCascadeTransformation",
 IsCascadeTransformation);
 DeclareAttribute("PrefixDomainOfCascadeTransformation",
