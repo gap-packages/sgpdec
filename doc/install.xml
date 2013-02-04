@@ -1,0 +1,59 @@
+<Section Label="install"><Heading>Installing <Package>SgpDec</Package></Heading>
+Released versions of <Package>SgpDec</Package> can be downloaded from
+<URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>.
+The most recent (possibly broken) version can be obtained from the project's
+ <URL Text="Mercurial Repository">
+   https://bitbucket.org/dersu/sgpdec </URL>
+(see instructions there).
+
+Given that you have a working copy of the latest complete &GAP; system on a UNIX
+machine you can install SgpDec with the following commands. <C>GAPROOT</C>
+should be substituted with the main &GAP; directory (the
+one containing the folders `bin', `lib', and so on), and '*' by the latest
+version numbers.
+<Log>
+&gt; gunzip sgpdec-*.tar.gz
+&gt; tar -xf sgpdec-*.tar
+&gt; mv sgpdec GAPROOT/pkg
+&gt; gap
+</Log>
+
+Then after starting &GAP; the package can be loaded by:
+
+<Log>
+gap> LoadPackage("SgpDec");
+</Log>
+
+which command prints version information and should return <C>true</C>.
+This also loads the packages that <Package>SgpDec</Package> depends on.
+<Table Align="|c|c|">
+ <Caption>Package dependencies</Caption>
+ <HorLine/>
+  <Row>
+   <Item> PACKAGE </Item><Item>USED FEATURES</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item>
+    <URL Text="GAPDoc">http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc
+    </URL></Item>
+    <Item>Generating documentation</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item> <URL Text="Citrus">http://www-groups.mcs.st-and.ac.uk/~jamesm/citrus
+   </URL></Item>
+   <Item>Calculating with transformation semigroups</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+  <Row>
+   <Item> <URL Text="Viz">https://bitbucket.org/zen154115/viz
+   </URL></Item>
+   <Item>Visualising by GrapViz and LaTeX (optional)</Item>
+  </Row>
+ <HorLine/>
+</Table>
+</Section>
