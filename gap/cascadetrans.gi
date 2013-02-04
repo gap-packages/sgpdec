@@ -372,7 +372,7 @@ end);
 InstallOtherMethod(\<, "for cascade op and cascade op",
 [IsCascadeTransformation, IsCascadeTransformation],
 function(p,q)
-  return AsTransformation(p) < AsTransformation(q);
+  return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
   #TODO!!! this can be faster by not doing it full!!!
 end);
 
