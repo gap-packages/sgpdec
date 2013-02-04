@@ -10,19 +10,19 @@
 ## Used for defining cascade structures.
 ##
 
-DeclareGlobalFunction("CascadeProduct");
+DeclareGlobalFunction("CascadeSemigroup");
 DeclareCategoryCollections("IsCascade");
-DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
+DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and
         IsCascadeCollection);
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
-DeclareAttribute("ComponentDomainsOfCascadeProduct", IsCascadeProduct);
-DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
-DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
-DeclareAttribute("PrefixDomainOfCascadeProduct", IsCascadeProduct);
-DeclareAttribute("NrDependencyFuncArgs", IsCascadeProduct);
-DeclareAttribute("NrComponentsOfCascadeProduct", IsCascadeProduct);
+DeclareAttribute("ComponentDomainsOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("ComponentsOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("DomainOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("PrefixDomainOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("NrDependencyFuncArgs", IsCascadeSemigroup);
+DeclareAttribute("NrComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 
 #TO BE REMOVED
 DeclareGlobalFunction("AllCoords");

@@ -62,7 +62,7 @@ function(coll, depfunc)
   local enum, tup, func, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    coll:=ComponentDomainsOfCascadeProduct	(coll);
+    coll:=ComponentDomainsOfCascadeSemigroup	(coll);
   fi;
 
   enum:=EmptyPlist(Length(coll)+1);
@@ -120,7 +120,7 @@ function(list, numofdeps)
     return;
   fi;
 
-  coll:=ComponentDomainsOfCascadeProduct(list); 
+  coll:=ComponentDomainsOfCascadeSemigroup(list); 
   
   # create the enumerator for the dependency func
   enum:=EmptyPlist(Length(coll)+1);
@@ -296,7 +296,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
         function(g)
           Add(mongens,
               CascadeNC(
-                      ComponentDomainsOfCascadeProduct	(comps),
+                      ComponentDomainsOfCascadeSemigroup	(comps),
                       [[prefix,g]]));
         end);
     od;
@@ -329,15 +329,15 @@ end);
 #
 
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
-[IsCascadeProduct],
+[IsCascadeSemigroup],
 function(s)
   local t, inv;
   t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
   inv:=function(f)
     local prefix, dom, n, func, visited, one, i, x, m, pos, j;
-    prefix:=PrefixDomainOfCascadeProduct(s);
-    dom:=DomainOfCascadeProduct(s);
-    n:=NrComponentsOfCascadeProduct(s);
+    prefix:=PrefixDomainOfCascadeSemigroup(s);
+    dom:=DomainOfCascadeSemigroup(s);
+    n:=NrComponentsOfCascadeSemigroup(s);
     func:=List(prefix, x-> List([1..Length(x)], x-> []));
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     
@@ -365,7 +365,7 @@ function(s)
       for j in [1..Length(func[i])] do 
         if one[i][j] then 
           Unbind(func[i][j]);
-        #elif IsPermGroup(ComponentsOfCascadeProduct(s)[i]) then 
+        #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then 
         #  func[i][j]:=PermList(func[i][j]);
         else
           func[i][j]:=TransformationNC(func[i][j]);
@@ -374,7 +374,7 @@ function(s)
     od;
 
     return CreateCascade(dom,
-     ComponentDomainsOfCascadeProduct(s), prefix, func);
+     ComponentDomainsOfCascadeSemigroup(s), prefix, func);
   end;
 
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);

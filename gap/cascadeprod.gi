@@ -8,13 +8,13 @@
 ##
 
 if GAPInfo.Version="4.dev" then 
-  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-  [IsCascadeProduct],
+  InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
+  [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
     
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeProduct(s);
+    n:=NrComponentsOfCascadeSemigroup(s);
     out:=List([1..n], x->[]);
 
     for i in [1..Length(GeneratorsOfSemigroup(s))] do 
@@ -32,13 +32,13 @@ if GAPInfo.Version="4.dev" then
     return out; 
   end);
 else
-  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-  [IsCascadeProduct],
+  InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
+  [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
     
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeProduct(s);
+    n:=NrComponentsOfCascadeSemigroup(s);
     out:=List([1..n], x->[]);
 
     for i in [1..Length(GeneratorsOfSemigroup(s))] do 
@@ -61,8 +61,8 @@ fi;
 
 #
 
-InstallMethod(DomainOfCascadeProduct,
-[IsCascadeProduct],
+InstallMethod(DomainOfCascadeSemigroup,
+[IsCascadeSemigroup],
 x-> DomainOfCascade(Representative(x)));
 
 #
@@ -77,16 +77,16 @@ end);
 
 #
 
-InstallMethod(PrefixDomainOfCascadeProduct,
-[IsCascadeProduct],
+InstallMethod(PrefixDomainOfCascadeSemigroup,
+[IsCascadeSemigroup],
 function(cascprod)
   return PrefixDomainOfCascade(Representative(cascprod));
 end);
 
 #
 
-InstallOtherMethod(NrComponentsOfCascadeProduct,
-[IsCascadeProduct],
+InstallOtherMethod(NrComponentsOfCascadeSemigroup,
+[IsCascadeSemigroup],
 function(cascprod)
   return Size(ComponentDomainsOfCascade(
                  Representative(cascprod)));
@@ -94,7 +94,7 @@ end);
 
 #
 
-InstallOtherMethod(ComponentDomainsOfCascadeProduct,
+InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
 [IsListOrCollection],
 function(comps)
   local domains, comp;
@@ -116,7 +116,7 @@ end);
 #
 
 InstallMethod(ViewObj, "for a cascade product",
-[IsCascadeProduct],
+[IsCascadeSemigroup],
 function(s)
   local str, x;
 
@@ -127,12 +127,12 @@ function(s)
     Append(str, "s");
   fi;
   Append(str, ", ");
-  Append(str, String(NrComponentsOfCascadeProduct(s)));
+  Append(str, String(NrComponentsOfCascadeSemigroup(s)));
   Append(str, " levels");
 
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeProduct(s)*3)-12 then
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeSemigroup(s)*3)-12 then
     Append(str, " with (");
-    for x in ComponentDomainsOfCascadeProduct(s) do
+    for x in ComponentDomainsOfCascadeSemigroup(s) do
       Append(str, String(Length(x)));
       Append(str, ", ");
     od;
@@ -147,7 +147,7 @@ end);
 
 # old
 
-InstallGlobalFunction(CascadeProduct, 
+InstallGlobalFunction(CascadeSemigroup, 
 function(arg)
 
   #record.enum:=EnumeratorOfCartesianProduct(record.domains);
@@ -257,8 +257,8 @@ local s,i;
   od;
 end);
 
-InstallOtherMethod(ComponentDomainsOfCascadeProduct,
-        [IsCascadeProduct],
+InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
+        [IsCascadeSemigroup],
 function(cascprod)
   return ComponentDomainsOfCascade(Representative(cascprod));
 end);
