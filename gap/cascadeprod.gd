@@ -17,7 +17,7 @@ DeclareSynonymAttr("IsCascadeProduct", IsSemigroup and
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
-DeclareAttribute("DomainsOfCascadeProductComponents", IsCascadeProduct);
+DeclareAttribute("ComponentDomainsOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("DomainOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("PrefixDomainOfCascadeProduct", IsCascadeProduct);
@@ -32,5 +32,3 @@ DeclareGlobalFunction("CoordValConverter");
 DeclareGlobalFunction("CoordTransConverter");
 DeclareGlobalFunction("SizeOfWreathProduct");
 DeclareGlobalFunction("NumberOfDependencyFunctionArguments");
-
-DeclareAttribute("ComponentDomainsOfCascadeProduct", IsCascadeProduct);

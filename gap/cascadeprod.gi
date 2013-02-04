@@ -110,7 +110,7 @@ end);
 
 #
 
-InstallOtherMethod(DomainsOfCascadeProductComponents,
+InstallOtherMethod(ComponentDomainsOfCascadeProduct,
 [IsListOrCollection],
 function(comps)
   local domains, comp;
@@ -253,13 +253,6 @@ local s,i;
     Print(")\n");
     s := Concatenation(s,"|-");
   od;
-end);
-
-#TODO naming issue here - decide for one only
-InstallOtherMethod(DomainsOfCascadeProductComponents,
-        [IsCascadeProduct],
-function(cascprod)
-  return ComponentDomainsOfCascadeTransformation(Representative(cascprod));
 end);
 
 InstallOtherMethod(ComponentDomainsOfCascadeProduct,

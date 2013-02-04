@@ -62,7 +62,7 @@ function(coll, depfunc)
   local enum, tup, func, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    coll:=DomainsOfCascadeProductComponents(coll);
+    coll:=ComponentDomainsOfCascadeProduct	(coll);
   fi;
 
   enum:=EmptyPlist(Length(coll)+1);
@@ -119,7 +119,7 @@ function(list, numofdeps)
     return;
   fi;
 
-  coll:=DomainsOfCascadeProductComponents(list); 
+  coll:=ComponentDomainsOfCascadeProduct	(list); 
   
   # create the enumerator for the dependency func
   enum:=EmptyPlist(Length(coll)+1);
@@ -271,7 +271,7 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
         function(g)
           Add(mongens,
               CascadeTransformationNC(
-                      DomainsOfCascadeProductComponents(comps),
+                      ComponentDomainsOfCascadeProduct	(comps),
                       [[prefix,g]]));
         end);
     od;
@@ -349,7 +349,7 @@ function(s)
     od;
 
     return CreateCascadeTransformation(dom,
-     DomainsOfCascadeProductComponents(s), prefix, func);
+     ComponentDomainsOfCascadeProduct(s), prefix, func);
   end;
 
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
@@ -363,8 +363,8 @@ end);
 # equality the worst case is when p and q are indeed equal, as every value is
 # checked
 InstallOtherMethod(\=, "for cascade op and cascade op", IsIdenticalObj,
-[IsCascadeTransformation, IsCascadeTransformation],
-function(p,q)
+        [IsCascadeTransformation, IsCascadeTransformation],
+        function(p,q)
   return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
 end);
 
