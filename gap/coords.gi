@@ -34,15 +34,15 @@ local l;
 end);
 
 InstallGlobalFunction(AllConcreteCoords,
-function(csh, abstract_state)
+function(domains, abstract_state)
 local concretestates;
   concretestates := EnumeratorOfCartesianProduct(
-                            List([1..Size(csh)],
+                            List([1..Size(domains)],
     function(x)
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
       else
-        return CoordValSets(csh)[x];
+        return domains[x];
       fi;
     end));
   return concretestates;
