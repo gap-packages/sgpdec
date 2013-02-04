@@ -312,7 +312,7 @@ function(s)
     prefix:=PrefixDomainOfCascadeProduct(s);
     dom:=DomainOfCascadeProduct(s);
     n:=NrComponentsOfCascadeProduct(s);
-    func:=List(prefix, x-> EmptyPlist(Length(x)));
+    func:=List(prefix, x-> List([1..Length(x)], x-> []));
     visited:=List(prefix, x-> BlistList([1..Length(x)], []));
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     
@@ -329,6 +329,9 @@ function(s)
         fi;
         visited[m][pos]:=true;
         m:=m-1;
+        if m=0 then 
+          break;
+        fi;
         Remove(x, m);
         pos:=Position(prefix[m], x);
       od;
