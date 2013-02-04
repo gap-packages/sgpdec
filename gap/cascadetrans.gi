@@ -119,7 +119,7 @@ function(list, numofdeps)
     return;
   fi;
 
-  coll:=ComponentDomainsOfCascadeProduct	(list); 
+  coll:=ComponentDomainsOfCascadeProduct(list); 
   
   # create the enumerator for the dependency func
   enum:=EmptyPlist(Length(coll)+1);
@@ -148,6 +148,9 @@ function(list, numofdeps)
     od;
     val:=Random(list[k]);
     if not IsOne(val) then 
+      if not IsTransformation(val) then 
+        val:=AsTransformation(val);
+      fi;
       func[k][j]:=val;
     fi;
   od;
