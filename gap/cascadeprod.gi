@@ -6,11 +6,6 @@
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## An empty shell defined by an ordered list of components.
-## Used for defining cascade structures.
-##
-
-# 
 
 InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
 [IsCascadeProduct],
@@ -24,20 +19,10 @@ function(s)
   for i in [1..Length(GeneratorsOfSemigroup(s))] do 
     for j in [1..n] do
       if not IsEmpty(func[i][j]) then
-        if not IsBound(out[j]) then 
-          #if ForAny(func[i][j], IsTransformation) then  
-            out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
-          #else
-          #  out[j]:=Group(());
-          #  for x in Compacted(func[i][j]) do 
-          #    out[j]:=ClosureGroup(out[i], x);
-          #  od;
-          #fi;
-        #elif IsTransformationSemigroup(out[i]) then 
+        if out[j]=[] then 
+          out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
         else
           out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
-        #else
-        #  out[j]:=ClosureGroup(out[i], Compacted(func[i][j]));
         fi;
       fi;
     od;
@@ -105,12 +90,30 @@ end);
 InstallMethod(ViewObj, "for a cascade product",
 [IsCascadeProduct],
 function(s)
-  Print("<cascade transformation semigroup with ",
-   Length(GeneratorsOfSemigroup(s)), " generator");
+  local str, x;
+
+  str:="<cascade semigroup with ";
+  Append(str, String(Length(GeneratorsOfSemigroup(s))));
+  Append(str, " generator");
   if Length(GeneratorsOfSemigroup(s))>1 then 
-    Print("s");
+    Append(str, "s");
   fi;
-  Print(">");
+  Append(str, ", ");
+  Append(str, String(NrComponentsOfCascadeProduct(s)));
+  Append(str, " levels");
+
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeProduct(s)*3)-12 then
+    Append(str, " with (");
+    for x in ComponentDomainsOfCascadeProduct(s) do
+      Append(str, String(Length(x)));
+      Append(str, ", ");
+    od;
+    Remove(str, Length(str));
+    Remove(str, Length(str));
+    Append(str, ") pts");
+  fi;
+  Append(str, ">");
+  Print(str);
   return;
 end);
 
