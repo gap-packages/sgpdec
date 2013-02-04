@@ -313,33 +313,29 @@ function(s)
     dom:=DomainOfCascadeProduct(s);
     n:=NrComponentsOfCascadeProduct(s);
     func:=List(prefix, x-> List([1..Length(x)], x-> []));
-    visited:=List(prefix, x-> BlistList([1..Length(x)], []));
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     
     for i in [1..DegreeOfTransformation(f)] do 
-      Error();
       x:=ShallowCopy(dom[i]);
       m:=n;
       Remove(x, m);
       pos:=Position(prefix[m], x);
-      
-      while not visited[m][pos] do 
-        func[m][pos][dom[i][m]]:=dom[i][m]^f;
-        if func[m][pos][dom[i][m]]<>dom[i][m] then 
+      repeat
+        func[m][pos][dom[i][m]]:=dom[i^f][m];
+        if dom[i][m]<>func[m][pos][dom[i][m]] then 
           one[m][pos]:=false;
         fi;
-        visited[m][pos]:=true;
         m:=m-1;
         if m=0 then 
           break;
         fi;
         Remove(x, m);
         pos:=Position(prefix[m], x);
-      od;
+      until IsBound(func[m][pos][dom[i][m]]);
     od;
     
     #post process
-
+  Error();
     for i in [1..Length(func)] do 
       for j in [1..Length(func[i])] do 
         if one[i][j] then 
