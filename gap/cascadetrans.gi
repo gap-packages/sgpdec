@@ -112,7 +112,7 @@ end);
 
 InstallGlobalFunction(RandomCascadeTransformation,
 function(list, numofdeps)
-  local coll, enum, tup, func, len, x, j, k, f, i;
+  local coll, enum, tup, func, len, x, j, k, val, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
     Error("insert meaningful error message,");
@@ -146,7 +146,10 @@ function(list, numofdeps)
       j:=j-Length(enum[k]);
       k:=k+1;
     od;
-    func[k][j]:=Random(list[k]);
+    val:=Random(list[k]);
+    if not IsOne(val) then 
+      func[k][j]:=val;
+    fi;
   od;
  
   return CreateCascadeTransformation(EnumeratorOfCartesianProduct(coll), 
@@ -222,7 +225,7 @@ end);
 InstallMethod(\*, "for cascade transformations", IsIdenticalObj,
 [IsCascadeTransformation, IsCascadeTransformation],
 function(f,g)
-  local dep_f, dep_g, prefix, func, i, j;
+  local dep_f, dep_g, prefix, func, x, i, j;
   
   dep_f:=DependencyFunction(f);
   dep_g:=DependencyFunction(g);
@@ -232,7 +235,10 @@ function(f,g)
 
   for i in [1..Length(prefix)] do 
     for j in [1..Length(prefix[i])] do 
-      func[i][j]:=prefix[i][j]^dep_f*OnCoordinates(prefix[i][j], f)^dep_g;
+      x:=prefix[i][j]^dep_f*OnCoordinates(prefix[i][j], f)^dep_g;
+      if not IsOne(x) then 
+        func[i][j]:=x;
+      fi;
     od;
   od;
   return CreateCascadeTransformation(f, func);      
@@ -340,8 +346,8 @@ function(s)
       for j in [1..Length(func[i])] do 
         if one[i][j] then 
           Unbind(func[i][j]);
-        elif IsPermGroup(ComponentsOfCascadeProduct(s)[i]) then 
-          func[i][j]:=PermList(func[i][j]);
+        #elif IsPermGroup(ComponentsOfCascadeProduct(s)[i]) then 
+        #  func[i][j]:=PermList(func[i][j]);
         else
           func[i][j]:=TransformationNC(func[i][j]);
         fi;
