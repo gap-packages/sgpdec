@@ -13,14 +13,23 @@
 # ABSTRACT COORDINATES #########################################################
 
 #making an abstract state into a concrete
-#for abstract positions we put 1 (a surely valid coordinate value) replacing 0
+#0 means, don't care, or any coordval
+#for abstract positions we put a surely valid coordinate value replacing 0
 InstallGlobalFunction(Concretize,
-function(csh, abstract_state)
+function(domains, abstract_state)
 local l;
-  l := List(abstract_state,
-            function(x) if x>0 then return x; else return 1;fi;end);
-  #then append the list with 1s
-  Append(l, ListWithIdenticalEntries(Length(csh) - Size(abstract_state), 1));
+  #first filling up with 0
+  l := ShallowCopy(abstract_state);
+  Append(l, ListWithIdenticalEntries(Length(domains) - Size(abstract_state),0));
+  l := List([1..Length(l)],
+          function(i)
+            if l[i]>0 then
+              return l[i];
+            else
+              return Representative(domains[i]);
+            fi;end);
+  #then append the list with some elements
+
   return l;
 end);
 
