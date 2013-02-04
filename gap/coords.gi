@@ -53,22 +53,25 @@ end);
 
 # maps (abstract) coordinates to points
 InstallMethod(AsPoint, "for coordinates in a cascade product",
-[IsDenseList,IsList],
+[IsDenseList,IsCascadeProduct],
 function(coords,cascprod)
-  local l,domains,csh;
-  domains := 0;
-  if (Length(coords) = Size(csh)) and (Minimum(coords) > 0) then
+  local l,domains,dom;
+  domains := ComponentDomainsOfCascadeProduct(cascprod);
+  dom := DomainOfCascadeProduct(cascprod);
+  if (Length(coords) = Size(domains)) and (Minimum(coords) > 0) then
     #if not abstract just return a point
-    return PositionCanonical(AllCoords(csh),coords);
+    return PositionCanonical(dom,coords);
   else
     #if abstract return all points fitting the pattern
     l := [];
-    Perform(AllConcreteCoords(csh,coords),
-            function(x) AddSet(l,PositionCanonical(AllCoords(csh),x));end);
+    Perform(AllConcreteCoords(domains,coords),
+            function(x) AddSet(l,PositionCanonical(dom,x));end);
     return  l;
   fi;
 end);
 
 InstallOtherMethod(AsCoords, "for lifting a point into a cascade shell",
-[IsPosInt,IsList],
-function(state,csh) return AllCoords(csh)[state]; end);
+[IsPosInt,IsCascadeProduct],
+function(state,cascprod)
+  return DomainOfCascadeProduct(cascprod)[state];
+end);
