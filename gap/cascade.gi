@@ -488,7 +488,7 @@ end);
 InstallMethod(Display, "for a cascade",
 [IsCascade],
 function(c)
-  local df, func, enum, str, x, i,j;
+  local df, func, enum, str, x, i,j,counter;
   df := DependencyFunction(c);
   func := df!.func;
   enum := df!.enum;
@@ -502,9 +502,12 @@ function(c)
       Print(NrDependenciesOfCascade(c), " nontrivial dependency");
     fi;
     Print("\n");
+    counter := 1;
     for i in [1..NrComponentsOfCascade(c)] do
       for j in [1..Size(func[i])] do
         if IsBound(func[i][j]) then
+          Print("#", String(counter)," ");
+          counter := counter + 1;
           Print(String(enum[i][j])," -> ");
             #TODO String(func[i][j]) return <object>
           Display(func[i][j]);
