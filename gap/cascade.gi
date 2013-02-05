@@ -9,6 +9,8 @@
 ##############################################################################
 ###
 
+# dependency functions
+
 InstallGlobalFunction(CreateDependencyFunction, 
 function(func, enum)
   local record;
@@ -55,14 +57,14 @@ function(tup, depfunc)
   return func[i][pos];
 end);
 
-# Cascade permutations and transformations.
+# creating cascades
 
 InstallGlobalFunction(CascadeNC,
 function(coll, depfunc)
   local enum, tup, func, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    coll:=ComponentDomainsOfCascadeSemigroup	(coll);
+    coll:=ComponentDomainsOfCascadeSemigroup(coll);
   fi;
 
   enum:=EmptyPlist(Length(coll)+1);
@@ -83,7 +85,7 @@ function(coll, depfunc)
   ShrinkAllocationPlist(func);
 
   return CreateCascade(EnumeratorOfCartesianProduct(coll), coll,
-  enum, func);
+   enum, func);
 end);
 
 # either: 
@@ -116,7 +118,8 @@ function(list, numofdeps)
   local coll, enum, tup, func, len, x, j, k, val, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
-    Error("insert meaningful error message,");
+    Error("the first argument should be a list of transformation semigroups",
+     " or perm groups,");
     return;
   fi;
 
@@ -162,9 +165,18 @@ end);
 
 #JDM install Cascade, check args are sensible.
 
-#
+# changing representation
 
-InstallMethod(ViewObj, "for a cascade transformation",
+InstallOtherMethod(AsTransformation,
+"for cascade",
+[IsCascade],
+function(ct)
+return TransformationOp(ct, DomainOfCascade(ct), OnCoordinates);
+end);
+
+# printing
+
+InstallMethod(ViewObj, "for a cascade",
 [IsCascade],
 function(f)
   local str, x;
@@ -198,21 +210,10 @@ end);
 
 #
 
-InstallMethod(PrintObj, "for a cascade transformation",
+InstallMethod(PrintObj, "for a cascade",
 [IsCascade], ViewObj);
 
-#
-
-InstallMethod(NrDependenciesOfCascade, 
-"for a cascade transformation",
-[IsCascade],
-function(f)
-
-  return Sum(List(DependencyFunction(f)!.func, 
-   x-> Number([1..Length(x)], i-> IsBound(x[i]))));
-end);
-
-#
+# action and operators
 
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
@@ -232,16 +233,7 @@ end);
 
 #
 
-InstallOtherMethod(AsTransformation,
-"for cascade transformation",
-[IsCascade],
-function(ct)
-return TransformationOp(ct, DomainOfCascade(ct), OnCoordinates);
-end);
-
-#
-
-InstallMethod(\*, "for cascade transformations", IsIdenticalObj,
+InstallMethod(\*, "for cascades", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, prefix, func, x, i, j;
@@ -263,6 +255,34 @@ function(f,g)
   return CreateCascade(f, func);      
 end);
 
+#
+
+InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
+[IsCascade, IsCascade],
+function(p,q)
+  return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
+end);
+
+#
+
+InstallOtherMethod(\<, "for cascade op and cascade op",
+[IsCascade, IsCascade],
+function(p,q)
+  return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
+end);
+
+# attributes
+
+InstallMethod(NrDependenciesOfCascade, "for a cascade",
+[IsCascade],
+function(f)
+
+  return Sum(List(DependencyFunction(f)!.func, 
+   x-> Number([1..Length(x)], i-> IsBound(x[i]))));
+end);
+
+#old
+
 # MonomialGenerators require the orbits of singletons under semigroup action
 SingletonOrbits := function(T)
 local i, sets,o;
@@ -274,6 +294,7 @@ local i, sets,o;
     od;
     return sets;
 end;
+
 
 MakeReadOnlyGlobal("SingletonOrbits");
 
@@ -326,82 +347,9 @@ local mongens, depth, compgen, gens, prefixes,prefix, newprefix, newprefixes,
   od;
   return mongens;
 end);
-#
 
-InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
-[IsCascadeSemigroup],
-function(s)
-  local t, inv;
-  t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
-  inv:=function(f)
-    local prefix, dom, n, func, visited, one, i, x, m, pos, j;
-    prefix:=PrefixDomainOfCascadeSemigroup(s);
-    dom:=DomainOfCascadeSemigroup(s);
-    n:=NrComponentsOfCascadeSemigroup(s);
-    func:=List(prefix, x-> List([1..Length(x)], x-> []));
-    one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
-    
-    for i in [1..DegreeOfTransformation(f)] do 
-      x:=ShallowCopy(dom[i]);
-      m:=n;
-      Remove(x, m);
-      pos:=Position(prefix[m], x);
-      repeat
-        func[m][pos][dom[i][m]]:=dom[i^f][m];
-        if dom[i][m]<>func[m][pos][dom[i][m]] then 
-          one[m][pos]:=false;
-        fi;
-        m:=m-1;
-        if m=0 then 
-          break;
-        fi;
-        Remove(x, m);
-        pos:=Position(prefix[m], x);
-      until IsBound(func[m][pos][dom[i][m]]);
-    od;
-    
-    #post process
-    for i in [1..Length(func)] do 
-      for j in [1..Length(func[i])] do 
-        if one[i][j] then 
-          Unbind(func[i][j]);
-        #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then 
-        #  func[i][j]:=PermList(func[i][j]);
-        else
-          func[i][j]:=TransformationNC(func[i][j]);
-        fi;
-      od;
-    od;
+#JDM revise this...
 
-    return CreateCascade(dom,
-     ComponentDomainsOfCascadeSemigroup(s), prefix, func);
-  end;
-
-  return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
-end);
-
-# old
-# YEP THIS IS THE MARKER BETWEEN NEW AND OLD
-
-################################################################################
-####REIMPLEMENTED OPERATIONS####################################################
-# equality the worst case is when p and q are indeed equal, as every value is
-# checked
-InstallOtherMethod(\=, "for cascade op and cascade op", IsIdenticalObj,
-        [IsCascade, IsCascade],
-        function(p,q)
-  return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
-end);
-
-# comparison, less than, just a trick flattening and do the comparison there
-InstallOtherMethod(\<, "for cascade op and cascade op",
-[IsCascade, IsCascade],
-function(p,q)
-  return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
-end);
-
-################################################################################
-########### DRAWING ############################################################
 InstallGlobalFunction(DotCascade,
 function(ct)
   local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
@@ -465,3 +413,6 @@ function(ct)
   CloseStream(out);
   return str;
 end);
+
+#EOF
+
