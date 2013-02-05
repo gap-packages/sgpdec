@@ -61,6 +61,7 @@ function(s)
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
 end);
 
+#
 
 if GAPInfo.Version="4.dev" then 
   InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
@@ -171,7 +172,7 @@ end);
 #
 
 InstallMethod(ViewObj, "for a cascade product",
-[IsCascadeSemigroup],
+[IsCascadeSemigroup and HasGeneratorsOfSemigroup],
 function(s)
   local str, x;
 
@@ -200,17 +201,67 @@ function(s)
   return;
 end);
 
-# old
+# the full cascade semigroup
 
-InstallGlobalFunction(CascadeSemigroup, 
+InstallGlobalFunction(FullCascadeSemigroup, 
 function(arg)
+  local filts, s, i;
 
-  #record.enum:=EnumeratorOfCartesianProduct(record.domains);
-  # get the generators, create the object using the family of the generators,
-  # and a new type (as in semigroups.gi) ...
-  #out:=Objectify();
+  if Length(arg)=1 then 
+    if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then 
+      arg:=arg[1];
+    else
+      Error("the argument must be a list of transformation semigroup and perm",
+      " groups");
+    fi;
+  else 
+    if not IsListOfPermGroupsAndTransformationSemigroups(arg) then 
+      Error("the argument must consist of transformation semigroups and perm ",
+      "groups,");
+    fi;
+  fi;
 
+  for i in [1..Length(arg)] do 
+    if IsPermGroup(arg[i]) then 
+      arg[i]:=Semigroup(List(GeneratorsOfGroup(arg[i]), AsTransformation));
+    fi;
+  od;
+
+  filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
+  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec()); 
+  SetComponentsOfCascadeSemigroup(s, arg);
+  SetComponentDomainsOfCascadeSemigroup(s, List(arg, 
+   x-> [1..DegreeOfTransformationSemigroup(x)]));
+  return s; 
 end);
+
+#
+
+InstallMethod(ViewObj, "for a full cascade semigroup",
+[IsFullCascadeSemigroup],
+function(s) 
+  Print("<wreath product of semigroups>");
+end);
+
+#
+
+InstallMethod(Size, "for a full cascade semigroup",
+[IsFullCascadeSemigroup],
+function(s)
+  local domains, comps, order, j, i;
+
+  domains:=List(ComponentDomainsOfCascadeSemigroup(s), Length);
+  comps:=ComponentsOfCascadeSemigroup(s);
+  order := 1;
+  j := 1;
+  for i in [1..Length(domains)] do
+    order := order * (Size(comps[i])^j);
+    j := j * domains[i];
+  od;
+  return order;
+end);
+
+# old
 
 ###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
 
