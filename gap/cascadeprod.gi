@@ -232,6 +232,10 @@ function(arg)
   SetComponentDomainsOfCascadeSemigroup(s, List(arg, 
    x-> [1..DegreeOfTransformationSemigroup(x)]));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
+  SetPrefixDomainOfCascadeSemigroup(s,
+   CreatePrefixDomains(ComponentDomainsOfCascadeSemigroup(s)));
+  SetDomainOfCascadeSemigroup(s,
+   EnumeratorOfCartesianProduct(ComponentDomainsOfCascadeSemigroup(s)));
   return s; 
 end);
 
@@ -263,92 +267,43 @@ end);
 
 #
 
-# for a transformation semigroup
-#InstallMethod(Orbits, "for a transformation semigroup",
-#[IsTransformationSemigroup], 
-OrbitRepresentatives:=function(s)
-  local base, gens, nrgens, j, seen, record, out, o, i;
+InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
+[IsFullCascadeSemigroup],
+function(s)
+  local nr, comps, pts, prefix, dom, compdom, oldfix, gens, nrgens, m, pos, func, pre, x, y, i;
 
-  base:=[1..DegreeOfTransformationSemigroup(s)];
-  gens:=GeneratorsOfSemigroup(s);
-  nrgens:=Length(gens);
-  j:=0;
-  repeat   
-    j:=j+1;
-    base:=Difference(base, ImageSetOfTransformation(gens[j]));
-  until base=[] or j=nrgens;
+  nr:=NrComponentsOfCascadeSemigroup(s);
+  comps:=ComponentsOfCascadeSemigroup(s);
+  pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
+  prefix:=CreatePrefixDomains(pts);
+  
+  dom:=DomainOfCascadeSemigroup(s);
+  compdom:=ComponentDomainsOfCascadeSemigroup(s);
+  oldfix:=PrefixDomainOfCascadeSemigroup(s);
+  gens:=[]; nrgens:=0;
 
-  seen:=[];
-  record:=rec();
-  record.gradingfunc:=function(o,x) 
-    if x in seen then 
-      return true;
-    else
-      Add(seen, x);
-      return false;
-    fi;
-  end;
-  record.onlygrades:=function(x,unused) return x=false; end;
-  record.onlygradesdata:=fail;
-
-  out:=[];
-  for i in base do 
-    o:=Orb(gens, i, OnPoints, record);
-    Enumerate(o);
-    Add(out, o[1]);
+  for pre in prefix do 
+    for x in pre do 
+      m:=Length(x);
+      pos:=Position(prefix[m+1], x);
+      for y in Generators(comps[m+1]) do 
+        func:=EmptyPlist(nr);
+        for i in [1..nr] do 
+          if i<>m+1 then 
+            func[i]:=EmptyPlist(0);
+          else
+            func[i]:=EmptyPlist(pos);
+            func[i][pos]:=y;
+          fi;
+        od;
+        nrgens:=nrgens+1;
+        gens[nrgens]:=CreateCascade(dom, compdom, oldfix, func);
+      od;
+    od;
   od;
 
-  base:=Difference([1..DegreeOfTransformationSemigroup(s)], seen);
-  seen:=[];
-  while base<>[] do 
-    i:=base[1];
-    o:=Orb(gens, i, OnPoints, record);
-    Enumerate(o);
-    Add(out, o[1]);
-    base:=Difference(base, seen);
-  od;
-  return out;
-end;
-
-# InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
-# [IsFullCascadeSemigroup],
-# function(s)
-# 
-#   nr:=NrComponentsOfCascadeSemigroup(s);
-#   comp:=ComponentsOfCascadeSemigroup(s);
-#   
-#   #preprocess generators of components
-#   
-#   out:=List([1..nr], x->[]);
-#   out[1]:=GeneratorsOfSemigroup(comp[1]);
-#   base:=[];
-#   for i in [2..nr-1] do 
-#     base[i]:=[1..DegreeOfTransformationSemigroup(comp[i-1])];
-#     gens:=GeneratorsOfSemigroup(comp[i-1]);
-#     nrgens:=Length(gens);
-#     j:=0;
-#     repeat
-#       j:=j+1;
-#       base[i]:=Difference(base[i], ImageSetOfTransformation(gens[j]));
-#     until base[i]=[] or j=nrgens;
-#     
-#     if base[i]=[] then 
-#       out[i][1]:=gens;
-#     else
-#       for j in base[i] do 
-#         out[i][j]:=gens;
-#       od;
-#     fi;
-#   od;
-#   
-# 
-#   recurse:=function(prefix)
-#     
-#     if Length(prefix)=nr-1 then 
-#     
-# 
-# 
-#   end;
+  return gens;
+end);
 
 # old
 
