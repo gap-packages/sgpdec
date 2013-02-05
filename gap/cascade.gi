@@ -492,23 +492,26 @@ function(c)
   df := DependencyFunction(c);
   func := df!.func;
   enum := df!.enum;
+  if IsOne(c) then Print("identity ");fi;
   Print("cascade with ", NrComponentsOfCascade(c), " levels ");
   Print("on sets ", ComponentDomainsOfCascade(c), "\n");
-  if NrDependenciesOfCascade(c) > 1 then
-    Print(NrDependenciesOfCascade(c), " nontrivial dependencies");
-  else
-    Print(NrDependenciesOfCascade(c), " nontrivial dependency");
-  fi;
-  Print("\n");
-  for i in [1..NrComponentsOfCascade(c)] do
-    for j in [1..Size(func[i])] do
-      if IsBound(func[i][j]) then
-        Print(String(enum[i][j])," -> ");
-        #TODO String(func[i][j]) return <object>
-        Display(func[i][j]);
-      fi;
+  if not IsOne(c) then
+    if NrDependenciesOfCascade(c) > 1 then
+      Print(NrDependenciesOfCascade(c), " nontrivial dependencies");
+    else
+      Print(NrDependenciesOfCascade(c), " nontrivial dependency");
+    fi;
+    Print("\n");
+    for i in [1..NrComponentsOfCascade(c)] do
+      for j in [1..Size(func[i])] do
+        if IsBound(func[i][j]) then
+          Print(String(enum[i][j])," -> ");
+            #TODO String(func[i][j]) return <object>
+          Display(func[i][j]);
+        fi;
+      od;
     od;
-  od;
+  fi;
   return;
 end);
 
