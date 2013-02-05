@@ -21,6 +21,8 @@ BindGlobal("CascadeType", NewType(CascadeFamily,
 
 DeclareGlobalFunction("CascadeNC");
 DeclareGlobalFunction("Cascade");
+DeclareGlobalFunction("CreatePrefixDomains");
+DeclareOperation("AsCascade", [IsTransformation, IsCyclotomicCollection]);
 DeclareAttribute("DomainOfCascade", IsCascade);
 DeclareAttribute("DependencyFunction", IsCascade);
 DeclareAttribute("NrComponentsOfCascade",

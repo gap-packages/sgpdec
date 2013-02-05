@@ -9,6 +9,31 @@
 ##############################################################################
 ###
 
+
+# misc
+
+# either list of pos ints or list of actual domains
+
+InstallGlobalFunction(CreatePrefixDomains,
+function(coll)
+  local prefix, tup, i;
+
+  if ForAll(coll, IsPosInt) then 
+    Apply(coll, x-> [1..x]);
+  fi;
+
+  prefix:=EmptyPlist(Length(coll)+1);
+  prefix[1]:=[[]];
+
+  tup:=[];
+
+  for i in [1..Length(coll)-1] do
+    Add(tup, coll[i]);
+    Add(prefix, EnumeratorOfCartesianProduct(tup));
+  od; 
+  return prefix;
+end);
+
 # dependency functions
 
 InstallGlobalFunction(CreateDependencyFunction, 
@@ -61,31 +86,22 @@ end);
 
 InstallGlobalFunction(CascadeNC,
 function(coll, depfunc)
-  local enum, tup, func, f, i, x;
+  local prefix, tup, func, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
     coll:=ComponentDomainsOfCascadeSemigroup(coll);
   fi;
 
-  enum:=EmptyPlist(Length(coll)+1);
-  enum[1]:=[[]];
-  
-  tup:=[];
-  
-  for i in [1..Length(coll)-1] do 
-    Add(tup, coll[i]);
-    Add(enum, EnumeratorOfCartesianProduct(tup));
-  od;
-
-  func:=List(enum, x-> EmptyPlist(Length(x)));
+  prefix:=CreatePrefixDomains(coll);
+  func:=List(prefix, x-> EmptyPlist(Length(x)));
 
   for x in depfunc do
-    func[Length(x[1])+1][Position(enum[Length(x[1])+1], x[1])]:=x[2];
+    func[Length(x[1])+1][Position(prefix[Length(x[1])+1], x[1])]:=x[2];
   od;
   ShrinkAllocationPlist(func);
 
   return CreateCascade(EnumeratorOfCartesianProduct(coll), coll,
-   enum, func);
+   prefix, func);
 end);
 
 # either: 
@@ -167,11 +183,64 @@ end);
 
 # changing representation
 
-InstallOtherMethod(AsTransformation,
-"for cascade",
+InstallMethod(AsTransformation, "for cascade",
 [IsCascade],
 function(ct)
 return TransformationOp(ct, DomainOfCascade(ct), OnCoordinates);
+end);
+
+#
+
+InstallMethod(AsCascade, "for a transformation and list of domain sizes",
+[IsTransformation, IsCyclotomicCollection],
+function(f, coll)
+  local prefix, dom, n, func, one, x, m, pos, i, j;
+  
+  if not ForAll(coll, IsPosInt) or DegreeOfTransformation(f)<>Product(coll)
+   then 
+    return fail;
+  fi;
+
+  prefix:=CreatePrefixDomains(coll);
+  dom:=EnumeratorOfCartesianProduct(coll);
+  n:=Length(coll);
+  func:=List(prefix, x-> List([1..Length(x)], x-> []));
+  one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
+   
+  for i in [1..DegreeOfTransformation(f)] do
+    x:=ShallowCopy(dom[i]);
+    m:=n;
+    Remove(x, m);
+    pos:=Position(prefix[m], x);
+    repeat
+      func[m][pos][dom[i][m]]:=dom[i^f][m];
+      if dom[i][m]<>func[m][pos][dom[i][m]] then
+        one[m][pos]:=false;
+      fi;
+      m:=m-1;
+      if m=0 then
+        break;
+      fi;
+      Remove(x, m);
+      pos:=Position(prefix[m], x);
+    until IsBound(func[m][pos][dom[i][m]]);
+    if m<>0 and func[m][pos][dom[i][m]]<>dom[i^f][m] then 
+      return fail;
+    fi;
+  od;
+ 
+  #post process
+  for i in [1..Length(func)] do
+    for j in [1..Length(func[i])] do
+      if one[i][j] then
+        Unbind(func[i][j]);
+      else
+        func[i][j]:=TransformationNC(func[i][j]);
+      fi;
+    od;
+  od;
+
+  return CreateCascade(dom, coll, prefix, func);
 end);
 
 # printing

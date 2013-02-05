@@ -154,7 +154,7 @@ InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
 function(comps)
   local domains, comp;
   if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
-    Error("not components");
+    Error("insert meaningful error message here,");
     return;
   fi;
   domains:=[];
