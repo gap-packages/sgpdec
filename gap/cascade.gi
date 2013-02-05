@@ -517,3 +517,9 @@ InstallMethod(One, "for a cascade",
         function(c)
   return CascadeNC(ComponentDomainsOfCascade(c),[]);
 end);
+
+InstallMethod(IsOne, "for a cascade",
+[IsCascade],
+        function(c)
+  return ForAll(DependencyFunction(c)!.func, IsEmpty);
+end);
