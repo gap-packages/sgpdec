@@ -24,6 +24,11 @@ DeclareAttribute("PrefixDomainOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeSemigroup);
 DeclareAttribute("NrComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 
+DeclareProperty("IsFullCascadeSemigroup", IsCascadeSemigroup);
+DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
+DeclareGlobalFunction("FullCascadeSemigroup");
+DeclareSynonym("SemigroupWreathProduct", FullCascadeSemigroup);
+
 #TO BE REMOVED
 DeclareGlobalFunction("AllCoords");
 DeclareGlobalFunction("CoordValSets");
