@@ -47,6 +47,3 @@ DeclareGlobalFunction("RandomCascade");
 DeclareGlobalFunction("DependencyMapsFromCascade");
 DeclareGlobalFunction("MonomialWreathProductGenerators");
 DeclareGlobalFunction("DotCascade");
-#DeclareOperation("AsCascadeTrans",[IsMultiplicativeElement,IsCascadeShell]);
-#DeclareOperation("AsCascadeTransNC",[IsMultiplicativeElement,IsCascadeShell]);
-
