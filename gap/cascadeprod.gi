@@ -204,7 +204,7 @@ end);
 
 InstallGlobalFunction(FullCascadeSemigroup, 
 function(arg)
-  local filts, s, i;
+  local filts, s, i,n;
 
   if Length(arg)=1 then 
     if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then 
@@ -221,8 +221,10 @@ function(arg)
   fi;
 
   for i in [1..Length(arg)] do 
-    if IsPermGroup(arg[i]) then 
-      arg[i]:=Semigroup(List(GeneratorsOfGroup(arg[i]), AsTransformation));
+    if IsPermGroup(arg[i]) then
+      n := LargestMovedPoint(arg[i]);
+      arg[i]:=Semigroup(List(GeneratorsOfGroup(arg[i]),
+                      g -> AsTransformation(g,n)));
     fi;
   od;
 
