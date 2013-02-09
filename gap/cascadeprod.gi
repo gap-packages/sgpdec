@@ -220,8 +220,9 @@ function(arg)
     fi;
   fi;
 
-  for i in [1..Length(arg)] do 
+  for i in [1..Length(arg)] do
     if IsPermGroup(arg[i]) then
+      #we need to know domain when converting to transformation
       n := LargestMovedPoint(arg[i]);
       arg[i]:=Semigroup(List(GeneratorsOfGroup(arg[i]),
                       g -> AsTransformation(g,n)));
