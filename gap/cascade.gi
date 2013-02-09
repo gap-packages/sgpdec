@@ -1,6 +1,6 @@
 #############################################################################
 ###
-##W  cascadetrans.gi
+##W  cascade.gi
 ##Y  Copyright (C) 2011-12
 ##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
