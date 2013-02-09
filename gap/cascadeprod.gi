@@ -340,26 +340,20 @@ MakeReadOnlyGlobal("Name4Component");
 #  cascprodinfo.num_of_dependency_entries :=
 #    Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
-
-#######################ACCESS METHODS#######################
-
-InstallOtherMethod(Name,"for cascade shells",[IsList],
-function(csh) return csh!.name_of_shell; end);
-
 #this is a huge number even in small cases
-InstallGlobalFunction(SizeOfWreathProduct,
-function(csh)
-local order,j,i;
+#InstallGlobalFunction(SizeOfWreathProduct,
+#function(csh)
+#local order,j,i;
   #calculating the order of the cascade state set
-  order := 1;
+ # order := 1;
   #j is the number of possible arguments on a given depth, i.e.\ the exponent
-  j := 1;
-  for i in [1..Size(csh)] do
+ # j := 1;
+ # for i in [1..Size(csh)] do
 #    order := order * (Size(csh[i])^j);
 #    j := j * Size(CoordValSets(csh)[i]);
-  od;
-  return order;
-end);
+ # od;
+ # return order;
+#end);
 
 #############################################################################
 # Implementing Display, printing nice, human readable format.
@@ -377,7 +371,7 @@ function(csh)
 local s,i;
   s := "";
   for i in [1..Length(csh)] do
-    Print(i," ", s,"(",Size(CoordValSets(csh)[i]),",");
+    #Print(i," ", s,"(",Size(CoordValSets(csh)[i]),",");
     ViewObj(csh[i]);
     Print(")\n");
     s := Concatenation(s,"|-");

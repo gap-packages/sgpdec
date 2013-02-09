@@ -28,4 +28,4 @@ DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
 DeclareGlobalFunction("FullCascadeSemigroup");
 DeclareSynonym("SemigroupWreathProduct", FullCascadeSemigroup);
 
-DeclareGlobalFunction("SizeOfWreathProduct");
+#DeclareGlobalFunction("SizeOfWreathProduct");
