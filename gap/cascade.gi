@@ -371,7 +371,7 @@ function(ct)
   vertexlabels := rec();#HTCreate("a string");
   edges := [];
   #extracting dependencies
-  deps := DependencyMapsFromCascade(ct);
+  deps := [];#DependencyMapsFromCascade(ct);
   coordsname := "n";
   Add(vertices, coordsname);
   #adding a default label

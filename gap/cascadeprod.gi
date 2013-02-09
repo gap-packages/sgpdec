@@ -342,17 +342,6 @@ MakeReadOnlyGlobal("Name4Component");
 
 
 #######################ACCESS METHODS#######################
-InstallGlobalFunction(NumberOfDependencyFunctionArguments,
-function(csh) return csh!.num_of_dependency_entries; end);
-
-InstallGlobalFunction(NameOfDependencyDomain,
-function(csh,level) return csh!.depdom_names[level]; end);
-
-InstallGlobalFunction(CoordValConverter,
-function(csh,level) return csh!.coordval_converters[level]; end);
-
-InstallGlobalFunction(CoordTransConverter,
-function(csh,level) return csh!.coordtrans_converters[level]; end);
 
 InstallOtherMethod(Name,"for cascade shells",[IsList],
 function(csh) return csh!.name_of_shell; end);
@@ -366,25 +355,10 @@ local order,j,i;
   #j is the number of possible arguments on a given depth, i.e.\ the exponent
   j := 1;
   for i in [1..Size(csh)] do
-    order := order * (Size(csh[i])^j);
-    j := j * Size(CoordValSets(csh)[i]);
+#    order := order * (Size(csh[i])^j);
+#    j := j * Size(CoordValSets(csh)[i]);
   od;
   return order;
-end);
-
-#######################OLD METHODS#############################
-# The size of the cascade shell is the number components.
-InstallMethod(Length,"for cascade shells",true,[IsList],
-function(csh)
-  return Length(csh!.components);
-end);
-
-# for accessing the list elements
-InstallOtherMethod( \[\],
-    "for cascade shells",
-    [ IsList, IsPosInt ],
-function( csh, pos )
-return csh!.components[pos];
 end);
 
 #############################################################################
