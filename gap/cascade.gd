@@ -1,6 +1,6 @@
 #############################################################################
 ##
-## cascadetrans.gd           SgpDec package
+## cascade.gd           SgpDec package
 ##
 ## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
