@@ -8,6 +8,8 @@
 ###
 ##############################################################################
 
+### DEPENDENCY FUNCTION ########################################################
+
 # Creates the list of all prefixes of a given size. These are the arguments of
 # the dependency functions on each level.
 # coll: list of pos ints or actual domains, integer x is converted to [1..x]
@@ -32,7 +34,7 @@ end);
 
 # dependency functions
 
-InstallGlobalFunction(CreateDependencyFunction, 
+InstallGlobalFunction(CreateDependencyFunction,
 function(vals, prefixes)
   local record;
 
@@ -78,7 +80,7 @@ function(tup, depfunc)
   return vals[i][pos];
 end);
 
-# creating cascades
+# CASCADE ######################################################################
 
 InstallGlobalFunction(CascadeNC,
 function(coll, depfunc)
