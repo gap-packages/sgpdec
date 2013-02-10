@@ -289,7 +289,7 @@ function(s)
     for x in pre do 
       m:=Length(x);
       pos:=Position(prefix[m+1], x);
-      for y in Generators(comps[m+1]) do 
+      for y in GeneratorsOfSemigroup(comps[m+1]) do 
         func:=EmptyPlist(nr);
         for i in [1..nr] do 
           if i<>m+1 then 
