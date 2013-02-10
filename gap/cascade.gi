@@ -37,11 +37,11 @@ end);
 # dependency functions
 
 InstallGlobalFunction(CreateDependencyFunction, 
-function(func, enum)
+function(vals, prefixes)
   local record;
 
-  record:=rec(func:=func, enum:=enum);
-  return Objectify(NewType(CollectionsFamily(FamilyObj(func[2])),
+  record:=rec(vals:=vals, prefixes:=prefixes);
+  return Objectify(NewType(CollectionsFamily(FamilyObj(vals[2])),
    IsDependencyFunc), record);
 end);
 
@@ -59,49 +59,49 @@ end);
 InstallOtherMethod(\^, "for a tuple and dependency func",
 [IsList, IsDependencyFunc],
 function(tup, depfunc)
-  local func, enum, i, pos;
+  local vals, prefixes, i, pos;
   
-  func:=depfunc!.func;
-  enum:=depfunc!.enum;
+  vals:=depfunc!.vals;
+  prefixes:=depfunc!.prefixes;
 
   i:=Length(tup)+1;
   
-  if not IsBound(enum[i]) then 
+  if not IsBound(prefixes[i]) then 
     return fail;
   fi;
   
-  pos:=Position(enum[i], tup);
+  pos:=Position(prefixes[i], tup);
   
   if pos=fail then 
     return fail;
   fi;
 
-  if not IsBound(func[i][pos]) then 
+  if not IsBound(vals[i][pos]) then 
     return ();
   fi;
-  return func[i][pos];
+  return vals[i][pos];
 end);
 
 # creating cascades
 
 InstallGlobalFunction(CascadeNC,
 function(coll, depfunc)
-  local prefix, tup, func, f, i, x;
+  local prefix, tup, vals, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
     coll:=ComponentDomainsOfCascadeSemigroup(coll);
   fi;
 
   prefix:=CreatePrefixDomains(coll);
-  func:=List(prefix, x-> EmptyPlist(Length(x)));
+  vals:=List(prefix, x-> EmptyPlist(Length(x)));
 
   for x in depfunc do
-    func[Length(x[1])+1][Position(prefix[Length(x[1])+1], x[1])]:=x[2];
+    vals[Length(x[1])+1][Position(prefix[Length(x[1])+1], x[1])]:=x[2];
   od;
-  ShrinkAllocationPlist(func);
+  ShrinkAllocationPlist(vals);
 
   return CreateCascade(EnumeratorOfCartesianProduct(coll), coll,
-   prefix, func);
+   prefix, vals);
 end);
 
 # either: 
@@ -131,7 +131,7 @@ end);
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
-  local coll, enum, tup, func, len, x, j, k, val, i;
+  local coll, prefixes, tup, vals, len, x, j, k, val, i;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
     Error("the first argument should be a list of transformation semigroups",
@@ -142,19 +142,19 @@ function(list, numofdeps)
   coll:=ComponentDomainsOfCascadeSemigroup(list); 
   
   # create the enumerator for the dependency func
-  enum:=EmptyPlist(Length(coll)+1);
-  enum[1]:=[[]];
+  prefixes:=EmptyPlist(Length(coll)+1);
+  prefixes[1]:=[[]];
   
   tup:=[];
   
   for i in [1..Length(coll)-1] do 
     Add(tup, coll[i]);
-    Add(enum, EnumeratorOfCartesianProduct(tup));
+    Add(prefixes, EnumeratorOfCartesianProduct(tup));
   od;
 
   # create the function
-  func:=List(enum, x-> EmptyPlist(Length(x)));
-  len:=Sum(List(enum, Length));
+  vals:=List(prefixes, x-> EmptyPlist(Length(x)));
+  len:=Sum(List(prefixes, Length));
   numofdeps:=Minimum([len, numofdeps]);
 
   x:=[1..len];
@@ -162,8 +162,8 @@ function(list, numofdeps)
     j:=Random(x);
     RemoveSet(x, j);
     k:=1;
-    while j>Length(enum[k]) do 
-      j:=j-Length(enum[k]);
+    while j>Length(prefixes[k]) do 
+      j:=j-Length(prefixes[k]);
       k:=k+1;
     od;
     val:=Random(list[k]);
@@ -171,12 +171,12 @@ function(list, numofdeps)
       if not IsTransformation(val) then 
         val:=AsTransformation(val);
       fi;
-      func[k][j]:=val;
+      vals[k][j]:=val;
     fi;
   od;
  
   return CreateCascade(EnumeratorOfCartesianProduct(coll), 
-   coll, enum, func);
+   coll, prefixes, vals);
 end);
 
 #JDM install Cascade, check args are sensible.
@@ -194,7 +194,7 @@ end);
 InstallMethod(AsCascade, "for a transformation and list of domain sizes",
 [IsTransformation, IsCyclotomicCollection],
 function(f, coll)
-  local prefix, dom, n, func, one, x, m, pos, i, j;
+  local prefix, dom, n, vals, one, x, m, pos, i, j;
   
   if not ForAll(coll, IsPosInt) or DegreeOfTransformation(f)<>Product(coll)
    then 
@@ -204,7 +204,7 @@ function(f, coll)
   prefix:=CreatePrefixDomains(coll);
   dom:=EnumeratorOfCartesianProduct(coll);
   n:=Length(coll);
-  func:=List(prefix, x-> List([1..Length(x)], x-> []));
+  vals:=List(prefix, x-> List([1..Length(x)], x-> []));
   one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
    
   for i in [1..DegreeOfTransformation(f)] do
@@ -213,8 +213,8 @@ function(f, coll)
     Remove(x, m);
     pos:=Position(prefix[m], x);
     repeat
-      func[m][pos][dom[i][m]]:=dom[i^f][m];
-      if dom[i][m]<>func[m][pos][dom[i][m]] then
+      vals[m][pos][dom[i][m]]:=dom[i^f][m];
+      if dom[i][m]<>vals[m][pos][dom[i][m]] then
         one[m][pos]:=false;
       fi;
       m:=m-1;
@@ -223,24 +223,24 @@ function(f, coll)
       fi;
       Remove(x, m);
       pos:=Position(prefix[m], x);
-    until IsBound(func[m][pos][dom[i][m]]);
-    if m<>0 and func[m][pos][dom[i][m]]<>dom[i^f][m] then 
+    until IsBound(vals[m][pos][dom[i][m]]);
+    if m<>0 and vals[m][pos][dom[i][m]]<>dom[i^f][m] then 
       return fail;
     fi;
   od;
  
   #post process
-  for i in [1..Length(func)] do
-    for j in [1..Length(func[i])] do
+  for i in [1..Length(vals)] do
+    for j in [1..Length(vals[i])] do
       if one[i][j] then
-        Unbind(func[i][j]);
+        Unbind(vals[i][j]);
       else
-        func[i][j]:=TransformationNC(func[i][j]);
+        vals[i][j]:=TransformationNC(vals[i][j]);
       fi;
     od;
   od;
 
-  return CreateCascade(dom, coll, prefix, func);
+  return CreateCascade(dom, coll, prefix, vals);
 end);
 
 # printing
@@ -305,23 +305,23 @@ end);
 InstallMethod(\*, "for cascades", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(f,g)
-  local dep_f, dep_g, prefix, func, x, i, j;
+  local dep_f, dep_g, prefix, vals, x, i, j;
   
   dep_f:=DependencyFunction(f);
   dep_g:=DependencyFunction(g);
   prefix:=PrefixDomainOfCascade(f);
 
-  func:=List(prefix, x-> EmptyPlist(Length(x)));
+  vals:=List(prefix, x-> EmptyPlist(Length(x)));
 
   for i in [1..Length(prefix)] do 
     for j in [1..Length(prefix[i])] do 
       x:=prefix[i][j]^dep_f*OnCoordinates(prefix[i][j], f)^dep_g;
       if not IsOne(x) then 
-        func[i][j]:=x;
+        vals[i][j]:=x;
       fi;
     od;
   od;
-  return CreateCascade(f, func);      
+  return CreateCascade(f, vals);      
 end);
 
 #
@@ -329,7 +329,7 @@ end);
 InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
-  return DependencyFunction(p)!.func = DependencyFunction(q)!.func;
+  return DependencyFunction(p)!.vals = DependencyFunction(q)!.vals;
 end);
 
 #
@@ -337,7 +337,7 @@ end);
 InstallOtherMethod(\<, "for cascade op and cascade op",
 [IsCascade, IsCascade],
 function(p,q)
-  return DependencyFunction(p)!.func < DependencyFunction(q)!.func;
+  return DependencyFunction(p)!.vals < DependencyFunction(q)!.vals;
 end);
 
 # attributes
@@ -346,7 +346,7 @@ InstallMethod(NrDependenciesOfCascade, "for a cascade",
 [IsCascade],
 function(f)
 
-  return Sum(List(DependencyFunction(f)!.func, 
+  return Sum(List(DependencyFunction(f)!.vals, 
    x-> Number([1..Length(x)], i-> IsBound(x[i]))));
 end);
 
@@ -423,17 +423,17 @@ end);
 InstallMethod(Display, "for a cascade",
 [IsCascade],
 function(c)
-  local df, func, enum, str, x, i,j;
+  local df, vals, prefixes, str, x, i,j;
   df := DependencyFunction(c);
-  func := df!.func;
-  enum := df!.enum;
+  vals := df!.vals;
+  prefixes := df!.prefixes;
   #str:="";
   for i in [1..NrComponentsOfCascade(c)] do
-    for j in [1..Size(func[i])] do
-      if IsBound(func[i][j]) then
-        Print(String(enum[i][j])," -> ");
-        #TODO String(func[i][j]) return <object>
-        Display(func[i][j]);
+    for j in [1..Size(vals[i])] do
+      if IsBound(vals[i][j]) then
+        Print(String(prefixes[i][j])," -> ");
+        #TODO String(vals[i][j]) return <object>
+        Display(vals[i][j]);
       fi;
     od;
   od;
