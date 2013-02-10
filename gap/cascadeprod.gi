@@ -16,11 +16,11 @@ function(s)
   t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
   #-----------------------------------------------------------------------------
   inv:=function(f)
-    local prefix, dom, n, func, visited, one, i, x, m, pos, j;
+    local prefix, dom, n, vals, visited, one, i, x, m, pos, j;
     prefix:=PrefixDomainOfCascadeSemigroup(s);
     dom:=DomainOfCascadeSemigroup(s);
     n:=NrComponentsOfCascadeSemigroup(s);
-    func:=List(prefix, x-> List([1..Length(x)], x-> []));
+    vals:=List(prefix, x-> List([1..Length(x)], x-> []));
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
     for i in [1..DegreeOfTransformation(f)] do
       x:=ShallowCopy(dom[i]);
@@ -28,8 +28,8 @@ function(s)
       Remove(x, m);
       pos:=Position(prefix[m], x);
       repeat
-        func[m][pos][dom[i][m]]:=dom[i^f][m];
-        if dom[i][m]<>func[m][pos][dom[i][m]] then
+        vals[m][pos][dom[i][m]]:=dom[i^f][m];
+        if dom[i][m]<>vals[m][pos][dom[i][m]] then
           one[m][pos]:=false;
         fi;
         m:=m-1;
@@ -38,22 +38,22 @@ function(s)
         fi;
         Remove(x, m);
         pos:=Position(prefix[m], x);
-      until IsBound(func[m][pos][dom[i][m]]);
+      until IsBound(vals[m][pos][dom[i][m]]);
     od;
     #post process
-    for i in [1..Length(func)] do
-      for j in [1..Length(func[i])] do
+    for i in [1..Length(vals)] do
+      for j in [1..Length(vals[i])] do
         if one[i][j] then
-          Unbind(func[i][j]);
+          Unbind(vals[i][j]);
           #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then
-            #  func[i][j]:=PermList(func[i][j]);
+            #  vals[i][j]:=PermList(vals[i][j]);
         else
-          func[i][j]:=TransformationNC(func[i][j]);
+          vals[i][j]:=TransformationNC(vals[i][j]);
         fi;
       od;
     od;
     return CreateCascade(dom,
-                   ComponentDomainsOfCascadeSemigroup(s), prefix, func);
+                   ComponentDomainsOfCascadeSemigroup(s), prefix, vals);
   end;
   #-----------------------------------------------------------------------------
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);

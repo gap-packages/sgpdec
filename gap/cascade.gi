@@ -293,28 +293,26 @@ function(coords, ct)
   return out;
 end);
 
-#
-
 InstallMethod(\*, "for cascades", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, prefix, vals, x, i, j;
-  
+
   dep_f:=DependencyFunction(f);
   dep_g:=DependencyFunction(g);
   prefix:=PrefixDomainOfCascade(f);
-
+  #empty values lookup table based on the sizes of prefixes
   vals:=List(prefix, x-> EmptyPlist(Length(x)));
-
-  for i in [1..Length(prefix)] do 
-    for j in [1..Length(prefix[i])] do 
-      x:=prefix[i][j]^dep_f*OnCoordinates(prefix[i][j], f)^dep_g;
-      if not IsOne(x) then 
+  #going through all prefixes
+  for i in [1..Length(prefix)] do
+    for j in [1..Length(prefix[i])] do
+      x:= prefix[i][j]^dep_f * OnCoordinates(prefix[i][j],f)^dep_g;
+      if not IsOne(x) then
         vals[i][j]:=x;
       fi;
     od;
   od;
-  return CreateCascade(f, vals);      
+  return CreateCascade(f, vals);
 end);
 
 #
@@ -334,12 +332,11 @@ function(p,q)
 end);
 
 # attributes
-
+# the number of nontrivial dependency function values
 InstallMethod(NrDependenciesOfCascade, "for a cascade",
 [IsCascade],
 function(f)
-
-  return Sum(List(DependencyFunction(f)!.vals, 
+  return Sum(List(DependencyFunction(f)!.vals,
    x-> Number([1..Length(x)], i-> IsBound(x[i]))));
 end);
 
