@@ -14,6 +14,7 @@ InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 function(s)
   local t, inv;
   t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
+  #-----------------------------------------------------------------------------
   inv:=function(f)
     local prefix, dom, n, func, visited, one, i, x, m, pos, j;
     prefix:=PrefixDomainOfCascadeSemigroup(s);
@@ -21,43 +22,40 @@ function(s)
     n:=NrComponentsOfCascadeSemigroup(s);
     func:=List(prefix, x-> List([1..Length(x)], x-> []));
     one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
-    
-    for i in [1..DegreeOfTransformation(f)] do 
+    for i in [1..DegreeOfTransformation(f)] do
       x:=ShallowCopy(dom[i]);
       m:=n;
       Remove(x, m);
       pos:=Position(prefix[m], x);
       repeat
         func[m][pos][dom[i][m]]:=dom[i^f][m];
-        if dom[i][m]<>func[m][pos][dom[i][m]] then 
+        if dom[i][m]<>func[m][pos][dom[i][m]] then
           one[m][pos]:=false;
         fi;
         m:=m-1;
-        if m=0 then 
+        if m=0 then
           break;
         fi;
         Remove(x, m);
         pos:=Position(prefix[m], x);
       until IsBound(func[m][pos][dom[i][m]]);
     od;
-    
     #post process
-    for i in [1..Length(func)] do 
-      for j in [1..Length(func[i])] do 
-        if one[i][j] then 
+    for i in [1..Length(func)] do
+      for j in [1..Length(func[i])] do
+        if one[i][j] then
           Unbind(func[i][j]);
-        #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then 
-        #  func[i][j]:=PermList(func[i][j]);
+          #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then
+            #  func[i][j]:=PermList(func[i][j]);
         else
           func[i][j]:=TransformationNC(func[i][j]);
         fi;
       od;
     od;
-
     return CreateCascade(dom,
-     ComponentDomainsOfCascadeSemigroup(s), prefix, func);
+                   ComponentDomainsOfCascadeSemigroup(s), prefix, func);
   end;
-
+  #-----------------------------------------------------------------------------
   return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
 end);
 
@@ -309,36 +307,6 @@ function(s)
 end);
 
 # old
-
-###UTIL FUNCTIONS FOR THE MAIN CONSTRUCTOR
-
-# Constructing a short name for a component
-# 1. If it has a name just return it.
-# 2. For a group when the Small Group's Library allowed, then use that
-# 3. Otherwise S_order for semigroups, G_order for groups
-# Side effect! This actually sets the name for the component if missing.
-Name4Component := function(comp)
-  if HasName(comp) then
-    return Name(comp);
-  fi;
-
-  if IsGroup(comp) then
-    if SgpDecOptionsRec.SMALL_GROUPS then
-      SetName(comp, StructureDescription(comp));
-    else
-      SetName(comp, Concatenation("G",String(Order(comp))));
-    fi;
-  else
-    SetName(comp, Concatenation("sg",String(Size(comp))));
-  fi;
-  return Name(comp);
-end;
-MakeReadOnlyGlobal("Name4Component");
-
-# TODO this is for the number of dependency entries
-#  state_set_sizes := List(cascprodinfo.coordval_sets, x-> Size(x));
-#  cascprodinfo.num_of_dependency_entries :=
-#    Sum(List([1..Size(components)], x-> Product(state_set_sizes{[1..x-1]})));
 
 #this is a huge number even in small cases
 #InstallGlobalFunction(SizeOfWreathProduct,
