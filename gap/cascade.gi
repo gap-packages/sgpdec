@@ -41,8 +41,6 @@ function(prefixes, vals)
    IsDependencyFunc), record);
 end);
 
-#
-
 InstallMethod(ViewObj, "for a dependency func",
 [IsDependencyFunc],
 function(x)
@@ -50,29 +48,28 @@ function(x)
   return;
 end);
 
-#
-
+# applying to a tuple (prefix) gives the corresponding value
 InstallOtherMethod(\^, "for a tuple and dependency func",
 [IsList, IsDependencyFunc],
 function(tup, depfunc)
   local vals, prefixes, i, pos;
-  
+
   vals:=depfunc!.vals;
   prefixes:=depfunc!.prefixes;
 
   i:=Length(tup)+1;
-  
-  if not IsBound(prefixes[i]) then 
-    return fail;
-  fi;
-  
-  pos:=Position(prefixes[i], tup);
-  
-  if pos=fail then 
+
+  if not IsBound(prefixes[i]) then
     return fail;
   fi;
 
-  if not IsBound(vals[i][pos]) then 
+  pos:=Position(prefixes[i], tup);
+
+  if pos=fail then
+    return fail;
+  fi;
+
+  if not IsBound(vals[i][pos]) then
     return ();
   fi;
   return vals[i][pos];
