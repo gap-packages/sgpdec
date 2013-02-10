@@ -7,30 +7,26 @@
 ###  Licensing information can be found in the README file of this package.
 ###
 ##############################################################################
-###
 
-
-# misc
-
-# either list of pos ints or list of actual domains
-
+# Creates the list of all prefixes of a given size. These are the arguments of
+# the dependency functions on each level.
+# coll: list of pos ints or actual domains, integer x is converted to [1..x]
 InstallGlobalFunction(CreatePrefixDomains,
 function(coll)
   local prefix, tup, i;
-
-  if ForAll(coll, IsPosInt) then 
-    Apply(coll, x-> [1..x]);
-  fi;
-
+  #converting integers to actual domains
+  coll := List(coll,
+          function(x) if IsPosInt(x) then return [1..x]; else return x; fi;end);
+  #JDM Why +1? To avoid reallocation?
   prefix:=EmptyPlist(Length(coll)+1);
+  #the top level prefix is just the empty list
   prefix[1]:=[[]];
 
   tup:=[];
-
   for i in [1..Length(coll)-1] do
     Add(tup, coll[i]);
     Add(prefix, EnumeratorOfCartesianProduct(tup));
-  od; 
+  od;
   return prefix;
 end);
 
