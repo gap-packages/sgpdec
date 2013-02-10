@@ -7,3 +7,9 @@ if not IsBound(EnumeratorOfCartesianProduct) then
   ISBOUNDENUMERATORCARTESIANPRODUCT := false;
   DeclareGlobalFunction("EnumeratorOfCartesianProduct");
 fi;
+
+ISBOUNDACTIONREPRESENTATIVES := true;
+if not IsBound(ActionRepresentatives) then
+  ISBOUNDACTIONREPRESENTATIVES := false;
+  DeclareAttribute("ActionRepresentatives", IsSemigroup);
+fi;
