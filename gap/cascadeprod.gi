@@ -1,8 +1,8 @@
 #############################################################################
 ##
-## cascadeshell.gi           SgpDec package
+## cascadeprod.gi           SgpDec package
 ##
-## Copyright (C) 2008-2012
+## Copyright (C) 2008-2013
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
