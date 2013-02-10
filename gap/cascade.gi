@@ -33,11 +33,9 @@ function(coll)
 end);
 
 # dependency functions
-
 InstallGlobalFunction(CreateDependencyFunction,
-function(vals, prefixes)
+function(prefixes, vals)
   local record;
-
   record:=rec(vals:=vals, prefixes:=prefixes);
   return Objectify(NewType(CollectionsFamily(FamilyObj(vals[2])),
    IsDependencyFunc), record);
@@ -120,7 +118,7 @@ function(arg)
   SetDomainOfCascade(f, arg[1]);
   SetComponentDomainsOfCascade(f, arg[2]);
   SetPrefixDomainOfCascade(f, arg[3]);
-  SetDependencyFunction(f, CreateDependencyFunction(arg[4], arg[3]));
+  SetDependencyFunction(f, CreateDependencyFunction(arg[3], arg[4]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);
