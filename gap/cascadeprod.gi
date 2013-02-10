@@ -323,29 +323,6 @@ end);
  # return order;
 #end);
 
-#############################################################################
-# Implementing Display, printing nice, human readable format.
-InstallMethod( ViewObj,
-    "for a cascade shell",
-    true,
-    [IsList],
-function(csh) Print(Name(csh));end);
-
-InstallMethod(Display,
-    "for a cascade shell",
-    true,
-    [IsList],
-function(csh)
-local s,i;
-  s := "";
-  for i in [1..Length(csh)] do
-    #Print(i," ", s,"(",Size(CoordValSets(csh)[i]),",");
-    ViewObj(csh[i]);
-    Print(")\n");
-    s := Concatenation(s,"|-");
-  od;
-end);
-
 InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
         [IsCascadeSemigroup],
 function(cascprod)
