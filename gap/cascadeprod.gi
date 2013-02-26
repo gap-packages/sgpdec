@@ -23,20 +23,21 @@ end);
 
 #
 
-if GAPInfo.Version="4.dev" then 
+#with ClosureSemigroup it is easier
+if GAPInfo.Version="4.dev" then
   InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
   [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
-    
+
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
     n:=NrComponentsOfCascadeSemigroup(s);
     out:=List([1..n], x->[]);
 
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+    for i in [1..Length(GeneratorsOfSemigroup(s))] do
       for j in [1..n] do
         if not IsEmpty(func[i][j]) then
-          if out[j]=[] then 
+          if out[j]=[] then
             out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
           else
             out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
@@ -45,33 +46,34 @@ if GAPInfo.Version="4.dev" then
       od;
     od;
 
-    return out; 
+    return out;
   end);
 else
+  #ClosureSemigroup is not available
   InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
   [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
-    
+
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
     n:=NrComponentsOfCascadeSemigroup(s);
     out:=List([1..n], x->[]);
 
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do 
+    for i in [1..Length(GeneratorsOfSemigroup(s))] do
       for j in [1..n] do
         Append(out[i], Compacted(func[i][j]));
       od;
     od;
 
-    Apply(out, 
+    Apply(out,
       function(x)
-        if not x=[] then 
-          return Semigroup(x); 
-        else 
-          return x; 
-        fi; 
+        if not x=[] then
+          return Semigroup(x);
+        else
+          return x;
+        fi;
       end);
-    return out; 
+    return out;
   end);
 fi;
 
@@ -138,7 +140,7 @@ function(s)
   str:="<cascade semigroup with ";
   Append(str, String(Length(GeneratorsOfSemigroup(s))));
   Append(str, " generator");
-  if Length(GeneratorsOfSemigroup(s))>1 then 
+  if Length(GeneratorsOfSemigroup(s))>1 then
     Append(str, "s");
   fi;
   Append(str, ", ");
@@ -162,19 +164,19 @@ end);
 
 # the full cascade semigroup
 
-InstallGlobalFunction(FullCascadeSemigroup, 
+InstallGlobalFunction(FullCascadeSemigroup,
 function(arg)
   local filts, s, i,n;
 
-  if Length(arg)=1 then 
-    if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then 
+  if Length(arg)=1 then
+    if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then
       arg:=arg[1];
     else
       Error("the argument must be a list of transformation semigroup and perm",
       " groups");
     fi;
-  else 
-    if not IsListOfPermGroupsAndTransformationSemigroups(arg) then 
+  else
+    if not IsListOfPermGroupsAndTransformationSemigroups(arg) then
       Error("the argument must consist of transformation semigroups and perm ",
       "groups,");
     fi;
@@ -190,23 +192,23 @@ function(arg)
   od;
 
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
-  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec()); 
+  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
   SetComponentsOfCascadeSemigroup(s, arg);
-  SetComponentDomainsOfCascadeSemigroup(s, List(arg, 
+  SetComponentDomainsOfCascadeSemigroup(s, List(arg,
    x-> [1..DegreeOfTransformationSemigroup(x)]));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
   SetPrefixDomainOfCascadeSemigroup(s,
    CreatePrefixDomains(ComponentDomainsOfCascadeSemigroup(s)));
   SetDomainOfCascadeSemigroup(s,
    EnumeratorOfCartesianProduct(ComponentDomainsOfCascadeSemigroup(s)));
-  return s; 
+  return s;
 end);
 
 #
 
 InstallMethod(ViewObj, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
-function(s) 
+function(s)
   Print("<wreath product of semigroups>");
 end);
 
@@ -233,26 +235,27 @@ end);
 InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
 function(s)
-  local nr, comps, pts, prefix, dom, compdom, oldfix, gens, nrgens, m, pos, func, pre, x, y, i;
+  local nr, comps, pts, prefix, dom, compdom, oldfix, gens, nrgens,
+        m, pos, func, pre, x, y, i;
 
   nr:=NrComponentsOfCascadeSemigroup(s);
   comps:=ComponentsOfCascadeSemigroup(s);
   pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
   prefix:=CreatePrefixDomains(pts);
-  
+
   dom:=DomainOfCascadeSemigroup(s);
   compdom:=ComponentDomainsOfCascadeSemigroup(s);
   oldfix:=PrefixDomainOfCascadeSemigroup(s);
   gens:=[]; nrgens:=0;
 
-  for pre in prefix do 
-    for x in pre do 
+  for pre in prefix do
+    for x in pre do
       m:=Length(x);
       pos:=Position(prefix[m+1], x);
-      for y in GeneratorsOfSemigroup(comps[m+1]) do 
+      for y in GeneratorsOfSemigroup(comps[m+1]) do
         func:=EmptyPlist(nr);
-        for i in [1..nr] do 
-          if i<>m+1 then 
+        for i in [1..nr] do
+          if i<>m+1 then
             func[i]:=EmptyPlist(0);
           else
             func[i]:=EmptyPlist(pos);
