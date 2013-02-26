@@ -199,7 +199,6 @@ function(f, coll)
   n:=Length(coll);
   vals:=List(prefix, x-> List([1..Length(x)], x-> []));
   one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
-   
   for i in [1..DegreeOfTransformation(f)] do
     x:=ShallowCopy(dom[i]);
     m:=n;
@@ -217,11 +216,10 @@ function(f, coll)
       Remove(x, m);
       pos:=Position(prefix[m], x);
     until IsBound(vals[m][pos][dom[i][m]]);
-    if m<>0 and vals[m][pos][dom[i][m]]<>dom[i^f][m] then 
+    if m<>0 and vals[m][pos][dom[i][m]]<>dom[i^f][m] then
       return fail;
     fi;
   od;
- 
   #post process
   for i in [1..Length(vals)] do
     for j in [1..Length(vals[i])] do

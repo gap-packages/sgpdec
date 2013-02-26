@@ -12,51 +12,13 @@
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 [IsCascadeSemigroup],
 function(s)
-  local t, inv;
+  local t;
   t:=Semigroup(List(GeneratorsOfSemigroup(s), AsTransformation));
-  #-----------------------------------------------------------------------------
-  inv:=function(f)
-    local prefix, dom, n, vals, visited, one, i, x, m, pos, j;
-    prefix:=PrefixDomainOfCascadeSemigroup(s);
-    dom:=DomainOfCascadeSemigroup(s);
-    n:=NrComponentsOfCascadeSemigroup(s);
-    vals:=List(prefix, x-> List([1..Length(x)], x-> []));
-    one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
-    for i in [1..DegreeOfTransformation(f)] do
-      x:=ShallowCopy(dom[i]);
-      m:=n;
-      Remove(x, m);
-      pos:=Position(prefix[m], x);
-      repeat
-        vals[m][pos][dom[i][m]]:=dom[i^f][m];
-        if dom[i][m]<>vals[m][pos][dom[i][m]] then
-          one[m][pos]:=false;
-        fi;
-        m:=m-1;
-        if m=0 then
-          break;
-        fi;
-        Remove(x, m);
-        pos:=Position(prefix[m], x);
-      until IsBound(vals[m][pos][dom[i][m]]);
-    od;
-    #post process
-    for i in [1..Length(vals)] do
-      for j in [1..Length(vals[i])] do
-        if one[i][j] then
-          Unbind(vals[i][j]);
-          #elif IsPermGroup(ComponentsOfCascadeSemigroup(s)[i]) then
-            #  vals[i][j]:=PermList(vals[i][j]);
-        else
-          vals[i][j]:=TransformationNC(vals[i][j]);
-        fi;
-      od;
-    od;
-    return CreateCascade(dom,
-                   ComponentDomainsOfCascadeSemigroup(s), prefix, vals);
-  end;
-  #-----------------------------------------------------------------------------
-  return MagmaIsomorphismByFunctionsNC(s, t, AsTransformation, inv);
+  return MagmaIsomorphismByFunctionsNC(
+                 s,
+                 t,
+                 AsTransformation,
+                 f -> AsCascade(f, ComponentDomainsOfCascadeSemigroup(s)));
 end);
 
 #
