@@ -3,29 +3,29 @@
 ################################################################################
 # CYCLIC #######################################################################
 ################################################################################
-Z2 := CyclicGroup(IsPermGroup,2);C2 := Z2;
-Z3 := CyclicGroup(IsPermGroup,3);C3 := Z3;
-Z4 := CyclicGroup(IsPermGroup,4);C4 := Z4;
-Z5 := CyclicGroup(IsPermGroup,5);C5 := Z5;
-Z6 := CyclicGroup(IsPermGroup,6);C6 := Z6;
-Z7 := CyclicGroup(IsPermGroup,7);C7 := Z7;
-Z8 := CyclicGroup(IsPermGroup,8);C8 := Z8;
-Z9 := CyclicGroup(IsPermGroup,9);C9 := Z9;
-Z10 := CyclicGroup(IsPermGroup,10);C10 := Z10;
-Z11 := CyclicGroup(IsPermGroup,11);C11 := Z11;
+Z2 := CyclicGroup(IsPermGroup,2);C2 := Z2;SetName(Z2,"Z2");
+Z3 := CyclicGroup(IsPermGroup,3);C3 := Z3;SetName(Z3,"Z3");
+Z4 := CyclicGroup(IsPermGroup,4);C4 := Z4;SetName(Z4,"Z4");
+Z5 := CyclicGroup(IsPermGroup,5);C5 := Z5;SetName(Z5,"Z5");
+Z6 := CyclicGroup(IsPermGroup,6);C6 := Z6;SetName(Z6,"Z6");
+Z7 := CyclicGroup(IsPermGroup,7);C7 := Z7;SetName(Z7,"Z7");
+Z8 := CyclicGroup(IsPermGroup,8);C8 := Z8;SetName(Z8,"Z8");
+Z9 := CyclicGroup(IsPermGroup,9);C9 := Z9;SetName(Z9,"Z9");
+Z10 := CyclicGroup(IsPermGroup,10);C10 := Z10;SetName(Z10,"Z10");
+Z11 := CyclicGroup(IsPermGroup,11);C11 := Z11;SetName(Z11,"Z11");
 
 ################################################################################
 # SYMMETRIC ####################################################################
 ################################################################################
-S3 := SymmetricGroup(IsPermGroup,3);
-S4 := SymmetricGroup(IsPermGroup,4);
-S5 := SymmetricGroup(IsPermGroup,5);
-S6 := SymmetricGroup(IsPermGroup,6);
-S7 := SymmetricGroup(IsPermGroup,7);
-S8 := SymmetricGroup(IsPermGroup,8);
-S9 := SymmetricGroup(IsPermGroup,9);
-S10 := SymmetricGroup(IsPermGroup,10);
-S11 := SymmetricGroup(IsPermGroup,11);
+S3 := SymmetricGroup(IsPermGroup,3);SetName(S3,"S3");
+S4 := SymmetricGroup(IsPermGroup,4);SetName(S4,"S4");
+S5 := SymmetricGroup(IsPermGroup,5);SetName(S5,"S5");
+S6 := SymmetricGroup(IsPermGroup,6);SetName(S6,"S6");
+S7 := SymmetricGroup(IsPermGroup,7);SetName(S7,"S7");
+S8 := SymmetricGroup(IsPermGroup,8);SetName(S8,"S8");
+S9 := SymmetricGroup(IsPermGroup,9);SetName(S9,"S9");
+S10 := SymmetricGroup(IsPermGroup,10);SetName(S10,"S10");
+S11 := SymmetricGroup(IsPermGroup,11);SetName(S11,"S11");
 
 ################################################################################
 # ALTERNATING ##################################################################
@@ -43,15 +43,15 @@ A11 := AlternatingGroup(IsPermGroup,11);
 ################################################################################
 # DIHEDRAL #####################################################################
 ################################################################################
-D3 := DihedralGroup(IsPermGroup,2*3);
-D4 := DihedralGroup(IsPermGroup,2*4);
-D5 := DihedralGroup(IsPermGroup,2*5);
-D6 := DihedralGroup(IsPermGroup,2*6);
-D7 := DihedralGroup(IsPermGroup,2*7);
-D8 := DihedralGroup(IsPermGroup,2*8);
-D9 := DihedralGroup(IsPermGroup,2*9);
-D10 := DihedralGroup(IsPermGroup,2*10);
-D11 := DihedralGroup(IsPermGroup,2*11);
+D3 := DihedralGroup(IsPermGroup,2*3);SetName(D3,"D3");
+D4 := DihedralGroup(IsPermGroup,2*4);SetName(D4,"D4");
+D5 := DihedralGroup(IsPermGroup,2*5);SetName(D5,"D5");
+D6 := DihedralGroup(IsPermGroup,2*6);SetName(D6,"D6");
+D7 := DihedralGroup(IsPermGroup,2*7);SetName(D7,"D7");
+D8 := DihedralGroup(IsPermGroup,2*8);SetName(D8,"D8");
+D9 := DihedralGroup(IsPermGroup,2*9);SetName(D9,"D9");
+D10 := DihedralGroup(IsPermGroup,2*10);SetName(D10,"D10");
+D11 := DihedralGroup(IsPermGroup,2*11);SetName(D11,"D11");
 
 # MATHIEU ######################################################################
 M11 := Group([(1,2,3,4,5,6,7,8,9,10,11), (10,4,6,5) (7,3,8,11)]);
