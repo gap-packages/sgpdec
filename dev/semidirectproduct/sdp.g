@@ -13,7 +13,7 @@ RegHom := function(G)
   l :=  AsSortedList(G);
   n := Size(l);
   Ggens := GeneratorsOfGroup(G);
-  Rgens := List(Ggens, g -> PermList(ActionOn(l,g,OnLeftInverse)));
+  Rgens := List(Ggens, g -> AsPermutation(TransformationOp(g,l,OnLeftInverse)));
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
@@ -62,11 +62,11 @@ fla := [];
   return fla;
 end;
 
-SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, csh)
+SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, dom)
 local j,states, actions,depfunctable,arg, state;
 
   #the states
-  states := AllCoords(csh);
+  states := dom;
   #the lookup for the new dependencies
   depfunctable := [];
   #we go through all states
