@@ -106,7 +106,7 @@ end);
 InstallOtherMethod(NrComponentsOfCascadeSemigroup,
 [IsCascadeSemigroup],
 function(cascprod)
-  return Size(ComponentDomainsOfCascade(Representative(cascprod)));
+  return Size(ComponentDomains(Representative(cascprod)));
 end);
 
 #
@@ -291,5 +291,5 @@ end);
 InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
         [IsCascadeSemigroup],
 function(cascprod)
-  return ComponentDomainsOfCascade(Representative(cascprod));
+  return ComponentDomains(Representative(cascprod));
 end);

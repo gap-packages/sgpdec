@@ -107,13 +107,13 @@ function(arg)
 
   if Length(arg)=2 then # cascade trans and func
     return CreateCascade(DomainOfCascade(arg[1]), 
-     ComponentDomainsOfCascade(arg[1]),   
+     ComponentDomains(arg[1]),   
      PrefixDomainOfCascade(arg[1]), arg[2]);
   fi;
     
   f:=Objectify(CascadeType, rec());
   SetDomainOfCascade(f, arg[1]);
-  SetComponentDomainsOfCascade(f, arg[2]);
+  SetComponentDomains(f, arg[2]);
   SetPrefixDomainOfCascade(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[3], arg[4]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
@@ -248,7 +248,7 @@ function(f)
   if Length(str)<SizeScreen()[1]-(NrComponentsOfCascade(f)*3)-12
    then
     Append(str, " with (");
-    for x in ComponentDomainsOfCascade(f) do
+    for x in ComponentDomains(f) do
       Append(str, String(Length(x)));
       Append(str, ", ");
     od;
