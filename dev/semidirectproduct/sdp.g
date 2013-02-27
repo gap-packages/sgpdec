@@ -143,7 +143,7 @@ CheckAllSemidirectProducts := function(G,N)
   for hom in AllHomomorphismClasses(G,A) do
     P1 := SemidirectProduct(G,hom,N);
     Print(StructureDescription(P1),"#", Order(P1), " = \c");
-    gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(x));
+    gens := List(SemidirectCascade(G,hom,N),x->AsPermutation(AsTransformation(x)));
     P2 := Group(gens);
     Print(StructureDescription(P2),"#", Order(P2)," \c");
     #if IdSmallGroup(P1) <> IdSmallGroup(P2) then
