@@ -82,7 +82,7 @@ function(coll, depfunc)
   local prefix, tup, vals, f, i, x;
  
   if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    coll:=ComponentDomainsOfCascadeSemigroup(coll);
+    coll:=ComponentDomains(coll);
   fi;
 
   prefix:=CreatePrefixDomains(coll);
@@ -132,7 +132,7 @@ function(list, numofdeps)
     return;
   fi;
 
-  coll:=ComponentDomainsOfCascadeSemigroup(list); 
+  coll:=ComponentDomains(list); 
   
   # create the enumerator for the dependency func
   prefixes:=EmptyPlist(Length(coll)+1);
