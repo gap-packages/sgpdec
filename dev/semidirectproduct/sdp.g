@@ -48,11 +48,11 @@ SDActionCoords := function(x1,x2,rG2p, rN2p, rphi)
   return acts;
 end;
 
-SDFlatAction := function(t,rG2p, rN2p, rphi, csh)
+SDFlatAction := function(t,rG2p, rN2p, rphi, dom)
 local i,states, nstate, state,fla;
 
   #the states
-states := AllCoords(csh);
+states := dom;
 fla := [];
   #we  states
   for i in [1..Size(states)]  do
@@ -63,12 +63,12 @@ fla := [];
 end;
 
 SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, dom)
-local j,states, actions,depfunctable,arg, state;
+local j,states, actions,dependencies,arg, state;
 
   #the states
   states := dom;
   #the lookup for the new dependencies
-  depfunctable := [];
+  dependencies := [];
   #we go through all states
   for state in states  do
     actions := SDComponentActions(state,t,rG2p,rN2p, rphi);
@@ -76,11 +76,11 @@ local j,states, actions,depfunctable,arg, state;
     for j in [1..Length(actions)] do
       if not IsOne(actions[j]) then
         arg := state{[1..(j-1)]};
-        RegisterNewDependency(depfunctable, arg, actions[j]);
+        AddSet(dependencies, [arg, actions[j]]);
       fi;
     od;
   od;
-  return depfunctable;
+  return dependencies;
 end;
 
 #converting a group automorphism to a the corresponding
@@ -100,13 +100,15 @@ end;
 SemidirectCascade := function(G,phi,N)
   local rG,
         rN,
-        csh,
+        dom,
+        compdoms,
         l,rphi,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
   rGhom := RegHom(G);
   rNhom := RegHom(N);
   rG := Range(rGhom);
   rN := Range(rNhom);
-  csh := CascadeShell([rG,rN]);
+  compdoms := ComponentDomains([rG,rN]);
+  dom := EnumeratorOfCartesianProduct(compdoms);
   l := [];
   #get the generator sets
   gens := GeneratorsOfGroup(G);
@@ -129,9 +131,9 @@ SemidirectCascade := function(G,phi,N)
             rG2p,
             rN2p,
             rphi,
-            csh));
+            dom));
   od;
-  return  List(l, x -> CascadedTransformation(csh, x));
+  return  List(l, x -> CascadeNC([rG,rN], x));
 end;
 
 CheckAllSemidirectProducts := function(G,N)
