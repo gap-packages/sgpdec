@@ -18,7 +18,7 @@ function(s)
                  s,
                  t,
                  AsTransformation,
-                 f -> AsCascade(f, ComponentDomainsOfCascadeSemigroup(s)));
+                 f -> AsCascade(f, ComponentDomains(s)));
 end);
 
 #
@@ -111,7 +111,7 @@ end);
 
 #
 
-InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
+InstallOtherMethod(ComponentDomains,
 [IsListOrCollection],
 function(comps)
   local domains, comp;
@@ -149,7 +149,7 @@ function(s)
 
   if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeSemigroup(s)*3)-12 then
     Append(str, " with (");
-    for x in ComponentDomainsOfCascadeSemigroup(s) do
+    for x in ComponentDomains(s) do
       Append(str, String(Length(x)));
       Append(str, ", ");
     od;
@@ -194,13 +194,13 @@ function(arg)
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
   s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
   SetComponentsOfCascadeSemigroup(s, arg);
-  SetComponentDomainsOfCascadeSemigroup(s, List(arg,
+  SetComponentDomains(s, List(arg,
    x-> [1..DegreeOfTransformationSemigroup(x)]));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
   SetPrefixDomainOfCascadeSemigroup(s,
-   CreatePrefixDomains(ComponentDomainsOfCascadeSemigroup(s)));
+   CreatePrefixDomains(ComponentDomains(s)));
   SetDomainOfCascadeSemigroup(s,
-   EnumeratorOfCartesianProduct(ComponentDomainsOfCascadeSemigroup(s)));
+   EnumeratorOfCartesianProduct(ComponentDomains(s)));
   return s;
 end);
 
@@ -219,7 +219,7 @@ InstallMethod(Size, "for a full cascade semigroup",
 function(s)
   local domains, comps, order, j, i;
 
-  domains:=List(ComponentDomainsOfCascadeSemigroup(s), Length);
+  domains:=List(ComponentDomains(s), Length);
   comps:=ComponentsOfCascadeSemigroup(s);
   order := 1;
   j := 1;
@@ -244,7 +244,7 @@ function(s)
   prefix:=CreatePrefixDomains(pts);
 
   dom:=DomainOfCascadeSemigroup(s);
-  compdom:=ComponentDomainsOfCascadeSemigroup(s);
+  compdom:=ComponentDomains(s);
   oldfix:=PrefixDomainOfCascadeSemigroup(s);
   gens:=[]; nrgens:=0;
 
@@ -288,7 +288,7 @@ end);
  # return order;
 #end);
 
-InstallOtherMethod(ComponentDomainsOfCascadeSemigroup,
+InstallOtherMethod(ComponentDomains,
         [IsCascadeSemigroup],
 function(cascprod)
   return ComponentDomains(Representative(cascprod));

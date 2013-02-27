@@ -16,7 +16,7 @@ DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
-DeclareAttribute("ComponentDomainsOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 DeclareAttribute("ComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("DomainOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("PrefixDomainOfCascadeSemigroup", IsCascadeSemigroup);

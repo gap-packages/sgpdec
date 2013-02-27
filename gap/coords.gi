@@ -56,7 +56,7 @@ InstallMethod(AsPoint, "for coordinates in a cascade product",
 [IsDenseList,IsCascadeSemigroup],
 function(coords,cascprod)
   local l,domains,dom;
-  domains := ComponentDomainsOfCascadeSemigroup(cascprod);
+  domains := ComponentDomains(cascprod);
   dom := DomainOfCascadeSemigroup(cascprod);
   if (Length(coords) = Size(domains)) and (Minimum(coords) > 0) then
     #if not abstract just return a point

@@ -1,7 +1,7 @@
 DirectProductCascade := function(comps)
   local doms, prefixes, i, gens, cascgens,vals, n, g;
   n := Size(comps);
-  doms := ComponentDomainsOfCascadeSemigroup(comps);
+  doms := ComponentDomains(comps);
   prefixes := CreatePrefixDomains(doms);
   cascgens := [];
   for i in [1..n] do
