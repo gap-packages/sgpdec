@@ -19,8 +19,6 @@ RegIsom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
-Reg := function(G) return Range(RegIsom(G)); end;
-
 #elements of the regular representation coded as integers
 Reg2Points := function(G)
   return CompositionMapping(Elts2Points(G),
@@ -78,8 +76,8 @@ SemidirectCascade := function(H,theta,N)
         dom, #the domain of the cascades (all coordinates), |H||N|
         comps, # cascade product components
         cascgens, #the generator cascades (the actual output)
-        rtheta, # Reg(H) -> Reg(Aut(N))
-        i,
+        rtheta, #Reg(H) -> Reg(Aut(N))
+        sdpelt, #elements of the semidirect product represent as 2-tuples
         autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
   # making the components into regular representation
   rHhom := RegIsom(H);
@@ -104,10 +102,10 @@ SemidirectCascade := function(H,theta,N)
   genHcoords := List(GeneratorsOfGroup(rH), g->[Image(rH2p,g),Image(rN2p,())]);
   genNcoords := List(GeneratorsOfGroup(rN), h->[Image(rH2p,()),Image(rN2p,h)]);
   cascgens := [];
-  for i in Concatenation(genHcoords,genNcoords) do
+  for sdpelt in Concatenation(genHcoords,genNcoords) do
     Add(cascgens,
         CascadeNC([rH,rN],
-                SemidirectElementDepFuncT(i,
+                SemidirectElementDepFuncT(sdpelt,
                         rH2p,
                         rN2p,
                         rtheta,
