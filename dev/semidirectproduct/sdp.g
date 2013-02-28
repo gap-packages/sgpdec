@@ -92,7 +92,7 @@ SemidirectCascade := function(H,phi,N)
         rN,
         dom,
         comps,
-        l,rphi,i,autgens,gens,genGcoords,genHcoords,rHhom,rNhom,rH2p,rN2p;
+        l,rphi,i,autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
   rHhom := RegIsom(H);
   rNhom := RegIsom(N);
   rH := Range(rHhom);
@@ -113,9 +113,9 @@ SemidirectCascade := function(H,phi,N)
                   autgens);
   rH2p := Reg2Points(H);
   rN2p := Reg2Points(N);
-  genGcoords := List(GeneratorsOfGroup(rH), g->[Image(rH2p,g),Image(rN2p,())]);
-  genHcoords := List(GeneratorsOfGroup(rN), h->[Image(rH2p,()),Image(rN2p,h)]);
-  for i in Concatenation(genGcoords,genHcoords) do
+  genHcoords := List(GeneratorsOfGroup(rH), g->[Image(rH2p,g),Image(rN2p,())]);
+  genNcoords := List(GeneratorsOfGroup(rN), h->[Image(rH2p,()),Image(rN2p,h)]);
+  for i in Concatenation(genHcoords,genNcoords) do
     Add(l,SemidirectElementDepFuncT(i,
             rH2p,
             rN2p,
