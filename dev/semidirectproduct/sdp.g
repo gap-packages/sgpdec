@@ -8,7 +8,7 @@ local l,n;
 end;
 
 #isomorphism from G to its regular representation
-RegHom := function(G)
+RegIsom := function(G)
   local l,n,Ggens, Rgens;
   l :=  AsSortedList(G);
   n := Size(l);
@@ -17,12 +17,12 @@ RegHom := function(G)
   return GroupHomomorphismByImages(G, Group(Rgens),Ggens,Rgens);
 end;
 
-Reg := function(G) return Range(RegHom(G)); end;
+Reg := function(G) return Range(RegIsom(G)); end;
 
 #elements of the regular representation coded as integers
 Reg2Points := function(G)
   return CompositionMapping(Elts2Points(G),
-                 InverseGeneralMapping(RegHom(G)));
+                 InverseGeneralMapping(RegIsom(G)));
 end;
 
 SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
@@ -93,8 +93,8 @@ SemidirectCascade := function(G,phi,N)
         dom,
         comps,
         l,rphi,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
-  rGhom := RegHom(G);
-  rNhom := RegHom(N);
+  rGhom := RegIsom(G);
+  rNhom := RegIsom(N);
   rG := Range(rGhom);
   rN := Range(rNhom);
   comps := [rG,rN];
