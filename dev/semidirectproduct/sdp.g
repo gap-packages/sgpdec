@@ -88,18 +88,17 @@ end;
 # phi: H -> Aut(N)
 # N bottom level group
 SemidirectCascade := function(H,phi,N)
-  local rH,
-        rN,
-        dom,
-        comps,
-        l,rphi,i,autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
+  local rH, #regular representation of H
+        rN, #regular representation of N
+        dom, #the domain of the cascades (all coordinates), |H||N|
+        comps, # cascade product components
+        cascgens,rphi,i,autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
   rHhom := RegIsom(H);
   rNhom := RegIsom(N);
   rH := Range(rHhom);
   rN := Range(rNhom);
   comps := [rH,rN];
   dom := EnumeratorOfCartesianProduct(ComponentDomains(comps));
-  l := [];
   #get the generator sets
   gens := GeneratorsOfGroup(H);
   autgens := List(gens,g -> Image(phi,g));
@@ -115,14 +114,18 @@ SemidirectCascade := function(H,phi,N)
   rN2p := Reg2Points(N);
   genHcoords := List(GeneratorsOfGroup(rH), g->[Image(rH2p,g),Image(rN2p,())]);
   genNcoords := List(GeneratorsOfGroup(rN), h->[Image(rH2p,()),Image(rN2p,h)]);
+  cascgens := [];
   for i in Concatenation(genHcoords,genNcoords) do
-    Add(l,SemidirectElementDepFuncT(i,
-            rH2p,
-            rN2p,
-            rphi,
-            dom));
+    Add(cascgens,
+        CascadeNC([rH,rN],
+                SemidirectElementDepFuncT(i,
+                        rH2p,
+                        rN2p,
+                        rphi,
+                        dom)));
   od;
-  return  List(l, x -> CascadeNC([rH,rN], x));
+  return cascgens;
+  #return  List(deps, x -> CascadeNC([rH,rN], x));
 end;
 
 CheckAllSemidirectProducts := function(H,N)
