@@ -25,11 +25,11 @@ Reg2Points := function(G)
                  InverseGeneralMapping(RegIsom(G)));
 end;
 
-SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
+SDComponentActions := function(x1,x2,rH2p, rN2p, rphi)
   local ca, h1,h2,n2,theta;
   ca := [];
-  h1 := PreImage(rG2p, x1[1]);
-  h2 := PreImage(rG2p, x2[1]);
+  h1 := PreImage(rH2p, x1[1]);
+  h2 := PreImage(rH2p, x2[1]);
   #top level action
   ca[1] := h2;
   #n1 does not matter
@@ -40,32 +40,32 @@ SDComponentActions := function(x1,x2,rG2p, rN2p, rphi)
   return ca;
 end;
 
-SDActionCoords := function(x1,x2,rG2p, rN2p, rphi)
+SDActionCoords := function(x1,x2,rH2p, rN2p, rphi)
   local acts;
-  acts := SDComponentActions(x1,x2,rG2p, rN2p, rphi);
-  acts[1] := Image(rG2p,PreImage(rG2p,x1[1])*acts[1]);
+  acts := SDComponentActions(x1,x2,rH2p, rN2p, rphi);
+  acts[1] := Image(rH2p,PreImage(rH2p,x1[1])*acts[1]);
   acts[2] := Image(rN2p,PreImage(rN2p,x1[2])*acts[2]);
   return acts;
 end;
 
-SDFlatAction := function(t,rG2p, rN2p, rphi, dom)
+SDFlatAction := function(t,rH2p, rN2p, rphi, dom)
 local i, nstate, state,fla;
   fla := [];
   for i in [1..Size(dom)]  do
-    nstate  := SDActionCoords(dom[i],t,rG2p,rN2p, rphi);
+    nstate  := SDActionCoords(dom[i],t,rH2p,rN2p, rphi);
     Add(fla, Position(dom,nstate));
   od;
   return fla;
 end;
 
-SemidirectElementDepFuncT := function(t,rG2p, rN2p, rphi, dom)
+SemidirectElementDepFuncT := function(t,rH2p, rN2p, rphi, dom)
 local j,actions,dependencies,arg, state;
 
   #the lookup for the new dependencies
   dependencies := [];
   #we go through all states
   for state in dom  do
-    actions := SDComponentActions(state,t,rG2p,rN2p, rphi);
+    actions := SDComponentActions(state,t,rH2p,rN2p, rphi);
     #examine whether there is a nontrivial action, then add
     for j in [1..Length(actions)] do
       if not IsOne(actions[j]) then
@@ -84,55 +84,55 @@ RegularizeAutomorphism := function(aut,reghom)
                  CompositionMapping(aut, InverseGeneralMapping(reghom)));
 end;
 
-# G top level group
-# phi: G -> Aut(N)
+# H top level group
+# phi: H -> Aut(N)
 # N bottom level group
-SemidirectCascade := function(G,phi,N)
-  local rG,
+SemidirectCascade := function(H,phi,N)
+  local rH,
         rN,
         dom,
         comps,
-        l,rphi,i,autgens,gens,genGcoords,genHcoords,rGhom,rNhom,rG2p,rN2p;
-  rGhom := RegIsom(G);
+        l,rphi,i,autgens,gens,genGcoords,genHcoords,rHhom,rNhom,rH2p,rN2p;
+  rHhom := RegIsom(H);
   rNhom := RegIsom(N);
-  rG := Range(rGhom);
+  rH := Range(rHhom);
   rN := Range(rNhom);
-  comps := [rG,rN];
+  comps := [rH,rN];
   dom := EnumeratorOfCartesianProduct(ComponentDomains(comps));
   l := [];
   #get the generator sets
-  gens := GeneratorsOfGroup(G);
+  gens := GeneratorsOfGroup(H);
   autgens := List(gens,g -> Image(phi,g));
   #make both sets regular
-  gens := List(gens, g -> Image(rGhom,g));
+  gens := List(gens, g -> Image(rHhom,g));
   autgens := List(autgens, a -> RegularizeAutomorphism(a,rNhom));
   rphi := GroupHomomorphismByImages(
-                  rG,
+                  rH,
                   Group(autgens),
                   gens,
                   autgens);
-  rG2p := Reg2Points(G);
+  rH2p := Reg2Points(H);
   rN2p := Reg2Points(N);
-  genGcoords := List(GeneratorsOfGroup(rG), g->[Image(rG2p,g),Image(rN2p,())]);
-  genHcoords := List(GeneratorsOfGroup(rN), h->[Image(rG2p,()),Image(rN2p,h)]);
+  genGcoords := List(GeneratorsOfGroup(rH), g->[Image(rH2p,g),Image(rN2p,())]);
+  genHcoords := List(GeneratorsOfGroup(rN), h->[Image(rH2p,()),Image(rN2p,h)]);
   for i in Concatenation(genGcoords,genHcoords) do
     Add(l,SemidirectElementDepFuncT(i,
-            rG2p,
+            rH2p,
             rN2p,
             rphi,
             dom));
   od;
-  return  List(l, x -> CascadeNC([rG,rN], x));
+  return  List(l, x -> CascadeNC([rH,rN], x));
 end;
 
-CheckAllSemidirectProducts := function(G,N)
+CheckAllSemidirectProducts := function(H,N)
   local l,A,hom, gens, P1, P2;
   l := [];
   A := AutomorphismGroup(N);
-  for hom in AllHomomorphismClasses(G,A) do
-    P1 := SemidirectProduct(G,hom,N);
+  for hom in AllHomomorphismClasses(H,A) do
+    P1 := SemidirectProduct(H,hom,N);
     Print(StructureDescription(P1),"#", Order(P1), " = \c");
-    gens := List(SemidirectCascade(G,hom,N),
+    gens := List(SemidirectCascade(H,hom,N),
                  x->AsPermutation(AsTransformation(x)));
     P2 := Group(gens);
     Print(StructureDescription(P2),"#", Order(P2)," \c");
