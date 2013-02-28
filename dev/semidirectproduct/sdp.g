@@ -1,3 +1,5 @@
+### REGULAR REPRESENTATION #####################################################
+
 #mapping group elements bijectively to an index integer
 #based on the positions in the ordered list of the elements
 Elts2Points := function(G)
@@ -25,7 +27,15 @@ Reg2Points := function(G)
                  InverseGeneralMapping(RegIsom(G)));
 end;
 
-SDComponentActions := function(x1,x2,rH2p, rN2p, rphi)
+#converting a group automorphism to a the corresponding
+#automorphism on the regular representation
+RegularizeAutomorphism := function(aut,reghom)
+  return CompositionMapping(reghom,
+                 CompositionMapping(aut, InverseGeneralMapping(reghom)));
+end;
+
+### SEMIDIRECT #################################################################
+SDComponentActions := function(x1,x2,rH2p, rN2p, rtheta)
   local ca, h1,h2,n2,theta;
   ca := [];
   h1 := PreImage(rH2p, x1[1]);
@@ -34,38 +44,20 @@ SDComponentActions := function(x1,x2,rH2p, rN2p, rphi)
   ca[1] := h2;
   #n1 does not matter
   n2 := PreImage(rN2p, x2[2]);
-  theta := Image(rphi, h1);
+  theta := Image(rtheta, h1);
   #bottom level action
   ca[2] := Image(theta, n2);
   return ca;
 end;
 
-SDActionCoords := function(x1,x2,rH2p, rN2p, rphi)
-  local acts;
-  acts := SDComponentActions(x1,x2,rH2p, rN2p, rphi);
-  acts[1] := Image(rH2p,PreImage(rH2p,x1[1])*acts[1]);
-  acts[2] := Image(rN2p,PreImage(rN2p,x1[2])*acts[2]);
-  return acts;
-end;
-
-SDFlatAction := function(t,rH2p, rN2p, rphi, dom)
-local i, nstate, state,fla;
-  fla := [];
-  for i in [1..Size(dom)]  do
-    nstate  := SDActionCoords(dom[i],t,rH2p,rN2p, rphi);
-    Add(fla, Position(dom,nstate));
-  od;
-  return fla;
-end;
-
-SemidirectElementDepFuncT := function(t,rH2p, rN2p, rphi, dom)
+SemidirectElementDepFuncT := function(t,rH2p, rN2p, rtheta, dom)
 local j,actions,dependencies,arg, state;
 
   #the lookup for the new dependencies
   dependencies := [];
   #we go through all states
   for state in dom  do
-    actions := SDComponentActions(state,t,rH2p,rN2p, rphi);
+    actions := SDComponentActions(state,t,rH2p,rN2p, rtheta);
     #examine whether there is a nontrivial action, then add
     for j in [1..Length(actions)] do
       if not IsOne(actions[j]) then
@@ -77,35 +69,32 @@ local j,actions,dependencies,arg, state;
   return dependencies;
 end;
 
-#converting a group automorphism to a the corresponding
-#automorphism on the regular representation
-RegularizeAutomorphism := function(aut,reghom)
-  return CompositionMapping(reghom,
-                 CompositionMapping(aut, InverseGeneralMapping(reghom)));
-end;
-
 # H top level group
-# phi: H -> Aut(N)
+# theta: H -> Aut(N)
 # N bottom level group
-SemidirectCascade := function(H,phi,N)
+SemidirectCascade := function(H,theta,N)
   local rH, #regular representation of H
         rN, #regular representation of N
         dom, #the domain of the cascades (all coordinates), |H||N|
         comps, # cascade product components
-        cascgens,rphi,i,autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
+        cascgens, #the generator cascades (the actual output)
+        rtheta, # Reg(H) -> Reg(Aut(N))
+        i,
+        autgens,gens,genHcoords,genNcoords,rHhom,rNhom,rH2p,rN2p;
+  # making the components into regular representation
   rHhom := RegIsom(H);
   rNhom := RegIsom(N);
   rH := Range(rHhom);
   rN := Range(rNhom);
   comps := [rH,rN];
   dom := EnumeratorOfCartesianProduct(ComponentDomains(comps));
-  #get the generator sets
+  #get the generator sets of H and theta
   gens := GeneratorsOfGroup(H);
-  autgens := List(gens,g -> Image(phi,g));
+  autgens := List(gens,g -> Image(theta,g));
   #make both sets regular
   gens := List(gens, g -> Image(rHhom,g));
   autgens := List(autgens, a -> RegularizeAutomorphism(a,rNhom));
-  rphi := GroupHomomorphismByImages(
+  rtheta := GroupHomomorphismByImages(
                   rH,
                   Group(autgens),
                   gens,
@@ -121,12 +110,13 @@ SemidirectCascade := function(H,phi,N)
                 SemidirectElementDepFuncT(i,
                         rH2p,
                         rN2p,
-                        rphi,
+                        rtheta,
                         dom)));
   od;
   return cascgens;
-  #return  List(deps, x -> CascadeNC([rH,rN], x));
 end;
+
+### CHECK ######################################################################
 
 CheckAllSemidirectProducts := function(H,N)
   local l,A,hom, gens, P1, P2;
@@ -148,7 +138,7 @@ CheckAllSemidirectProducts := function(H,N)
   od;
 end;
 
-###UTIL#########################################################################
+### UTIL #######################################################################
 #print general mappings on the screen
 PrintMappings := function(genmap)
   Perform(Source(genmap), function(x)Print(x,"->",Image(genmap,x),"\n") ;end);
