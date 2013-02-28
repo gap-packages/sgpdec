@@ -33,15 +33,15 @@ RegularizeAutomorphism := function(aut,reghom)
 end;
 
 ### SEMIDIRECT #################################################################
-SDComponentActions := function(x1,x2,rH2p, rN2p, rtheta)
+SDComponentActions := function(g1,g2,rH2p, rN2p, rtheta)
   local ca, h1,h2,n2,theta;
   ca := [];
-  h1 := PreImage(rH2p, x1[1]);
-  h2 := PreImage(rH2p, x2[1]);
+  h1 := PreImage(rH2p, g1[1]);
+  h2 := PreImage(rH2p, g2[1]);
   #top level action
   ca[1] := h2;
   #n1 does not matter
-  n2 := PreImage(rN2p, x2[2]);
+  n2 := PreImage(rN2p, g2[2]);
   theta := Image(rtheta, h1);
   #bottom level action
   ca[2] := Image(theta, n2);
