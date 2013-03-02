@@ -338,16 +338,34 @@ function(f)
    x-> Number([1..Length(x)], i-> IsBound(x[i]))));
 end);
 
+# returning the dependencies back in a list
+# not for time critical code, but DotCascade can be made representation agnostic
+InstallGlobalFunction(DependenciesOfCascade,
+function(ct)
+  local deps,i,j,df,vals,prefixes;
+  df := DependencyFunction(ct);
+  vals := df!.vals;
+  prefixes := df!.prefixes;
+  deps := [];
+  for i in [1..Size(vals)] do
+    for j in [1..Size(vals[i])] do
+      if IsBound(vals[i][j]) then
+        Add(deps, [prefixes[i][j], vals[i][j]]);
+      fi;
+    od;
+  od;
+  return deps;
+end);
+
 #old
 
 #JDM revise this...
 
 InstallGlobalFunction(DotCascade,
 function(ct)
-  local csh, str, out, vertices, vertexlabels, edges, deps, coordsname,
-        level, newnn, edge, i, dep, coord;
+local str, out, vertices, vertexlabels, edges, deps, coordsname,
+      level, newnn, edge, i, dep, coord;
 
-  #csh := CascadeShellOf(ct);
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
@@ -359,7 +377,7 @@ function(ct)
   vertexlabels := rec();#HTCreate("a string");
   edges := [];
   #extracting dependencies
-  deps := [];#DependencyMapsFromCascade(ct);
+  deps := DependenciesOfCascade(ct);
   coordsname := "n";
   Add(vertices, coordsname);
   #adding a default label
@@ -373,7 +391,7 @@ function(ct)
     for coord in dep[1] do
       newnn := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newnn," [label=\"",
-                      String(csh!.coordval_converters[level](coord)),
+                      String(coord),
                       "\"]");
       if not (edge in edges) then
         # we just add the full edge
@@ -392,7 +410,7 @@ function(ct)
 
     #putting the proper label there as we are at the end of the coordinates
     vertexlabels.(coordsname) := Concatenation(" [label=\"",
-            String(csh!.coordtrans_converters[level](dep[2])),"\"]");
+                                         String(dep[2]),"\"]");
   od;
   # finally writing them into the dot file
   for i in [1..Size(vertices)] do
@@ -405,8 +423,6 @@ function(ct)
   CloseStream(out);
   return str;
 end);
-
-#EOF
 
 InstallMethod(Display, "for a cascade",
 [IsCascade],

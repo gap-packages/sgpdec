@@ -40,4 +40,5 @@ DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("IdentityCascade");
 DeclareGlobalFunction("OnCoordinates");
 DeclareGlobalFunction("RandomCascade");
+DeclareGlobalFunction("DependenciesOfCascade");
 DeclareGlobalFunction("DotCascade");
