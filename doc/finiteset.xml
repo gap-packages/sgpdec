@@ -1,0 +1,89 @@
+<#GAPDoc Label="FiniteSet">
+<ManSection >
+<Func Arg="list [,int]" Name="FiniteSet" />
+<Description>
+Creates a FiniteSet from a list of integers.
+The maximal element determines the size of the universe.
+<Example>
+gap> A := FiniteSet([3,2,7,4,5]);
+{2,3,4,5,7}
+</Example>
+The alternative way is to give the size of the universe.
+This way the empty set (of a given universe) can be constructed.
+<Example>
+gap> empty := FiniteSet([],7);
+{}
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SizeOfUniverse">
+<ManSection >
+<Func Arg="finiteset" Name="SizeOfUniverse" />
+<Description>
+Returns the size of the set of which this is a subset.
+<C>Size</C> returns the number of elements contained in the set.
+<Example>
+gap> A := FiniteSet([3,2,7,4,5]);;
+gap> SizeOfUniverse(A);
+7
+gap> Size(A);
+5
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsProperFiniteSubset">
+<ManSection >
+<Func Arg="A, B" Name="IsProperFiniteSubset" />
+<Description>
+Returns true if B is properly contained in A.
+A and B should have the same universal set.
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OnFiniteSets">
+<ManSection >
+<Func Arg="finset, trans" Name="OnFiniteSets" />
+<Description>
+Returns the resulting set of applying the given transformation to the
+given set. It uses the pointwise action of the transformation.
+<Example>
+gap> OnFiniteSets(FiniteSet([1,2],4),(1,2,3,4));
+{2,3}
+gap> OnFiniteSets(FiniteSet([1,2],4),Transformation([2,2,1,1]));
+{2}
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="IsIdentityOnFiniteSet">
+<ManSection >
+<Func Arg="trans, finset" Name="IsIdentityOnFiniteSet" />
+<Description>
+Returns true if  the transformation acts  as the identity restricted to
+the given set. The reason for having this function that this quits quickly
+in case it is not the identity.
+<Example>
+gap> IsIdentityOnFiniteSet(Transformation([1,1,3,3]), FiniteSet([1,3]));
+true
+gap> IsIdentityOnFiniteSet(Transformation([1,1,3,3]), FiniteSet([2,3]));
+false
+</Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsSingleton">
+<ManSection >
+<Func Arg="finset" Name="IsSingleton" />
+<Description>
+Returns true if the finite set contains only one element.
+</Description>
+</ManSection>
+<#/GAPDoc>

@@ -1,0 +1,39 @@
+<Chapter Label="ch:CascadeProducts">
+<Heading>Cascade Products</Heading>
+
+Cascade products are composite structures that can be built from a given
+list of permutation groups and/or transformation semigroups.
+They are substructures of the iterated wreath product of the components.
+
+
+<Section Label="sec:cascade shell">
+<Heading>CascadeShell</Heading>
+The components are given a list where the order does matter. The first one is
+the top level, the independent component.
+The cascade shell  should be thought only as a framework in which
+we can coordinatize states and transformations.
+<#Include Label="CascadeShell">
+<#Include Label="CoordValSets">
+<#Include Label="AllCoords">
+<#Include Label="SizeOfWreathProduct">
+<#Include Label="NumberOfDependencyFunctionArguments">
+</Section>
+
+<Section Label="sec:cascaded states">
+<Heading>Cascaded States</Heading>
+States in the cascade product are <M>n</M>-tuples. The possible coordinate
+values in each position are the sates/points of the corresponding component.
+Therefore the valid concrete coordinate values are positive integers.
+
+</Section>
+
+<Section Label="sec:cascaded trans">
+<Heading>Cascaded Transformations</Heading>
+<#Include Label="IsCascadedTransformation">
+<#Include Label="IdentityCascadedTransformation">
+<#Include Label="RandomCascadedTransformation">
+<#Include Label="DependencyMapsFromCascadedTransformation">
+</Section>
+
+
+</Chapter>
