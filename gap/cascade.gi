@@ -359,66 +359,64 @@ end);
 
 #old
 
-#JDM revise this...
-
 InstallGlobalFunction(DotCascade,
 function(ct)
-local str, out, vertices, vertexlabels, edges, deps, coordsname,
-      level, newnn, edge, i, dep, coord;
-
-  str := "";
-  out := OutputTextString(str,true);
-  PrintTo(out,"digraph ct{\n");
-  #putting an extra node on the top as the title of the graph
-  #AppendTo(out,"orig [label=\"", params.title ,"\",color=\"white\"];\n");
-  #AppendTo(out,"orig -> n [style=\"invis\"];\n");
-
-  vertices := [];
-  vertexlabels := rec();#HTCreate("a string");
-  edges := [];
-  #extracting dependencies
-  deps := DependenciesOfCascade(ct);
-  coordsname := "n";
-  Add(vertices, coordsname);
-  #adding a default label
-  vertexlabels.(coordsname) := " [width=0.2,height=0.2,label=\"\"]";
-  #just to be on the safe side
-  Sort(vertices); Sort(edges);
-  for dep in deps do
-    #coordsnames are created like n_#1_#2_...._#n
-    coordsname := "n";
-    level := 1;
-    for coord in dep[1] do
-      newnn := Concatenation(coordsname,"_",String(coord));
-      edge := Concatenation(coordsname ," -> ", newnn," [label=\"",
-                      String(coord),
-                      "\"]");
-      if not (edge in edges) then
-        # we just add the full edge
-        Add(edges,edge, PositionSorted(edges,edge));
-      fi;
-      #we can now forget about the
-      coordsname := newnn;
-      level := level + 1;
-      if not (coordsname in vertices) then
-        i := PositionSorted(vertices, coordsname);
-        Add(vertices, coordsname, i);
-        #adding a default label
-        vertexlabels.(coordsname) := " [width=0.2,height=0.2,label=\"\"]";
+  local str, out,
+        vertices, vertexlabels, edges, dom,
+        deps, coordsname,
+        level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
+        emptylabel,livelabelprefix;
+  #-----------------------------------------------------------------------------
+  DotPrintGraph := function(outstream, vs, vlabels,es)
+    local i;
+    for i in [1..Size(vs)] do
+      if IsBound(vlabels.(vs[i])) then
+        AppendTo(outstream, vs[i]," ",vlabels.(vs[i]),";\n");
+      else
+        AppendTo(outstream, vs[i]," ",emptylabel,";\n");
       fi;
     od;
-
+    for i in [1..Size(es)] do
+      AppendTo(outstream, es[i],";\n");
+    od;
+  end;
+  #-----------------------------------------------------------------------------
+  str := "";
+  emptylabel := " [color=black,width=0.2,height=0.2,label=\"\"]";
+  livelabelprefix := " [color=red,label=\"";
+  out := OutputTextString(str,true);
+  PrintTo(out,"digraph ct{\n");
+  vertices := [];
+  vertexlabels := rec();#using the record as a lookup table
+  edges := [];
+  deps := DependenciesOfCascade(ct);
+  for dep in deps do
+    level := 0;
+    coordsname := "n";
+    repeat
+      AddSet(vertices, coordsname);
+      level := level + 1;
+      #adding a default label
+      #vertexlabels.(coordsname):= emptylabel;
+      #if there is an edge still, then draw it
+      if level <= Size(dep[1]) then
+        coord := dep[1][level];
+        newcoordsname := Concatenation(coordsname,"_",String(coord));
+        edge := Concatenation(coordsname ," -> ", newcoordsname," [label=\"",
+                        String(coord),
+                        "\"]");
+        AddSet(edges, edge);
+        #we can now forget about the
+        coordsname := newcoordsname;
+      fi;
+    until level > Size(dep[1]);
+    #coordsnames are created like n_#1_#2_...._#n
     #putting the proper label there as we are at the end of the coordinates
-    vertexlabels.(coordsname) := Concatenation(" [label=\"",
+    vertexlabels.(coordsname) := Concatenation(livelabelprefix,
                                          String(dep[2]),"\"]");
   od;
-  # finally writing them into the dot file
-  for i in [1..Size(vertices)] do
-    AppendTo(out, vertices[i]," ",vertexlabels.(vertices[i]),";\n");
-  od;
-  for edge in edges do
-    AppendTo(out, edge,";\n");
-  od;
+
+  DotPrintGraph(out, vertices, vertexlabels, edges);
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
