@@ -362,30 +362,44 @@ end);
 InstallGlobalFunction(DotCascade,
 function(ct)
   local str, out,
-        vertices, vertexlabels, edges, dom,
+        vertices, vertexlabels,
+        edges, edgelabels,
+        dom,
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
-        emptylabel,livelabelprefix;
+        emptyvlabel,emptyelabelprefix,
+        livevlabelprefix,livelabelprefix, defaultedge, edgeDB;
   #-----------------------------------------------------------------------------
-  DotPrintGraph := function(outstream, vs, vlabels,es)
+  DotPrintGraph := function(outstream, vs, vlabels,es)#,elabels)
     local i;
     for i in [1..Size(vs)] do
       if IsBound(vlabels.(vs[i])) then
         AppendTo(outstream, vs[i]," ",vlabels.(vs[i]),";\n");
       else
-        AppendTo(outstream, vs[i]," ",emptylabel,";\n");
+        AppendTo(outstream, vs[i],"\n");
       fi;
     od;
     for i in [1..Size(es)] do
-      AppendTo(outstream, es[i],";\n");
+      #if IsBound(elabels.(es[i])) then
+      #  AppendTo(outstream, es[i],elabels[i],";\n");
+      #else
+        AppendTo(outstream, es[i],";\n");
+      #fi;
     od;
   end;
   #-----------------------------------------------------------------------------
   str := "";
-  emptylabel := " [color=black,width=0.2,height=0.2,label=\"\"]";
-  livelabelprefix := " [color=red,label=\"";
+  edgeDB := [];
+  #empty stuff
+  emptyvlabel := " [shape=box,color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
+  emptyelabelprefix := " [color=grey,label=\"";
+  defaultedge := " [color=grey]";
+
+  livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
+  PrintTo(out," node", emptyvlabel, ";\n");
+    PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
   vertices := [];
   vertexlabels := rec();#using the record as a lookup table
   edges := [];
@@ -397,14 +411,15 @@ function(ct)
       AddSet(vertices, coordsname);
       level := level + 1;
       #adding a default label
-      #vertexlabels.(coordsname):= emptylabel;
+      vertexlabels.(coordsname):= Concatenation(livelabelprefix,"\"]");
       #if there is an edge still, then draw it
       if level <= Size(dep[1]) then
         coord := dep[1][level];
         newcoordsname := Concatenation(coordsname,"_",String(coord));
-        edge := Concatenation(coordsname ," -> ", newcoordsname," [label=\"",
+        edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
                         String(coord),
-                        "\"]");
+                        "\",fontcolor=black]");
+        AddSet(edgeDB, [coordsname,newcoordsname]);
         AddSet(edges, edge);
         #we can now forget about the
         coordsname := newcoordsname;
@@ -416,6 +431,37 @@ function(ct)
                                          String(dep[2]),"\"]");
   od;
 
+  #DotPrintGraph(out, vertices, vertexlabels, edges);
+  #now putting the gray edges for the remaining vertices
+  dom := DomainOfCascade(ct);
+    #vertices := [];
+  #vertexlabels := rec();#using the record as a lookup table
+  #edges := [];
+  deps := DependenciesOfCascade(ct);
+  for dep in dom do
+    level := 0;
+    coordsname := "n";
+    repeat
+      AddSet(vertices, coordsname);
+      level := level + 1;
+      #adding a default label
+      #vertexlabels.(coordsname):= emptylabel;
+      #if there is an edge still, then draw it
+      if level <= Size(dep) then
+        coord := dep[level];
+        newcoordsname := Concatenation(coordsname,"_",String(coord));
+        if not ([coordsname, newcoordsname] in edgeDB) then
+          edge := Concatenation(coordsname ," -> ", newcoordsname,
+                          emptyelabelprefix,
+                          String(coord),
+                          "\"]");
+          AddSet(edges, edge);
+        fi;
+        #we can now forget about the
+        coordsname := newcoordsname;
+      fi;
+    until level > Size(dep);
+  od;
   DotPrintGraph(out, vertices, vertexlabels, edges);
   AppendTo(out,"}\n");
   CloseStream(out);
