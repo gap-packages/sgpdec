@@ -198,7 +198,7 @@ function(arg)
    x-> [1..DegreeOfTransformationSemigroup(x)]));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
   SetPrefixDomainOfCascadeSemigroup(s,
-   CreatePrefixDomains(ComponentDomains(s)));
+   CreateDependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
    EnumeratorOfCartesianProduct(ComponentDomains(s)));
   return s;
@@ -241,7 +241,7 @@ function(s)
   nr:=NrComponentsOfCascadeSemigroup(s);
   comps:=ComponentsOfCascadeSemigroup(s);
   pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
-  prefix:=CreatePrefixDomains(pts);
+  prefix:=CreateDependencyDomains(pts);
 
   dom:=DomainOf(s);
   compdom:=ComponentDomains(s);

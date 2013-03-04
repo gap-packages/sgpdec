@@ -11,7 +11,7 @@
 
 #DEPENDENCY FUNCTION
 DeclareCategory("IsDependencyFunc", IsRecord);
-DeclareGlobalFunction("CreatePrefixDomains");
+DeclareGlobalFunction("CreateDependencyDomains");
 DeclareGlobalFunction("CreateDependencyFunction");
 
 #CASCADE
