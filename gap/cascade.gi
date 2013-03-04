@@ -363,14 +363,15 @@ InstallGlobalFunction(DotCascade,
 function(ct)
   local str, out,
         vertices, vertexlabels,
-        edges, edgelabels,
+        edges,
         dom,
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
-        emptyvlabel,emptyelabelprefix,
-        livevlabelprefix,livelabelprefix, defaultedge, edgeDB;
+        emptyvlabel,greyedgelabelprefix,
+        livevlabelprefix,livelabelprefix, edgeDB;
   #-----------------------------------------------------------------------------
-  DotPrintGraph := function(outstream, vs, vlabels,es)#,elabels)
+  # printing the graph data to the stream
+  DotPrintGraph := function(outstream, vs, vlabels,es)
     local i;
     for i in [1..Size(vs)] do
       if IsBound(vlabels.(vs[i])) then
@@ -380,29 +381,25 @@ function(ct)
       fi;
     od;
     for i in [1..Size(es)] do
-      #if IsBound(elabels.(es[i])) then
-      #  AppendTo(outstream, es[i],elabels[i],";\n");
-      #else
-        AppendTo(outstream, es[i],";\n");
-      #fi;
+      AppendTo(outstream, es[i],";\n");
     od;
   end;
   #-----------------------------------------------------------------------------
   str := "";
-  edgeDB := [];
-  #empty stuff
-  emptyvlabel := " [shape=box,color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
-  emptyelabelprefix := " [color=grey,label=\"";
-  defaultedge := " [color=grey]";
-
+  edgeDB := []; # to keep track of the already drawn black edges
+  #no label vertex
+  emptyvlabel :=
+    " [shape=box,color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
+  greyedgelabelprefix := " [color=grey,label=\"";
   livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
   PrintTo(out," node", emptyvlabel, ";\n");
-    PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
-  vertices := [];
+  PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
+  vertices := []; #as strings
   vertexlabels := rec();#using the record as a lookup table
-  edges := [];
+  edges := []; #as strings
+  #first we draw the intereseting paths, the ones that are in a nontrivial dep
   deps := DependenciesOfCascade(ct);
   for dep in deps do
     level := 0;
@@ -430,38 +427,29 @@ function(ct)
     vertexlabels.(coordsname) := Concatenation(livelabelprefix,
                                          String(dep[2]),"\"]");
   od;
-
-  #DotPrintGraph(out, vertices, vertexlabels, edges);
   #now putting the gray edges for the remaining vertices
   dom := DomainOfCascade(ct);
-    #vertices := [];
-  #vertexlabels := rec();#using the record as a lookup table
-  #edges := [];
-  deps := DependenciesOfCascade(ct);
   for dep in dom do
     level := 0;
     coordsname := "n";
     repeat
       AddSet(vertices, coordsname);
       level := level + 1;
-      #adding a default label
-      #vertexlabels.(coordsname):= emptylabel;
-      #if there is an edge still, then draw it
       if level <= Size(dep) then
         coord := dep[level];
         newcoordsname := Concatenation(coordsname,"_",String(coord));
         if not ([coordsname, newcoordsname] in edgeDB) then
           edge := Concatenation(coordsname ," -> ", newcoordsname,
-                          emptyelabelprefix,
+                          greyedgelabelprefix,
                           String(coord),
                           "\"]");
           AddSet(edges, edge);
         fi;
-        #we can now forget about the
         coordsname := newcoordsname;
       fi;
     until level > Size(dep);
   od;
+  #finally printing the graph data
   DotPrintGraph(out, vertices, vertexlabels, edges);
   AppendTo(out,"}\n");
   CloseStream(out);
