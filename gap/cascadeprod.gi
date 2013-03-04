@@ -79,7 +79,7 @@ fi;
 
 #
 
-InstallMethod(DomainOfCascadeSemigroup,
+InstallMethod(DomainOf,
 [IsCascadeSemigroup],
 x-> DomainOf(Representative(x)));
 
@@ -199,7 +199,7 @@ function(arg)
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
   SetPrefixDomainOfCascadeSemigroup(s,
    CreatePrefixDomains(ComponentDomains(s)));
-  SetDomainOfCascadeSemigroup(s,
+  SetDomainOf(s,
    EnumeratorOfCartesianProduct(ComponentDomains(s)));
   return s;
 end);
@@ -243,7 +243,7 @@ function(s)
   pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
   prefix:=CreatePrefixDomains(pts);
 
-  dom:=DomainOfCascadeSemigroup(s);
+  dom:=DomainOf(s);
   compdom:=ComponentDomains(s);
   oldfix:=PrefixDomainOfCascadeSemigroup(s);
   gens:=[]; nrgens:=0;
