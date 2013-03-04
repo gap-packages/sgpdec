@@ -13,7 +13,7 @@
 # Creates the list of all prefixes of a given size. These are the arguments of
 # the dependency functions on each level.
 # coll: list of pos ints or actual domains, integer x is converted to [1..x]
-InstallGlobalFunction(CreatePrefixDomains,
+InstallGlobalFunction(CreateDependencyDomains,
 function(coll)
   local prefix, tup, i;
   #converting integers to actual domains
@@ -85,7 +85,7 @@ function(coll, depfunc)
     coll:=ComponentDomains(coll);
   fi;
 
-  prefix:=CreatePrefixDomains(coll);
+  prefix:=CreateDependencyDomains(coll);
   vals:=List(prefix, x-> EmptyPlist(Length(x)));
 
   for x in depfunc do
@@ -194,7 +194,7 @@ function(f, coll)
     return fail;
   fi;
 
-  prefix:=CreatePrefixDomains(coll);
+  prefix:=CreateDependencyDomains(coll);
   dom:=EnumeratorOfCartesianProduct(coll);
   n:=Length(coll);
   vals:=List(prefix, x-> List([1..Length(x)], x-> []));
