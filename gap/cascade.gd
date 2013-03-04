@@ -34,7 +34,7 @@ DeclareAttribute("DependencyFunction", IsCascade);
 DeclareAttribute("NrComponentsOfCascade",IsCascade);
 DeclareAttribute("NrDependenciesOfCascade",IsCascade);
 DeclareAttribute("ComponentDomains",IsCascade);
-DeclareAttribute("PrefixDomainOfCascade",IsCascade);
+DeclareAttribute("DependencyDomainsOf",IsCascade);
 DeclareAttribute("NrDependencyFuncArgs", IsCascade);
 DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("IdentityCascade");
