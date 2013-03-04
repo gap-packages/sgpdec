@@ -95,7 +95,7 @@ end);
 
 #
 
-InstallMethod(PrefixDomainOfCascadeSemigroup,
+InstallMethod(DependencyDomainsOf,
 [IsCascadeSemigroup],
 function(cascprod)
   return PrefixDomainOfCascade(Representative(cascprod));
@@ -197,7 +197,7 @@ function(arg)
   SetComponentDomains(s, List(arg,
    x-> [1..DegreeOfTransformationSemigroup(x)]));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
-  SetPrefixDomainOfCascadeSemigroup(s,
+  SetDependencyDomainsOf(s,
    CreateDependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
    EnumeratorOfCartesianProduct(ComponentDomains(s)));
@@ -245,7 +245,7 @@ function(s)
 
   dom:=DomainOf(s);
   compdom:=ComponentDomains(s);
-  oldfix:=PrefixDomainOfCascadeSemigroup(s);
+  oldfix:=DependencyDomainsOf(s);
   gens:=[]; nrgens:=0;
 
   for pre in prefix do
