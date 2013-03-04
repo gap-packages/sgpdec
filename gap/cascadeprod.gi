@@ -98,7 +98,7 @@ end);
 InstallMethod(DependencyDomainsOf,
 [IsCascadeSemigroup],
 function(cascprod)
-  return PrefixDomainOfCascade(Representative(cascprod));
+  return DependencyDomainsOf(Representative(cascprod));
 end);
 
 #

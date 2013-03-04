@@ -108,13 +108,13 @@ function(arg)
   if Length(arg)=2 then # cascade trans and func
     return CreateCascade(DomainOf(arg[1]), 
      ComponentDomains(arg[1]),   
-     PrefixDomainOfCascade(arg[1]), arg[2]);
+     DependencyDomainsOf(arg[1]), arg[2]);
   fi;
     
   f:=Objectify(CascadeType, rec());
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
-  SetPrefixDomainOfCascade(f, arg[3]);
+  SetDependencyDomainsOf(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[3], arg[4]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
@@ -298,7 +298,7 @@ function(f,g)
 
   dep_f:=DependencyFunction(f);
   dep_g:=DependencyFunction(g);
-  prefix:=PrefixDomainOfCascade(f);
+  prefix:=DependencyDomainsOf(f);
   #empty values lookup table based on the sizes of prefixes
   vals:=List(prefix, x-> EmptyPlist(Length(x)));
   #going through all prefixes
