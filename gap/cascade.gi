@@ -2,7 +2,7 @@
 ###
 ##W  cascade.gi
 ##Y  Copyright (C) 2011-12
-##   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
+#   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
 ###
 ###  Licensing information can be found in the README file of this package.
 ###
@@ -106,13 +106,13 @@ function(arg)
   local f;
 
   if Length(arg)=2 then # cascade trans and func
-    return CreateCascade(DomainOfCascade(arg[1]), 
+    return CreateCascade(DomainOf(arg[1]), 
      ComponentDomains(arg[1]),   
      PrefixDomainOfCascade(arg[1]), arg[2]);
   fi;
     
   f:=Objectify(CascadeType, rec());
-  SetDomainOfCascade(f, arg[1]);
+  SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
   SetPrefixDomainOfCascade(f, arg[3]);
   SetDependencyFunction(f, CreateDependencyFunction(arg[3], arg[4]));
@@ -179,7 +179,7 @@ end);
 InstallMethod(AsTransformation, "for cascade",
 [IsCascade],
 function(ct)
-return TransformationOp(ct, DomainOfCascade(ct), OnCoordinates);
+return TransformationOp(ct, DomainOf(ct), OnCoordinates);
 end);
 
 #
@@ -428,7 +428,7 @@ function(ct)
                                          String(dep[2]),"\"]");
   od;
   #now putting the gray edges for the remaining vertices
-  dom := DomainOfCascade(ct);
+  dom := DomainOf(ct);
   for dep in dom do
     level := 0;
     coordsname := "n";

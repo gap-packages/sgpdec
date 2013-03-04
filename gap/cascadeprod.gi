@@ -81,7 +81,7 @@ fi;
 
 InstallMethod(DomainOfCascadeSemigroup,
 [IsCascadeSemigroup],
-x-> DomainOfCascade(Representative(x)));
+x-> DomainOf(Representative(x)));
 
 #
 
