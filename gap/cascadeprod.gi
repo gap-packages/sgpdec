@@ -7,8 +7,6 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 
-#
-
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 [IsCascadeSemigroup],
 function(s)
@@ -20,8 +18,6 @@ function(s)
                  AsTransformation,
                  f -> AsCascade(f, ComponentDomains(s)));
 end);
-
-#
 
 #with ClosureSemigroup it is easier
 if GAPInfo.Version="4.dev" then
@@ -77,13 +73,8 @@ else
   end);
 fi;
 
-#
-
-InstallMethod(DomainOf,
-[IsCascadeSemigroup],
+InstallMethod(DomainOf,[IsCascadeSemigroup],
 x-> DomainOf(Representative(x)));
-
-#
 
 InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
 [IsListOrCollection],
@@ -93,23 +84,17 @@ function(l)
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
 
-#
-
 InstallMethod(DependencyDomainsOf,
 [IsCascadeSemigroup],
 function(cascprod)
   return DependencyDomainsOf(Representative(cascprod));
 end);
 
-#
-
 InstallOtherMethod(NrComponentsOfCascadeSemigroup,
 [IsCascadeSemigroup],
 function(cascprod)
   return Size(ComponentDomains(Representative(cascprod)));
 end);
-
-#
 
 InstallOtherMethod(ComponentDomains,
 [IsListOrCollection],
@@ -129,8 +114,6 @@ function(comps)
   od;
   return domains;
 end);
-
-#
 
 InstallMethod(ViewObj, "for a cascade product",
 [IsCascadeSemigroup and HasGeneratorsOfSemigroup],
@@ -163,7 +146,6 @@ function(s)
 end);
 
 # the full cascade semigroup
-
 InstallGlobalFunction(FullCascadeSemigroup,
 function(arg)
   local filts, s, i,n;
@@ -204,8 +186,6 @@ function(arg)
   return s;
 end);
 
-#
-
 InstallMethod(ViewObj, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
 function(s)
@@ -229,8 +209,6 @@ function(s)
   od;
   return order;
 end);
-
-#
 
 InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
