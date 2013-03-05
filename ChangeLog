@@ -1,3 +1,5 @@
+0.7.3
+	Numerous renamings, unified DomainOf and DependencyDomainsOf for cascades and cascade semigroups. IdentityCascade added. Test scripts updated.
 0.7.2
 	DotCascade reimplemented with better drawing style. The whole domain tree is drawn and nontrivial dependenices are highlighted.
 0.7.1
