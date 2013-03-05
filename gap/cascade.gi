@@ -10,46 +10,35 @@
 
 InstallGlobalFunction(CascadeNC,
 function(doms, deps)
-  local prefix, tup, vals, f, i, d;
   #if components are given as semigroups then we have to get the domains
   if IsListOfPermGroupsAndTransformationSemigroups(doms) then
     doms:=ComponentDomains(doms);
   fi;
 
-  prefix:=CreateDependencyDomains(doms);
-  vals:=List(prefix, x-> EmptyPlist(Length(x)));
-
-  for d in deps do
-    vals[Length(d[1])+1][Position(prefix[Length(d[1])+1], d[1])]:=d[2];
-  od;
-  ShrinkAllocationPlist(vals);
-
   return CreateCascade(
                  EnumeratorOfCartesianProduct(doms),
                  doms,
-                 prefix,
-                 vals);
+                 DependencyFunction(doms, deps));
 end);
 
 # either:
-# 1) cascade trans and func; or
-# 2) domain, component domains, prefix domain, func
+# 1) cascade trans and depfunc; or
+# 2) domain, component domains, depfunc
 InstallGlobalFunction(CreateCascade,
 function(arg)
   local f;
-  # cascade and dependencies
+  # cascade and depfunc
   if Length(arg)=2 then
     return CreateCascade(
                    DomainOf(arg[1]),
                    ComponentDomains(arg[1]),
-                   DependencyDomainsOf(arg[1]),
                    arg[2]);
   fi;
   f:=Objectify(CascadeType, rec());
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
-  SetDependencyDomainsOf(f, arg[3]);
-  SetDependencyFunction(f, CreateDependencyFunction(arg[3], arg[4]));
+  SetDependencyDomainsOf(f, arg[3]!.prefixes);#ugly hack TODO
+  SetDependencyFunction(f, CreateDependencyFunction(arg[3]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);

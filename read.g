@@ -8,5 +8,6 @@ ReadPackage("SgpDec","/gap/linearnotation.gi");
 
 ReadPackage("SgpDec","/gap/depfunc.gi");
 ReadPackage("SgpDec","/gap/cascade.gi");
+ReadPackage("SgpDec","/gap/permcascade.gi");
 ReadPackage("SgpDec","/gap/coords.gi");
 ReadPackage("SgpDec","/gap/cascadeprod.gi");
