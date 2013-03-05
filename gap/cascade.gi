@@ -49,7 +49,8 @@ function(arg)
   return f;
 end);
 
-#
+InstallGlobalFunction(IdentityCascade,
+function(comps) return CascadeNC(comps,[]); end);
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
