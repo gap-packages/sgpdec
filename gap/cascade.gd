@@ -9,12 +9,6 @@
 ## Cascade permutations and transformations.
 ##
 
-#DEPENDENCY FUNCTION
-DeclareCategory("IsDependencyFunc", IsRecord);
-DeclareGlobalFunction("CreateDependencyDomains");
-DeclareGlobalFunction("CreateDependencyFunction");
-
-#CASCADE
 DeclareCategory("IsCascade", IsMultiplicativeElementWithOne and
         IsAssociativeElement and IsAttributeStoringRep);
 
