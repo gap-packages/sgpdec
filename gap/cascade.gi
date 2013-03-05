@@ -12,27 +12,26 @@
 
 # Creates the list of all prefixes of a given size. These are the arguments of
 # the dependency functions on each level.
-# coll: list of pos ints or actual domains, integer x is converted to [1..x]
+# comps: list of pos ints or actual domains, integer x is converted to [1..x]
 InstallGlobalFunction(CreateDependencyDomains,
-function(coll)
+function(comps)
   local prefix, tup, i;
   #converting integers to actual domains
-  coll := List(coll,
+  comps := List(comps,
           function(x) if IsPosInt(x) then return [1..x]; else return x; fi;end);
   #JDM Why +1? To avoid reallocation?
-  prefix:=EmptyPlist(Length(coll)+1);
+  prefix:=EmptyPlist(Length(comps)+1);
   #the top level prefix is just the empty list
   prefix[1]:=[[]];
-
-  tup:=[];
-  for i in [1..Length(coll)-1] do
-    Add(tup, coll[i]);
+  tup:=[]; #we add the components one by one
+  for i in [1..Length(comps)-1] do
+    Add(tup, comps[i]);
     Add(prefix, EnumeratorOfCartesianProduct(tup));
   od;
   return prefix;
 end);
 
-# dependency functions
+# constructor for dependency functions
 InstallGlobalFunction(CreateDependencyFunction,
 function(prefixes, vals)
   local record;
@@ -43,10 +42,7 @@ end);
 
 InstallMethod(ViewObj, "for a dependency func",
 [IsDependencyFunc],
-function(x)
-  Print("<dependency function>");
-  return;
-end);
+function(x) Print("<dependency function>"); return; end);
 
 # applying to a tuple (prefix) gives the corresponding value
 InstallOtherMethod(\^, "for a tuple and dependency func",
@@ -56,19 +52,18 @@ function(tup, depfunc)
 
   vals:=depfunc!.vals;
   prefixes:=depfunc!.prefixes;
-
   i:=Length(tup)+1;
-
+  #in case the argument tuple is longer
   if not IsBound(prefixes[i]) then
     return fail;
   fi;
-
+  #searching for the position of the argument tuple
   pos:=Position(prefixes[i], tup);
-
+  #if it is not there, then the argument is not comaptible with df
   if pos=fail then
     return fail;
   fi;
-
+  #the default value is the identity
   if not IsBound(vals[i][pos]) then
     return ();
   fi;
@@ -78,14 +73,14 @@ end);
 # CASCADE ######################################################################
 
 InstallGlobalFunction(CascadeNC,
-function(coll, depfunc)
+function(comps, depfunc)
   local prefix, tup, vals, f, i, x;
- 
-  if IsListOfPermGroupsAndTransformationSemigroups(coll) then 
-    coll:=ComponentDomains(coll);
+
+  if IsListOfPermGroupsAndTransformationSemigroups(comps) then
+    comps:=ComponentDomains(comps);
   fi;
 
-  prefix:=CreateDependencyDomains(coll);
+  prefix:=CreateDependencyDomains(comps);
   vals:=List(prefix, x-> EmptyPlist(Length(x)));
 
   for x in depfunc do
@@ -93,24 +88,22 @@ function(coll, depfunc)
   od;
   ShrinkAllocationPlist(vals);
 
-  return CreateCascade(EnumeratorOfCartesianProduct(coll), coll,
+  return CreateCascade(EnumeratorOfCartesianProduct(comps), comps,
    prefix, vals);
 end);
 
-# either: 
+# either:
 # 1) cascade trans and func; or
 # 2) domain, component domains, prefix domain, func
-
-InstallGlobalFunction(CreateCascade, 
+InstallGlobalFunction(CreateCascade,
 function(arg)
   local f;
 
   if Length(arg)=2 then # cascade trans and func
-    return CreateCascade(DomainOf(arg[1]), 
-     ComponentDomains(arg[1]),   
+    return CreateCascade(DomainOf(arg[1]),
+     ComponentDomains(arg[1]),
      DependencyDomainsOf(arg[1]), arg[2]);
   fi;
-    
   f:=Objectify(CascadeType, rec());
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
@@ -124,24 +117,22 @@ end);
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
-  local coll, prefixes, tup, vals, len, x, j, k, val, i;
+  local comps, prefixes, tup, vals, len, x, j, k, val, i;
 
-  if not IsListOfPermGroupsAndTransformationSemigroups(list) then 
+  if not IsListOfPermGroupsAndTransformationSemigroups(list) then
     Error("the first argument should be a list of transformation semigroups",
      " or perm groups,");
     return;
   fi;
-
-  coll:=ComponentDomains(list); 
-  
+  comps:=ComponentDomains(list);
   # create the enumerator for the dependency func
-  prefixes:=EmptyPlist(Length(coll)+1);
+  prefixes:=EmptyPlist(Length(comps)+1);
   prefixes[1]:=[[]];
-  
+
   tup:=[];
-  
-  for i in [1..Length(coll)-1] do 
-    Add(tup, coll[i]);
+
+  for i in [1..Length(comps)-1] do
+    Add(tup, comps[i]);
     Add(prefixes, EnumeratorOfCartesianProduct(tup));
   od;
 
@@ -151,25 +142,25 @@ function(list, numofdeps)
   numofdeps:=Minimum([len, numofdeps]);
 
   x:=[1..len];
-  for i in [1..numofdeps] do 
+  for i in [1..numofdeps] do
     j:=Random(x);
     RemoveSet(x, j);
     k:=1;
-    while j>Length(prefixes[k]) do 
+    while j>Length(prefixes[k]) do
       j:=j-Length(prefixes[k]);
       k:=k+1;
     od;
     val:=Random(list[k]);
-    if not IsOne(val) then 
-      if not IsTransformation(val) then 
+    if not IsOne(val) then
+      if not IsTransformation(val) then
         val:=AsTransformation(val);
       fi;
       vals[k][j]:=val;
     fi;
   od;
- 
-  return CreateCascade(EnumeratorOfCartesianProduct(coll), 
-   coll, prefixes, vals);
+
+  return CreateCascade(EnumeratorOfCartesianProduct(comps),
+   comps, prefixes, vals);
 end);
 
 #JDM install Cascade, check args are sensible.
@@ -186,17 +177,17 @@ end);
 
 InstallMethod(AsCascade, "for a transformation and list of domain sizes",
 [IsTransformation, IsCyclotomicCollection],
-function(f, coll)
+function(f, comps)
   local prefix, dom, n, vals, one, x, m, pos, i, j;
-  
-  if not ForAll(coll, IsPosInt) or DegreeOfTransformation(f)<>Product(coll)
-   then 
+
+  if not ForAll(comps, IsPosInt) or DegreeOfTransformation(f)<>Product(comps)
+   then
     return fail;
   fi;
 
-  prefix:=CreateDependencyDomains(coll);
-  dom:=EnumeratorOfCartesianProduct(coll);
-  n:=Length(coll);
+  prefix:=CreateDependencyDomains(comps);
+  dom:=EnumeratorOfCartesianProduct(comps);
+  n:=Length(comps);
   vals:=List(prefix, x-> List([1..Length(x)], x-> []));
   one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
   for i in [1..DegreeOfTransformation(f)] do
@@ -231,47 +222,8 @@ function(f, coll)
     od;
   od;
 
-  return CreateCascade(dom, coll, prefix, vals);
+  return CreateCascade(dom, comps, prefix, vals);
 end);
-
-# printing
-
-InstallMethod(ViewObj, "for a cascade",
-[IsCascade],
-function(f)
-  local str, x;
-
-  str:="<cascade with ";
-  Append(str, String(NrComponentsOfCascade(f)));
-  Append(str, " levels");
-  
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascade(f)*3)-12
-   then
-    Append(str, " with (");
-    for x in ComponentDomains(f) do
-      Append(str, String(Length(x)));
-      Append(str, ", ");
-    od;
-    Remove(str, Length(str));
-    Remove(str, Length(str));
-    Append(str, ") pts");
-  fi;
-  if Length(str)<SizeScreen()[1]-
-   Length(String(NrDependenciesOfCascade(f)))-8 then 
-    Append(str, ", ");
-    Append(str, String(NrDependenciesOfCascade(f)));
-    Append(str, " dependencies");
-  fi;
- 
-  Append(str, ">");
-  Print(str);
-  return;
-end);
-
-#
-
-InstallMethod(PrintObj, "for a cascade",
-[IsCascade], ViewObj);
 
 # action and operators
 
@@ -313,15 +265,11 @@ function(f,g)
   return CreateCascade(f, vals);
 end);
 
-#
-
 InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
   return DependencyFunction(p)!.vals = DependencyFunction(q)!.vals;
 end);
-
-#
 
 InstallOtherMethod(\<, "for cascade op and cascade op",
 [IsCascade, IsCascade],
@@ -357,8 +305,66 @@ function(ct)
   return deps;
 end);
 
-#old
+################################################################################
+# printing #####################################################################
+################################################################################
+InstallMethod(ViewObj, "for a cascade",
+[IsCascade],
+function(f)
+  local str, x;
 
+  str:="<cascade with ";
+  Append(str, String(NrComponentsOfCascade(f)));
+  Append(str, " levels");
+
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascade(f)*3)-12
+   then
+    Append(str, " with (");
+    for x in ComponentDomains(f) do
+      Append(str, String(Length(x)));
+      Append(str, ", ");
+    od;
+    Remove(str, Length(str));
+    Remove(str, Length(str));
+    Append(str, ") pts");
+  fi;
+  if Length(str)<SizeScreen()[1]-
+   Length(String(NrDependenciesOfCascade(f)))-8 then
+    Append(str, ", ");
+    Append(str, String(NrDependenciesOfCascade(f)));
+    Append(str, " dependencies");
+  fi;
+
+  Append(str, ">");
+  Print(str);
+  return;
+end);
+
+InstallMethod(PrintObj, "for a cascade",
+[IsCascade], ViewObj);
+
+InstallMethod(Display, "for a cascade",
+[IsCascade],
+function(c)
+  local df, vals, prefixes, i,j;
+  df := DependencyFunction(c);
+  vals := df!.vals;
+  prefixes := df!.prefixes;
+  for i in [1..NrComponentsOfCascade(c)] do
+    for j in [1..Size(vals[i])] do
+      if IsBound(vals[i][j]) then
+        Print(String(prefixes[i][j])," -> ");
+        #TODO String(vals[i][j]) return <object>
+        Display(vals[i][j]);
+      fi;
+    od;
+  od;
+  return;
+end);
+
+################################################################################
+# drawing #####################################################################
+################################################################################
 InstallGlobalFunction(DotCascade,
 function(ct)
   local str, out,
@@ -454,24 +460,4 @@ function(ct)
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
-end);
-
-InstallMethod(Display, "for a cascade",
-[IsCascade],
-function(c)
-  local df, vals, prefixes, str, x, i,j;
-  df := DependencyFunction(c);
-  vals := df!.vals;
-  prefixes := df!.prefixes;
-  #str:="";
-  for i in [1..NrComponentsOfCascade(c)] do
-    for j in [1..Size(vals[i])] do
-      if IsBound(vals[i][j]) then
-        Print(String(prefixes[i][j])," -> ");
-        #TODO String(vals[i][j]) return <object>
-        Display(vals[i][j]);
-      fi;
-    od;
-  od;
-  return;
 end);
