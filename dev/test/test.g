@@ -17,10 +17,7 @@ ITER := 33;;
 #reading the test functions
 Read("cartesianenum.g");;
 Read("wreath.g");;
-#Read("straightword.g");;
-#Read("idmul.g");;
-#Read("inverse.g");;
-#Read("yeast.g");;
+Read("idmul.g");;
 Read("depextract.g");;
 
 ########################################################
@@ -31,6 +28,9 @@ TestCartesianEnumerator();
 
 TestDependencyExtraction([MICROBUG,HEYBUG,ALIFEX]);
 TestDependencyExtraction([BECKS,HEYBUG,S3]);
+
+TestMultiplicationByIdentity([BECKS,HEYBUG,S3]);
+TestMultiplicationByIdentity([MICROBUG,HEYBUG,ALIFEX]);
 
 #Dump the random seed in case there was something interesting.
 Print("#Random seed:", SEED, "\n");
