@@ -9,23 +9,26 @@
 ##############################################################################
 
 InstallGlobalFunction(CascadeNC,
-function(comps, depfunc)
-  local prefix, tup, vals, f, i, x;
-
-  if IsListOfPermGroupsAndTransformationSemigroups(comps) then
-    comps:=ComponentDomains(comps);
+function(doms, deps)
+  local prefix, tup, vals, f, i, d;
+  #if components are given as semigroups then we have to get the domains
+  if IsListOfPermGroupsAndTransformationSemigroups(doms) then
+    doms:=ComponentDomains(doms);
   fi;
 
-  prefix:=CreateDependencyDomains(comps);
+  prefix:=CreateDependencyDomains(doms);
   vals:=List(prefix, x-> EmptyPlist(Length(x)));
 
-  for x in depfunc do
-    vals[Length(x[1])+1][Position(prefix[Length(x[1])+1], x[1])]:=x[2];
+  for d in deps do
+    vals[Length(d[1])+1][Position(prefix[Length(d[1])+1], d[1])]:=d[2];
   od;
   ShrinkAllocationPlist(vals);
 
-  return CreateCascade(EnumeratorOfCartesianProduct(comps), comps,
-   prefix, vals);
+  return CreateCascade(
+                 EnumeratorOfCartesianProduct(doms),
+                 doms,
+                 prefix,
+                 vals);
 end);
 
 # either:
@@ -34,11 +37,13 @@ end);
 InstallGlobalFunction(CreateCascade,
 function(arg)
   local f;
-
-  if Length(arg)=2 then # cascade trans and func
-    return CreateCascade(DomainOf(arg[1]),
-     ComponentDomains(arg[1]),
-     DependencyDomainsOf(arg[1]), arg[2]);
+  # cascade and dependencies
+  if Length(arg)=2 then
+    return CreateCascade(
+                   DomainOf(arg[1]),
+                   ComponentDomains(arg[1]),
+                   DependencyDomainsOf(arg[1]),
+                   arg[2]);
   fi;
   f:=Objectify(CascadeType, rec());
   SetDomainOf(f, arg[1]);
