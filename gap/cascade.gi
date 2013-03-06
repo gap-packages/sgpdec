@@ -45,7 +45,7 @@ function(arg)
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
   SetDependencyDomainsOf(f, arg[3]!.prefixes);#ugly hack TODO
-  SetDependencyFunctionOf(f, CreateDependencyFunction(arg[3]));
+  SetDependencyFunctionsOf(f, CreateDependencyFunction(arg[3]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);
