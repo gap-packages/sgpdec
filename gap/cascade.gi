@@ -284,20 +284,7 @@ InstallMethod(PrintObj, "for a cascade",
 InstallMethod(Display, "for a cascade",
 [IsCascade],
 function(c)
-  local df, vals, prefixes, i,j;
-  df := DependencyFunction(c);
-  vals := df!.vals;
-  prefixes := df!.prefixes;
-  for i in [1..NrComponentsOfCascade(c)] do
-    for j in [1..Size(vals[i])] do
-      if IsBound(vals[i][j]) then
-        Print(String(prefixes[i][j])," -> ");
-        #TODO String(vals[i][j]) return <object>
-        Display(vals[i][j]);
-      fi;
-    od;
-  od;
-  return;
+  Perform(DependencyFunctionsOf(c),Display);
 end);
 
 ################################################################################
