@@ -29,8 +29,8 @@ function(doms, deps)
 end);
 
 # either:
-# 1) cascade trans and depfunc; or
-# 2) domain, component domains, depfunc
+# 1) cascade  and depfuncs; or
+# 2) domain, component domains, depfuncs
 InstallGlobalFunction(CreateCascade,
 function(arg)
   local f;
