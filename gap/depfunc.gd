@@ -6,11 +6,11 @@
 ##
 ## 2008-2012
 ##
-## Dependency functions.
+## Dependency function.
 ##
 
 DeclareCategory("IsDependencyFunc", IsRecord);
-DeclareGlobalFunction("CreateDependencyDomains");
+DeclareGlobalFunction("DependencyDomains");
 #when you make it from dependencies
 DeclareGlobalFunction("DependencyFunction");
 # this is more technical when you know the internals
