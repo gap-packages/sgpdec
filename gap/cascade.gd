@@ -19,20 +19,26 @@ BindGlobal("CascadeFamily",
 BindGlobal("CascadeType", NewType(CascadeFamily,
         IsCascade and IsAssociativeElement));
 
+#constructors
 DeclareGlobalFunction("CascadeNC");
 DeclareGlobalFunction("Cascade");
-
+DeclareGlobalFunction("CreateCascade");
+DeclareGlobalFunction("IdentityCascade");
+DeclareGlobalFunction("RandomCascade");
 DeclareOperation("AsCascade", [IsTransformation, IsCyclotomicCollection]);
+
+#accessing cascade internals
 DeclareAttribute("DomainOf", IsCascade);
-DeclareAttribute("DependencyFunctionOf", IsCascade);
+DeclareAttribute("DependencyFunctionsOf", IsCascade);
 DeclareAttribute("NrComponentsOfCascade",IsCascade);
 DeclareAttribute("NrDependenciesOfCascade",IsCascade);
 DeclareAttribute("ComponentDomains",IsCascade);
 DeclareAttribute("DependencyDomainsOf",IsCascade);
 DeclareAttribute("NrDependencyFuncArgs", IsCascade);
-DeclareGlobalFunction("CreateCascade");
-DeclareGlobalFunction("IdentityCascade");
-DeclareGlobalFunction("OnCoordinates");
-DeclareGlobalFunction("RandomCascade");
 DeclareGlobalFunction("DependenciesOfCascade");
+
+#the action on coordinates
+DeclareGlobalFunction("OnCoordinates");
+
+#drawing
 DeclareGlobalFunction("DotCascade");
