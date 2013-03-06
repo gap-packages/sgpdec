@@ -8,6 +8,13 @@
 ###
 ##############################################################################
 
+################################################################################
+# CONSTRUCTORS #################################################################
+################################################################################
+
+#  ways to create cascades
+# 1. Cascade, giving components/component domains and a list of dependencies
+# 2. by giving dependency functions
 InstallGlobalFunction(CascadeNC,
 function(doms, deps)
   #if components are given as semigroups then we have to get the domains
