@@ -30,7 +30,7 @@ end);
 
 # either:
 # 1) cascade  and depfuncs; or
-# 2) domain, component domains, depfuncs
+# 2) domain, component domains, type, depfuncs
 InstallGlobalFunction(CreateCascade,
 function(arg)
   local f;
@@ -45,7 +45,7 @@ function(arg)
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
   SetDependencyDomainsOf(f, arg[3]!.prefixes);#ugly hack TODO
-  SetDependencyFunctionsOf(f, CreateDependencyFunction(arg[3]));
+  SetDependencyFunctionsOf(f, arg[3]);
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);
