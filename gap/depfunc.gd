@@ -15,3 +15,6 @@ DeclareGlobalFunction("DependencyDomains");
 DeclareGlobalFunction("DependencyFunction");
 # this is more technical when you know the internals
 DeclareGlobalFunction("CreateDependencyFunction");
+DeclareGlobalFunction("OnDepArg");
+DeclareGlobalFunction("Deps2DepFuncs");
+DeclareAttribute("NrDependencies",IsDependencyFunc);
