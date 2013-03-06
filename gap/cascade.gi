@@ -25,7 +25,7 @@ function(doms, deps)
   return CreateCascade(
                  EnumeratorOfCartesianProduct(doms),
                  doms,
-                 DependencyFunction(doms, deps));
+                 Deps2DepFuncs(DependencyDomains(doms), deps), CascadeType);
 end);
 
 # either:
@@ -33,7 +33,7 @@ end);
 # 2) domain, component domains, type, depfuncs
 InstallGlobalFunction(CreateCascade,
 function(arg)
-  local f;
+local f;
   # cascade and depfunc
   if Length(arg)=2 then
     return CreateCascade(
@@ -41,10 +41,10 @@ function(arg)
                    ComponentDomains(arg[1]),
                    arg[2]);
   fi;
-  f:=Objectify(CascadeType, rec());
+  f:=Objectify(arg[4], rec());
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
-  SetDependencyDomainsOf(f, arg[3]!.prefixes);#ugly hack TODO
+  SetDependencyDomainsOf(f, DependencyDomains(arg[2]));#ugly hack, TODO no dup!
   SetDependencyFunctionsOf(f, arg[3]);
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
@@ -220,8 +220,8 @@ end);
 InstallMethod(NrDependenciesOfCascade, "for a cascade",
 [IsCascade],
 function(f)
-  return Sum(List(DependencyFunction(f)!.vals,
-   x-> Number([1..Length(x)], i-> IsBound(x[i]))));
+  return Sum(DependencyFunctionsOf(f),
+   x-> NrDependencies(x));
 end);
 
 # returning the dependencies back in a list
