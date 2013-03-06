@@ -137,3 +137,19 @@ InstallMethod(ViewObj, "for a dependency func",
 [IsDependencyFunc],
 function(x) Print("<dependency function, ",
         String(NrDependencies(x))," deps>"); return; end);
+
+InstallMethod(Display, "for a dependency function",
+[IsDependencyFunc],
+function(df)
+  local vals, dom, i;
+  vals := df!.vals;
+  dom := df!.dom;
+  for i in [1..Size(vals)] do
+    if IsBound(vals[i]) then
+      Print(String(dom[i])," -> ");
+      #TODO String(vals[i][j]) return <object>
+      Display(vals[i]);
+    fi;
+  od;
+  return;
+end);
