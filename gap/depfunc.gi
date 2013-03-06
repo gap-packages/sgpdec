@@ -6,16 +6,49 @@
 ##
 ## 2008-2012
 ##
-## Dependency functions.
+## Dependency function.
 ##
 
-## naming conventions
+## NAMING CONVENTIONS
 ## deparg - dependency argument, a tuple of states (formerly prefix)
+## dom - domain of dependency function
+## deps - list of dependecies in the [arg, value] format
+## depdoms - dependency domains, i.e. domains of dependency functions
+
+################################################################################
+# CONSTRUCTORS #################################################################
+################################################################################
+
+# constructor for dependency functions
+# input: domain and list of dependencies
+InstallGlobalFunction(DependencyFunction,
+function(dom, deps)
+  local record,depdoms,vals,d;
+  #this is a subtle issue: we need an element in the domain, even on the top
+  if IsEmpty(dom) then
+    dom := [[]];
+  fi;
+  #depdoms:=CreateDependencyDomains(doms);
+  vals:=EmptyPlist(Length(dom));
+  for d in deps do
+    #vals[Length(d[1])+1][Position(depdoms[Length(d[1])+1], d[1])]:=d[2];
+    vals[Position(dom,d[1])] := d[2];
+  od;
+  ShrinkAllocationPlist(vals);
+  return CreateDependencyFunction(dom, vals);
+end);
+
+# just creating an instance when you know the internals
+InstallGlobalFunction(CreateDependencyFunction,
+function(dom, vals)
+  return Objectify(NewType(CollectionsFamily(FamilyObj(vals)),IsDependencyFunc),
+                 rec(dom:=dom,vals:=vals));
+end);
 
 # Creates the list of all dependency domains of given sizes.
 # These are the arguments of the dependency functions on each level.
 # doms: list of pos ints or actual domains, integer x is converted to [1..x]
-InstallGlobalFunction(CreateDependencyDomains,
+InstallGlobalFunction(DependencyDomains,
 function(doms)
   local depdoms, tup, i;
   #converting integers to actual domains
@@ -33,57 +66,32 @@ function(doms)
   return depdoms;
 end);
 
-# constructor for dependency functions
-# input: component domains and list of dependencies
-InstallGlobalFunction(DependencyFunction,
-function(doms, deps)
-  local record,depdoms,vals,d;
-
-  depdoms:=CreateDependencyDomains(doms);
-  vals:=List(depdoms, x-> EmptyPlist(Length(x)));
-
-  for d in deps do
-    vals[Length(d[1])+1][Position(depdoms[Length(d[1])+1], d[1])]:=d[2];
-  od;
-  ShrinkAllocationPlist(vals);
-  return CreateDependencyFunction(depdoms, vals);
-end);
-
-# constructor when you the internals
-InstallGlobalFunction(CreateDependencyFunction,
-function(doms, deps)
-  local record;
-  record:=rec(vals:=vals, depdoms:=depdoms);
-  return Objectify(NewType(CollectionsFamily(FamilyObj(vals[2])),
-   IsDependencyFunc), record);
-end);
-
-InstallMethod(ViewObj, "for a dependency func",
-[IsDependencyFunc],
-function(x) Print("<dependency function>"); return; end);
+################################################################################
+# ACTION #######################################################################
+################################################################################
 
 # applying to a tuple (deparg) gives the corresponding value
 InstallOtherMethod(\^, "for dependency argument and dependency func",
 [IsList, IsDependencyFunc],
 function(deparg, depfunc)
-  local vals, depdoms, i, pos;
-
+  local vals, dom, i, pos;
   vals:=depfunc!.vals;
-  depdoms:=depfunc!.depdoms;
-  i:=Length(deparg)+1;
-  #in case the argument tuple is longer
-  if not IsBound(depdoms[i]) then
-    return fail;
-  fi;
+  dom:=depfunc!.dom;
+  #if the argument is not in the domain
+  if not(deparg in dom) then return fail; fi;
   #searching for the position of the argument tuple
-  pos:=Position(depdoms[i], deparg);
-  #if it is not there, then the argument is not comaptible with df
-  if pos=fail then
-    return fail;
-  fi;
+  pos:=Position(dom, deparg);
   #the default value is the identity
-  if not IsBound(vals[i][pos]) then
+  if not IsBound(vals[pos]) then
     return ();
   fi;
-  return vals[i][pos];
+  return vals[pos];
 end);
+
+################################################################################
+# PRINTING #####################################################################
+################################################################################
+
+InstallMethod(ViewObj, "for a dependency func",
+[IsDependencyFunc],
+function(x) Print("<dependency function>"); return; end);
