@@ -24,7 +24,7 @@ DeclareGlobalFunction("Cascade");
 
 DeclareOperation("AsCascade", [IsTransformation, IsCyclotomicCollection]);
 DeclareAttribute("DomainOf", IsCascade);
-DeclareAttribute("DependencyFunction", IsCascade);
+DeclareAttribute("DependencyFunctionOf", IsCascade);
 DeclareAttribute("NrComponentsOfCascade",IsCascade);
 DeclareAttribute("NrDependenciesOfCascade",IsCascade);
 DeclareAttribute("ComponentDomains",IsCascade);

@@ -38,7 +38,7 @@ function(arg)
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
   SetDependencyDomainsOf(f, arg[3]!.prefixes);#ugly hack TODO
-  SetDependencyFunction(f, CreateDependencyFunction(arg[3]));
+  SetDependencyFunctionOf(f, CreateDependencyFunction(arg[3]));
   SetNrComponentsOfCascade(f, Length(arg[2]));
   return f;
 end);
@@ -116,7 +116,7 @@ function(f, comps)
     return fail;
   fi;
 
-  prefix:=CreateDependencyDomains(comps);
+  prefix:=DependencyDomains(comps);
   dom:=EnumeratorOfCartesianProduct(comps);
   n:=Length(comps);
   vals:=List(prefix, x-> List([1..Length(x)], x-> []));
