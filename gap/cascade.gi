@@ -55,7 +55,7 @@ function(comps) return CascadeNC(comps,[]); end);
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
-  local comps, prefixes, tup, vals, len, x, j, k, val, i;
+  local comps, depdoms, tup, vals, len, x, j, k, val, i, depfuncs;
 
   if not IsListOfPermGroupsAndTransformationSemigroups(list) then
     Error("the first argument should be a list of transformation semigroups",
@@ -64,19 +64,11 @@ function(list, numofdeps)
   fi;
   comps:=ComponentDomains(list);
   # create the enumerator for the dependency func
-  prefixes:=EmptyPlist(Length(comps)+1);
-  prefixes[1]:=[[]];
-
-  tup:=[];
-
-  for i in [1..Length(comps)-1] do
-    Add(tup, comps[i]);
-    Add(prefixes, EnumeratorOfCartesianProduct(tup));
-  od;
+  depdoms:=DependencyDomains(comps);
 
   # create the function
-  vals:=List(prefixes, x-> EmptyPlist(Length(x)));
-  len:=Sum(List(prefixes, Length));
+  vals:=List(depdoms, x-> EmptyPlist(Length(x)));
+  len:=Sum(List(depdoms, Length));
   numofdeps:=Minimum([len, numofdeps]);
 
   x:=[1..len];
@@ -84,8 +76,8 @@ function(list, numofdeps)
     j:=Random(x);
     RemoveSet(x, j);
     k:=1;
-    while j>Length(prefixes[k]) do
-      j:=j-Length(prefixes[k]);
+    while j>Length(depdoms[k]) do
+      j:=j-Length(depdoms[k]);
       k:=k+1;
     od;
     val:=Random(list[k]);
@@ -96,9 +88,10 @@ function(list, numofdeps)
       vals[k][j]:=val;
     fi;
   od;
-
+  depfuncs := List([1..Length(vals)],
+                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(EnumeratorOfCartesianProduct(comps),
-   comps, prefixes, vals);
+                 comps, depfuncs,CascadeType);
 end);
 
 #JDM install Cascade, check args are sensible.
