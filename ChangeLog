@@ -1,3 +1,5 @@
+0.7.4.
+	Dependency functions are now separated for each level, thus cascades become tuples of dependency functions. Exactly as described mathematically.
 0.7.3
 	Numerous renamings, unified DomainOf and DependencyDomainsOf for cascades and cascade semigroups. IdentityCascade added. Test scripts updated.
 0.7.2
