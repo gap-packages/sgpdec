@@ -109,40 +109,49 @@ end);
 InstallMethod(AsCascade, "for a transformation and list of domain sizes",
 [IsTransformation, IsCyclotomicCollection],
 function(f, comps)
-  local prefix, dom, n, vals, one, x, m, pos, i, j;
+  local depdoms,dom,n,vals,one,x,level,pos,i,j,depfuncs,coords,new, compdoms;
 
   if not ForAll(comps, IsPosInt) or DegreeOfTransformation(f)<>Product(comps)
    then
     return fail;
   fi;
 
-  prefix:=DependencyDomains(comps);
-  dom:=EnumeratorOfCartesianProduct(comps);
+  depdoms:=DependencyDomains(comps);
+  compdoms := List(comps,x -> [1..x]);
+  dom:=EnumeratorOfCartesianProduct(compdoms);
   n:=Length(comps);
-  vals:=List(prefix, x-> List([1..Length(x)], x-> []));
-  one:=List(prefix, x-> BlistList([1..Length(x)], [1..Length(x)]));
+  #vals collecting the images of individual points
+  vals:=List(depdoms, x-> List([1..Length(x)], x-> []));
+  #initially we assume that it is the identity everywhere
+  one:=List(depdoms, x-> BlistList([1..Length(x)], [1..Length(x)]));
   for i in [1..DegreeOfTransformation(f)] do
-    x:=ShallowCopy(dom[i]);
-    m:=n;
-    Remove(x, m);
-    pos:=Position(prefix[m], x);
+    coords := dom[i]; #the coordinatized original point i
+    new := dom[i^f];
+    #we copy coords, as we will remove its elements one by one
+    x:=ShallowCopy(coords);
+    level:=n;
+    Remove(x, level);
+    #the position in dependency domain on the level
+    pos:=Position(depdoms[level], x);
     repeat
-      vals[m][pos][dom[i][m]]:=dom[i^f][m];
-      if dom[i][m]<>vals[m][pos][dom[i][m]] then
-        one[m][pos]:=false;
+      #
+      vals[level][pos][coords[level]] := new[level];
+      #if we find a nontrivial map, then we flip the bit
+      if coords[level] <> vals[level][pos][coords[level]] then
+        one[level][pos] := false;
       fi;
-      m:=m-1;
-      if m=0 then
+      level:=level-1;
+      if level=0 then
         break;
       fi;
-      Remove(x, m);
-      pos:=Position(prefix[m], x);
-    until IsBound(vals[m][pos][dom[i][m]]);
-    if m<>0 and vals[m][pos][dom[i][m]]<>dom[i^f][m] then
+      Remove(x, level);
+      pos:=Position(depdoms[level], x);
+    until IsBound(vals[level][pos][coords[level]]);
+    if level <> 0 and vals[level][pos][coords[level]] <> new[level] then
       return fail;
     fi;
   od;
-  #post process
+  #post process - turning the image lists into transformations
   for i in [1..Length(vals)] do
     for j in [1..Length(vals[i])] do
       if one[i][j] then
@@ -153,7 +162,9 @@ function(f, comps)
     od;
   od;
 
-  return CreateCascade(dom, comps, prefix, vals);
+  depfuncs := List([1..Length(vals)],
+                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+  return CreateCascade(dom, compdoms, depfuncs,CascadeType);
 end);
 
 # action and operators
