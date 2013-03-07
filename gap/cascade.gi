@@ -215,13 +215,16 @@ end);
 InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
-  return DependencyFunction(p)!.vals = DependencyFunction(q)!.vals;
+  return DependencyFunctionsOf(p) = DependencyFunctionsOf(q);
 end);
 
 InstallOtherMethod(\<, "for cascade op and cascade op",
 [IsCascade, IsCascade],
 function(p,q)
-  return DependencyFunction(p)!.vals < DependencyFunction(q)!.vals;
+  local ps, qs;
+  ps := DependencyFunctionsOf(p);
+  qs := DependencyFunctionsOf(q);
+  return ForAll([1..Size(ps)],i->ps[i]<qs[i]);
 end);
 
 # attributes
@@ -237,19 +240,8 @@ end);
 # not for time critical code, but DotCascade can be made representation agnostic
 InstallGlobalFunction(DependenciesOfCascade,
 function(ct)
-  local deps,i,j,df,vals,prefixes;
-  df := DependencyFunction(ct);
-  vals := df!.vals;
-  prefixes := df!.prefixes;
-  deps := [];
-  for i in [1..Size(vals)] do
-    for j in [1..Size(vals[i])] do
-      if IsBound(vals[i][j]) then
-        Add(deps, [prefixes[i][j], vals[i][j]]);
-      fi;
-    od;
-  od;
-  return deps;
+  return Concatenation(List(DependencyFunctionsOf(ct),
+                 df -> Dependencies(df)));
 end);
 
 ################################################################################

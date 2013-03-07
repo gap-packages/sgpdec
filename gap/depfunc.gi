@@ -85,6 +85,20 @@ local dep, vals, level;
               x -> CreateDependencyFunction(depdoms[x],vals[x]));
 end);
 
+InstallGlobalFunction(Dependencies,
+function(df)
+  local deps,i,dom,vals;
+  vals := df!.vals;
+  dom := df!.dom;
+  deps := [];
+  for i in [1..Size(vals)] do
+    if IsBound(vals[i]) then
+      Add(deps, [dom[i], vals[i]]);
+    fi;
+  od;
+  return deps;
+end);
+
 ################################################################################
 # ATTRIBUTES ###################################################################
 ################################################################################
@@ -104,6 +118,13 @@ InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 function(p,q)
   return (p!.dom = q!.dom) and (p!.vals = q!.vals);
 end);
+
+InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
+[IsDependencyFunc, IsDependencyFunc],
+function(p,q)
+  return p!.vals < q!.vals;
+end);
+
 
 ################################################################################
 # ACTION #######################################################################
