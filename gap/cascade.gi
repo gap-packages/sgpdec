@@ -160,15 +160,15 @@ end);
 
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
-  local dep, copy, out, len, i;
+  local dfs, copy, out, len, i;
 
-  dep:=DependencyFunction(ct);
+  dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
   copy:=EmptyPlist(len);
   out:=EmptyPlist(len);
 
   for i in [1..len] do
-    out[i]:=coords[i]^(copy^dep);
+    out[i]:=coords[i]^(copy^dfs[i]);
     copy[i]:=coords[i];
   od;
   return out;
