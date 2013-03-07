@@ -213,8 +213,8 @@ end);
 InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
 function(s)
-  local nr, comps, pts, prefix, dom, compdom, oldfix, gens, nrgens,
-        m, pos, func, pre, x, y, i;
+  local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
+        m, pos, func, pre, x, y, i, depfuncs;
 
   nr:=NrComponentsOfCascadeSemigroup(s);
   comps:=ComponentsOfCascadeSemigroup(s);
@@ -223,7 +223,7 @@ function(s)
 
   dom:=DomainOf(s);
   compdom:=ComponentDomains(s);
-  oldfix:=DependencyDomainsOf(s);
+  depdoms:=DependencyDomainsOf(s);
   gens:=[]; nrgens:=0;
 
   for pre in prefix do
@@ -241,7 +241,13 @@ function(s)
           fi;
         od;
         nrgens:=nrgens+1;
-        gens[nrgens]:=CreateCascade(dom, compdom, oldfix, func);
+        depfuncs := List([1..Length(func)],
+                   x -> CreateDependencyFunction(depdoms[x],func[x]));
+        gens[nrgens]:=CreateCascade(
+                              DomainOf(s),
+                              ComponentDomains(s),
+                              depfuncs,
+                              CascadeType);
       od;
     od;
   od;
