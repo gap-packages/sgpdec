@@ -30,17 +30,20 @@ end);
 
 # either:
 # 1) cascade  and depfuncs; or
-# 2) domain, component domains, type, depfuncs
+# 2) domain, component domains, depfuncs,type
 InstallGlobalFunction(CreateCascade,
-function(arg)
+function(arg) #this argument naming by indices is so unreadable, arrgh
 local f;
   # cascade and depfunc
-  if Length(arg)=2 then
-    return CreateCascade(
-                   DomainOf(arg[1]),
-                   ComponentDomains(arg[1]),
-                   arg[2]);
-  fi;
+  #if Length(arg)=2 then
+  #  Print("hiya\c");
+  #  return CreateCascade(
+  #                 DomainOf(arg[1]),
+  #                 ComponentDomains(arg[1]),
+  #                 arg[2],
+  #                 TypeObj(arg[1]));
+  #fi;
+  #Print("heyo\c");
   f:=Objectify(arg[4], rec());
   SetDomainOf(f, arg[1]);
   SetComponentDomains(f, arg[2]);
@@ -188,23 +191,25 @@ end);
 InstallMethod(\*, "for cascades", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(f,g)
-  local dep_f, dep_g, prefix, vals, x, i, j;
+  local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs;
 
-  dep_f:=DependencyFunction(f);
-  dep_g:=DependencyFunction(g);
-  prefix:=DependencyDomainsOf(f);
-  #empty values lookup table based on the sizes of prefixes
-  vals:=List(prefix, x-> EmptyPlist(Length(x)));
-  #going through all prefixes
-  for i in [1..Length(prefix)] do
-    for j in [1..Length(prefix[i])] do
-      x:= prefix[i][j]^dep_f * OnCoordinates(prefix[i][j],f)^dep_g;
+  dep_f:=DependencyFunctionsOf(f);
+  dep_g:=DependencyFunctionsOf(g);
+  depdoms:=DependencyDomainsOf(f);
+  #empty values lookup table based on the sizes of depdoms
+  vals:=List(depdoms, x-> EmptyPlist(Length(x)));
+  #going through all depdoms
+  for i in [1..Length(depdoms)] do
+    for j in [1..Length(depdoms[i])] do
+      x:= depdoms[i][j]^dep_f[i] * OnCoordinates(depdoms[i][j],f)^dep_g[i];
       if not IsOne(x) then
         vals[i][j]:=x;
       fi;
     od;
   od;
-  return CreateCascade(f, vals);
+  depfuncs := List([1..Length(vals)],
+                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+  return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, CascadeType);
 end);
 
 InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
