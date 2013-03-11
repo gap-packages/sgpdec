@@ -212,19 +212,30 @@ function(f,g)
   return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, CascadeType);
 end);
 
-InstallMethod(\=, "for cascade and cascade", IsIdenticalObj,
+InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
-  return DependencyFunctionsOf(p) = DependencyFunctionsOf(q);
+  local ps, qs, i;
+  ps := DependencyFunctionsOf(p);
+  qs := DependencyFunctionsOf(q);
+  for i in [1..Size(ps)] do
+    if (ps[i] < qs[i]) then
+      return true;
+    elif (ps[i] > qs[i]) then
+      return false;
+    fi;
+  od;
+  #in case all equal
+  return false;
 end);
 
-InstallOtherMethod(\<, "for cascade op and cascade op",
+InstallOtherMethod(\=, "for cascade and cascade",
 [IsCascade, IsCascade],
 function(p,q)
   local ps, qs;
   ps := DependencyFunctionsOf(p);
   qs := DependencyFunctionsOf(q);
-  return ForAll([1..Size(ps)],i->ps[i]<qs[i]);
+  return ForAll([1..Size(ps)],i->ps[i]=qs[i]);
 end);
 
 # attributes
