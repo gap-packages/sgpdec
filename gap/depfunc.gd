@@ -8,8 +8,15 @@
 ##
 ## Dependency function.
 ##
-
 DeclareCategory("IsDependencyFunc", IsRecord);
+
+BindGlobal("DependencyFunctionFamily",
+        NewFamily("DependencyFunctionFamily",
+                IsDependencyFunc,CanEasilySortElements,CanEasilySortElements));
+
+BindGlobal("DependencyFunctionType", NewType(DependencyFunctionFamily,
+        IsDependencyFunc and IsAssociativeElement));
+
 DeclareGlobalFunction("DependencyDomains");
 #when you make it from dependencies
 DeclareGlobalFunction("DependencyFunction");

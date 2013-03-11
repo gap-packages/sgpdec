@@ -42,8 +42,7 @@ end);
 InstallGlobalFunction(CreateDependencyFunction,
 function(dom, vals)
   MakeImmutable(vals); #just to be on the safe side
-  return Objectify(NewType(CollectionsFamily(FamilyObj(vals)),IsDependencyFunc),
-                 rec(dom:=dom,vals:=vals));
+  return Objectify(DependencyFunctionType,rec(dom:=dom,vals:=vals));
 end);
 
 # Creates the list of all dependency domains of given sizes.
@@ -115,14 +114,47 @@ end);
 
 InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunc, IsDependencyFunc],
-function(p,q)
-  return (p!.dom = q!.dom) and (p!.vals = q!.vals);
+        function(p,q)
+  local i, pvals, qvals;
+  #local variables for speeding up record member access
+  pvals := p!.vals;
+  qvals := q!.vals;
+  if IsEmpty(pvals) and IsEmpty (qvals) then return true; fi;
+  for i in [1..Size(p!.dom)] do
+    if (not IsBound(pvals[i])) and (not IsBound(qvals[i])) then
+      break; # that is good
+    fi;
+    if IsBound(pvals[i]) and IsBound(qvals[i]) and  pvals[i] = qvals[i] then
+      break; #that's also good
+    fi;
+    return false;
+  od;
+  return true;
 end);
 
 InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunc, IsDependencyFunc],
-function(p,q)
-  return p!.vals < q!.vals;
+        function(p,q)
+  local pval, qval,i;
+  #first compare the domains
+  if p!.dom <> q!.dom then return p!.dom < q!.dom; fi;
+  for i in [1..Size(p!.dom)] do
+    if IsBound(p!.vals[i]) then
+      pval := p!.vals[i];
+    else
+      pval := ();
+    fi;
+    if IsBound(q!.vals[i]) then
+      qval := q!.vals[i];
+    else
+      qval := ();
+    fi;
+    if pval < qval then
+      return true;
+    else
+      return false;
+    fi;
+  od;
 end);
 
 
