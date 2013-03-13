@@ -73,9 +73,9 @@ function(list, numofdeps)
     od;
     val:=Random(list[k]);
     if not IsOne(val) then
-      if not IsTransformation(val) then
-        val:=AsTransformation(val);
-      fi;
+      #if not IsTransformation(val) then
+      #  val:=AsTransformationNC(val,);
+      #fi;
       vals[k][j]:=val;
     fi;
   od;
