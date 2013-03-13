@@ -183,13 +183,14 @@ function(f,g)
 
   dep_f:=DependencyFunctionsOf(f);
   dep_g:=DependencyFunctionsOf(g);
-  depdoms:=DependencyDomainsOf(f);
+  depdoms:=DependencyDomainsOf(f); #TODO get rid of this
   #empty values lookup table based on the sizes of depdoms
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
   #going through all depdoms
   for i in [1..Length(depdoms)] do
     for j in [1..Length(depdoms[i])] do
-      x:= depdoms[i][j]^dep_f[i] * OnCoordinates(depdoms[i][j],f)^dep_g[i];
+      x:= OnDepArg(depdoms[i][j],dep_f[i])
+          * OnDepArg(OnCoordinates(depdoms[i][j],f),dep_g[i]);
       if not IsOne(x) then
         vals[i][j]:=x;
       fi;
