@@ -95,22 +95,32 @@ function(ct)
 return TransformationOp(ct, DomainOf(ct), OnCoordinates);
 end);
 
-#
-
-InstallMethod(AsCascade, "for a transformation and list of domain sizes",
-[IsTransformation, IsCyclotomicCollection],
-function(f, comps)
-  local depdoms,dom,n,vals,one,x,level,pos,i,j,depfuncs,coords,new, compdoms;
-
-  if not ForAll(comps, IsPosInt) or DegreeOfTransformation(f)<>Product(comps)
-   then
+# if the components are given then for groups permutations are produced
+# if not, just transformations, even if it is a bijection
+InstallMethod(AsCascade,
+        "for a transformation and list of domain sizes or components",
+        [IsTransformation, IsDenseList],
+function(f, compsordomsizes)
+  local depdoms,dom,n,vals,one,x,level,pos,i,j,depfuncs,coords,new, compdoms,
+        knowcomps, comps, domsizes;
+  #deciding what input we got
+  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
+    comps := compsordomsizes;
+    domsizes := List(ComponentDomains(comps), c -> Size(c));
+    knowcomps := true;
+  else
+    domsizes := compsordomsizes;
+    knowcomps := false;
+  fi;
+  #sanity check on the domain sizes
+  if not ForAll(domsizes, IsPosInt)
+     or DegreeOfTransformation(f)<>Product(domsizes) then
     return fail;
   fi;
-
-  depdoms:=DependencyDomains(comps);
-  compdoms := List(comps,x -> [1..x]);
+  depdoms:=DependencyDomains(domsizes);
+  compdoms := List(domsizes,x -> [1..x]);
   dom:=EnumeratorOfCartesianProduct(compdoms);
-  n:=Length(comps);
+  n:=Length(domsizes);
   #vals collecting the images of individual points
   vals:=List(depdoms, x-> List([1..Length(x)], x-> []));
   #initially we assume that it is the identity everywhere
@@ -148,7 +158,11 @@ function(f, comps)
       if one[i][j] then
         Unbind(vals[i][j]);
       else
-        vals[i][j]:=TransformationNC(vals[i][j]);
+        if knowcomps and IsPermGroup(comps[i]) then
+          vals[i][j]:=PermList(vals[i][j]);
+        else
+          vals[i][j]:=TransformationNC(vals[i][j]);
+        fi;
       fi;
     od;
   od;

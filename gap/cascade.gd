@@ -25,7 +25,7 @@ DeclareGlobalFunction("Cascade");
 DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("IdentityCascade");
 DeclareGlobalFunction("RandomCascade");
-DeclareOperation("AsCascade", [IsTransformation, IsCyclotomicCollection]);
+DeclareOperation("AsCascade", [IsTransformation, IsDenseList]);
 
 #accessing cascade internals
 DeclareAttribute("DomainOf", IsCascade);
