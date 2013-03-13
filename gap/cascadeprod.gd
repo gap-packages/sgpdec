@@ -19,7 +19,6 @@ DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
 DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 DeclareAttribute("ComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("DomainOf", IsCascadeSemigroup);
-DeclareAttribute("DependencyDomainsOf", IsCascadeSemigroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeSemigroup);
 DeclareAttribute("NrComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 
