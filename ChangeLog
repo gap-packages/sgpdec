@@ -1,3 +1,5 @@
+0.7.5
+	Mixed components are allowed again, with minimal code changes. Further cleanups following the DependencyFunction separation. New test case for checking lifting as well.
 0.7.4.
 	Dependency functions are now separated for each level, thus cascades become tuples of dependency functions. Exactly as described mathematically.
 0.7.3
