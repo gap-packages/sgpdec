@@ -84,12 +84,6 @@ function(l)
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
 
-InstallMethod(DependencyDomainsOf,
-[IsCascadeSemigroup],
-function(cascprod)
-  return DependencyDomainsOf(Representative(cascprod));
-end);
-
 InstallOtherMethod(NrComponentsOfCascadeSemigroup,
 [IsCascadeSemigroup],
 function(cascprod)
