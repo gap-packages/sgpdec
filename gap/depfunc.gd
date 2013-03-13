@@ -25,4 +25,5 @@ DeclareGlobalFunction("Dependencies");
 DeclareGlobalFunction("CreateDependencyFunction");
 DeclareGlobalFunction("OnDepArg");
 DeclareGlobalFunction("Deps2DepFuncs");
+DeclareAttribute("DomainOf", IsDependencyFunc);
 DeclareAttribute("NrDependencies",IsDependencyFunc);
