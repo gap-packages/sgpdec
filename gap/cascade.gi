@@ -28,28 +28,16 @@ function(doms, deps)
                  Deps2DepFuncs(DependencyDomains(doms), deps), CascadeType);
 end);
 
-# either:
-# 1) cascade  and depfuncs; or
-# 2) domain, component domains, depfuncs,type
+# domain, component domains, depfuncs, type
 InstallGlobalFunction(CreateCascade,
-function(arg) #this argument naming by indices is so unreadable, arrgh
+function(dom, compdoms, depfuncs, type)
 local f;
-  # cascade and depfunc
-  #if Length(arg)=2 then
-  #  Print("hiya\c");
-  #  return CreateCascade(
-  #                 DomainOf(arg[1]),
-  #                 ComponentDomains(arg[1]),
-  #                 arg[2],
-  #                 TypeObj(arg[1]));
-  #fi;
-  #Print("heyo\c");
-  f:=Objectify(arg[4], rec());
-  SetDomainOf(f, arg[1]);
-  SetComponentDomains(f, arg[2]);
-  SetDependencyDomainsOf(f, DependencyDomains(arg[2]));#ugly hack, TODO no dup!
-  SetDependencyFunctionsOf(f, arg[3]);
-  SetNrComponentsOfCascade(f, Length(arg[2]));
+  f:=Objectify(type, rec());
+  SetDomainOf(f, dom);
+  SetComponentDomains(f, compdoms);
+  SetDependencyDomainsOf(f, DependencyDomains(compdoms));#ugly hack TODO no dup!
+  SetDependencyFunctionsOf(f, depfuncs);
+  SetNrComponentsOfCascade(f, Length(compdoms));
   return f;
 end);
 
