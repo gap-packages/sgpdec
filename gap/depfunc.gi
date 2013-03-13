@@ -108,6 +108,11 @@ function(f)
   return Number([1..Length(f!.vals)], i-> IsBound(f!.vals[i]));
 end);
 
+# to have controlled access to the domain, TODO not 100% sure about this
+InstallMethod(DomainOf,[IsDependencyFunc],
+df-> DomainOf(df!.dom));
+
+
 ###############################################################################
 # STANDARD METHODS ############################################################
 ###############################################################################
