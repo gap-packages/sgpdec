@@ -7,7 +7,8 @@
 ## 2009-2012
 ## One line notation for transformations.
 
-# Finding the components of a transformation (the disconnected subgraphs).
+# Finding the components of a transformation, i.e.  the disconnected subgraphs
+# of its functional digraph.
 # A component is a list of points, and the components are returned in a list.
 TransformationComponents := function(t)
 local visited,comps, i,actualcomp;
@@ -17,16 +18,16 @@ local visited,comps, i,actualcomp;
   for i in [1..DegreeOfTransformation(t)] do
     #...but skipping those that are already in some component
     if not (i in visited) then
-      Add(comps,[]);    #let's start with a fresh new component
-      actualcomp := comps[Length(comps)]; #make it the actual one
-      repeat 
-        Add(actualcomp,i);
-        Add(visited,i);
+      Add(comps,[]); #let's start with a fresh new component
+      actualcomp := comps[Length(comps)]; #make the last to the actual one
+      repeat
+        AddSet(actualcomp,i);
+        AddSet(visited,i);
         i := i ^ t;
-      until i in visited; #keep adding until we bump into soemthing known
-      if not (i in actualcomp) then #known but not in actual component -> merge & remove
+      until i in visited; #keep adding until we bump into something known
+      if not (i in actualcomp) then #known but not in actual component -> merge
         Append(First(comps, c -> i in c), actualcomp);
-        Remove(comps);
+        Remove(comps); # & remove the last component
       fi;
     fi;
   od;
