@@ -60,7 +60,6 @@ local preimgs,p;
     str := Concatenation(str,String(point));
     return str;
   fi;
-  
   str := Concatenation(str,"["); #starting the tree notation
   for p in preimgs do
     #if we are tracing the tree, not the cycle the recursion
@@ -112,7 +111,7 @@ end);
 InstallGlobalFunction(SimplerLinearNotation,
  function(transformation)
  if RankOfTransformation(transformation) = 1 then
-  return Concatenation("[->", String(transformation![1][1]),"]");
+  return Concatenation("[->", String(1^transformation),"]");
  else
   return LinearNotation(transformation);
  fi;
