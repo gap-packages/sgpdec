@@ -40,7 +40,7 @@ CycleOfTransformationFromPoint := function(t,p)
 local orbit;
   orbit := []; #we generate the orbit
   while not (p in orbit) do
-    AddSet(orbit,p);
+    Add(orbit,p);
     p := p ^ t;
   od;
   #p is repeated so we can  cut out the cycle
