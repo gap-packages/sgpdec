@@ -1,11 +1,3 @@
-MultiReplace := function(str, pairs)
-  local pair;
-  for pair in pairs do
-    str := ReplacedString(str,pair[1],pair[2]);
-  od;
-  return str;
-end;
-
 DepthVector := function(str)
   local openers,closers,last,depth, i, depthvect;
   openers := "[(";
@@ -36,12 +28,13 @@ end;
 
 # finding the components in the string
 LinNotComps := function(str)
-  SplitStringAtPositions(str, Positions(DepthVector(str),0));
+  return SplitStringAtPositions(str, Positions(DepthVector(str),0));
 end;
 
 # finding the components in the string
 CommaComps := function(str)
   local cuts;
+  if IsEmpty(str) then return [];fi;
   cuts := Intersection(Positions(DepthVector(str),0),
                   Positions(str,','));
   Add(cuts, Size(str));
@@ -60,25 +53,54 @@ local s, poss, lastpos;
   if Int(str) <> fail then return str;
   else
     s := CutParentheses(str);
-    Display(s);
     poss := Positions(str, ';');
     lastpos := poss[Size(poss)];
     return s{[lastpos..Size(s)]};
   fi;
 end;
 
+#this gets the last image
+GetPreImgs := function(str)
+local s, poss, lastpos;
+    s := CutParentheses(str);
+    poss := Positions(str, ';');
+    lastpos := poss[Size(poss)];
+    return CommaComps(s{[1..lastpos-2]});
+end;
+
 #recursively fill the list maps [point, image] tuples
-AllMapsFromLinNot := function(str)
-  local maps,l,i;
-  maps := [];
+AllMapsFromLinNotComp := function(str,maps)
+  local l,i,comps,img;
+  comps := [];
   if str[1] = '(' then
     # permutation
-    l := List(CommaComps(CutParentheses(str)), s->Int(GetImgVal(s)));
-    Add(l, l[1]); #closing the circle
+    comps := CommaComps(CutParentheses(str));
+    l := List(comps, s->Int(GetImgVal(s)));
+    if not IsEmpty(l) then Add(l, l[1]);fi; #closing the circle
     for i in [1..Size(l)-1] do
       Add(maps, [l[i],l[i+1]]);
     od;
-  else
+  elif str[1] = '[' then
+    #extract from a [x,y,z;w] entry recursively
+    comps := (GetPreImgs(str));
+    l := List(comps, s->Int(GetImgVal(s)));
+    img := Int(GetImgVal(str));
+    Perform([1..Size(l)], function(x)Add(maps,[l[x],img]);end);
   fi;
+  Perform(comps,function(x)AllMapsFromLinNotComp(x,maps);end);
   return maps;
 end;
+
+InstallOtherMethod(AsTransformation,"for cascade and int",[IsString,IsPosInt],
+function(s,n)
+local maps,scc,l,m;
+  maps := [];
+  l := [1..n];
+  for scc in LinNotComps(s) do
+    AllMapsFromLinNotComp(scc,maps);
+  od;
+  for m in maps do
+    l[m[1]] := m[2];
+  od;
+  return Transformation(l);
+end);
