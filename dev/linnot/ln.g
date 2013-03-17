@@ -50,7 +50,7 @@ CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
 #this gets the last image
 GetImgVal := function(str)
 local s, poss, lastpos;
-  if Int(str) <> fail then return str;
+  if not('[' in str)  then return str;
   else
     s := CutParentheses(str);
     poss := Positions(str, ';');
