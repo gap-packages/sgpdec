@@ -53,7 +53,8 @@ MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
 # needs to be known to exclude tho preimages in the cycle.
 # point - the root of the tree,
 # t - transformation,
-#the list of the cycle elements, the string
+# cycle - the cycle of the component
+# str - the buffer string in which to print
 TreePrint := function(point, t,cycle, str)
 local preimgs,p;
   #we reverse the arrows in the graph for the recursion, but not the cycle
@@ -77,22 +78,25 @@ MakeReadOnlyGlobal("TreePrint");
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
 function(t)
-  local components,comp,cycle,point,str;
+  local comp,cycle,point,str;
   #this special case would be difficult to handle
   if IsOne(t) then return "()";fi;
   str := "";
-  components := TransformationComponents(t);
-  for comp in components do
+  for comp in TransformationComponents(t) do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
     #1-cycles are not displayed as cycles (but it can be a tree)
     cycle := CycleOfTransformationFromPoint(t,comp[1]);
-    if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
+    if (Length(cycle) > 1) then #if it is a permutation
+      str := Concatenation(str,"(");
+    fi;
     for point in cycle do
       str := TreePrint(point,t,cycle,str);
       str := Concatenation(str,",");
     od;
     Remove(str); #removing unnecessary last comma
-    if (Length(cycle) > 1 ) then str := Concatenation(str,")");fi;
+    if (Length(cycle) > 1 ) then
+      str := Concatenation(str,")");
+    fi;
   od;
   return str;
 end);
