@@ -48,31 +48,27 @@ local orbit;
 end;
 MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
 
-##############################################
-# point - the root of the tree, transformation,
+################################################################################
+# Recursively prints the tree incoming into a point. The point's cycle also
+# needs to be known to exclude tho preimages in the cycle.
+# point - the root of the tree,
+# t - transformation,
 #the list of the cycle elements, the string
-TreePrint := function(point, transformation,cycle, str)
+TreePrint := function(point, t,cycle, str)
 local preimgs,p;
-
-  #we reverse the arrows in the graph for the recursion
-  preimgs := PreimagesOfTransformation(transformation, point);
+  #we reverse the arrows in the graph for the recursion, but not the cycle
+  preimgs := Difference(PreimagesOfTransformation(t, point),cycle);
   if IsEmpty(preimgs) then   #if it is a terminal point, just print it
     str := Concatenation(str,String(point));
     return str;
   fi;
   str := Concatenation(str,"["); #starting the tree notation
   for p in preimgs do
-    #if we are tracing the tree, not the cycle the recursion
-    if point <> p and (not p in cycle)then
-      str := TreePrint(p,transformation,cycle,str);
-      str := Concatenation(str,",");
-    fi;
+    str := TreePrint(p,t,cycle,str);
+    str := Concatenation(str,",");
   od;
   if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
-  if (Size(preimgs) > 1) # this part is not totally clear ENA
-     or (preimgs[1] <> point and not (preimgs[1] in cycle)) then
-    str := Concatenation(str,";");
-  fi;
+  str := Concatenation(str,";");
   str := Concatenation(str,String(point),"]"); # ending the tree notation
   return str;
 end;
@@ -80,28 +76,22 @@ MakeReadOnlyGlobal("TreePrint");
 
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
-function(transformation)
+function(t)
   local components,comp,cycle,point,str;
   #this special case would be difficult to handle
-  if IsOne(transformation) then return "()";fi;
+  if IsOne(t) then return "()";fi;
   str := "";
-  components := TransformationComponents(transformation);
+  components := TransformationComponents(t);
   for comp in components do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
     #1-cycles are not displayed as cycles (but it can be a tree)
-    cycle := CycleOfTransformationFromPoint(transformation,comp[1]);
+    cycle := CycleOfTransformationFromPoint(t,comp[1]);
     if (Length(cycle) > 1 ) then str := Concatenation(str,"(");fi;
     for point in cycle do
-      if IsSubset(AsSet(cycle), AsSet(PreimagesOfTransformation(transformation, point))) then
-        #preimages are all in the cycle -> no incoming tree, just print the point
-        str := Concatenation(str,String(point));
-      else
-        #print the incoming tree
-        str := TreePrint(point,transformation,cycle,str);
-      fi;
+      str := TreePrint(point,t,cycle,str);
       str := Concatenation(str,",");
     od;
-    Remove(str); #removing last comma
+    Remove(str); #removing unnecessary last comma
     if (Length(cycle) > 1 ) then str := Concatenation(str,")");fi;
   od;
   return str;
@@ -109,11 +99,11 @@ end);
 
 #constant maps are further simplified
 InstallGlobalFunction(SimplerLinearNotation,
- function(transformation)
- if RankOfTransformation(transformation) = 1 then
-  return Concatenation("[->", String(1^transformation),"]");
+ function(t)
+ if RankOfTransformation(t) = 1 then
+  return Concatenation("[->", String(1^t),"]");
  else
-  return LinearNotation(transformation);
+  return LinearNotation(t);
  fi;
 end);
 
@@ -124,7 +114,7 @@ if SgpDecOptionsRec.LINEAR_NOTATION then
     "linear notation for transformations",
     true,
     [IsTransformation], 0,
-  function( t )
+  function(t)
     Print(SimplerLinearNotation(t));
   end);
 fi;
