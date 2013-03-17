@@ -1,5 +1,6 @@
+# assigns how many parentheses are open to each point, 0 means top level
 DepthVector := function(str)
-  local openers,closers,last,depth, i, depthvect;
+local openers,closers,depth,i,depthvect;
   openers := "[(";
   closers := ")]";
   depth := 0;
@@ -15,6 +16,7 @@ DepthVector := function(str)
   return depthvect;
 end;
 
+#splitting string at given positions
 SplitStringAtPositions := function(str, poss)
   local pieces, last,i;
   last := 0;
@@ -26,18 +28,18 @@ SplitStringAtPositions := function(str, poss)
   return pieces;
 end;
 
-# finding the components in the string
+# finding the components in the string, i.e. splitting at depth zeros
 LinNotComps := function(str)
   return SplitStringAtPositions(str, Positions(DepthVector(str),0));
 end;
 
-# finding the components in the string
+# finding comma separated values (only at zero depth)
 CommaComps := function(str)
   local cuts;
   if IsEmpty(str) then return [];fi;
   cuts := Intersection(Positions(DepthVector(str),0),
                   Positions(str,','));
-  Add(cuts, Size(str));
+  Add(cuts, Size(str)); #to have the last pieve as well
   #post process: removing dangling commas
   return List(SplitStringAtPositions(str, cuts),
               function(s) if s[Size(s)]=',' then return s{[1..Size(s)-1]};
