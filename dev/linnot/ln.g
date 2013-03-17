@@ -1,3 +1,11 @@
+MultiReplace := function(str, pairs)
+  local pair;
+  for pair in pairs do
+    str := ReplacedString(str,pair[1],pair[2]);
+  od;
+  return str;
+end;
+
 DepthVector := function(str)
   local openers,closers,last,depth, i, depthvect;
   openers := "[(";
@@ -46,6 +54,7 @@ end;
 #just remove outer parentheses
 CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
 
+#this gets the last image
 GetImgVal := function(str)
 local s, poss, lastpos;
   if Int(str) <> fail then return str;
@@ -60,12 +69,15 @@ end;
 
 #recursively fill the list maps [point, image] tuples
 AllMapsFromLinNot := function(str)
-  local maps;
+  local maps,l,i;
   maps := [];
   if str[1] = '(' then
     # permutation
-    return List(CommaComps(CutParentheses(str)), GetImgVal);
-    
+    l := List(CommaComps(CutParentheses(str)), s->Int(GetImgVal(s)));
+    Add(l, l[1]); #closing the circle
+    for i in [1..Size(l)-1] do
+      Add(maps, [l[i],l[i+1]]);
+    od;
   else
   fi;
   return maps;
