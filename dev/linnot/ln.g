@@ -15,6 +15,7 @@ local openers,closers,depth,i,depthvect;
   od;
   return depthvect;
 end;
+MakeReadOnlyGlobal("DepthVector");
 
 #splitting string at given positions
 SplitStringAtPositions := function(str, poss)
@@ -27,6 +28,7 @@ SplitStringAtPositions := function(str, poss)
   od;
   return pieces;
 end;
+MakeReadOnlyGlobal("SplitStringAtPositions");
 
 # finding comma separated values (only at zero depth)
 CommaComps := function(str)
@@ -40,9 +42,11 @@ CommaComps := function(str)
               function(s) if s[Size(s)]=',' then return s{[1..Size(s)-1]};
                           else return s; fi;end);
 end;
+MakeReadOnlyGlobal("CommaComps");
 
 #just remove outer parentheses
 CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
+MakeReadOnlyGlobal("CutParentheses");
 
 #this gets the last image from w or [x,y,z;w]
 GetImgVal := function(str)
@@ -55,6 +59,7 @@ local s, poss, lastpos;
     return s{[lastpos..Size(s)]};
   fi;
 end;
+MakeReadOnlyGlobal("GetImgVal");
 
 #this gets the preimages [x,y,z] from [x,y,z;w]
 GetPreImgs := function(str)
@@ -64,6 +69,7 @@ local s, poss, lastpos;
     lastpos := poss[Size(poss)];
     return CommaComps(s{[1..lastpos-2]});
 end;
+MakeReadOnlyGlobal("GetPreImgs");
 
 #recursively fills the list maps [point, image] tuples
 AllMapsFromLinNotComp := function(str,maps)
@@ -86,6 +92,7 @@ AllMapsFromLinNotComp := function(str,maps)
   Perform(comps,function(x)AllMapsFromLinNotComp(x,maps);end);
   return maps;
 end;
+MakeReadOnlyGlobal("AllMapsFromLinNotComp");
 
 InstallOtherMethod(AsTransformation,"for cascade and int",[IsString,IsPosInt],
 function(s,n)
