@@ -19,6 +19,12 @@ BindGlobal("CascadeFamily",
 BindGlobal("CascadeType", NewType(CascadeFamily,
         IsCascade and IsAssociativeElement));
 
+#permutation cascade
+DeclareCategory("IsPermCascade",
+        IsCascade and IsMultiplicativeElementWithInverse);
+BindGlobal("PermCascadeType", NewType(CascadeFamily,
+        IsPermCascade and IsAssociativeElement));
+
 #constructors
 DeclareGlobalFunction("CascadeNC");
 DeclareGlobalFunction("Cascade");
