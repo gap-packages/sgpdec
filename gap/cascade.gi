@@ -17,15 +17,18 @@
 # 2. by giving dependency functions
 InstallGlobalFunction(CascadeNC,
 function(doms, deps)
+  local type;
+  type := CascadeType;
   #if components are given as semigroups then we have to get the domains
   if IsListOfPermGroupsAndTransformationSemigroups(doms) then
+    if ForAll(doms, IsGroup) then type := PermCascadeType;fi;
     doms:=ComponentDomains(doms);
   fi;
 
   return CreateCascade(
                  EnumeratorOfCartesianProduct(doms),
                  doms,
-                 Deps2DepFuncs(DependencyDomains(doms), deps), CascadeType);
+                 Deps2DepFuncs(DependencyDomains(doms), deps), type);
 end);
 
 # domain, component domains, depfuncs, type
