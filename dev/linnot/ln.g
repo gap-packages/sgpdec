@@ -28,11 +28,6 @@ SplitStringAtPositions := function(str, poss)
   return pieces;
 end;
 
-# finding the components in the string, i.e. splitting at depth zeros
-LinNotComps := function(str)
-  return SplitStringAtPositions(str, Positions(DepthVector(str),0));
-end;
-
 # finding comma separated values (only at zero depth)
 CommaComps := function(str)
   local cuts;
@@ -97,7 +92,7 @@ function(s,n)
 local maps,scc,l,m;
   maps := [];
   l := [1..n];
-  for scc in LinNotComps(s) do
+  for scc in SplitStringAtPositions(s, Positions(DepthVector(s),0)) do
     AllMapsFromLinNotComp(scc,maps);
   od;
   # patching the identity map with the collected maps
