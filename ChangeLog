@@ -1,3 +1,5 @@
+0.7.6
+	AsTransformation method for string (containing linear notation) and int (size of domain) added.
 0.7.5
 	Mixed components are allowed again, with minimal code changes. Further cleanups following the DependencyFunction separation. New test case for checking lifting as well.
 0.7.4.
