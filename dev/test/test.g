@@ -20,12 +20,16 @@ Read("wreath.g");;
 Read("idmul.g");;
 Read("mul.g");;
 Read("depextract.g");;
+Read("linnot.g");;
 
 ########################################################
 ############MAIN########################################
 ########################################################
 Print("\nTesting enumerator of cartesian product.\n");
 TestCartesianEnumerator();
+
+TestLinearNotation(5);
+TestLinearNotation(51);
 
 TestDependencyExtraction([MICROBUG,HEYBUG,ALIFEX]);
 TestDependencyExtraction([BECKS,HEYBUG,S3]);
