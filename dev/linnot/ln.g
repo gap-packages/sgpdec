@@ -44,7 +44,7 @@ end;
 #just remove outer parentheses
 CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
 
-#this gets the last image
+#this gets the last image from w or [x,y,z;w]
 GetImgVal := function(str)
 local s, poss, lastpos;
   if not('[' in str)  then return str;
@@ -56,7 +56,7 @@ local s, poss, lastpos;
   fi;
 end;
 
-#this gets the last image
+#this gets the preimages [x,y,z] from [x,y,z;w]
 GetPreImgs := function(str)
 local s, poss, lastpos;
     s := CutParentheses(str);
