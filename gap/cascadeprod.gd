@@ -14,6 +14,7 @@ DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and
         IsCascadeCollection);
 
+DeclareGlobalFunction("CascadeGroup");
 DeclareCategoryCollections("IsPermCascade");
 DeclareSynonymAttr("IsCascadeGroup", IsGroup and
         IsPermCascadeCollection);
