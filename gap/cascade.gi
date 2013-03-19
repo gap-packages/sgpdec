@@ -196,7 +196,7 @@ end);
 InstallMethod(\*, "for cascades", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(f,g)
-  local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs;
+  local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
 
   dep_f:=DependencyFunctionsOf(f);
   dep_g:=DependencyFunctionsOf(g);
@@ -213,9 +213,15 @@ function(f,g)
       fi;
     od;
   od;
+  #if they are both permutation cascades, then they produce permutation cascade
+  if (IsPermCascade(f)) and (IsPermCascade(g)) then
+    type := PermCascadeType;
+  else
+    type := CascadeType;
+  fi;
   depfuncs := List([1..Length(vals)],
                    x -> CreateDependencyFunction(depdoms[x],vals[x]));
-  return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, CascadeType);
+  return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, type);
 end);
 
 InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
