@@ -157,7 +157,7 @@ function(arg)
       "groups,");
     fi;
   fi;
-
+  #converting group components to semigroups
   for i in [1..Length(arg)] do
     if IsPermGroup(arg[i]) then
       #we need to know domain when converting to transformation
@@ -170,8 +170,7 @@ function(arg)
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
   s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
   SetComponentsOfCascadeSemigroup(s, arg);
-  SetComponentDomains(s, List(arg,
-   x-> [1..DegreeOfTransformationSemigroup(x)]));
+  SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
   SetDependencyDomainsOf(s,
    DependencyDomains(ComponentDomains(s)));
@@ -179,6 +178,36 @@ function(arg)
    EnumeratorOfCartesianProduct(ComponentDomains(s)));
   return s;
 end);
+
+# the full cascade semigroup
+InstallGlobalFunction(FullCascadeGroup,
+function(arg)
+  local filts, s, i,n;
+
+  if Length(arg)=1 then
+    if ForAll(arg[1],IsPermGroup) then
+      arg:=arg[1];
+    else
+      Error("the argument must be a list of perm groups");
+    fi;
+  else
+    if not ForAll(arg,IsPermGroup) then
+      Error("the argument must consist of perm groups,");
+    fi;
+  fi;
+
+  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
+  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
+  SetComponentsOfCascadeSemigroup(s, arg);
+  SetComponentDomains(s, ComponentDomains(arg));
+  SetNrComponentsOfCascadeSemigroup(s, Length(arg));
+  SetDependencyDomainsOf(s,
+          DependencyDomains(ComponentDomains(s)));
+  SetDomainOf(s,
+          EnumeratorOfCartesianProduct(ComponentDomains(s)));
+  return s;
+end);
+
 
 InstallMethod(ViewObj, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],

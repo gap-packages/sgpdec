@@ -14,6 +14,11 @@ DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and
         IsCascadeCollection);
 
+DeclareCategoryCollections("IsPermCascade");
+DeclareSynonymAttr("IsCascadeGroup", IsGroup and
+        IsPermCascadeCollection);
+
+
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
 DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
@@ -26,5 +31,8 @@ DeclareProperty("IsFullCascadeSemigroup", IsCascadeSemigroup);
 DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
 DeclareGlobalFunction("FullCascadeSemigroup");
 DeclareSynonym("SemigroupWreathProduct", FullCascadeSemigroup);
+
+DeclareProperty("IsFullCascadeGroup", IsCascadeGroup);
+DeclareGlobalFunction("FullCascadeGroup");
 
 #DeclareGlobalFunction("SizeOfWreathProduct");
