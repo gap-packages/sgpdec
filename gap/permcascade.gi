@@ -1,7 +1,13 @@
 InstallOtherMethod(OneOp, "for a permutation cascade",
 [IsPermCascade],
 function(ct)
-  return IdentityCascade(ComponentDomains(ct));
+  local id;
+  id := IdentityCascade(ComponentDomains(ct));
+  #TODO this is just repackaging the Cascade id to PermCascade;
+  return CreateCascade(DomainOf(id),
+                 ComponentDomains(id),
+                 DependencyFunctionsOf(id),
+                 PermCascadeType);
 end);
 
 
