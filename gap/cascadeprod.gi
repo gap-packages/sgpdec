@@ -179,7 +179,7 @@ function(arg)
   return s;
 end);
 
-# the full cascade semigroup
+# the full cascade group
 InstallGlobalFunction(FullCascadeGroup,
 function(arg)
   local filts, s, i,n;
@@ -197,7 +197,7 @@ function(arg)
   fi;
 
   filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
-  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
+  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
   SetComponentsOfCascadeSemigroup(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponentsOfCascadeSemigroup(s, Length(arg));
