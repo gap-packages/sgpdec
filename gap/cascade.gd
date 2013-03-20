@@ -17,7 +17,7 @@ BindGlobal("CascadeFamily",
                 IsCascade, CanEasilySortElements, CanEasilySortElements));
 
 BindGlobal("CascadeType", NewType(CascadeFamily,
-        IsCascade and IsAssociativeElement));
+        IsCascade and IsAssociativeElement and IsAttributeStoringRep));
 
 #permutation cascade
 DeclareCategory("IsPermCascade",
