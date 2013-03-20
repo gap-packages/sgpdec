@@ -193,7 +193,7 @@ function(coords, ct)
   return out;
 end);
 
-InstallMethod(\*, "for cascades", IsIdenticalObj,
+InstallMethod(\*, "for cascades", ReturnTrue, #any family can be combined
 [IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
