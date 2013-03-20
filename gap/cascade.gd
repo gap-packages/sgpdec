@@ -22,7 +22,10 @@ BindGlobal("CascadeType", NewType(CascadeFamily,
 #permutation cascade
 DeclareCategory("IsPermCascade",
         IsCascade and IsMultiplicativeElementWithInverse);
-BindGlobal("PermCascadeType", NewType(CascadeFamily,
+BindGlobal("PermCascadeFamily",
+        NewFamily("PermCascadeFamily",
+                IsPermCascade, CanEasilySortElements, CanEasilySortElements));
+BindGlobal("PermCascadeType", NewType(PermCascadeFamily,
         IsPermCascade and IsAssociativeElement));
 
 #constructors
