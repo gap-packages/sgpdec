@@ -7,6 +7,9 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 
+################################################################################
+# CASCADE SEMIGROUP ############################################################
+################################################################################
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 [IsCascadeSemigroup],
 function(s)
@@ -73,73 +76,9 @@ else
   end);
 fi;
 
-InstallMethod(DomainOf,[IsCascadeSemigroup],
-x-> DomainOf(Representative(x)));
-
-InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
-[IsListOrCollection],
-function(l)
-  return not IsEmpty(l) and
-         IsDenseList(l) and
-         ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
-end);
-
-InstallOtherMethod(NrComponentsOfCascadeSemigroup,
-[IsCascadeSemigroup],
-function(cascprod)
-  return Size(ComponentDomains(Representative(cascprod)));
-end);
-
-InstallOtherMethod(ComponentDomains,
-[IsListOrCollection],
-function(comps)
-  local domains, comp;
-  if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
-    Error("insert meaningful error message here,");
-    return;
-  fi;
-  domains:=[];
-  for comp in comps do
-    if IsTransformationSemigroup(comp) then
-      Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
-    else
-      Add(domains, MovedPoints(comp));
-    fi;
-  od;
-  return domains;
-end);
-
-InstallMethod(ViewObj, "for a cascade product",
-[IsCascadeSemigroup and HasGeneratorsOfSemigroup],
-function(s)
-  local str, x;
-
-  str:="<cascade semigroup with ";
-  Append(str, String(Length(GeneratorsOfSemigroup(s))));
-  Append(str, " generator");
-  if Length(GeneratorsOfSemigroup(s))>1 then
-    Append(str, "s");
-  fi;
-  Append(str, ", ");
-  Append(str, String(NrComponentsOfCascadeSemigroup(s)));
-  Append(str, " levels");
-
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeSemigroup(s)*3)-12 then
-    Append(str, " with (");
-    for x in ComponentDomains(s) do
-      Append(str, String(Length(x)));
-      Append(str, ", ");
-    od;
-    Remove(str, Length(str));
-    Remove(str, Length(str));
-    Append(str, ") pts");
-  fi;
-  Append(str, ">");
-  Print(str);
-  return;
-end);
-
-# the full cascade semigroup
+################################################################################
+# FULL CASCADE SEMIGROUP #######################################################
+################################################################################
 InstallGlobalFunction(FullCascadeSemigroup,
 function(arg)
   local filts, s, i,n;
@@ -180,59 +119,35 @@ function(arg)
 end);
 
 # the full cascade group
-InstallGlobalFunction(FullCascadeGroup,
-function(arg)
-  local filts, s, i,n;
+#InstallGlobalFunction(FullCascadeGroup,
+#function(arg)
+#  local filts, s, i,n;
 
-  if Length(arg)=1 then
-    if ForAll(arg[1],IsPermGroup) then
-      arg:=arg[1];
-    else
-      Error("the argument must be a list of perm groups");
-    fi;
-  else
-    if not ForAll(arg,IsPermGroup) then
-      Error("the argument must consist of perm groups,");
-    fi;
-  fi;
+#  if Length(arg)=1 then
+#    if ForAll(arg[1],IsPermGroup) then
+#      arg:=arg[1];
+#    else
+#      Error("the argument must be a list of perm groups");
+#    fi;
+#  else
+#    if not ForAll(arg,IsPermGroup) then
+#      Error("the argument must consist of perm groups,");
+#    fi;
+#  fi;
 
-  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
-  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
-  SetComponentsOfCascadeSemigroup(s, arg);
-  SetComponentDomains(s, ComponentDomains(arg));
-  SetNrComponentsOfCascadeSemigroup(s, Length(arg));
-  SetDependencyDomainsOf(s,
-          DependencyDomains(ComponentDomains(s)));
-  SetDomainOf(s,
-          EnumeratorOfCartesianProduct(ComponentDomains(s)));
-  return s;
-end);
+#  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
+#  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
+#  SetComponentsOfCascadeSemigroup(s, arg);
+#  SetComponentDomains(s, ComponentDomains(arg));
+#  SetNrComponentsOfCascadeSemigroup(s, Length(arg));
+#  SetDependencyDomainsOf(s,
+#          DependencyDomains(ComponentDomains(s)));
+#  SetDomainOf(s,
+#          EnumeratorOfCartesianProduct(ComponentDomains(s)));
+#  return s;
+#end);
 
-
-InstallMethod(ViewObj, "for a full cascade semigroup",
-[IsFullCascadeSemigroup],
-function(s)
-  Print("<wreath product of semigroups>");
-end);
-
-#
-
-InstallMethod(Size, "for a full cascade semigroup",
-[IsFullCascadeSemigroup],
-function(s)
-  local domains, comps, order, j, i;
-
-  domains:=List(ComponentDomains(s), Length);
-  comps:=ComponentsOfCascadeSemigroup(s);
-  order := 1;
-  j := 1;
-  for i in [1..Length(domains)] do
-    order := order * (Size(comps[i])^j);
-    j := j * domains[i];
-  od;
-  return order;
-end);
-
+#former monomial generators
 InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
 function(s)
@@ -278,7 +193,24 @@ function(s)
   return gens;
 end);
 
-# old
+################################################################################
+# SIZE #########################################################################
+################################################################################
+InstallMethod(Size, "for a full cascade semigroup",
+[IsFullCascadeSemigroup],
+function(s)
+  local domains, comps, order, j, i;
+
+  domains:=List(ComponentDomains(s), Length);
+  comps:=ComponentsOfCascadeSemigroup(s);
+  order := 1;
+  j := 1;
+  for i in [1..Length(domains)] do
+    order := order * (Size(comps[i])^j);
+    j := j * domains[i];
+  od;
+  return order;
+end);
 
 #this is a huge number even in small cases
 #InstallGlobalFunction(SizeOfWreathProduct,
@@ -295,8 +227,87 @@ end);
  # return order;
 #end);
 
+################################################################################
+# ADMINISTRATIVE METHODS #######################################################
+################################################################################
+InstallMethod(DomainOf,[IsCascadeSemigroup],
+x-> DomainOf(Representative(x)));
+
+InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
+[IsListOrCollection],
+function(l)
+  return not IsEmpty(l) and
+         IsDenseList(l) and
+         ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
+end);
+
+InstallOtherMethod(NrComponentsOfCascadeSemigroup,
+[IsCascadeSemigroup],
+function(cascprod)
+  return Size(ComponentDomains(Representative(cascprod)));
+end);
+
+InstallOtherMethod(ComponentDomains,
+[IsListOrCollection],
+function(comps)
+  local domains, comp;
+  if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
+    Error("insert meaningful error message here,");
+    return;
+  fi;
+  domains:=[];
+  for comp in comps do
+    if IsTransformationSemigroup(comp) then
+      Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
+    else
+      Add(domains, MovedPoints(comp));
+    fi;
+  od;
+  return domains;
+end);
+
+
 InstallOtherMethod(ComponentDomains,
         [IsCascadeSemigroup],
 function(cascprod)
   return ComponentDomains(Representative(cascprod));
+end);
+
+################################################################################
+# PRINTING #####################################################################
+################################################################################
+InstallMethod(ViewObj, "for a full cascade semigroup",
+[IsFullCascadeSemigroup],
+function(s)
+  Print("<wreath product of semigroups>");
+end);
+
+InstallMethod(ViewObj, "for a cascade product",
+[IsCascadeSemigroup and HasGeneratorsOfSemigroup],
+function(s)
+  local str, x;
+
+  str:="<cascade semigroup with ";
+  Append(str, String(Length(GeneratorsOfSemigroup(s))));
+  Append(str, " generator");
+  if Length(GeneratorsOfSemigroup(s))>1 then
+    Append(str, "s");
+  fi;
+  Append(str, ", ");
+  Append(str, String(NrComponentsOfCascadeSemigroup(s)));
+  Append(str, " levels");
+
+  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeSemigroup(s)*3)-12 then
+    Append(str, " with (");
+    for x in ComponentDomains(s) do
+      Append(str, String(Length(x)));
+      Append(str, ", ");
+    od;
+    Remove(str, Length(str));
+    Remove(str, Length(str));
+    Append(str, ") pts");
+  fi;
+  Append(str, ">");
+  Print(str);
+  return;
 end);
