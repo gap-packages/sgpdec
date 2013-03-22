@@ -77,7 +77,7 @@ else
 fi;
 
 ################################################################################
-# FULL CASCADE SEMIGROUP #######################################################
+# FULL CASCADE GROUP #######################################################
 ################################################################################
 # the full cascade group
 InstallGlobalFunction(FullCascadeGroup,
@@ -108,7 +108,7 @@ function(arg)
 end);
 
 #former monomial generators
-InstallMethod(GeneratorsOfGroup, "for a full cascade semigroup",
+InstallMethod(GeneratorsOfGroup, "for a full cascade group",
 [IsFullCascadeGroup],
 function(s)
   local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
@@ -156,7 +156,7 @@ end);
 ################################################################################
 # SIZE #########################################################################
 ################################################################################
-InstallMethod(Size, "for a full cascade semigroup",
+InstallMethod(Size, "for a full cascade group",
 [IsFullCascadeGroup],
 function(s)
   return SizeOfIteratedTransformationWreathProduct(
@@ -195,10 +195,10 @@ end);
 ################################################################################
 # PRINTING #####################################################################
 ################################################################################
-InstallMethod(ViewObj, "for a full cascade semigroup",
+InstallMethod(ViewObj, "for a full cascade group",
 [IsFullCascadeGroup],
 function(s)
-  Print("<wreath product of semigroups>");
+  Print("<wreath product of perm groups>");
 end);
 
 InstallMethod(ViewObj, "for a cascade product",
