@@ -118,35 +118,6 @@ function(arg)
   return s;
 end);
 
-# the full cascade group
-#InstallGlobalFunction(FullCascadeGroup,
-#function(arg)
-#  local filts, s, i,n;
-
-#  if Length(arg)=1 then
-#    if ForAll(arg[1],IsPermGroup) then
-#      arg:=arg[1];
-#    else
-#      Error("the argument must be a list of perm groups");
-#    fi;
-#  else
-#    if not ForAll(arg,IsPermGroup) then
-#      Error("the argument must consist of perm groups,");
-#    fi;
-#  fi;
-
-#  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
-#  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
-#  SetComponentsOfCascadeSemigroup(s, arg);
-#  SetComponentDomains(s, ComponentDomains(arg));
-#  SetNrComponentsOfCascadeSemigroup(s, Length(arg));
-#  SetDependencyDomainsOf(s,
-#          DependencyDomains(ComponentDomains(s)));
-#  SetDomainOf(s,
-#          EnumeratorOfCartesianProduct(ComponentDomains(s)));
-#  return s;
-#end);
-
 #former monomial generators
 InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
