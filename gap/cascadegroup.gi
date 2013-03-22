@@ -22,59 +22,27 @@ function(G)
                  f -> AsCascade(f, ComponentDomains(G)));
 end);
 
-#with ClosureGroup it is easier
-if GAPInfo.Version="4.dev" then
-  InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
-  [IsCascadeGroup],
-  function(s)
-    local func, n, out, i, j, x;
+InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
+[IsCascadeGroup],
+function(s)
+  local func, n, out, i, j, x;
 
-    func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeGroup(s);
-    out:=List([1..n], x->[]);
-
-    for i in [1..Length(GeneratorsOfGroup(s))] do
-      for j in [1..n] do
-        if not IsEmpty(func[i][j]) then
-          if out[j]=[] then
-            out[j]:=Group(Compacted(func[i][j]), rec(small:=true));
-          else
-            out[j]:=ClosureGroup(out[i], Compacted(func[i][j]));
-          fi;
-        fi;
-      od;
-    od;
-
-    return out;
-  end);
-else
-  #ClosureGroup is not available
-  InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
-  [IsCascadeGroup],
-  function(s)
-    local func, n, out, i, j, x;
-
-    func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeGroup(s);
-    out:=List([1..n], x->[]);
-
-    for i in [1..Length(GeneratorsOfGroup(s))] do
-      for j in [1..n] do
-        Append(out[i], Compacted(func[i][j]));
-      od;
-    od;
-
-    Apply(out,
-      function(x)
-        if not x=[] then
-          return Group(x);
+  func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
+  n:=NrComponentsOfCascadeGroup(s);
+  out:=List([1..n], x->[]);
+  for i in [1..Length(GeneratorsOfGroup(s))] do
+    for j in [1..n] do
+      if not IsEmpty(func[i][j]) then
+        if out[j]=[] then
+          out[j]:=Group(Compacted(func[i][j]), rec(small:=true));
         else
-          return x;
+          out[j]:=ClosureGroup(out[i], Compacted(func[i][j]));
         fi;
-      end);
-    return out;
-  end);
-fi;
+      fi;
+    od;
+  od;
+  return out;
+end);
 
 ################################################################################
 # FULL CASCADE GROUP #######################################################
