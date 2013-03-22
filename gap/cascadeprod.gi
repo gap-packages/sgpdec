@@ -199,33 +199,26 @@ end);
 InstallMethod(Size, "for a full cascade semigroup",
 [IsFullCascadeSemigroup],
 function(s)
-  local domains, comps, order, j, i;
-
-  domains:=List(ComponentDomains(s), Length);
-  comps:=ComponentsOfCascadeSemigroup(s);
-  order := 1;
-  j := 1;
-  for i in [1..Length(domains)] do
-    order := order * (Size(comps[i])^j);
-    j := j * domains[i];
-  od;
-  return order;
+  return SizeOfIteratedTransformationWreathProduct(
+                 List(ComponentDomains(s), Length),         #degrees
+                 List(ComponentsOfCascadeSemigroup(s),Size) #orders
+                 );
 end);
 
 #this is a huge number even in small cases
-#InstallGlobalFunction(SizeOfWreathProduct,
-#function(csh)
-#local order,j,i;
+InstallGlobalFunction(SizeOfIteratedTransformationWreathProduct,
+function(degrees, orders)
+local order,j,i;
   #calculating the order of the cascade state set
- # order := 1;
+  order := 1;
   #j is the number of possible arguments on a given depth, i.e.\ the exponent
- # j := 1;
- # for i in [1..Size(csh)] do
-#    order := order * (Size(csh[i])^j);
-#    j := j * Size(CoordValSets(csh)[i]);
- # od;
- # return order;
-#end);
+  j := 1;
+  for i in [1..Size(orders)] do
+    order := order * (orders[i]^j);
+    j := j * degrees[i];
+  od;
+  return order;
+end);
 
 ################################################################################
 # ADMINISTRATIVE METHODS #######################################################
