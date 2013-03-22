@@ -11,8 +11,9 @@
 
 DeclareGlobalFunction("CascadeGroup");
 DeclareCategoryCollections("IsPermCascade");
-DeclareSynonymAttr("IsCascadeGroup", IsGroup and
-        IsPermCascadeCollection);
+DeclareSynonymAttr("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
+
+DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 
 DeclareAttribute("ComponentDomains", IsCascadeGroup);
 DeclareAttribute("ComponentsOfCascadeGroup", IsCascadeGroup);
@@ -24,6 +25,3 @@ DeclareProperty("IsFullCascadeGroup", IsCascadeGroup);
 DeclareSynonym("IsGroupWreathProduct", IsFullCascadeGroup);
 DeclareGlobalFunction("FullCascadeGroup");
 DeclareSynonym("GroupWreathProduct", FullCascadeGroup);
-
-DeclareProperty("IsFullCascadeGroup", IsCascadeGroup);
-DeclareGlobalFunction("FullCascadeGroup");
