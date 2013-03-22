@@ -133,13 +133,19 @@ function(pc)
 end);
 
 
-
-# changing representation
-
+################################################################################
+# CHANGING REPRESENTATION ######################################################
+################################################################################
 InstallMethod(AsTransformation, "for cascade",
 [IsCascade],
 function(ct)
 return TransformationOp(ct, DomainOf(ct), OnCoordinates);
+end);
+
+InstallMethod(AsPermutation, "for cascade",
+[IsCascade],
+function(ct)
+return AsPermutation(AsTransformation(ct));
 end);
 
 # if the components are given then for groups permutations are produced
@@ -217,6 +223,22 @@ function(f, compsordomsizes)
   depfuncs := List([1..Length(vals)],
                    x -> CreateDependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(dom, compdoms, depfuncs,CascadeType);
+end);
+
+# dispatching to AsCascade for transformations after figuring out the degree
+InstallOtherMethod(AsCascade,
+        "for a permutation and list of domain sizes or components",
+        [IsPerm, IsDenseList],
+function(p, compsordomsizes)
+  local domsizes;
+  #TODO detecting the input twice looks pretty bad
+  #deciding what input we got
+  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
+    domsizes := List(ComponentDomains(compsordomsizes), c -> Size(c));
+  else
+    domsizes := compsordomsizes;
+  fi;
+  AsCascade(AsTransformation(p), Product(domsizes), compsordomsizes);
 end);
 
 # action and operators
