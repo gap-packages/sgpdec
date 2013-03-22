@@ -10,7 +10,7 @@
 ################################################################################
 # CASCADE GROUP ################################################################
 ################################################################################
-InstallMethod(IsomorphismPermGoup, "for a cascade group",
+InstallMethod(IsomorphismPermGroup, "for a cascade group",
 [IsCascadeGroup],
 function(G)
   local H;
@@ -19,27 +19,27 @@ function(G)
                  G,
                  H,
                  AsPermutation,
-                 f -> AsPermCascade(f, ComponentDomains(s)));
+                 f -> AsCascade(f, ComponentDomains(G)));
 end);
 
-#with ClosureSemigroup it is easier
+#with ClosureGroup it is easier
 if GAPInfo.Version="4.dev" then
   InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
   [IsCascadeGroup],
   function(s)
     local func, n, out, i, j, x;
 
-    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+    func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
     n:=NrComponentsOfCascadeGroup(s);
     out:=List([1..n], x->[]);
 
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do
+    for i in [1..Length(GeneratorsOfGroup(s))] do
       for j in [1..n] do
         if not IsEmpty(func[i][j]) then
           if out[j]=[] then
-            out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
+            out[j]:=Group(Compacted(func[i][j]), rec(small:=true));
           else
-            out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
+            out[j]:=ClosureGroup(out[i], Compacted(func[i][j]));
           fi;
         fi;
       od;
@@ -48,17 +48,17 @@ if GAPInfo.Version="4.dev" then
     return out;
   end);
 else
-  #ClosureSemigroup is not available
+  #ClosureGroup is not available
   InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
   [IsCascadeGroup],
   function(s)
     local func, n, out, i, j, x;
 
-    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+    func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
     n:=NrComponentsOfCascadeGroup(s);
     out:=List([1..n], x->[]);
 
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do
+    for i in [1..Length(GeneratorsOfGroup(s))] do
       for j in [1..n] do
         Append(out[i], Compacted(func[i][j]));
       od;
@@ -67,7 +67,7 @@ else
     Apply(out,
       function(x)
         if not x=[] then
-          return Semigroup(x);
+          return Group(x);
         else
           return x;
         fi;
@@ -79,76 +79,36 @@ fi;
 ################################################################################
 # FULL CASCADE SEMIGROUP #######################################################
 ################################################################################
+# the full cascade group
 InstallGlobalFunction(FullCascadeGroup,
 function(arg)
   local filts, s, i,n;
 
   if Length(arg)=1 then
-    if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then
+    if ForAll(arg[1],IsPermGroup) then
       arg:=arg[1];
     else
-      Error("the argument must be a list of transformation semigroup and perm",
-      " groups");
+      Error("the argument must be a list of perm groups");
     fi;
   else
-    if not IsListOfPermGroupsAndTransformationSemigroups(arg) then
-      Error("the argument must consist of transformation semigroups and perm ",
-      "groups,");
+    if not ForAll(arg,IsPermGroup) then
+      Error("the argument must consist of perm groups,");
     fi;
   fi;
-  #converting group components to semigroups
-  for i in [1..Length(arg)] do
-    if IsPermGroup(arg[i]) then
-      #we need to know domain when converting to transformation
-      n := LargestMovedPoint(arg[i]);
-      arg[i]:=Semigroup(List(GeneratorsOfGroup(arg[i]),
-                      g -> AsTransformation(g,n)));
-    fi;
-  od;
-
-  filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeGroup ;
-  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
+  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
+  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
   SetComponentsOfCascadeGroup(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponentsOfCascadeGroup(s, Length(arg));
   SetDependencyDomainsOf(s,
-   DependencyDomains(ComponentDomains(s)));
+          DependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
-   EnumeratorOfCartesianProduct(ComponentDomains(s)));
+          EnumeratorOfCartesianProduct(ComponentDomains(s)));
   return s;
 end);
 
-# the full cascade group
-#InstallGlobalFunction(FullCascadeGroup,
-#function(arg)
-#  local filts, s, i,n;
-
-#  if Length(arg)=1 then
-#    if ForAll(arg[1],IsPermGroup) then
-#      arg:=arg[1];
-#    else
-#      Error("the argument must be a list of perm groups");
-#    fi;
-#  else
-#    if not ForAll(arg,IsPermGroup) then
-#      Error("the argument must consist of perm groups,");
-#    fi;
-#  fi;
-
-#  filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
-#  s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
-#  SetComponentsOfCascadeGroup(s, arg);
-#  SetComponentDomains(s, ComponentDomains(arg));
-#  SetNrComponentsOfCascadeGroup(s, Length(arg));
-#  SetDependencyDomainsOf(s,
-#          DependencyDomains(ComponentDomains(s)));
-#  SetDomainOf(s,
-#          EnumeratorOfCartesianProduct(ComponentDomains(s)));
-#  return s;
-#end);
-
 #former monomial generators
-InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
+InstallMethod(GeneratorsOfGroup, "for a full cascade semigroup",
 [IsFullCascadeGroup],
 function(s)
   local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
@@ -168,7 +128,7 @@ function(s)
     for x in pre do
       m:=Length(x);
       pos:=Position(prefix[m+1], x);
-      for y in GeneratorsOfSemigroup(comps[m+1]) do
+      for y in GeneratorsOfGroup(comps[m+1]) do
         func:=EmptyPlist(nr);
         for i in [1..nr] do
           if i<>m+1 then
@@ -205,20 +165,6 @@ function(s)
                  );
 end);
 
-#this is a huge number even in small cases
-InstallGlobalFunction(SizeOfIteratedTransformationWreathProduct,
-function(degrees, orders)
-local order,j,i;
-  #calculating the order of the cascade state set
-  order := 1;
-  #j is the number of possible arguments on a given depth, i.e.\ the exponent
-  j := 1;
-  for i in [1..Size(orders)] do
-    order := order * (orders[i]^j);
-    j := j * degrees[i];
-  od;
-  return order;
-end);
 
 ################################################################################
 # ADMINISTRATIVE METHODS #######################################################
@@ -226,7 +172,7 @@ end);
 InstallMethod(DomainOf,[IsCascadeGroup],
 x-> DomainOf(Representative(x)));
 
-InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
+InstallMethod(IsListOfPermGroups,
 [IsListOrCollection],
 function(l)
   return not IsEmpty(l) and
@@ -239,22 +185,6 @@ InstallOtherMethod(NrComponentsOfCascadeGroup,
 function(cascprod)
   return Size(ComponentDomains(Representative(cascprod)));
 end);
-
-InstallOtherMethod(ComponentDomains,
-[IsListOrCollection],
-function(comps)
-  local domains, comp;
-  if not IsListOfPerm(comps) then
-    Error("insert meaningful error message here,");
-    return;
-  fi;
-  domains:=[];
-  for comp in comps do
-    Add(domains, MovedPoints(comp));
-  od;
-  return domains;
-end);
-
 
 InstallOtherMethod(ComponentDomains,
         [IsCascadeGroup],
@@ -277,9 +207,9 @@ function(s)
   local str, x;
 
   str:="<cascade group with ";
-  Append(str, String(Length(GeneratorsOfSemigroup(s))));
+  Append(str, String(Length(GeneratorsOfGroup(s))));
   Append(str, " generator");
-  if Length(GeneratorsOfSemigroup(s))>1 then
+  if Length(GeneratorsOfGroup(s))>1 then
     Append(str, "s");
   fi;
   Append(str, ", ");
