@@ -10,6 +10,7 @@
 ##
 
 ## NAMING CONVENTIONS
+## depfunc - dependency function
 ## deparg - dependency argument, a tuple of states (formerly prefix)
 ## dom - domain of dependency function
 ## deps - list of dependecies in the [arg, value] format
