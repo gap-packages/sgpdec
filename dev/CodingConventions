@@ -1,3 +1,7 @@
+LINE LENGTH
+
+Max. 80 characters.
+
 IMPLEMENTATION FILES *.gi
 
 The file starts with the new functions, then the reimplemented methods, clearly separated by a banner.
@@ -10,12 +14,9 @@ VERBOSITY
 
 Informal printouts should be restricted to one line only. (easy to comment out)
 
-DEFAULT VARIABLES
+NAMING CONVENTION FOR VARIABLES
 
-decomp - HierarchicalDecomposition
-cstr - CascadedStructure
-cs - CascadedState
-co - CascadedOperation
+A list should be placed in the beginning of the implementation files enumerating variable names and their meaning.
 
 !. ACCESS
 
