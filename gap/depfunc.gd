@@ -9,12 +9,14 @@
 ## Dependency function.
 ##
 
-DeclareCategory("IsDependencyFunc", IsRecord);
+DeclareCategory("IsDependencyFunction", IsRecord);
 BindGlobal("DependencyFunctionFamily",
         NewFamily("DependencyFunctionFamily",
-                IsDependencyFunc,CanEasilySortElements,CanEasilySortElements));
+                IsDependencyFunction,
+                CanEasilySortElements,
+                CanEasilySortElements));
 BindGlobal("DependencyFunctionType",
-        NewType(DependencyFunctionFamily,IsDependencyFunc));
+        NewType(DependencyFunctionFamily,IsDependencyFunction));
 
 DeclareGlobalFunction("DependencyDomains");
 #when you make it from dependencies
@@ -24,5 +26,5 @@ DeclareGlobalFunction("Dependencies");
 DeclareGlobalFunction("CreateDependencyFunction");
 DeclareGlobalFunction("OnDepArg");
 DeclareGlobalFunction("Deps2DepFuncs");
-DeclareAttribute("DomainOf", IsDependencyFunc);
-DeclareAttribute("NrDependencies",IsDependencyFunc);
+DeclareAttribute("DomainOf", IsDependencyFunction);
+DeclareAttribute("NrDependencies",IsDependencyFunction);
