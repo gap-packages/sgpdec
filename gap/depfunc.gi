@@ -23,24 +23,24 @@
 # constructor for dependency functions
 # input: domain and list of dependencies
 InstallGlobalFunction(DependencyFunction,
-function(dom, deps)
+function(dom, list)
   local record,depdoms,vals,d;
   #this is a subtle issue: we need an element in the domain, even on the top
   if IsEmpty(dom) then
     dom := [[]];
   fi;
-  # if deps is empty then the we have an empty lookup table
-  if IsEmpty(deps) then
+  # if list is empty then the we have an empty lookup table
+  if IsEmpty(list) then
     vals := [];
-  # if deps contains mappings then we have to process them
-  elif IsBound(deps[1]) and IsList(deps[1]) then
+  # if list contains mappings then we have to process them
+  elif IsBound(list[1]) and IsList(list[1]) then
     vals:=EmptyPlist(Length(dom));
-    for d in deps do
+    for d in list do
       vals[Position(dom,d[1])] := d[2];
     od;
   #otherwise we received a lookup table
   else
-    vals := deps;
+    vals := list;
   fi;
   MakeImmutable(vals); #just to be on the safe side
   ShrinkAllocationPlist(vals);
