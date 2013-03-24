@@ -84,7 +84,7 @@ function(list, numofdeps)
     fi;
   od;
   depfuncs := List([1..Length(vals)],
-                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+                   x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(EnumeratorOfCartesianProduct(comps),
                  comps, depfuncs,CascadeType);
 end);
@@ -125,7 +125,7 @@ function(pc)
     od;
   od;
   depfuncs := List([1..Length(vals)],
-                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+                   x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(DomainOf(pc),
                  ComponentDomains(pc),
                  depfuncs,
@@ -221,7 +221,7 @@ function(f, compsordomsizes)
   od;
 
   depfuncs := List([1..Length(vals)],
-                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+                   x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(dom, compdoms, depfuncs,CascadeType);
 end);
 
@@ -286,7 +286,7 @@ function(f,g)
     type := CascadeType;
   fi;
   depfuncs := List([1..Length(vals)],
-                   x -> CreateDependencyFunction(depdoms[x],vals[x]));
+                   x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, type);
 end);
 

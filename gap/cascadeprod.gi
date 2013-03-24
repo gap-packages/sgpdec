@@ -151,7 +151,7 @@ function(s)
         od;
         nrgens:=nrgens+1;
         depfuncs := List([1..Length(func)],
-                   x -> CreateDependencyFunction(depdoms[x],func[x]));
+                   x -> DependencyFunction(depdoms[x],func[x]));
         gens[nrgens]:=CreateCascade(
                               DomainOf(s),
                               ComponentDomains(s),
