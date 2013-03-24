@@ -84,7 +84,10 @@ function(s)
 
   nr:=NrComponentsOfCascadeGroup(s);
   comps:=ComponentsOfCascadeGroup(s);
-  pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
+  pts := List([1..nr], #TODO only one line and type is changed
+              i-> List(Orbits(comps[i]),
+                      o -> o[1]));
+  #pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
 
   dom:=DomainOf(s);
@@ -113,7 +116,7 @@ function(s)
                               DomainOf(s),
                               ComponentDomains(s),
                               depfuncs,
-                              CascadeType);
+                              PermCascadeType);
       od;
     od;
   od;
