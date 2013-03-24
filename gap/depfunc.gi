@@ -103,13 +103,13 @@ end);
 ################################################################################
 
 InstallMethod(NrDependencies, "for a dependency function",
-[IsDependencyFunc],
+[IsDependencyFunction],
 function(f)
   return Number([1..Length(f!.vals)], i-> IsBound(f!.vals[i]));
 end);
 
 # to have controlled access to the domain, TODO not 100% sure about this
-InstallMethod(DomainOf,[IsDependencyFunc],
+InstallMethod(DomainOf,[IsDependencyFunction],
 df-> DomainOf(df!.dom));
 
 
@@ -118,7 +118,7 @@ df-> DomainOf(df!.dom));
 ###############################################################################
 
 InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
-[IsDependencyFunc, IsDependencyFunc],
+[IsDependencyFunction, IsDependencyFunction],
         function(p,q)
   local i, pvals, qvals;
   #local variables for speeding up record member access
@@ -138,7 +138,7 @@ InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 end);
 
 InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
-[IsDependencyFunc, IsDependencyFunc],
+[IsDependencyFunction, IsDependencyFunction],
         function(p,q)
   local pval, qval,i;
   #first compare the domains
@@ -185,19 +185,19 @@ end);
 
 # applying to a tuple (deparg) gives the corresponding value
 InstallOtherMethod(\^, "for dependency argument and dependency func",
-[IsList, IsDependencyFunc], OnDepArg);
+[IsList, IsDependencyFunction], OnDepArg);
 
 ################################################################################
 # PRINTING #####################################################################
 ################################################################################
 
 InstallMethod(ViewObj, "for a dependency func",
-[IsDependencyFunc],
+[IsDependencyFunction],
 function(x) Print("<dependency function, ",
         String(NrDependencies(x))," deps>"); return; end);
 
 InstallMethod(Display, "for a dependency function",
-[IsDependencyFunc],
+[IsDependencyFunction],
 function(df)
   local vals, dom, i;
   vals := df!.vals;
