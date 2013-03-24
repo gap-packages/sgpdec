@@ -29,20 +29,21 @@ function(dom, deps)
   if IsEmpty(dom) then
     dom := [[]];
   fi;
-  #depdoms:=CreateDependencyDomains(doms);
-  vals:=EmptyPlist(Length(dom));
-  for d in deps do
-    #vals[Length(d[1])+1][Position(depdoms[Length(d[1])+1], d[1])]:=d[2];
-    vals[Position(dom,d[1])] := d[2];
-  od;
-  ShrinkAllocationPlist(vals);
-  return CreateDependencyFunction(dom, vals);
-end);
-
-# just creating an instance when you know the internals
-InstallGlobalFunction(CreateDependencyFunction,
-function(dom, vals)
+  # if deps is empty then the we have an empty lookup table
+  if IsEmpty(deps) then
+    vals := [];
+  # if deps contains mappings then we have to process them
+  elif IsBound(deps[1]) and IsList(deps[1]) then
+    vals:=EmptyPlist(Length(dom));
+    for d in deps do
+      vals[Position(dom,d[1])] := d[2];
+    od;
+  #otherwise we received a lookup table
+  else
+    vals := deps;
+  fi;
   MakeImmutable(vals); #just to be on the safe side
+  ShrinkAllocationPlist(vals);
   return Objectify(DependencyFunctionType,rec(dom:=dom,vals:=vals));
 end);
 
@@ -82,7 +83,7 @@ local dep, vals, level;
     vals[level][Position(depdoms[level],dep[1])] := dep[2];
   od;
   return List([1..Size(depdoms)],
-              x -> CreateDependencyFunction(depdoms[x],vals[x]));
+              x -> DependencyFunction(depdoms[x],vals[x]));
 end);
 
 InstallGlobalFunction(Dependencies,
