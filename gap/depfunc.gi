@@ -111,9 +111,7 @@ function(f)
 end);
 
 # to have controlled access to the domain, TODO not 100% sure about this
-InstallMethod(DomainOf,[IsDependencyFunction],
-df-> DomainOf(df!.dom));
-
+InstallMethod(DomainOf,[IsDependencyFunction], df-> df!.dom);
 
 ###############################################################################
 # STANDARD METHODS ############################################################
