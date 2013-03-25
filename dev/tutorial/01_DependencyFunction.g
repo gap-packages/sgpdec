@@ -47,3 +47,7 @@ df2_ := DependencyFunction(dom,vals);
 # they are of course the same object
 df=df_;
 df2=df2_;
+
+# extracting the mappings (individual dependencies) from the function
+Dependencies(df);
+df = DependencyFunction(DomainOf(df),Dependencies(df));
