@@ -15,12 +15,11 @@ DeclareSynonymAttr("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
 
 DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 
-DeclareAttribute("ComponentDomains", IsCascadeGroup);
 DeclareAttribute("ComponentsOfCascadeGroup", IsCascadeGroup);
-DeclareAttribute("DomainOf", IsCascadeGroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeGroup);
-DeclareAttribute("NrComponentsOfCascadeGroup", IsCascadeGroup);
+DeclareAttribute("NrComponents", IsCascadeGroup);
 
+#full cascade group
 DeclareProperty("IsFullCascadeGroup", IsCascadeGroup);
 DeclareSynonym("IsGroupWreathProduct", IsFullCascadeGroup);
 DeclareGlobalFunction("FullCascadeGroup");
