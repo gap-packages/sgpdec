@@ -193,13 +193,17 @@ InstallOtherMethod(\^, "for dependency argument and dependency func",
 
 InstallMethod(ViewObj, "for a dependency func",
 [IsDependencyFunction],
-function(x) Print("<dependency function, ",
+function(x) Print("<depfunc of depth ",
+        String(Size(Representative(DomainOf(x)))+1)," with ",
         String(NrDependencies(x))," deps>"); return; end);
 
 InstallMethod(Display, "for a dependency function",
 [IsDependencyFunction],
 function(df)
   local vals, dom, i;
+  Print("Dependency function of depth ",
+        String(Size(Representative(DomainOf(df)))+1)," with ",
+        String(NrDependencies(df))," dependencies.\n");
   vals := df!.vals;
   dom := df!.dom;
   for i in [1..Size(vals)] do
