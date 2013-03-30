@@ -28,7 +28,7 @@ function(s)
   local func, n, out, i, j, x;
 
   func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
-  n:=NrComponentsOfCascadeGroup(s);
+  n:=NrComponents(s);
   out:=List([1..n], x->[]);
   for i in [1..Length(GeneratorsOfGroup(s))] do
     for j in [1..n] do
@@ -67,7 +67,7 @@ function(arg)
   s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
   SetComponentsOfCascadeGroup(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
-  SetNrComponentsOfCascadeGroup(s, Length(arg));
+  SetNrComponents(s, Length(arg));
   SetDependencyDomainsOf(s,
           DependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
@@ -82,7 +82,7 @@ function(s)
   local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
         m, pos, func, pre, x, y, i, depfuncs;
 
-  nr:=NrComponentsOfCascadeGroup(s);
+  nr:=NrComponents(s);
   comps:=ComponentsOfCascadeGroup(s);
   pts := List([1..nr], #TODO only one line and type is changed
               i-> List(Orbits(comps[i]),
@@ -140,27 +140,12 @@ end);
 ################################################################################
 # ADMINISTRATIVE METHODS #######################################################
 ################################################################################
-InstallMethod(DomainOf,[IsCascadeGroup],
-x-> DomainOf(Representative(x)));
-
 InstallMethod(IsListOfPermGroups,
 [IsListOrCollection],
 function(l)
   return not IsEmpty(l) and
          IsDenseList(l) and
          ForAll(l, IsPermGroup);
-end);
-
-InstallOtherMethod(NrComponentsOfCascadeGroup,
-[IsCascadeGroup],
-function(cascprod)
-  return Size(ComponentDomains(Representative(cascprod)));
-end);
-
-InstallOtherMethod(ComponentDomains,
-        [IsCascadeGroup],
-function(cascprod)
-  return ComponentDomains(Representative(cascprod));
 end);
 
 ################################################################################
@@ -184,10 +169,10 @@ function(s)
     Append(str, "s");
   fi;
   Append(str, ", ");
-  Append(str, String(NrComponentsOfCascadeGroup(s)));
+  Append(str, String(NrComponents(s)));
   Append(str, " levels");
 
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeGroup(s)*3)-12 then
+  if Length(str)<SizeScreen()[1]-(NrComponents(s)*3)-12 then
     Append(str, " with (");
     for x in ComponentDomains(s) do
       Append(str, String(Length(x)));
