@@ -20,7 +20,7 @@ DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 DeclareAttribute("ComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("DomainOf", IsCascadeSemigroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeSemigroup);
-DeclareAttribute("NrComponentsOfCascadeSemigroup", IsCascadeSemigroup);
+DeclareAttribute("NrComponents", IsCascadeSemigroup);
 
 DeclareProperty("IsFullCascadeSemigroup", IsCascadeSemigroup);
 DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
