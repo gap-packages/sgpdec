@@ -41,7 +41,7 @@ local f;
   SetComponentDomains(f, compdoms);
   SetDependencyDomainsOf(f, DependencyDomains(compdoms));#ugly hack TODO no dup!
   SetDependencyFunctionsOf(f, depfuncs);
-  SetNrComponentsOfCascade(f, Length(compdoms));
+  SetNrComponents(f, Length(compdoms));
   return f;
 end);
 
@@ -342,10 +342,10 @@ function(f)
   local str, x;
 
   str:="<cascade with ";
-  Append(str, String(NrComponentsOfCascade(f)));
+  Append(str, String(NrComponents(f)));
   Append(str, " levels");
 
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascade(f)*3)-12
+  if Length(str)<SizeScreen()[1]-(NrComponents(f)*3)-12
    then
     Append(str, " with (");
     for x in ComponentDomains(f) do
