@@ -30,7 +30,7 @@ if GAPInfo.Version="4.dev" then
     local func, n, out, i, j, x;
 
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeSemigroup(s);
+    n:=NrComponents(s);
     out:=List([1..n], x->[]);
 
     for i in [1..Length(GeneratorsOfSemigroup(s))] do
@@ -55,7 +55,7 @@ else
     local func, n, out, i, j, x;
 
     func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponentsOfCascadeSemigroup(s);
+    n:=NrComponents(s);
     out:=List([1..n], x->[]);
 
     for i in [1..Length(GeneratorsOfSemigroup(s))] do
@@ -110,7 +110,7 @@ function(arg)
   s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
   SetComponentsOfCascadeSemigroup(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
-  SetNrComponentsOfCascadeSemigroup(s, Length(arg));
+  SetNrComponents(s, Length(arg));
   SetDependencyDomainsOf(s,
    DependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
@@ -125,7 +125,7 @@ function(s)
   local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
         m, pos, func, pre, x, y, i, depfuncs;
 
-  nr:=NrComponentsOfCascadeSemigroup(s);
+  nr:=NrComponents(s);
   comps:=ComponentsOfCascadeSemigroup(s);
   pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
@@ -205,7 +205,7 @@ function(l)
          ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
 end);
 
-InstallOtherMethod(NrComponentsOfCascadeSemigroup,
+InstallOtherMethod(NrComponents,
 [IsCascadeSemigroup],
 function(cascprod)
   return Size(ComponentDomains(Representative(cascprod)));
@@ -258,10 +258,10 @@ function(s)
     Append(str, "s");
   fi;
   Append(str, ", ");
-  Append(str, String(NrComponentsOfCascadeSemigroup(s)));
+  Append(str, String(NrComponents(s)));
   Append(str, " levels");
 
-  if Length(str)<SizeScreen()[1]-(NrComponentsOfCascadeSemigroup(s)*3)-12 then
+  if Length(str)<SizeScreen()[1]-(NrComponents(s)*3)-12 then
     Append(str, " with (");
     for x in ComponentDomains(s) do
       Append(str, String(Length(x)));
