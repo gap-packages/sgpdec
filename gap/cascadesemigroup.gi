@@ -1,6 +1,6 @@
 #############################################################################
 ##
-## cascadeprod.gi           SgpDec package
+## cascadesemigroup.gi           SgpDec package
 ##
 ## Copyright (C) 2008-2013
 ##

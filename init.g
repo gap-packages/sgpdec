@@ -6,6 +6,6 @@ ReadPackage("SgpDec","/gap/linearnotation.gd");
 
 ReadPackage("SgpDec","/gap/depfunc.gd");
 ReadPackage("SgpDec","/gap/cascade.gd");
-ReadPackage("SgpDec","/gap/cascadeprod.gd");
+ReadPackage("SgpDec","/gap/cascadesemigroup.gd");
 ReadPackage("SgpDec","/gap/cascadegroup.gd");
 ReadPackage("SgpDec","/gap/coords.gd");
