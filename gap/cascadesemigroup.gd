@@ -12,7 +12,8 @@
 DeclareGlobalFunction("CascadeSemigroup");
 DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and IsCascadeProduct);
 
-DeclareProperty("IsFullCascadeSemigroup", IsCascadeSemigroup);
+DeclareProperty("IsFullCascadeSemigroup",
+        IsCascadeSemigroup and IsFullCascadeProduct);
 DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
 DeclareGlobalFunction("FullCascadeSemigroup");
 DeclareSynonym("SemigroupWreathProduct", FullCascadeSemigroup);

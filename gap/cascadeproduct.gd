@@ -11,6 +11,7 @@
 
 DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeProduct", IsMagma and IsCascadeCollection);
+DeclareProperty("IsFullCascadeProduct", IsCascadeProduct);
 
 DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
 DeclareAttribute("DomainOf", IsCascadeProduct);
