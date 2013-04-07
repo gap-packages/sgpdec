@@ -1,4 +1,31 @@
 ################################################################################
+# SIZE #########################################################################
+################################################################################
+InstallMethod(Size, "for a full cascade semigroup",
+[IsFullCascadeProduct],
+function(cascprod)
+  return SizeOfFullCascadeProduct(
+                 List(ComponentDomains(cascprod), Length),       #degrees
+                 List(ComponentsOfCascadeProduct(cascprod),Size) #orders
+                 );
+end);
+
+#this is a huge number even in small cases
+InstallGlobalFunction(SizeOfFullCascadeProduct,
+function(degrees, orders)
+local order,j,i;
+  #calculating the order of the cascade state set
+  order := 1;
+  #j is the number of possible arguments on a given depth, i.e.\ the exponent
+  j := 1;
+  for i in [1..Size(orders)] do
+    order := order * (orders[i]^j);
+    j := j * degrees[i];
+  od;
+  return order;
+end);
+
+################################################################################
 # ADMINISTRATIVE METHODS #######################################################
 ################################################################################
 InstallMethod(DomainOf,[IsCascadeProduct],

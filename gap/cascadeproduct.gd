@@ -19,3 +19,7 @@ DeclareAttribute("DomainOf", IsCascadeProduct);
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
 DeclareAttribute("ComponentDomains", IsCascadeProduct);
+
+DeclareGlobalFunction("SizeOfFullCascadeProduct");
+DeclareGlobalFunction("SizeOfIteratedTransformationWreathProduct",
+        SizeOfFullCascadeProduct);
