@@ -4,9 +4,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.7.6",
+Version := "0.7.7",
 
-Date := "18/03/2013",
+Date := "07/04/2013",
 
 ArchiveURL := "http://sgpdec.sf.net",
 
@@ -86,7 +86,7 @@ PackageDoc := rec(
 
 
 Dependencies := rec(
- GAP := ">= 4.5",
+ GAP := ">= 4.6",
  NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
                    ["orb", ">=4.5"] #hashtable functionalities
                    ],

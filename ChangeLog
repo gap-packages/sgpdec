@@ -1,3 +1,5 @@
+0.7.7
+	CascadeGroup added and code shared with CascadeSemigroup now lifted to CascadeProduct. New codebase is ready to reintegrate Lagrange Decomposition.
 0.7.6
 	AsTransformation method for string (containing linear notation) and int (size of domain) added.
 0.7.5
