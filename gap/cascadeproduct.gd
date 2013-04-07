@@ -13,3 +13,8 @@ DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeProduct", IsMagma and IsCascadeCollection);
 
 DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
+DeclareAttribute("DomainOf", IsCascadeProduct);
+
+DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
+        IsListOrCollection);
+DeclareAttribute("ComponentDomains", IsCascadeProduct);
