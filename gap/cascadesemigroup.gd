@@ -6,18 +6,15 @@
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Cascade product.
+## Cascade product of semigroups.
 ##
 
 DeclareGlobalFunction("CascadeSemigroup");
-DeclareCategoryCollections("IsCascade");
-DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and
-        IsCascadeCollection);
+DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and IsCascadeProduct);
 
 DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
 DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
-DeclareAttribute("ComponentsOfCascadeSemigroup", IsCascadeSemigroup);
 DeclareAttribute("DomainOf", IsCascadeSemigroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeSemigroup);
 DeclareAttribute("NrComponents", IsCascadeSemigroup);
