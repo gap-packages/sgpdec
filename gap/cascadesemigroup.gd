@@ -17,5 +17,3 @@ DeclareProperty("IsFullCascadeSemigroup",
 DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
 DeclareGlobalFunction("FullCascadeSemigroup");
 DeclareSynonym("SemigroupWreathProduct", FullCascadeSemigroup);
-
-DeclareGlobalFunction("SizeOfIteratedTransformationWreathProduct");

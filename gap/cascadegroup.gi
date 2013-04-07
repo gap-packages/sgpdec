@@ -72,6 +72,7 @@ function(arg)
           DependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
           EnumeratorOfCartesianProduct(ComponentDomains(s)));
+  SetIsFullCascadeProduct(s,true);#TODO why is it needed? It should be implied.
   return s;
 end);
 
@@ -123,19 +124,6 @@ function(s)
 
   return gens;
 end);
-
-################################################################################
-# SIZE #########################################################################
-################################################################################
-InstallMethod(Size, "for a full cascade group",
-[IsFullCascadeGroup],
-function(s)
-  return SizeOfIteratedTransformationWreathProduct(
-                 List(ComponentDomains(s), Length),         #degrees
-                 List(ComponentsOfCascadeProduct(s),Size) #orders
-                 );
-end);
-
 
 ################################################################################
 # ADMINISTRATIVE METHODS #######################################################
