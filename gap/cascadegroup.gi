@@ -22,7 +22,7 @@ function(G)
                  f -> AsCascade(f, ComponentDomains(G)));
 end);
 
-InstallMethod(ComponentsOfCascadeGroup, "for a cascade product",
+InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
 [IsCascadeGroup],
 function(s)
   local func, n, out, i, j, x;
@@ -65,7 +65,7 @@ function(arg)
   fi;
   filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
   s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
-  SetComponentsOfCascadeGroup(s, arg);
+  SetComponentsOfCascadeProduct(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponents(s, Length(arg));
   SetDependencyDomainsOf(s,
@@ -83,7 +83,7 @@ function(s)
         m, pos, func, pre, x, y, i, depfuncs;
 
   nr:=NrComponents(s);
-  comps:=ComponentsOfCascadeGroup(s);
+  comps:=ComponentsOfCascadeProduct(s);
   pts := List([1..nr], #TODO only one line and type is changed
               i-> List(Orbits(comps[i]),
                       o -> o[1]));
@@ -132,7 +132,7 @@ InstallMethod(Size, "for a full cascade group",
 function(s)
   return SizeOfIteratedTransformationWreathProduct(
                  List(ComponentDomains(s), Length),         #degrees
-                 List(ComponentsOfCascadeGroup(s),Size) #orders
+                 List(ComponentsOfCascadeProduct(s),Size) #orders
                  );
 end);
 

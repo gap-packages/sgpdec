@@ -15,7 +15,6 @@ DeclareSynonymAttr("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
 
 DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 
-DeclareAttribute("ComponentsOfCascadeGroup", IsCascadeGroup);
 DeclareAttribute("NrDependencyFuncArgs", IsCascadeGroup);
 DeclareAttribute("NrComponents", IsCascadeGroup);
 

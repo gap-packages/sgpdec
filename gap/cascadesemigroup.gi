@@ -24,7 +24,7 @@ end);
 
 #with ClosureSemigroup it is easier
 if GAPInfo.Version="4.dev" then
-  InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
+  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
   [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
@@ -49,7 +49,7 @@ if GAPInfo.Version="4.dev" then
   end);
 else
   #ClosureSemigroup is not available
-  InstallMethod(ComponentsOfCascadeSemigroup, "for a cascade product",
+  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
   [IsCascadeSemigroup],
   function(s)
     local func, n, out, i, j, x;
@@ -108,7 +108,7 @@ function(arg)
 
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
   s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
-  SetComponentsOfCascadeSemigroup(s, arg);
+  SetComponentsOfCascadeProduct(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponents(s, Length(arg));
   SetDependencyDomainsOf(s,
@@ -126,7 +126,7 @@ function(s)
         m, pos, func, pre, x, y, i, depfuncs;
 
   nr:=NrComponents(s);
-  comps:=ComponentsOfCascadeSemigroup(s);
+  comps:=ComponentsOfCascadeProduct(s);
   pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
 
@@ -172,7 +172,7 @@ InstallMethod(Size, "for a full cascade semigroup",
 function(s)
   return SizeOfIteratedTransformationWreathProduct(
                  List(ComponentDomains(s), Length),         #degrees
-                 List(ComponentsOfCascadeSemigroup(s),Size) #orders
+                 List(ComponentsOfCascadeProduct(s),Size) #orders
                  );
 end);
 
