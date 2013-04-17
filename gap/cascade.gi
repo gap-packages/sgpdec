@@ -143,7 +143,7 @@ return TransformationOp(ct, DomainOf(ct), OnCoordinates);
 end);
 
 InstallMethod(AsPermutation, "for cascade",
-[IsCascade],
+[IsPermCascade],
 function(ct)
 return AsPermutation(AsTransformation(ct));
 end);
