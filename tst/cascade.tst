@@ -21,7 +21,8 @@ Dependency function of depth 2 with 2 dependencies.
 [ 1 ] -> Transformation( [ 3, 3, 2 ] )
 [ 2 ] -> Transformation( [ 2, 3, 2 ] )
 
-# it is recognized if all components are groups
+# it is recognized if all components are given and they are groups
+# BUT only this case
 gap> c := Cascade([Z2,Z3], [ [[],(1,2)], [[1],(1,2,3)] ]);
 <cascade with 2 levels with (2, 3) pts, 2 dependencies>
 gap> Display(c);
@@ -35,3 +36,13 @@ true
 # it is also possible to give only component domains, in that case
 gap> Cascade([[1..2],[1..3]],[]);
 <cascade with 2 levels with (2, 3) pts, 0 dependencies>
+
+# identity cascade
+gap> IdentityCascade([T3,Z2]);
+<cascade with 2 levels with (3, 2) pts, 0 dependencies>
+
+# random one: components, max number of nontrivial dependencies
+#gap> RandomCascade([T3,Z3],4); TODO
+
+# low-level cascade constructor
+#gap>CreateCascade(...); TODO
