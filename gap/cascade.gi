@@ -15,7 +15,7 @@
 #  ways to create cascades
 # 1. Cascade, giving components/component domains and a list of dependencies
 # 2. by giving dependency functions
-InstallGlobalFunction(CascadeNC,
+InstallGlobalFunction(Cascade,
 function(doms, deps)
   local type;
   type := CascadeType;
@@ -46,7 +46,7 @@ local f;
 end);
 
 InstallGlobalFunction(IdentityCascade,
-function(comps) return CascadeNC(comps,[]); end);
+function(comps) return Cascade(comps,[]); end);
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)

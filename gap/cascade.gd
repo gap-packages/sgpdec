@@ -29,7 +29,7 @@ BindGlobal("PermCascadeType", NewType(PermCascadeFamily,
         IsPermCascade and IsAssociativeElement));
 
 #constructors
-DeclareGlobalFunction("CascadeNC");
+#DeclareGlobalFunction("CascadeNC"); # TODO checking and NC version later
 DeclareGlobalFunction("Cascade");
 DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("IdentityCascade");
