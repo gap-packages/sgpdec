@@ -32,6 +32,18 @@ Dependency function of depth 2 with 1 dependencies.
 [ 1 ] -> (1,2,3)
 gap> IsPermCascade(c);
 true
+# so the usual invertible multiplicative functions work
+gap> One(c);
+<cascade with 2 levels with (2, 3) pts, 0 dependencies>
+gap> ic := Inverse(c);
+<cascade with 2 levels with (2, 3) pts, 2 dependencies>
+gap> Display(ic);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -> (1,2)
+Dependency function of depth 2 with 1 dependencies.
+[ 2 ] -> (1,3,2)
+gap> Order(c);
+6
 
 # it is also possible to give only component domains, in that case
 gap> Cascade([[1..2],[1..3]],[]);
@@ -46,3 +58,4 @@ gap> IdentityCascade([T3,Z2]);
 
 # low-level cascade constructor
 #gap>CreateCascade(...); TODO
+
