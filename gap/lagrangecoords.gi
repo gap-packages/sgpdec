@@ -139,12 +139,6 @@ local fudges,i;
   return fudges;
 end);
 
-# getting the representative of an element
-InstallGlobalFunction(CosetRep,
-function(g,transversal)
-  return transversal[PositionCanonical(transversal,g)];
-end);
-
 #coding to the cascaded format
 InstallGlobalFunction(EncodeCosetReprs,
 function(decomp,list) local i,l; l := [];
@@ -166,35 +160,6 @@ local i,l;
   return l;
 end);
 
-# Each cascaded state corresponds to one element (in the regular representation)
-#of the group. This function gives the path corresponding to a group element
-#(through the Lagrange-Frobenius map).
-InstallGlobalFunction(Perm2Coords,
-function(decomp,g)
-local coords,i;
-
-  #on the top level we have simply g
-  coords := [];
-  Add(coords,g);
-  #then going down to deeper levels
-  for i in [2..Length(decomp)] do
-    Add(coords,
-        coords[i-1]
-        * Inverse(CosetRep(coords[i-1], TransversalsOf(decomp)[i-1])) );
-  od;
-
-  #taking the representative elements
-  for i in [1..Length(coords)] do
-    coords[i] := CosetRep(coords[i], TransversalsOf(decomp)[i]);
-  od;
-
-  # then coding coset representatives as points
-  for i in [1..Length(coords)] do
-    coords[i] :=  PositionCanonical( TransversalsOf(decomp)[i],coords[i]);
-  od;
-
-  return coords;
-end);
 
 InstallGlobalFunction(Coords2Perm,
 function(decomp,cs)
