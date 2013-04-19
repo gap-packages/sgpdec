@@ -18,3 +18,13 @@ local transversals, comps,i,compgens;
   return rec(transversals:=transversals,
              components:=comps);
 end;
+
+StabilizerReps := function(G)
+local stabrt, stabrtreps,i;
+  stabrt := RightTransversal(G,Stabilizer(G,1));
+  stabrtreps := [];
+  for i in [1..Length(stabrt)] do
+    stabrtreps[1^stabrt[i]] := stabrt[i];
+  od;
+  return stabrtreps;
+end;
