@@ -128,7 +128,7 @@ local fudges,i;
     Add(fudges,
         s[i-1] * #this is already a representative!
         fudges[i-1] *
-        Inverse(Perm2CosetRepr(s[i-1] * fudges[i-1],
+        Inverse(CosetRep(s[i-1] * fudges[i-1],
                 TransversalsOf(decomp)[i-1])));
   od;
   #converting to canonical
@@ -140,7 +140,7 @@ local fudges,i;
 end);
 
 # getting the representative of an element
-InstallGlobalFunction(Perm2CosetRepr,
+InstallGlobalFunction(CosetRep,
 function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
 end);
@@ -150,7 +150,7 @@ InstallGlobalFunction(EncodeCosetReprs,
 function(decomp,list) local i,l; l := [];
   for i in [1..Size(list)] do
     Add(l, PositionCanonical(TransversalsOf(decomp)[i],
-        Perm2CosetRepr(list[i],TransversalsOf(decomp)[i])));
+        CosetRep(list[i],TransversalsOf(decomp)[i])));
   od;
   return l;
 end);
@@ -180,12 +180,12 @@ local coords,i;
   for i in [2..Length(decomp)] do
     Add(coords,
         coords[i-1]
-        * Inverse(Perm2CosetRepr(coords[i-1], TransversalsOf(decomp)[i-1])) );
+        * Inverse(CosetRep(coords[i-1], TransversalsOf(decomp)[i-1])) );
   od;
 
   #taking the representative elements
   for i in [1..Length(coords)] do
-    coords[i] := Perm2CosetRepr(coords[i], TransversalsOf(decomp)[i]);
+    coords[i] := CosetRep(coords[i], TransversalsOf(decomp)[i]);
   od;
 
   # then coding coset representatives as points
