@@ -73,7 +73,8 @@ end;
 
 # s - state (list), g - group element to be lifted,
 ComponentActions := function(g,s, transversals)
-local fudges,i;
+  local fudges,i;
+  s := DecodeCosetReprs(s,transversals);
   #on the top level we have simply g
   fudges := [g];
   #then going down to deeper levels
@@ -91,26 +92,20 @@ local fudges,i;
 end;
 
 AsCascadedeLF := function(g,transversals, dom)
-local j,state,fudges,depfunctable,arg;
-
-  if g=() then return ();fi;
-
-  #the lookup for the new dependencies
-  depfunctable := [];
-
+local i,state,actions,depfuncs;
+  #identity needs no further calculations
+  if g=() then return [];fi;
+  depfuncs := [];
   #we go through all states
   for state in dom do
     #get the component actions on a state
-    fudges := ComponentActions(g,state,transversals);
-
+    actions := ComponentActions(g,state,transversals);
     #examine whether there is a nontrivial action, then add
-    for j in [1..Length(fudges)] do
-      if fudges[j] <> () then
-        arg := EncodeCosetReprs(decomp,state{[1..(j-1)]});
-        RegisterNewDependency(depfunctable, arg, fudges[j]);
+    for i in [1..Length(actions)] do
+      if actions[i] <> () then
+        Add(depfuncs,[state{[1..(i-1)]},actions[i]]);
       fi;
     od;
   od;
-
-  return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
-end);
+  return depfuncs; #TODO maybe sort them into a graded list
+end;
