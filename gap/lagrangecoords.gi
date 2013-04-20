@@ -9,32 +9,6 @@
 ## Lagrange coordinatization of groups.
 ##
 
-#former _FudgeFactors, s - state (list), g - group element to be lifted,
-InstallMethod(ComponentActions,
-        "componentactions of an original permutation in Lagrange decomposition",
-        true,
-        [IsLagrangeDecomposition,IsPerm, IsList], 0,
-function(decomp,g,s)
-local fudges,i;
-
-  #on the top level we have simply g
-  fudges := [];
-  Add(fudges,g);
-  #then going down to deeper levels
-  for i in [2..Length(s)] do
-    Add(fudges,
-        s[i-1] * #this is already a representative!
-        fudges[i-1] *
-        Inverse(CosetRep(s[i-1] * fudges[i-1],
-                TransversalsOf(decomp)[i-1])));
-  od;
-  #converting to canonical
-  for i in [1..Length(fudges)] do
-    fudges[i] := PermList(ActionOn(TransversalsOf(decomp)[i],
-                         fudges[i],\*));
-  od;
-  return fudges;
-end);
 
 #given a cascaded state it returns an array of flat cascops that -
 #applied in order - kills of levels top-down.
