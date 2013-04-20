@@ -70,3 +70,47 @@ end;
 Coords2Perm := function(cs, transversals)
     return Product(Reversed(DecodeCosetReprs(cs, transversals)),());
 end;
+
+# s - state (list), g - group element to be lifted,
+ComponentActions := function(g,s, transversals)
+local fudges,i;
+  #on the top level we have simply g
+  fudges := [g];
+  #then going down to deeper levels
+  for i in [2..Length(s)] do
+    Add(fudges,
+        s[i-1] * #this is already a representative!
+        fudges[i-1] *
+        Inverse(CosetRep(s[i-1] * fudges[i-1],
+                transversals[i-1])));
+  od;
+  #converting to coset action
+  return List([1..Length(fudges)],
+              i -> AsPermutation(
+                      TransformationOp(fudges[i],transversals[i],\*)));
+end;
+
+AsCascadedeLF := function(g,transversals, dom)
+local j,state,fudges,depfunctable,arg;
+
+  if g=() then return ();fi;
+
+  #the lookup for the new dependencies
+  depfunctable := [];
+
+  #we go through all states
+  for state in dom do
+    #get the component actions on a state
+    fudges := ComponentActions(g,state,transversals);
+
+    #examine whether there is a nontrivial action, then add
+    for j in [1..Length(fudges)] do
+      if fudges[j] <> () then
+        arg := EncodeCosetReprs(decomp,state{[1..(j-1)]});
+        RegisterNewDependency(depfunctable, arg, fudges[j]);
+      fi;
+    od;
+  od;
+
+  return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
+end);
