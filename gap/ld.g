@@ -35,6 +35,22 @@ CosetRep := function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
 end;
 
+#coding the coset representatives to the their integer indices
+# TODO this seems to do two things, converting to coset reps as well
+# but that may be needed, then it is a misnomer
+# OK, fix was done below, still misnomer
+EncodeCosetReprs := function(list, transversals)
+  return List([1..Size(list)],
+              i -> PositionCanonical(transversals[i], list[i]));
+                      #CosetRep(list[i],transversals[i])));
+end;
+
+# decoding the integers back to coset rep
+DecodeCosetReprs := function(cascstate, transversals)
+  return List([1..Size(cascstate)],
+              i -> transversals[i][cascstate[i]]);
+end;
+
 # Each cascaded state corresponds to one element (in the regular representation)
 #of the group. This function gives the path corresponding to a group element
 #(through the Lagrange-Frobenius map).
@@ -47,8 +63,10 @@ local coords,i;
     Add(coords, coords[i] * Inverse(CosetRep(coords[i],transversals[i])));
   od;
   #taking the representative elements then coding coset reps as points (indices)
-  coords := List([1..Length(coords)],
-                 i -> PositionCanonical(transversals[i],
-                         CosetRep(coords[i], transversals[i])));
-  return coords;
+  return EncodeCosetReprs(coords, transversals);
+end;
+
+#mapping down is just multiplying together
+Coords2Perm := function(cs, transversals)
+    return Product(Reversed(DecodeCosetReprs(cs, transversals)),());
 end;

@@ -36,34 +36,6 @@ local fudges,i;
   return fudges;
 end);
 
-#coding to the cascaded format
-InstallGlobalFunction(EncodeCosetReprs,
-function(decomp,list) local i,l; l := [];
-  for i in [1..Size(list)] do
-    Add(l, PositionCanonical(TransversalsOf(decomp)[i],
-        CosetRep(list[i],TransversalsOf(decomp)[i])));
-  od;
-  return l;
-end);
-
-#coding from the cascaded format
-InstallGlobalFunction(DecodeCosetReprs,
-function(decomp,cascstate)
-local i,l;
-  l := [];
-  for i in [1..Size(cascstate)] do
-    Add(l, TransversalsOf(decomp)[i][cascstate[i]]);
-  od;
-  return l;
-end);
-
-
-InstallGlobalFunction(Coords2Perm,
-function(decomp,cs)
-    return Product(Reversed(DecodeCosetReprs(decomp,cs)),());
-end);
-
-
 #given a cascaded state it returns an array of flat cascops that -
 #applied in order - kills of levels top-down.
 InstallGlobalFunction(LevelKillers,
