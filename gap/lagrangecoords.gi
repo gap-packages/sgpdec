@@ -67,38 +67,6 @@ end);
 ################################################################################
 # LIFTING PERMUTATION ##########################################################
 
-#decomp - cascade components of group, g element of the group
-InstallOtherMethod(AsCascadedTrans,
-    "raise a permutation",
-    true,
-    [IsPerm,IsLagrangeDecomposition],
-function(g,decomp)
-local j,state,states,fudges,depfunctable,arg;
-
-  if g=() then return IdentityCascadedTransformation(CascadeShellOf(decomp));fi;
-
-  #the states already coded as coset representatives
-  states := EnumeratorOfCartesianProduct(TransversalsOf(decomp));
-
-  #the lookup for the new dependencies
-  depfunctable := [];
-
-  #we go through all states
-  for state in states do
-    #get the component actions on a state
-    fudges := ComponentActions(decomp,g,state);
-
-    #examine whether there is a nontrivial action, then add
-    for j in [1..Length(fudges)] do
-      if fudges[j] <> () then
-        arg := EncodeCosetReprs(decomp,state{[1..(j-1)]});
-        RegisterNewDependency(depfunctable, arg, fudges[j]);
-      fi;
-    od;
-  od;
-
-  return CascadedTransformation(CascadeShellOf(decomp),depfunctable);
-end);
 
 InstallOtherMethod(AsPermutation,
     "for a cascaded permutation",
