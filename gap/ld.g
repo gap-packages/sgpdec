@@ -103,7 +103,7 @@ local i,state,actions,depfuncs;
     #examine whether there is a nontrivial action, then add
     for i in [1..Length(actions)] do
       if actions[i] <> () then
-        Add(depfuncs,[state{[1..(i-1)]},actions[i]]);
+        AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
       fi;
     od;
   od;
