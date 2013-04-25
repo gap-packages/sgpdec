@@ -12,3 +12,4 @@ ReadPackage("SgpDec","/gap/coords.gi");
 ReadPackage("SgpDec","/gap/cascadeproduct.gi");
 ReadPackage("SgpDec","/gap/cascadesemigroup.gi");
 ReadPackage("SgpDec","/gap/cascadegroup.gi");
+ReadPackage("SgpDec","/gap/fl.gi");
