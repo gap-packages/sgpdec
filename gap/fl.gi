@@ -1,23 +1,45 @@
 # for a subgroupchain it calculates the right transversals and a group action on
 # the cosets
 # in Frobenius-Lagrange decompositions these are the coordinates and components
-CosetActionGroups := function(subgroupchain)
+InstallGlobalFunction(CosetActionGroups,
+function(subgroupchain)
 local transversals, comps,i,compgens;
   transversals := [];
   comps := [];
   for i in [1..Length(subgroupchain)-1] do
-    #first the transversals
+    #the transversals - coset spaces
     transversals[i] := RightTransversal(subgroupchain[i],subgroupchain[i+1]);
-    # then the generators of the component by the canonical action on the
-    # transversals
+    #the generators of the component by the canonical action on the cosets
     compgens := List(GeneratorsOfGroup(subgroupchain[i]),
-         gen -> AsPermutation(TransformationOp(gen,transversals[i],OnRight)));
+                     gen -> AsPermutation(
+                             TransformationOp(gen,transversals[i],OnRight)));
+    #getting rid of identity permutations
     compgens := Filtered(compgens, gen-> not IsOne(gen));
+    #getting rid of duplicate generators, creating the groups
     Add(comps,Group(AsSet(compgens)));
   od;
-  return rec(transversals:=transversals,
-             components:=comps);
-end;
+  return rec(transversals:=transversals,components:=comps);
+end);
+
+InstallGlobalFunction(FLCascadeGroup,
+function(group_or_chain)
+  local gens,id,cosetactions,G;
+  if IsGroup(group_or_chain) then
+    cosetactions := CosetActionGroups(ChiefSeries(group_or_chain));
+    G := group_or_chain;
+  elif IsListOfPermGroups(group_or_chain) then
+    cosetactions := CosetActionGroups(group_or_chain);
+    G := group_or_chain[1];
+  else
+    ;#TODO usage message
+  fi;
+  id := IdentityCascade(cosetactions.components);
+  return Group(List(GeneratorsOfGroup(G),
+                 g->Cascade(cosetactions.components,
+                         FLDependencies(g,
+                                 cosetactions.transversals,
+                                 DomainOf(id)))));
+end);
 
 # what group elements correspond to the integers
 StabilizerCosetActionReps := function(G)
@@ -72,7 +94,8 @@ Coords2Perm := function(cs, transversals)
 end;
 
 # s - state (list), g - group element to be lifted,
-ComponentActions := function(g,s, transversals)
+InstallGlobalFunction(ComponentActions,
+function(g,s, transversals)
   local fudges,i;
   s := DecodeCosetReprs(s,transversals);
   #on the top level we have simply g
@@ -89,9 +112,10 @@ ComponentActions := function(g,s, transversals)
   return List([1..Length(fudges)],
               i -> AsPermutation(
                       TransformationOp(fudges[i],transversals[i],\*)));
-end;
+end);
 
-AsCascadedeLF := function(g,transversals, dom)
+InstallGlobalFunction(FLDependencies,
+function(g,transversals, dom)
 local i,state,actions,depfuncs;
   #identity needs no further calculations
   if g=() then return [];fi;
@@ -108,4 +132,4 @@ local i,state,actions,depfuncs;
     od;
   od;
   return depfuncs; #TODO maybe sort them into a graded list
-end;
+end);
