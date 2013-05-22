@@ -46,32 +46,38 @@ local i;
   return true;
 end);
 
-FiniteSetPrinter := function(bl)
-local i,n,size;
+
+FiniteSetPrinter := function(bl,states)
+local i,n,size,str;
   n := 0;
   size := SizeBlist(bl);
-  Print("{");
+  str:="{";
   for i in [1..Size(bl)] do
     if bl[i] then
-      Print(i);
+      str := Concatenation(str,String(states[i]));
       n := n + 1;
       if n < size then
-        Print(",");
+        str := Concatenation(str,",");
       else
         break;
       fi;
     fi;
   od;
-  Print( "}" );
+  str := Concatenation(str,"}");
+  return str;
 end;
 
 
+PrintFiniteSet := function(bl)
+  Print(FiniteSetPrinter(bl,[1..Size(bl)]));
+end;
+
 #redefining, this is ugly with the ranks at the moment TODO
 InstallMethod(ViewObj,"for a blist (redefined)",
-    [ IsBlistRep ],333, FiniteSetPrinter);
+    [ IsBlistRep ],333, PrintFiniteSet);
 
 InstallMethod(PrintObj,"for a blist (redefined)",
-    [ IsBlistRep ],333, FiniteSetPrinter);
+    [ IsBlistRep ],333, PrintFiniteSet);
 
 InstallMethod(Display,"for a blist (redefined)",
-    [ IsBlistRep ],333, FiniteSetPrinter);
+    [ IsBlistRep ],333, PrintFiniteSet);

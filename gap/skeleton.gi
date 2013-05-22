@@ -434,7 +434,9 @@ local permgens,gens,n, roundtrips, permgenwords;
   Info(SkeletonInfoClass, 2, "Nonidentity roundtrips/all roundtrips: ",
        Size(permgens), "/", Size(roundtrips));
   gens := AsSet(List(permgens,
-                  t -> AsPermutation(RestrictedTransformation(t,AsList(set)))));
+                  t -> AsPermutation(
+                          RestrictedTransformation(t,
+                                  ListBlist([1..Size(set)],set)))));
   Info(SkeletonInfoClass, 2,
        "Permutator group generators/nonidentity roundtrips: ",
        Size(gens), "/", Size(permgens));
