@@ -21,6 +21,7 @@ Read("idmul.g");;
 Read("mul.g");;
 Read("depextract.g");;
 Read("linnot.g");;
+Read("straightword.g");;
 
 ########################################################
 ############MAIN########################################
@@ -30,6 +31,8 @@ TestCartesianEnumerator();
 
 TestLinearNotation(5);
 TestLinearNotation(51);
+
+TestStraightWords(GeneratorsOfSemigroup(T5), 6222);
 
 TestDependencyExtraction([MICROBUG,HEYBUG,ALIFEX]);
 TestDependencyExtraction([BECKS,HEYBUG,S3]);
