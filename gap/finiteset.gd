@@ -1,0 +1,2 @@
+DeclareGlobalFunction("IsSingleton");
+DeclareGlobalFunction("IsProperFiniteSubset");
