@@ -451,7 +451,10 @@ function(sk,set)
   local permgroup,imggens,homgens;
   permgroup := PermutatorGroup(sk,set);
   imggens := List(GeneratorsOfGroup(permgroup),
-                  g->PermList(ActionOn(CoveringSetsOf(sk,set),g,OnFiniteSets)));
+                  g->AsPermutation(
+                          TransformationOp(g,
+                                  CoveringSetsOf(sk,set),
+                                  OnFiniteSets)));
   homgens := DuplicateFreeList(imggens);
   return GroupHomomorphismByImages(permgroup,
                  Group(homgens),
