@@ -128,7 +128,8 @@ function(s)
 
   nr:=NrComponents(s);
   comps:=ComponentsOfCascadeProduct(s);
-  pts:=List([1..nr], i-> ActionRepresentatives(comps[i]));
+  pts:=List([1..nr], i-> [1..DegreeOfTransformationSemigroup(comps[i])]);
+  #quick hack removing now dubious ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
 
   dom:=DomainOf(s);
