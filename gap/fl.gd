@@ -15,4 +15,4 @@ DeclareFilter("IsFLCascadeGroup");
 DeclareGlobalFunction("FLCascadeGroup");
 DeclareGlobalFunction("CosetActionGroups");
 DeclareGlobalFunction("FLDependencies");
-DeclareGlobalFunction("ComponentActions");
+DeclareGlobalFunction("FLComponentActions");

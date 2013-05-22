@@ -94,7 +94,7 @@ Coords2Perm := function(cs, transversals)
 end;
 
 # s - state (list), g - group element to be lifted,
-InstallGlobalFunction(ComponentActions,
+InstallGlobalFunction(FLComponentActions,
 function(g,s, transversals)
   local fudges,i;
   s := DecodeCosetReprs(s,transversals);
@@ -123,7 +123,7 @@ local i,state,actions,depfuncs;
   #we go through all states
   for state in dom do
     #get the component actions on a state
-    actions := ComponentActions(g,state,transversals);
+    actions := FLComponentActions(g,state,transversals);
     #examine whether there is a nontrivial action, then add
     for i in [1..Length(actions)] do
       if actions[i] <> () then
