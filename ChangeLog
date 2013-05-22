@@ -1,0 +1,16 @@
+0.7.7
+	CascadeGroup added and code shared with CascadeSemigroup now lifted to CascadeProduct. New codebase is ready to reintegrate Lagrange Decomposition.
+0.7.6
+	AsTransformation method for string (containing linear notation) and int (size of domain) added.
+0.7.5
+	Mixed components are allowed again, with minimal code changes. Further cleanups following the DependencyFunction separation. New test case for checking lifting as well.
+0.7.4.
+	Dependency functions are now separated for each level, thus cascades become tuples of dependency functions. Exactly as described mathematically.
+0.7.3
+	Numerous renamings, unified DomainOf and DependencyDomainsOf for cascades and cascade semigroups. IdentityCascade added. Test scripts updated.
+0.7.2
+	DotCascade reimplemented with better drawing style. The whole domain tree is drawn and nontrivial dependenices are highlighted.
+0.7.1
+	Unified ComponentDomains instead of the confusing and long ComponentDomainsOfCascade and ComponentDomainsOfCascadeSemigroup.
+0.7
+	Restarting the development with a new and clean implementation of cascade products. Better integration with existing semigroup functions, for instance added IsomorphismTransformationSemigroup. SemigroupWreathProduct working.
