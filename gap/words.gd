@@ -10,7 +10,7 @@
 ##
 
 #words consisting of positive integers only (no inverse operation)
-DeclareGlobalFunction("BuildByWord");
+DeclareGlobalFunction("BuildByWord"); #TODO this is implemented elsewhere
 DeclareGlobalFunction("TrajectoryByWord");
 DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
