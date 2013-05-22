@@ -136,3 +136,10 @@ SetName(SMLBUG,"SMLBUG");
 microbug := [ Transformation( [ 1,2,1 ] ),Transformation( [ 3,3,1 ] ) ];
 MICROBUG := Semigroup(microbug);
 SetName(MICROBUG,"MICROBUG");
+
+#Chrystopher's example where the permutator and the holonomy group is different
+perm2holnontrivial := [Transformation([2,1,4,5,3]),
+                       Transformation([1,2,2,2,2]),
+                       Transformation([3,3,3,4,5])]);
+PERM2HOLNONTRIVIAL := Semigroup(perm2holnontrivial);
+SetName(PERM2HOLNONTRIVIAL,"P2HNT");
