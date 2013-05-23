@@ -76,6 +76,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
   n := DepthOfSkeleton(holrec.sk) - 1;
   holrec.d := n;
+  holrec.n := DegreeOfTransformationSemigroup(skeleton.ts);
   holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
@@ -210,25 +211,25 @@ function(hd,level,state)
   return hd.allcoords[level][state];
 end);
 #AsPoint
-InstallOtherMethod(AsPoint,
-    "flatten a cascaded state",
-    true,
-    [IsDenseList,IsRecord],
+AsHolonomyPoint :=
+#    "flatten a cascaded state",
+#    true,
+#    [IsDenseList,IsRecord],
 function(cs,hd)
   local coverchain;
   coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
-  return AsList(coverchain[Length(coverchain)])[1];
-end);
+  return ListBlist([1..hd.n],coverchain[Length(coverchain)])[1];
+end;#);
 
-InstallOtherMethod(AsCoords,
-    "raise a flat state into holonomy decomposition",
-    true,
-    [IsInt, IsRecord],
+AsHolonomyCoords :=
+#    "raise a flat state into holonomy decomposition",
+#    true,
+#    [IsInt, IsRecord],
 function(k,hd)
   return HolonomySets2Ints(hd,
                  Coordinates(hd,
-                         RandomCoverChain(hd.skeleton,k)));
-end);
+                         RandomCoverChain(hd.sk,k)));
+end;#);
 
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,states)
@@ -316,7 +317,7 @@ InstallGlobalFunction(HolonomyDependencies,
 function(hd, t)
 local i,state,sets,actions,depfuncs;
   #identity needs no further calculations
-  if IsOne(t) then return [];fi;
+  #if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
   for state in hd.domain do
@@ -348,23 +349,23 @@ AsTrans :=
 function(co,hd)
 local l, i;
   l := [];
-  for i in AsList(TopSet(hd.sk)) do
-    l[i] := AsPoint(AsCoords(i,hd) ^ co,hd);
+  for i in ListBlist([1..DegreeOfTransformationSemigroup(hd.original)],TopSet(hd.sk)) do
+    l[i] := AsHolonomyPoint(OnCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
   return Transformation(l);
 end;
 
 #Flattening the whole decomposition (gives back the original semigroup)
 #TODO this should be wrapped in the semigroup homomorphism
-AsSgp :=
-function( hd )
-    local g,gens;
-    gens := [];
-    for g in GeneratorsOfSemigroup(hd.original) do
-        Add(gens,AsTrans(AsCascadedTrans(g,hd)));
-    od;
-    return Semigroup(gens);
-end;
+#AsSgp :=
+#function( hd )
+#    local g,gens;
+#    gens := [];
+#    for g in GeneratorsOfSemigroup(hd.original) do
+#        Add(gens,AsTrans(AsCascadedTrans(g,hd)));
+#    od;
+#    return Semigroup(gens);
+#end;
 
 ################################################################################
 # ACCESS FUNCTIONS #############################################################
