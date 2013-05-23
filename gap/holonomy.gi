@@ -103,7 +103,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(holrec.groupcomponents,groups);
     Add(holrec.reps, reps);
     Add(holrec.coords,coords);
-    Add(holrec.allcoords,Flat(coords));
+    Add(holrec.allcoords,Concatenation(coords));
   od;
 
   return holrec;
