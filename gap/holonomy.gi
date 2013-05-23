@@ -280,7 +280,7 @@ local action,
             #look for a tile of Q that contains
         set := OnFiniteSets(Ps , GetOUT(sk,Q));
         pos := hd.shifts[depth][slot] +1;
-        while not (IsSubset(hd.allcoords[depth][pos],set)) do
+        while not (IsSubsetBlist(hd.allcoords[depth][pos],set)) do
           pos := pos + 1;
         od;
         actions[depth] := Transformation(
