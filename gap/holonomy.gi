@@ -110,6 +110,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   holrec.comps := List([1..Length(holrec.groupcomponents)],
                        x -> PermutationResetSemigroup(holrec.groupcomponents[x],
                                holrec.shifts[x]));
+  holrec.domain := DomainOf(IdentityCascade(holrec.comps)); #TODO this is clumsy
   return holrec;
 end);
 
@@ -304,24 +305,21 @@ end);
 
 InstallGlobalFunction(HolonomyCascadeSemigroup,
 function(ts)
-  local hd,id;
+  local hd;
   hd := HolonomyDecomposition(Skeleton(ts));
-  id := IdentityCascade(hd.comps);
   return Semigroup(List(GeneratorsOfSemigroup(ts),
                  t->Cascade(hd.comps,
-                         HolonomyDependencies(hd,
-                                 t,
-                                 DomainOf(id)))));
+                         HolonomyDependencies(hd,t))));
 end);
 
 InstallGlobalFunction(HolonomyDependencies,
-function(hd, t, dom)
+function(hd, t)
 local i,state,sets,actions,depfuncs;
   #identity needs no further calculations
   if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
-  for state in dom do
+  for state in hd.domain do
     sets := HolonomyInts2Sets(hd,state);
     #get the component actions on a state
     actions := HolonomyComponentActions(hd, t, sets);
@@ -341,29 +339,9 @@ end);
 
 # ENA this will go to AsCascadedTrans
 
-AsCascadedTrans :=
+AsHolonomyCascade :=
 function(t,decomp)
-local j,tilechain, tilechains, actions,depfunctable,arg, state;
-  if IsOne(t) then
-    return IdentityCascade(decomp.groupcomponents);# TODO ???
-  fi;
-  #the states already coded as coset representatives
-  tilechains := AllCoverChains(decomp.sk);
-  #the lookup for the new dependencies
-  depfunctable := [];
-  #we go through all states
-  for tilechain in tilechains  do
-    state := Coordinates(decomp,tilechain);
-    actions := HolonomyComponentActions(decomp,t,state);
-    #examine whether there is a nontrivial action, then add
-    for j in [1..Length(actions)] do
-      if not IsOne(actions[j]) then
-        arg := HolonomySets2Ints(decomp,state{[1..(j-1)]});
-        #RegisterNewDependency(depfunctable, arg, actions[j]);
-      fi;
-    od;
-  od;
-  return Cascade(decomp.groupcomponents,depfunctable);
+  return Cascade(decomp.comps,HolonomyDependencies(decomp,t));
 end;
 
 AsTrans :=
