@@ -68,12 +68,13 @@ InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
 local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   # 1. put the skeleton into the record
-  holrec := rec(skeleton:=skeleton);
+  holrec := rec(sk:=skeleton);
   holrec.original := skeleton.ts;
 
   # 2. get the group components
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  n := DepthOfSkeleton(holrec.skeleton) - 1;
+  n := DepthOfSkeleton(holrec.sk) - 1;
+  holrec.d := n;
   holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
@@ -88,9 +89,9 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(shifts,shift);
 
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
-    for rep in RepresentativesOnDepth(holrec.skeleton,depth) do
-      coversets := CoveringSetsOf(holrec.skeleton,rep);
-      Add(groups,HolonomyGroup@(holrec.skeleton, rep));#stored unshifted
+    for rep in RepresentativesOnDepth(holrec.sk,depth) do
+      coversets := CoveringSetsOf(holrec.sk,rep);
+      Add(groups,HolonomyGroup@(holrec.sk, rep));#stored unshifted
       shift := shift + Size(coversets);
       Add(shifts,shift);
       Add(reps,rep);
@@ -105,7 +106,9 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(holrec.coords,coords);
     Add(holrec.allcoords,Concatenation(coords));
   od;
-
+  holrec.comps := List([1..Length(holrec.groupcomponents)],
+                       x -> PermutationResetSemigroup(holrec.groupcomponents[x],
+                               holrec.shifts[x]));
   return holrec;
 end);
 
@@ -164,7 +167,7 @@ local chain,P,depth,skeleton;
   P := TopSet(skeleton); #we start to approximate from the top set
   chain := [];
   depth := 1;
-  while depth <= Length(hd) do
+  while depth <= hd.d do
     #we go from the cover of the rep to the cover of the chain element
     P := OnFiniteSets(coordinates[depth] , GetIN(skeleton, P));
     Add(chain,P);
@@ -179,7 +182,7 @@ function(hd, chain)
 local sets,i, P, skeleton;
   skeleton := hd.sk;
   #filling up with zeros - jumped over levels are abstract
-  sets := List([1..Length(hd)], x->  0);
+  sets := List([1..hd.d], x->  0);
   P := TopSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
@@ -244,11 +247,11 @@ local action,
       width;
   sk := hd.sk; #it is used often so it's better to have it
   #initializing actions to identity
-  actions := List([1..Length(hd)], x -> One(hd[x]));
+  actions := List([1..hd.d], x -> One(hd.comps[x]));
   #initial successive approximation are the same for both
   P := TopSet(sk);
   Q := P;
-  for depth in [1..Length(hd)] do
+  for depth in [1..hd.d] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       slot := Position(hd.reps[depth], RepresentativeSet(sk, Q));
       Ps := OnFiniteSets(P , s);
@@ -269,11 +272,11 @@ local action,
                                 [shift+Size(coversetaction)+1..width]));
         # paranoid check whether the action is in the component
         if SgpDecOptionsRec.PARANOID then
-          if not actions[depth] in hd[depth] then
+          if not actions[depth] in hd.comps[depth] then
             Error("Alien component action!");
           fi;
         fi;
-      elif IsSubset(Q,Ps)  then #CONSTANT MAP
+      elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP
             #look for a tile of Q that contains
         set := OnFiniteSets(Ps , GetOUT(sk,Q));
         pos := hd.shifts[depth][slot] +1;
