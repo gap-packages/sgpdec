@@ -231,6 +231,28 @@ function(k,hd)
                          RandomCoverChain(hd.sk,k)));
 end;#);
 
+OnHolonomyCoordinates:=
+function(coords, ct)
+  local dfs, copy, out, len, i;
+
+  dfs:=DependencyFunctionsOf(ct);
+  len:=Length(coords);
+  copy:=EmptyPlist(len);
+  out:=EmptyPlist(len);
+
+  for i in [1..len] do
+    if coords[i]=0 then
+      out[i] := 0;
+      copy[i]:=1;#just hack it in
+    else
+      out[i]:=coords[i]^(copy^dfs[i]);
+      copy[i]:=coords[i];
+    fi;
+
+  od;
+  return out;
+end;
+
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,states)
 local action,
@@ -292,7 +314,8 @@ local action,
         Qs :=  hd.allcoords[depth][pos];
       else
         #this not supposed to happen, but still here until further testing
-        Print(depth, "HEY!!! ",P, " * ", s ," = ", Ps, " but Q= ",Q,"\n" );
+        Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
+              FSP(Ps), " but Q=",FSP(Q),"\n" );
       fi;
       Q :=  OnFiniteSets(Qs , GetIN(sk,Q));
     fi; #if we are on the right level for Q
@@ -350,7 +373,7 @@ function(co,hd)
 local l, i;
   l := [];
   for i in ListBlist([1..DegreeOfTransformationSemigroup(hd.original)],TopSet(hd.sk)) do
-    l[i] := AsHolonomyPoint(OnCoordinates(AsHolonomyCoords(i,hd),co),hd);
+    l[i] := AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
   return Transformation(l);
 end;

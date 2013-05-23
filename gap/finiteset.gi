@@ -46,7 +46,6 @@ local i;
   return true;
 end);
 
-
 FiniteSetPrinter := function(bl,states)
 local i,n,size,str;
   n := 0;
@@ -65,6 +64,10 @@ local i,n,size,str;
   od;
   str := Concatenation(str,"}");
   return str;
+end;
+
+FSP := function(bl)
+  return FiniteSetPrinter(bl,[1..Size(bl)]);
 end;
 
 
