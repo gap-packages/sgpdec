@@ -53,6 +53,7 @@ function(arg)
   #now shift the groups
   shiftedgroups := List([1..Size(groups)],
                         i->ShiftGroupAction(groups[i],shifts[i]));
+  #add the permutation generators
   gens := [];
   Perform(shiftedgroups, function(G)
     Append(gens,List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)));end);
@@ -384,11 +385,11 @@ end);
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
 
-InstallMethod(PrintObj,"for a holonomy decomposition",
-        [ IsRecord ],
-function( hd )
-  Print("<holonomy decomposition of ",hd.original, ">");
-end);
+#InstallMethod(PrintObj,"for a holonomy decomposition",
+#        [ IsRecord ],
+#function( hd )
+#  Print("<holonomy decomposition of ",hd.original, ">");
+#end);
 
 NumOfPointsInSlot := function(hd, level, slot)
   return hd.shifts[level][slot+1] - hd.shifts[level][slot];
@@ -396,12 +397,12 @@ end;
 MakeReadOnlyGlobal("NumOfPointsInSlot");
 
 #detailed print of the components
-InstallMethod( Display,"for a holonomy decomposition",
-        [ IsRecord ],
+DisplayHolDec := #,"for a holonomy decomposition",
+        #[ IsRecord ],
 function(hd)
   local groupnames,level, i,l,groups;
   groupnames := [];
-  for level in [1..Size(hd)] do
+  for level in [1..hd.d] do
     l := [];
     groups := GroupComponentsOnDepth(hd, level);
     for i in [1..Length(groups)]  do
@@ -422,4 +423,4 @@ function(hd)
     Perform(groupnames[i], function(x) Print(" ",x);end);
     Print("\n");
   od;
-end);
+end;#);
