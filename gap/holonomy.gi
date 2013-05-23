@@ -302,6 +302,40 @@ local action,
   return actions;
 end);
 
+InstallGlobalFunction(HolonomyCascadeSemigroup,
+function(ts)
+  local hd,id;
+  hd := HolonomyDecomposition(Skeleton(ts));
+  id := IdentityCascade(hd.comps);
+  return Semigroup(List(GeneratorsOfSemigroup(ts),
+                 t->Cascade(hd.comps,
+                         HolonomyDependencies(hd,
+                                 t,
+                                 DomainOf(id)))));
+end);
+
+InstallGlobalFunction(HolonomyDependencies,
+function(hd, t, dom)
+local i,state,sets,actions,depfuncs;
+  #identity needs no further calculations
+  if IsOne(t) then return [];fi;
+  depfuncs := [];
+  #we go through all states
+  for state in dom do
+    sets := HolonomyInts2Sets(hd,state);
+    #get the component actions on a state
+    actions := HolonomyComponentActions(hd, t, sets);
+    #examine whether there is a nontrivial action, then add
+    for i in [1..Length(actions)] do
+      if not IsOne(actions[i]) then
+        AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
+      fi;
+    od;
+  od;
+  return depfuncs; #TODO maybe sort them into a graded list
+end);
+
+
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
 
