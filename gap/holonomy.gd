@@ -21,5 +21,7 @@ DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareGlobalFunction("HolonomyDecomposition");
 DeclareGlobalFunction("HolonomyComponentActions");
+DeclareGlobalFunction("HolonomyDependencies");
+DeclareGlobalFunction("HolonomyCascadeSemigroup");
 
 DeclareInfoClass("HolonomyInfoClass");
