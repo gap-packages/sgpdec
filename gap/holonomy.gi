@@ -160,6 +160,13 @@ local set,level,ints,slot, sk;
   return ints;
 end);
 
+#####
+# CHAIN <-> COORDINATES
+# sets (elements of representative covers) -> elements of a cover chain
+# moving between the encoded set and the representative
+
+# basically the following 2 functions are iterated to choose a set from the
+# cover of a representative or another equivalent set
 RealCoverSet := function(repcover, P, skeleton)
   return OnFiniteSets(repcover , GetIN(skeleton, P));
 end;
@@ -168,17 +175,14 @@ RepCoverSet := function(realcover, P, skeleton)
   return OnFiniteSets(realcover , GetOUT(skeleton, P));
 end;
 
-#####
-# CHAIN <-> COORDINATES
-# sets (elements of representative covers) -> elements of a cover chain
 # (successive approximation)
 InstallGlobalFunction(CoverChain,
 function(hd, coordinates)
 local chain,P,depth,skeleton;
   skeleton := hd.sk;
-  P := TopSet(skeleton); #we start to approximate from the top set
   chain := [];
   depth := 1;
+  P := TopSet(skeleton); #we start to approximate from the top set
   while depth <= hd.d do
     #we go from the cover of the rep to the cover of the chain element
     P := RealCoverSet(coordinates[depth],P,skeleton);
@@ -227,6 +231,7 @@ AsHolonomyPoint :=
 function(cs,hd)
   local coverchain;
   coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
+  # extracting the singleton element from the cover chains
   return ListBlist([1..hd.n],coverchain[Length(coverchain)])[1];
 end;#);
 
@@ -244,14 +249,13 @@ IsConstantMap := function(t)
   return RankOfTransformation(t)=1;
 end;
 
+# special action for holonomy int coordinates dealing with 0s and constant maps
 OnHolonomyCoordinates:= function(coords, ct)
 local dfs, copy, out, len, i, action;
-
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
   copy:=EmptyPlist(len);
   out:=EmptyPlist(len);
-
   for i in [1..len] do
     action := copy^dfs[i];
     if coords[i]=0 then
@@ -269,8 +273,9 @@ local dfs, copy, out, len, i, action;
   return out;
 end;
 
+# how s acts on the given states
 InstallGlobalFunction(HolonomyComponentActions,
-function(hd,s,states)
+function(hd,s,coords)
 local action,
       pos,
       actions,
@@ -301,7 +306,7 @@ local action,
         action := GetIN(sk,P)
                   * s
                   * GetOUT(sk,Q);
-        Qs := OnFiniteSets(states[depth], action);
+        Qs := OnFiniteSets(coords[depth], action);
         # calculating the action on the covers
         coversetaction := ImageListOfTransformation(TransformationOp(action,
                                   hd.coords[depth][slot],
@@ -331,14 +336,14 @@ local action,
         #this not supposed to happen, but still here until further testing
         Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
               FSP(Ps), " but Q=",FSP(Q),"\n" );
-        Print(s," on ", List(states,FSP), "\n");
+        Print(s," on ", List(coords,FSP), "\n");
         Error();
       fi;
       Q :=  RealCoverSet(Qs, Q, sk);
     fi; #if we are on the right level for Q
 
     if DepthOfSet(sk,P) = depth then
-      P:= RealCoverSet(states[depth],P,sk);
+      P:= RealCoverSet(coords[depth],P,sk);
     fi;
   od;
   return actions;
