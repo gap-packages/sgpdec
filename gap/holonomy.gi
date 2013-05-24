@@ -112,6 +112,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
                        x -> PermutationResetSemigroup(holrec.groupcomponents[x],
                                holrec.shifts[x]));
   holrec.domain := DomainOf(IdentityCascade(holrec.comps)); #TODO this is clumsy
+  holrec.compdoms := ComponentDomains(holrec.comps);
   return holrec;
 end);
 
@@ -347,16 +348,16 @@ end);
 
 InstallGlobalFunction(HolonomyDependencies,
 function(hd, t)
-local i,state,sets,actions,depfuncs,holdom;
+local i,state,sets,actions,depfuncs,holdom,cst;
   #identity needs no further calculations
   #if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..hd.n], i -> AllHolonomyLifts(hd,i)));
   #padding with 1: it is precarious but works
-  holdom := List(holdom,
-                 x->List(x,
-                         function(i)if i=0 then return 1;else return i;fi;end));
+  #holdom := List(holdom,
+  #               x->List(x,
+  #                       function(i)if i=0 then return 1;else return i;fi;end));
   #Print(holdom,"cukki\c\n");
   for state in holdom do
     sets := HolonomyInts2Sets(hd,state);
@@ -365,7 +366,11 @@ local i,state,sets,actions,depfuncs,holdom;
     #examine whether there is a nontrivial action, then add
     for i in [1..Length(actions)] do
       if not IsOne(actions[i]) then
-        AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
+        Display(state{[1..(i-1)]});
+        for cst in AllConcreteCoords(hd.compdoms,state{[1..(i-1)]}) do
+          Print("-"); Display(cst);
+          AddSet(depfuncs,[cst,actions[i]]);
+        od;
       fi;
     od;
   od;
