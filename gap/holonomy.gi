@@ -236,9 +236,8 @@ IsConstantMap := function(t)
   return RankOfTransformation(t)=1;
 end;
 
-OnHolonomyCoordinates:=
-function(coords, ct)
-  local dfs, copy, out, len, i, action;
+OnHolonomyCoordinates:= function(coords, ct)
+local dfs, copy, out, len, i, action;
 
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
@@ -357,7 +356,7 @@ local i,state,sets,actions,depfuncs,holdom,cst;
   #padding with 1: it is precarious but works
   #holdom := List(holdom,
   #               x->List(x,
-  #                       function(i)if i=0 then return 1;else return i;fi;end));
+  #                      function(i)if i=0 then return 1;else return i;fi;end));
   #Print(holdom,"cukki\c\n");
   for state in holdom do
     sets := HolonomyInts2Sets(hd,state);
@@ -366,11 +365,16 @@ local i,state,sets,actions,depfuncs,holdom,cst;
     #examine whether there is a nontrivial action, then add
     for i in [1..Length(actions)] do
       if not IsOne(actions[i]) then
-        Display(state{[1..(i-1)]});
-        for cst in AllConcreteCoords(hd.compdoms,state{[1..(i-1)]}) do
-          Print("-"); Display(cst);
-          AddSet(depfuncs,[cst,actions[i]]);
-        od;
+        #Display(state{[1..(i-1)]});
+        if i = 1 then
+          AddSet(depfuncs,[[],actions[1]]);
+        else
+          for cst in AllConcreteCoords(hd.compdoms,state{[1..(i-1)]}) do
+            #Print("-"); Display(cst);
+            #AddSet(depfuncs,[cst,actions[i]]);
+            AddSet(depfuncs,[cst,actions[i]]);
+          od;
+        fi;
       fi;
     od;
   od;
