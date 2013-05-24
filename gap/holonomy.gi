@@ -123,6 +123,11 @@ end);
 # Though the coordinate values are elements of the cover of a representative,
 # it still has to be converted to integers
 
+# figures out that which slot its representative belongs to (on the same level)
+GetSlot := function(set,hd)
+  return Position(hd.reps[DepthOfSet(hd.sk,set)], RepresentativeSet(hd.sk,set));
+end;
+
 # decoding: integers -> sets
 InstallGlobalFunction(HolonomyInts2Sets,
 function(hd, ints)
@@ -150,7 +155,7 @@ local set,level,ints,slot, sk;
     if sets[level] = 0 then
       Add(ints,0);
     else
-      slot := Position(hd.reps[DepthOfSet(sk,set)], RepresentativeSet(sk,set));
+      slot := GetSlot(set, hd);
       Add(ints,Position(hd.coordvals[level],
               sets[level],
               hd.shifts[level][slot]));
@@ -299,7 +304,7 @@ local action,
   Q := P;
   for depth in [1..hd.d] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
-      slot := Position(hd.reps[depth], RepresentativeSet(sk, Q));
+      slot := GetSlot(Q,hd);
       width := Size(hd.coordvals[depth]);
       Ps := OnFiniteSets(P , s);
       if Ps = Q then #PERMUTATION
