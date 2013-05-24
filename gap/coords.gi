@@ -37,7 +37,7 @@ InstallGlobalFunction(AllConcreteCoords,
 function(domains, abstract_state)
 local concretestates;
   concretestates := EnumeratorOfCartesianProduct(
-                            List([1..Size(domains)],
+                            List([1..Size(abstract_state)],
     function(x)
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
