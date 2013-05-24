@@ -80,7 +80,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
   holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
-  holrec.allcoords := [];
+  holrec.coordvals := [];
   holrec.shifts := [];
   for depth in [1..n] do
     groups := [];
@@ -106,7 +106,7 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
     Add(holrec.groupcomponents,groups);
     Add(holrec.reps, reps);
     Add(holrec.coords,coords);
-    Add(holrec.allcoords,Concatenation(coords));
+    Add(holrec.coordvals,Concatenation(coords));
   od;
   holrec.comps := List([1..Length(holrec.groupcomponents)],
                        x -> PermutationResetSemigroup(holrec.groupcomponents[x],
@@ -131,7 +131,7 @@ local sets, level;
           Add(sets,0); #zero if the level is jumped over
         else
           # the set at the position coded by the integer
-          Add(sets,hd.allcoords[level][ints[level]]);
+          Add(sets,hd.coordvals[level][ints[level]]);
       fi;
   od;
   return sets;
@@ -150,7 +150,7 @@ local rep,level,ints,slot, sk;
     else
       # TODO rep seems to be a misnomer here
       slot := Position(hd.reps[DepthOfSet(sk,rep)], RepresentativeSet(sk,rep));
-      Add(ints,Position(hd.allcoords[level],
+      Add(ints,Position(hd.coordvals[level],
               sets[level],
               hd.shifts[level][slot]));
       rep := sets[level]; #a hack to get the proper duplicated covering_set
@@ -208,7 +208,7 @@ end);
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
 function(hd,level,state)
-  return hd.allcoords[level][state];
+  return hd.coordvals[level][state];
 end);
 #AsPoint
 AsHolonomyPoint :=
@@ -231,9 +231,13 @@ function(k,hd)
                          RandomCoverChain(hd.sk,k)));
 end;#);
 
+IsConstantMap := function(t)
+  return RankOfTransformation(t)=1;
+end;
+
 OnHolonomyCoordinates:=
 function(coords, ct)
-  local dfs, copy, out, len, i;
+  local dfs, copy, out, len, i, action;
 
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
@@ -241,14 +245,18 @@ function(coords, ct)
   out:=EmptyPlist(len);
 
   for i in [1..len] do
+    action := copy^dfs[i];
     if coords[i]=0 then
-      out[i] := 0;
-      copy[i]:=1;#just hack it in
+      if IsTransformation(action) and IsConstantMap(action) then
+        out[i] := 1^action;
+      else
+        out[i] := 0;
+      fi;
+      #copy[i]:=1;#just hack it in 1 is a safe bet
     else
-      out[i]:=coords[i]^(copy^dfs[i]);
-      copy[i]:=coords[i];
+      out[i]:=coords[i]^action;
     fi;
-
+    copy[i]:=coords[i];
   od;
   return out;
 end;
@@ -290,7 +298,7 @@ local action,
                                   hd.coords[depth][slot],
                                   OnFiniteSets));
         shift := hd.shifts[depth][slot];
-        width := Size(hd.allcoords[depth]);
+        width := Size(hd.coordvals[depth]);
         actions[depth]:=Transformation(Concatenation(
                                 [1..shift],
                                 coversetaction + shift,
@@ -305,13 +313,13 @@ local action,
             #look for a tile of Q that contains
         set := OnFiniteSets(Ps , GetOUT(sk,Q));
         pos := hd.shifts[depth][slot] +1;
-        while not (IsSubsetBlist(hd.allcoords[depth][pos],set)) do
+        while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
           pos := pos + 1;
         od;
         actions[depth] := Transformation(
-                                  List([1..Length(hd.allcoords[depth])],
+                                  List([1..Length(hd.coordvals[depth])],
                                        x->pos));
-        Qs :=  hd.allcoords[depth][pos];
+        Qs :=  hd.coordvals[depth][pos];
       else
         #this not supposed to happen, but still here until further testing
         Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
@@ -410,7 +418,7 @@ local skeleton,oldrep, pos, depth,i, coversets;
   hd.reps[depth][pos] := set;
   coversets := CoveringSetsOf(skeleton, set);
   for i in [1..Length(coversets)] do
-    hd.allcoords[depth][hd.shifts[depth][pos]+i] := coversets[i];
+    hd.coordvals[depth][hd.shifts[depth][pos]+i] := coversets[i];
   od;
   #TODO!! we may have lost the CoverGroup's mapping
   #to coordinate points as integers, but for the time being
