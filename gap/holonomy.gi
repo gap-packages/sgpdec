@@ -323,6 +323,8 @@ local action,
         #this not supposed to happen, but still here until further testing
         Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
               FSP(Ps), " but Q=",FSP(Q),"\n" );
+        Print(s," on ", List(states,FSP), "\n");
+        Error();
       fi;
       Q :=  OnFiniteSets(Qs , GetIN(sk,Q));
     fi; #if we are on the right level for Q
@@ -345,12 +347,15 @@ end);
 
 InstallGlobalFunction(HolonomyDependencies,
 function(hd, t)
-local i,state,sets,actions,depfuncs;
+local i,state,sets,actions,depfuncs,holdom;
   #identity needs no further calculations
   #if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
-  for state in hd.domain do
+  holdom := Union(List([1..hd.n], i -> AllHolonomyLifts(hd,i)));
+  holdom := List(holdom, x->List(x,function(i) if i=0 then return 1; else return i;fi; end));
+  #Print(holdom,"cukki\c\n");
+  for state in holdom do
     sets := HolonomyInts2Sets(hd,state);
     #get the component actions on a state
     actions := HolonomyComponentActions(hd, t, sets);
