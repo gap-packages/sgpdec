@@ -28,7 +28,7 @@ DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
 DeclareGlobalFunction("GetOUTw");
-DeclareGlobalFunction("CoveringSetsOf");
+DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("RandomCoverChain");
 DeclareGlobalFunction("AllCoverChainsToSet");
 DeclareGlobalFunction("AllCoverChains");
