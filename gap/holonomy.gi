@@ -287,6 +287,7 @@ local action,
   for depth in [1..hd.d] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       slot := Position(hd.reps[depth], RepresentativeSet(sk, Q));
+      width := Size(hd.coordvals[depth]);
       Ps := OnFiniteSets(P , s);
       if Ps = Q then #PERMUTATION
         action := GetIN(sk,P)
@@ -298,7 +299,7 @@ local action,
                                   hd.coords[depth][slot],
                                   OnFiniteSets));
         shift := hd.shifts[depth][slot];
-        width := Size(hd.coordvals[depth]);
+        #shifting the action to the right slot
         actions[depth]:=Transformation(Concatenation(
                                 [1..shift],
                                 coversetaction + shift,
@@ -316,9 +317,7 @@ local action,
         while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
           pos := pos + 1;
         od;
-        actions[depth] := Transformation(
-                                  List([1..Length(hd.coordvals[depth])],
-                                       x->pos));
+        actions[depth] := Transformation(List([1..width],x->pos));
         Qs :=  hd.coordvals[depth][pos];
       else
         #this not supposed to happen, but still here until further testing
