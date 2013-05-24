@@ -160,6 +160,14 @@ local rep,level,ints,slot, sk;
   return ints;
 end);
 
+RealCoverSet := function(repcover, P, skeleton)
+  return OnFiniteSets(repcover , GetIN(skeleton, P));
+end;
+
+RepCoverSet := function(realcover, P, skeleton)
+  return OnFiniteSets(realcover , GetOUT(skeleton, P));
+end;
+
 #####
 # CHAIN <-> COORDINATES
 # sets (elements of representative covers) -> elements of a cover chain
@@ -173,7 +181,7 @@ local chain,P,depth,skeleton;
   depth := 1;
   while depth <= hd.d do
     #we go from the cover of the rep to the cover of the chain element
-    P := OnFiniteSets(coordinates[depth] , GetIN(skeleton, P));
+    P := RealCoverSet(coordinates[depth],P,skeleton);
     Add(chain,P);
     depth :=  DepthOfSet(skeleton,P);
   od;
@@ -190,7 +198,7 @@ local sets,i, P, skeleton;
   P := TopSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
-    sets[DepthOfSet(skeleton, P)] := OnFiniteSets(chain[i], GetOUT(skeleton,P));
+    sets[DepthOfSet(skeleton, P)] := RepCoverSet(chain[i], P, skeleton);
     P := chain[i];
   od;
   return sets;
@@ -312,7 +320,7 @@ local action,
         fi;
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP
             #look for a tile of Q that contains
-        set := OnFiniteSets(Ps , GetOUT(sk,Q));
+        set := RepCoverSet(Ps,Q,sk);
         pos := hd.shifts[depth][slot] +1;
         while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
           pos := pos + 1;
@@ -326,11 +334,11 @@ local action,
         Print(s," on ", List(states,FSP), "\n");
         Error();
       fi;
-      Q :=  OnFiniteSets(Qs , GetIN(sk,Q));
+      Q :=  RealCoverSet(Qs, Q, sk);
     fi; #if we are on the right level for Q
 
     if DepthOfSet(sk,P) = depth then
-      P:= OnFiniteSets(states[depth] , GetIN(sk, P));
+      P:= RealCoverSet(states[depth],P,sk);
     fi;
   od;
   return actions;
