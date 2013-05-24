@@ -16,3 +16,5 @@ DeclareGlobalFunction("FLCascadeGroup");
 DeclareGlobalFunction("CosetActionGroups");
 DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
+
+DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
