@@ -307,31 +307,27 @@ local action,
       slot := GetSlot(Q,hd);
       width := Size(hd.coordvals[depth]);
       Ps := OnFiniteSets(P , s);
-      if Ps = Q then #PERMUTATION
-        action := GetIN(sk,P)
-                  * s
-                  * GetOUT(sk,Q);
+      if Ps = Q then #PERMUTATION###############################################
+        # rountrip: from the rep to P, then to Ps=Q, then back to Q's rep
+        # thus the action is a permutation of Q
+        action := GetIN(sk,P) * s * GetOUT(sk,Q);
+        # also, what happens to Q under s TODO is this really Qs???
         Qs := OnFiniteSets(coords[depth], action);
         # calculating the action on the covers
-        coversetaction := ImageListOfTransformation(TransformationOp(action,
-                                  hd.coords[depth][slot],
-                                  OnFiniteSets));
+        coversetaction := ImageListOfTransformation(
+                                  TransformationOp(action,
+                                          hd.coords[depth][slot],
+                                          OnFiniteSets));
+        #technical bit: shifting the action to the right slot
         shift := hd.shifts[depth][slot];
-        #shifting the action to the right slot
         actions[depth]:=Transformation(Concatenation(
                                 [1..shift],
                                 coversetaction + shift,
                                 [shift+Size(coversetaction)+1..width]));
-        # paranoid check whether the action is in the component
-        if SgpDecOptionsRec.PARANOID then
-          if not actions[depth] in hd.comps[depth] then
-            Error("Alien component action!");
-          fi;
-        fi;
-      elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP
-            #look for a tile of Q that contains
+      elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
+        #look for a covering set of Q that contains Ps
         set := RepCoverSet(Ps,Q,sk);
-        pos := hd.shifts[depth][slot] +1;
+        pos := hd.shifts[depth][slot]+1;
         while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
           pos := pos + 1;
         od;
@@ -351,6 +347,14 @@ local action,
       P:= RealCoverSet(coords[depth],P,sk);
     fi;
   od;
+  # paranoid check whether the action is in the component
+  if SgpDecOptionsRec.PARANOID then
+    for depth in [1..hd.d] do
+      if not actions[depth] in hd.comps[depth] then
+        Error("Alien component action!");
+      fi;
+    od;
+  fi;
   return actions;
 end);
 
