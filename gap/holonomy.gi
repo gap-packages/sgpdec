@@ -67,7 +67,7 @@ end);
 # CONSTRUCTOR ##################################################################
 InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
-local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
+local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   holrec.original := skeleton.ts;
@@ -92,12 +92,12 @@ local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,coversets;
 
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.sk,depth) do
-      coversets := TilesOf(rep, holrec.sk);
+      tiles := TilesOf(rep, holrec.sk);
       Add(groups,HolonomyGroup@(holrec.sk, rep));#stored unshifted
-      shift := shift + Size(coversets);
+      shift := shift + Size(tiles);
       Add(shifts,shift);
       Add(reps,rep);
-      Add(coords,coversets);
+      Add(coords,tiles);
       Info(HolonomyInfoClass, 2, "  ",
            StructureDescription(groups[Length(groups)])," ",
            FormattedTimeString(Runtime() -t));t := Runtime();
@@ -174,12 +174,12 @@ end);
 # cover of a representative or another equivalent set
 
 #we map  a representative cover set to a cover set of P
-RealCoverSet := function(repcoverset, P, skeleton)
-  return OnFiniteSets(repcoverset , GetIN(skeleton, P));
+RealTile := function(reptile, P, skeleton)
+  return OnFiniteSets(reptile , GetIN(skeleton, P));
 end;
 
 #we map  a cover set of P to a cover set of Rep(P)
-RepCoverSet := function(realcover, P, skeleton)
+RepTile := function(realcover, P, skeleton)
   return OnFiniteSets(realcover , GetOUT(skeleton, P));
 end;
 
@@ -193,7 +193,7 @@ local chain,P,depth,skeleton;
   P := TopSet(skeleton); #we start to approximate from the top set
   while depth <= hd.d do
     #we go from the cover of the rep to the cover of the chain element
-    P := RealCoverSet(coordinates[depth],P,skeleton);
+    P := RealTile(coordinates[depth],P,skeleton);
     Add(chain,P);
     depth :=  DepthOfSet(skeleton,P);
   od;
@@ -210,7 +210,7 @@ local sets,i, P, skeleton;
   P := TopSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
-    sets[DepthOfSet(skeleton, P)] := RepCoverSet(chain[i], P, skeleton);
+    sets[DepthOfSet(skeleton, P)] := RepTile(chain[i], P, skeleton);
     P := chain[i];
   od;
   return sets;
@@ -294,7 +294,7 @@ local action,
       Qs,
       sk,
       j,
-      coversetaction,
+      tileaction,
       slot,
       set,
       shift,
@@ -317,7 +317,7 @@ local action,
         # also, what happens to Q under s TODO is this really Qs???
         Qs := OnFiniteSets(coords[depth], action);
         # calculating the action on the covers
-        coversetaction := ImageListOfTransformation(
+        tileaction := ImageListOfTransformation(
                                   TransformationOp(action,
                                           hd.coords[depth][slot],
                                           OnFiniteSets));
@@ -325,11 +325,11 @@ local action,
         shift := hd.shifts[depth][slot];
         actions[depth]:=Transformation(Concatenation(
                                 [1..shift],
-                                coversetaction + shift,
-                                [shift+Size(coversetaction)+1..width]));
+                                tileaction + shift,
+                                [shift+Size(tileaction)+1..width]));
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a covering set of Q that contains Ps
-        set := RepCoverSet(Ps,Q,sk);
+        set := RepTile(Ps,Q,sk);
         pos := hd.shifts[depth][slot]+1;
         while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
           pos := pos + 1;
@@ -344,12 +344,12 @@ local action,
         Error();
       fi;
       # Qs is a cover set of rep Q and we send it to a cover set of Q
-      Q :=  RealCoverSet(Qs, Q, sk);
+      Q :=  RealTile(Qs, Q, sk);
     fi; #if we are on the right level for Q
 
     if DepthOfSet(sk,P) = depth then
       # P is replaced by a cover set of itself
-      P:= RealCoverSet(coords[depth],P,sk);
+      P:= RealTile(coords[depth],P,sk);
     fi;
   od;
   # paranoid check whether the action is in the component
@@ -449,7 +449,7 @@ function(hd, depth) return hd.groupcomponents[depth];end);
 #changing the representative
 InstallGlobalFunction(ChangeCoveredSet,
 function(hd, set)
-local skeleton,oldrep, pos, depth,i, coversets;
+local skeleton,oldrep, pos, depth,i, tiles;
   if IsSingleton(set) then
     Print("#W not changing singleton representative\n");return;
   fi;
@@ -459,9 +459,9 @@ local skeleton,oldrep, pos, depth,i, coversets;
   depth := DepthOfSet(skeleton, set);
   pos := Position(hd.reps[depth], oldrep);
   hd.reps[depth][pos] := set;
-  coversets := TilesOf(set, skeleton);
-  for i in [1..Length(coversets)] do
-    hd.coordvals[depth][hd.shifts[depth][pos]+i] := coversets[i];
+  tiles := TilesOf(set, skeleton);
+  for i in [1..Length(tiles)] do
+    hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
   od;
   #TODO!! we may have lost the CoverGroup's mapping
   #to coordinate points as integers, but for the time being
