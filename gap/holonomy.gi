@@ -281,6 +281,32 @@ local dfs, copy, out, len, i, action;
   return out;
 end;
 
+# creating the action on the tiles, shifted properly to the slot
+TileAction := function(action, depth, slot, hd)
+  local tileaction, shift, width;
+  tileaction := ImageListOfTransformation(
+                        TransformationOp(action,
+                                hd.coords[depth][slot],
+                                OnFiniteSets));
+  #technical bit: shifting the action to the right slot
+  shift := hd.shifts[depth][slot];
+  width := Size(hd.coordvals[depth]);
+  return Transformation(Concatenation(
+                 [1..shift],
+                 tileaction + shift,
+                 [shift+Size(tileaction)+1..width]));
+end;
+
+FindATile := function(set, depth, slot, hd)
+  local pos, width;
+  pos := hd.shifts[depth][slot]+1;
+  while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
+    pos := pos + 1;
+  od;
+  width := Size(hd.coordvals[depth]);
+  return Transformation(List([1..width],x->pos));
+end;
+
 # how s acts on the given states
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,coords)
@@ -294,7 +320,6 @@ local action,
       Qs,
       sk,
       j,
-      tileaction,
       slot,
       set,
       shift,
@@ -314,28 +339,15 @@ local action,
         # rountrip: from the rep to P, then to Ps=Q, then back to Q's rep
         # thus the action is a permutation of Q
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
+        # calculating the action on the covers
+        actions[depth] := TileAction(action, depth, slot, hd);
         # also, what happens to Q under s TODO is this really Qs???
         Qs := OnFiniteSets(coords[depth], action);
-        # calculating the action on the covers
-        tileaction := ImageListOfTransformation(
-                                  TransformationOp(action,
-                                          hd.coords[depth][slot],
-                                          OnFiniteSets));
-        #technical bit: shifting the action to the right slot
-        shift := hd.shifts[depth][slot];
-        actions[depth]:=Transformation(Concatenation(
-                                [1..shift],
-                                tileaction + shift,
-                                [shift+Size(tileaction)+1..width]));
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a covering set of Q that contains Ps
         set := RepTile(Ps,Q,sk);
-        pos := hd.shifts[depth][slot]+1;
-        while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
-          pos := pos + 1;
-        od;
-        actions[depth] := Transformation(List([1..width],x->pos));
-        Qs :=  hd.coordvals[depth][pos];
+        actions[depth] := FindATile(set, depth,slot, hd);
+        Qs :=  hd.coordvals[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
         Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
