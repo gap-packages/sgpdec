@@ -21,41 +21,6 @@ local transversals, comps,i,compgens;
   return rec(transversals:=transversals,components:=comps);
 end);
 
-InstallGlobalFunction(FLCascadeGroup,
-function(group_or_chain)
-  local gens,id,cosetactions,G,flG;
-  if IsGroup(group_or_chain) then
-    cosetactions := CosetActionGroups(ChiefSeries(group_or_chain));
-    G := group_or_chain;
-  elif IsListOfPermGroups(group_or_chain) then
-    cosetactions := CosetActionGroups(group_or_chain);
-    G := group_or_chain[1];
-  else
-    ;#TODO usage message
-  fi;
-  id := IdentityCascade(cosetactions.components);
-  flG := Group(List(GeneratorsOfGroup(G),
-                 g->Cascade(cosetactions.components,
-                         FLDependencies(g,
-                                 cosetactions.transversals,
-                                 DomainOf(id)))));
-  SetIsFLCascadeGroup(flG,true);
-  SetTransversalsOf(flG, cosetactions.transversals);
-  return flG;
-end);
-
-InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
-[IsFLCascadeGroup],
-function(G)
-  local H;
-  H:=Group(List(GeneratorsOfGroup(G), AsPermutation));
-  return MagmaIsomorphismByFunctionsNC(
-                 G,
-                 H,
-                 AsPermutation,
-                 f -> AsCascade(f, ComponentDomains(G)));
-end);
-
 # what group elements correspond to the integers
 StabilizerCosetActionReps := function(G)
 local stabrt, stabrtreps,i;
@@ -107,6 +72,62 @@ end;
 Coords2Perm := function(cs, transversals)
     return Product(Reversed(DecodeCosetReprs(cs, transversals)),());
 end;
+
+InstallGlobalFunction(FLCascadeGroup,
+function(group_or_chain)
+  local gens,id,cosetactions,G,flG;
+  if IsGroup(group_or_chain) then
+    cosetactions := CosetActionGroups(ChiefSeries(group_or_chain));
+    G := group_or_chain;
+  elif IsListOfPermGroups(group_or_chain) then
+    cosetactions := CosetActionGroups(group_or_chain);
+    G := group_or_chain[1];
+  else
+    ;#TODO usage message
+  fi;
+  id := IdentityCascade(cosetactions.components);
+  flG := Group(List(GeneratorsOfGroup(G),
+                 g->Cascade(cosetactions.components,
+                         FLDependencies(g,
+                                 cosetactions.transversals,
+                                 DomainOf(id)))));
+  SetIsFLCascadeGroup(flG,true);
+  SetTransversalsOf(flG, cosetactions.transversals);
+  SetStabilizerTransversalOf(flG, StabilizerCosetActionReps(G));
+  SetComponentsOfCascadeProduct(flG,cosetactions.components);
+  return flG;
+end);
+
+AsFLCoords := function(i,FLG)
+  local st;
+  st := TransversalsOf(FLG);
+  return Perm2Coords(StabilizerTransversalOf(FLG)[i], st);
+end;
+
+AsFLPoint := function(cs,FLG)
+  #the Frobenius-Lagrange map TODO transitivity
+  return 1 ^ Product(
+                 Reversed(DecodeCosetReprs(cs,TransversalsOf(FLG))),
+                 ());
+end;
+
+InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
+[IsFLCascadeGroup],
+function(G)
+  local H,f,invf;
+  f := co -> PermList(List([1..Size(StabilizerTransversalOf(G))],
+                   x-> AsFLPoint(OnCoordinates(AsFLCoords(x,G),co),G)));
+  invf := g->Cascade(ComponentsOfCascadeProduct(G),
+                  FLDependencies(g,
+                          TransversalsOf(G),
+                          DomainOf(G)));
+  H:=Group(List(GeneratorsOfGroup(G),f));
+  return MagmaIsomorphismByFunctionsNC(
+                 G,
+                 H,
+                 f,
+                 invf);
+end);
 
 # s - state (list), g - group element to be lifted,
 InstallGlobalFunction(FLComponentActions,

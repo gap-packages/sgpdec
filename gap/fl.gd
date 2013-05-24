@@ -18,3 +18,4 @@ DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
+DeclareAttribute("StabilizerTransversalOf", IsFLCascadeGroup);
