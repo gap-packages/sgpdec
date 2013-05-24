@@ -143,3 +143,12 @@ perm2holnontrivial := [Transformation([2,1,4,5,3]),
                        Transformation([3,3,3,4,5])];
 PERM2HOLNONTRIVIAL := Semigroup(perm2holnontrivial);
 SetName(PERM2HOLNONTRIVIAL,"P2HNT");
+
+
+s := [
+      Transformation([1,2,3,3,3,3,3]),
+      Transformation([3,4,5,5,5,5,5]),
+      Transformation([6,6,6,6,6,7,6]),
+      Transformation([3,4,5,6,6,7,7]),
+      Transformation([5,4,3,2,1,7,6]),
+      ];

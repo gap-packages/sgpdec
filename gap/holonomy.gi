@@ -252,11 +252,11 @@ function(coords, ct)
       else
         out[i] := 0;
       fi;
-      #copy[i]:=1;#just hack it in 1 is a safe bet
+      copy[i]:=1;#just hack it in 1 is a safe bet
     else
       out[i]:=coords[i]^action;
+      copy[i]:=coords[i];
     fi;
-    copy[i]:=coords[i];
   od;
   return out;
 end;
