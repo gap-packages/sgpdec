@@ -453,7 +453,7 @@ function(ct)
     repeat
       AddSet(vertices, coordsname);
       level := level + 1;
-      if level <= Size(dep) then
+      if level < Size(dep) then
         coord := dep[level];
         newcoordsname := Concatenation(coordsname,"_",String(coord));
         if not ([coordsname, newcoordsname] in edgeDB) then
