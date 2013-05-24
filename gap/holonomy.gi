@@ -172,10 +172,13 @@ end);
 
 # basically the following 2 functions are iterated to choose a set from the
 # cover of a representative or another equivalent set
-RealCoverSet := function(repcover, P, skeleton)
-  return OnFiniteSets(repcover , GetIN(skeleton, P));
+
+#we map  a representative cover set to a cover set of P
+RealCoverSet := function(repcoverset, P, skeleton)
+  return OnFiniteSets(repcoverset , GetIN(skeleton, P));
 end;
 
+#we map  a cover set of P to a cover set of Rep(P)
 RepCoverSet := function(realcover, P, skeleton)
   return OnFiniteSets(realcover , GetOUT(skeleton, P));
 end;
@@ -340,10 +343,12 @@ local action,
         Print(s," on ", List(coords,FSP), "\n");
         Error();
       fi;
+      # Qs is a cover set of rep Q and we send it to a cover set of Q
       Q :=  RealCoverSet(Qs, Q, sk);
     fi; #if we are on the right level for Q
 
     if DepthOfSet(sk,P) = depth then
+      # P is replaced by a cover set of itself
       P:= RealCoverSet(coords[depth],P,sk);
     fi;
   od;
