@@ -10,7 +10,7 @@
 ## acting on coset spaces determined by a subgroup chain.
 ##
 
-DeclareFilter("IsFLCascadeGroup");
+DeclareProperty("IsFLCascadeGroup",IsCascadeGroup);
 
 DeclareGlobalFunction("FLCascadeGroup");
 DeclareGlobalFunction("CosetActionGroups");

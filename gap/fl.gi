@@ -23,7 +23,7 @@ end);
 
 InstallGlobalFunction(FLCascadeGroup,
 function(group_or_chain)
-  local gens,id,cosetactions,G;
+  local gens,id,cosetactions,G,flG;
   if IsGroup(group_or_chain) then
     cosetactions := CosetActionGroups(ChiefSeries(group_or_chain));
     G := group_or_chain;
@@ -34,11 +34,13 @@ function(group_or_chain)
     ;#TODO usage message
   fi;
   id := IdentityCascade(cosetactions.components);
-  return Group(List(GeneratorsOfGroup(G),
+  flG := Group(List(GeneratorsOfGroup(G),
                  g->Cascade(cosetactions.components,
                          FLDependencies(g,
                                  cosetactions.transversals,
                                  DomainOf(id)))));
+    SetIsFLCascadeGroup(flG,true);
+  return flG;
 end);
 
 # what group elements correspond to the integers
