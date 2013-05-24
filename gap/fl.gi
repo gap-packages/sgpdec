@@ -39,8 +39,21 @@ function(group_or_chain)
                          FLDependencies(g,
                                  cosetactions.transversals,
                                  DomainOf(id)))));
-    SetIsFLCascadeGroup(flG,true);
+  SetIsFLCascadeGroup(flG,true);
+  SetTransversalsOf(flG, cosetactions.transversals);
   return flG;
+end);
+
+InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
+[IsFLCascadeGroup],
+function(G)
+  local H;
+  H:=Group(List(GeneratorsOfGroup(G), AsPermutation));
+  return MagmaIsomorphismByFunctionsNC(
+                 G,
+                 H,
+                 AsPermutation,
+                 f -> AsCascade(f, ComponentDomains(G)));
 end);
 
 # what group elements correspond to the integers
