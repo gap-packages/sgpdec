@@ -252,7 +252,7 @@ function(coords, ct)
       else
         out[i] := 0;
       fi;
-      copy[i]:=1;#just hack it in 1 is a safe bet
+      copy[i]:=1; #padding with 1: it is precarious but works
     else
       out[i]:=coords[i]^action;
       copy[i]:=coords[i];
@@ -353,7 +353,10 @@ local i,state,sets,actions,depfuncs,holdom;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..hd.n], i -> AllHolonomyLifts(hd,i)));
-  holdom := List(holdom, x->List(x,function(i) if i=0 then return 1; else return i;fi; end));
+  #padding with 1: it is precarious but works
+  holdom := List(holdom,
+                 x->List(x,
+                         function(i)if i=0 then return 1;else return i;fi;end));
   #Print(holdom,"cukki\c\n");
   for state in holdom do
     sets := HolonomyInts2Sets(hd,state);
