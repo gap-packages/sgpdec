@@ -115,7 +115,7 @@ MakeReadOnlyGlobal("DirectImagesReps");
 # indx - the index of an orbit element
 InclusionCoverReps := function(sk,indx)
 local l, rep, tmpl,i;
-  tmpl := List(CoveringSetsOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
+  tmpl := List(TilesOf(sk.orb[indx],sk),x->Position(sk.orb,x));
   l := [];
   for i in tmpl do
     if i <> fail then # some singletons may not be in the orbit
@@ -306,8 +306,8 @@ end);
 
 ################################################################################
 
-InstallGlobalFunction(CoveringSetsOf,
-function(sk,A)
+InstallGlobalFunction(TilesOf,
+function(A,sk)
   return Images(sk.inclusionHD,A);
 end);
 
@@ -455,7 +455,7 @@ function(sk,set)
   imggens := List(GeneratorsOfGroup(permgroup),
                   g->AsPermutation(
                           TransformationOp(g,
-                                  CoveringSetsOf(sk,set),
+                                  TilesOf(set,sk),
                                   OnFiniteSets)));
   homgens := DuplicateFreeList(imggens);
   return GroupHomomorphismByImages(permgroup,
@@ -587,7 +587,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   for class in AllRepresentativeSets(sk) do
     AppendTo(out,"\"",FiniteSetPrinter(class,states),
             "\" [shape=box,color=black];\n");
-    for set in CoveringSetsOf(sk, class) do
+    for set in TilesOf(class,sk) do
       AppendTo(out,"\"",FiniteSetPrinter(class,states),
               "\" -> \"",FiniteSetPrinter(set,states),"\"\n");
     od;
