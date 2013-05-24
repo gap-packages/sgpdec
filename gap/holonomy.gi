@@ -311,19 +311,16 @@ end;
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,coords)
 local action,
-      pos,
       actions,
       depth,
       P,
       Q,
       Ps,
-      Qs,
+      ncoordval,
       sk,
       j,
       slot,
-      set,
-      shift,
-      width;
+      set;
   sk := hd.sk; #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..hd.d], x -> One(hd.comps[x]));
@@ -333,8 +330,7 @@ local action,
   for depth in [1..hd.d] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       slot := GetSlot(Q,hd);
-      width := Size(hd.coordvals[depth]);
-      Ps := OnFiniteSets(P , s);
+      Ps := OnFiniteSets(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # rountrip: from the rep to P, then to Ps=Q, then back to Q's rep
         # thus the action is a permutation of Q
@@ -342,23 +338,20 @@ local action,
         # calculating the action on the covers
         actions[depth] := TileAction(action, depth, slot, hd);
         # also, what happens to Q under s TODO is this really Qs???
-        Qs := OnFiniteSets(coords[depth], action);
+        ncoordval := OnFiniteSets(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a covering set of Q that contains Ps
         set := RepTile(Ps,Q,sk);
         actions[depth] := FindATile(set, depth,slot, hd);
-        Qs :=  hd.coordvals[depth][1^actions[depth]];# applying the constant
+        ncoordval:=hd.coordvals[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
-        Print(depth, " HEY!!! ",FSP(P),"*", s ,"=",
-              FSP(Ps), " but Q=",FSP(Q),"\n" );
-        Print(s," on ", List(coords,FSP), "\n");
-        Error();
+        Print(depth," HEY!!! ",FSP(P),"*",s,"=",FSP(Ps),"but Q=",FSP(Q),"\n");
       fi;
-      # Qs is a cover set of rep Q and we send it to a cover set of Q
-      Q :=  RealTile(Qs, Q, sk);
-    fi; #if we are on the right level for Q
-
+      # ncoordval is a cover set of rep Q and we send it to a cover set of Q
+      Q := RealTile(ncoordval, Q, sk);
+    fi;
+    #if we are on the right level for P
     if DepthOfSet(sk,P) = depth then
       # P is replaced by a cover set of itself
       P:= RealTile(coords[depth],P,sk);
