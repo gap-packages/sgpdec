@@ -10,9 +10,8 @@
 ## acting on coset spaces determined by a subgroup chain.
 ##
 
-# for a subgroupchain it calculates the right transversals and a group action on
-# the cosets
-# in Frobenius-Lagrange decompositions these are the coordinates and components
+# for a subgroupchain this calculates the right transversals and a group action
+# on the cosets will define the components, thus the cosets are the coord vals
 InstallGlobalFunction(CosetActionGroups,
 function(subgroupchain)
 local transversals, comps,i,compgens;
@@ -33,7 +32,9 @@ local transversals, comps,i,compgens;
   return rec(transversals:=transversals,components:=comps);
 end);
 
-# what group elements correspond to the integers
+# we want to keep the origianl action of the group to be decomposed
+# since any action is a coset action all we need is the coset space
+# of the stabilizer of a point
 OriginalCosetActionReps := function(G)
 local stabrt, stabrtreps,i;
   stabrt := RightTransversal(G,Stabilizer(G,1));
@@ -44,20 +45,11 @@ local stabrt, stabrtreps,i;
   return stabrtreps;
 end;
 
-# getting the representative of an element
+# just a handy abbreviation: getting the representative of an element
 CosetRep := function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
 end;
-
-#coding the coset representatives to the their integer indices
-# TODO this seems to do two things, converting to coset reps as well
-# but that may be needed, then it is a misnomer
-# OK, fix was done below, still misnomer
-EncodeCosetReprs := function(list, transversals)
-  return List([1..Size(list)],
-              i -> PositionCanonical(transversals[i], list[i]));
-                      #CosetRep(list[i],transversals[i])));
-end;
+MakeReadOnlyGlobal("CosetRep");
 
 # decoding the integers back to coset rep
 DecodeCosetReprs := function(cascstate, transversals)
@@ -77,7 +69,8 @@ local coords,i;
     Add(coords, coords[i] * Inverse(CosetRep(coords[i],transversals[i])));
   od;
   #taking the representative elements then coding coset reps as points (indices)
-  return EncodeCosetReprs(coords, transversals);
+  return List([1..Size(coords)],
+              i -> PositionCanonical(transversals[i], coords[i]));
 end;
 
 #mapping down is just multiplying together
@@ -110,18 +103,18 @@ function(group_or_chain)
   return flG;
 end);
 
-AsFLCoords := function(i,FLG)
+InstallGlobalFunction(AsFLCoords,
+function(i,FLG)
   local st;
   st := TransversalsOf(FLG);
   return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
-end;
+end);
 
-AsFLPoint := function(cs,FLG)
-  #the Frobenius-Lagrange map TODO transitivity
-  return 1 ^ Product(
-                 Reversed(DecodeCosetReprs(cs,TransversalsOf(FLG))),
-                 ());
-end;
+#the Frobenius-Lagrange map TODO this assumes transitivity
+InstallGlobalFunction(AsFLPoint,
+function(cs,FLG)
+  return 1^Product(Reversed(DecodeCosetReprs(cs,TransversalsOf(FLG))),());
+end);
 
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
 [IsFLCascadeGroup],
