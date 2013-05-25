@@ -61,7 +61,8 @@ MakeReadOnlyGlobal("Coords2CosetReps");
 # Each cascaded state corresponds to one element (in the regular representation)
 #of the group. This function gives the path corresponding to a group element
 #(through the Lagrange-Frobenius map).
-Perm2Coords := function(g, transversals)
+InstallGlobalFunction(Perm2Coords,
+function(g, transversals)
 local coords,i;
   #on the top level we have simply g
   coords := [g];
@@ -72,12 +73,13 @@ local coords,i;
   #taking the representative elements then coding coset reps as points (indices)
   return List([1..Size(coords)],
               i -> PositionCanonical(transversals[i], coords[i]));
-end;
+end);
 
 #mapping down is just multiplying together
-Coords2Perm := function(cs, transversals)
+InstallGlobalFunction(Coords2Perm,
+function(cs, transversals)
     return Product(Reversed(Coords2CosetReps(cs, transversals)),());
-end;
+end);
 
 InstallGlobalFunction(FLCascadeGroup,
 function(group_or_chain)
@@ -104,6 +106,7 @@ function(group_or_chain)
   return flG;
 end);
 
+#gives a coordinate representation of an original point
 InstallGlobalFunction(AsFLCoords,
 function(i,FLG)
   local st;
@@ -111,7 +114,9 @@ function(i,FLG)
   return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
 end);
 
-#the Frobenius-Lagrange map TODO this assumes transitivity
+#TODO implement AllFLCoords
+
+#coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
   return 1^Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());

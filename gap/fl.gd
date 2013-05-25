@@ -18,6 +18,8 @@ DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
 DeclareGlobalFunction("AsFLPoint");
 DeclareGlobalFunction("AsFLCoords");
+DeclareGlobalFunction("Perm2Coords");
+DeclareGlobalFunction("Coords2Perm");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
 DeclareAttribute("OriginalCosetActionRepsOf", IsFLCascadeGroup);
