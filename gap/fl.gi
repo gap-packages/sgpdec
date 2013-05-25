@@ -1,3 +1,15 @@
+#############################################################################
+##
+## fl.gi           SgpDec package
+##
+## Copyright (C) 2008-2013
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Frobenius-Lagrange decomposition. Cascade groups built from components
+## acting on coset spaces determined by a subgroup chain.
+##
+
 # for a subgroupchain it calculates the right transversals and a group action on
 # the cosets
 # in Frobenius-Lagrange decompositions these are the coordinates and components
@@ -22,7 +34,7 @@ local transversals, comps,i,compgens;
 end);
 
 # what group elements correspond to the integers
-StabilizerCosetActionReps := function(G)
+OriginalCosetActionReps := function(G)
 local stabrt, stabrtreps,i;
   stabrt := RightTransversal(G,Stabilizer(G,1));
   stabrtreps := [];
@@ -93,7 +105,7 @@ function(group_or_chain)
                                  DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetStabilizerTransversalOf(flG, StabilizerCosetActionReps(G));
+  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(G));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
   return flG;
 end);
@@ -101,7 +113,7 @@ end);
 AsFLCoords := function(i,FLG)
   local st;
   st := TransversalsOf(FLG);
-  return Perm2Coords(StabilizerTransversalOf(FLG)[i], st);
+  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
 end;
 
 AsFLPoint := function(cs,FLG)
@@ -115,7 +127,7 @@ InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
 [IsFLCascadeGroup],
 function(G)
   local H,f,invf;
-  f := co -> PermList(List([1..Size(StabilizerTransversalOf(G))],
+  f := co -> PermList(List([1..Size(OriginalCosetActionRepsOf(G))],
                    x-> AsFLPoint(OnCoordinates(AsFLCoords(x,G),co),G)));
   invf := g->Cascade(ComponentsOfCascadeProduct(G),
                   FLDependencies(g,
