@@ -51,11 +51,12 @@ CosetRep := function(g,transversal)
 end;
 MakeReadOnlyGlobal("CosetRep");
 
-# decoding the integers back to coset rep
-DecodeCosetReprs := function(cascstate, transversals)
+# decoding the integers back to coset representatives
+Coords2CosetReps := function(cascstate, transversals)
   return List([1..Size(cascstate)],
               i -> transversals[i][cascstate[i]]);
 end;
+MakeReadOnlyGlobal("Coords2CosetReps");
 
 # Each cascaded state corresponds to one element (in the regular representation)
 #of the group. This function gives the path corresponding to a group element
@@ -75,7 +76,7 @@ end;
 
 #mapping down is just multiplying together
 Coords2Perm := function(cs, transversals)
-    return Product(Reversed(DecodeCosetReprs(cs, transversals)),());
+    return Product(Reversed(Coords2CosetReps(cs, transversals)),());
 end;
 
 InstallGlobalFunction(FLCascadeGroup,
@@ -113,7 +114,7 @@ end);
 #the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
-  return 1^Product(Reversed(DecodeCosetReprs(cs,TransversalsOf(FLG))),());
+  return 1^Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
 end);
 
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
@@ -138,7 +139,7 @@ end);
 InstallGlobalFunction(FLComponentActions,
 function(g,s, transversals)
   local fudges,i;
-  s := DecodeCosetReprs(s,transversals);
+  s := Coords2CosetReps(s,transversals);
   #on the top level we have simply g
   fudges := [g];
   #then going down to deeper levels
