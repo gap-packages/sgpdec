@@ -16,6 +16,8 @@ DeclareGlobalFunction("FLCascadeGroup");
 DeclareGlobalFunction("CosetActionGroups");
 DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
+DeclareGlobalFunction("AsFLPoint");
+DeclareGlobalFunction("AsFLCoords");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
 DeclareAttribute("OriginalCosetActionRepsOf", IsFLCascadeGroup);
