@@ -42,6 +42,7 @@ function(doms, deps)
   else
     type:=TransCascadeType;
   fi;
+  
   #maybe there should be a ShallowCopy here? JDM
   compdoms:=ComponentDomains(doms);
   depdom:=DependencyDomains(compdoms);
@@ -55,6 +56,8 @@ function(doms, deps)
   SetNrComponents(f, Length(compdoms));
   return f;
 end);
+
+#
 
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
@@ -71,7 +74,7 @@ end);
 InstallGlobalFunction(IdentityCascade,
 function(comps) return Cascade(comps,[]); end);
 
-InstallGlobalFunction(RandomTransCascade,
+InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
   local comps, depdoms, tup, vals, len, x, j, k, val, i, depfuncs;
 
@@ -114,15 +117,13 @@ end);
 # PERMUTATION CASCADE ##########################################################
 ################################################################################
 
-InstallOtherMethod(OneOp, "for a cascade",
-[IsCascade],
+InstallMethod(OneImmutable, "for a trans cascade",
+[IsTransCascade],
 function(ct)
-  local id;
   return IdentityCascade(ComponentDomains(ct));
 end);
 
-
-InstallOtherMethod(OneOp, "for a permutation cascade",
+InstallMethod(OneImmutable, "for a permutation cascade",
 [IsPermCascade],
 function(ct)
   local id;
@@ -135,11 +136,11 @@ function(ct)
                  PermCascadeType);
 end);
 
-
 InstallOtherMethod(InverseMutable, "for a permutation cascade",
 [IsPermCascade],
 function(pc)
-  local dfs, depdoms, vals, x, i, j, depfuncs,type,pos;
+  local dfs, depdoms, vals, x, depfuncs, i, j;
+  
   dfs:=DependencyFunctionsOf(pc);
   depdoms:=DependencyDomainsOf(pc); #TODO get rid of this
   #empty values lookup table based on the sizes of depdoms
@@ -167,16 +168,17 @@ end);
 ################################################################################
 # CHANGING REPRESENTATION ######################################################
 ################################################################################
-InstallMethod(AsTransformation, "for cascade",
+
+InstallMethod(AsTransformation, "for trans cascade",
 [IsCascade],
 function(ct)
-return TransformationOp(ct, DomainOf(ct), OnCoordinates);
+  return TransformationOp(ct, DomainOf(ct), OnCoordinates);
 end);
 
-InstallMethod(AsPermutation, "for cascade",
+InstallMethod(AsPermutation, "for perm cascade",
 [IsPermCascade],
 function(ct)
-return AsPermutation(AsTransformation(ct));
+  return Permutation(ct, DomainOf(ct), OnCoordinates);
 end);
 
 # if the components are given then for groups permutations are produced
@@ -290,7 +292,7 @@ function(coords, ct)
   return out;
 end);
 
-InstallMethod(\*, "for cascades", ReturnTrue, #any family can be combined
+InstallMethod(\*, "for cascades",
 [IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
@@ -373,7 +375,12 @@ InstallMethod(ViewObj, "for a cascade",
 function(f)
   local str, x;
 
-  str:="<cascade with ";
+  if IsTransCascade(f) then 
+    str:="<trans ";
+  else
+    str:="<perm ";
+  fi;
+  Append(str, "cascade with ";
   Append(str, String(NrComponents(f)));
   Append(str, " levels");
 
