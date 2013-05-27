@@ -370,11 +370,13 @@ end);
 
 InstallGlobalFunction(HolonomyCascadeSemigroup,
 function(ts)
-  local hd;
+  local hd, S;
   hd := HolonomyDecomposition(Skeleton(ts));
-  return Semigroup(List(GeneratorsOfSemigroup(ts),
-                 t->Cascade(hd.comps,
-                         HolonomyDependencies(hd,t))));
+  S := Semigroup(List(GeneratorsOfSemigroup(ts),
+               t->Cascade(hd.comps,
+                       HolonomyDependencies(hd,t))));
+  SetHolonomyDecompositionOf(S,hd);
+  return S;
 end);
 
 InstallGlobalFunction(HolonomyDependencies,
