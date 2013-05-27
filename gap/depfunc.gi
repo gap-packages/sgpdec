@@ -170,11 +170,12 @@ function(df)
   local vals, dom, i;
   Print("Dependency function of depth ",
         String(Size(Representative(DomainOf(df)))+1)," with ",
-        String(NrDependencies(df))," dependencies.\n");
+        String(NrDependencies(df))," dependencies.");
   vals := df!.vals;
   dom := df!.dom;
   
   if IsBound(vals[1]) then 
+    Print("\n");
     Print(String(dom[1])," -> ");
     Display(vals[1]);
   fi;
