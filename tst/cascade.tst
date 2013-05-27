@@ -1,7 +1,8 @@
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
-# cascade - previously cascade(d) transformation, cascade transform
+gap> LoadPackage("sgpdec", false);
 
+# cascade - previously cascade(d) transformation, cascade transform
 gap> SemigroupsStartTest();
 
 # Two ways to construct:
@@ -14,8 +15,8 @@ gap> SemigroupsStartTest();
 # creating a cascade is done by giving the domains of the dependency
 # domains and a list of individual dependencies
 gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
->                 [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
-<cascade with 2 levels with (2, 3) pts, 3 dependencies>
+>               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
+<trans cascade with 2 levels with (2, 3) pts, 3 dependencies>
 gap> Display(c);
 Dependency function of depth 1 with 1 dependencies.
 [ ] -> Transformation( [ 1, 1 ] )
