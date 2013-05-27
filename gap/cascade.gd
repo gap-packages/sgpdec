@@ -27,6 +27,7 @@ BindGlobal("PermCascadeType", NewType(PermCascadeFamily, IsPermCascade));
 
 BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
 
+DeclareAttribute("OneImmutable", IsCascade);
 
 #constructors
 #DeclareGlobalFunction("CascadeNC"); # TODO checking and NC version later
