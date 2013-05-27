@@ -177,13 +177,13 @@ function(df)
     Append(str, "\n");
     Append(str,String(dom[1]));
     Append(str," -> ");
-    Append(str, DisplayString(vals[1]));
+    Append(str, PrintString(vals[1]));
   fi;
   for i in [2..Size(vals)] do
     if IsBound(vals[i]) then
       Append(str,"\n");
       Append(str,Concatenation(String(dom[i])," -> "));
-      Append(str,DisplayString(vals[i]));
+      Append(str,PrintString(vals[i]));
     fi;
   od;
   Append(str,"\n");
