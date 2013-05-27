@@ -9,7 +9,6 @@
 ## Cascade products. (the general methods)
 ##
 
-DeclareCategoryCollections("IsCascade");
 DeclareSynonymAttr("IsCascadeProduct", IsMagma and IsCascadeCollection);
 DeclareProperty("IsFullCascadeProduct", IsCascadeProduct);
 

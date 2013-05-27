@@ -11,8 +11,7 @@
 
 
 DeclareGlobalFunction("CascadeGroup");
-DeclareCategoryCollections("IsPermCascade");
-DeclareCategory("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
+DeclareSynonym("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
 
 DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 

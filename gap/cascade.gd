@@ -12,8 +12,12 @@
 DeclareCategory("IsCascade", IsMultiplicativeElementWithOne 
         and IsAssociativeElement and IsAttributeStoringRep 
         and IsMultiplicativeElementWithInverse);
+
+DeclareCategoryCollections("IsCascade");
 DeclareCategory("IsPermCascade", IsCascade);
+DeclareCategoryCollections("IsPermCascade");
 DeclareCategory("IsTransCascade", IsCascade);
+DeclareCategoryCollections("IsTransCascade");
 
 BindGlobal("PermCascadeFamily",
         NewFamily("PermCascadeFamily",
@@ -26,8 +30,6 @@ BindGlobal("TransCascadeFamily",
 BindGlobal("PermCascadeType", NewType(PermCascadeFamily, IsPermCascade));
 
 BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
-
-DeclareAttribute("OneImmutable", IsCascade);
 
 #constructors
 #DeclareGlobalFunction("CascadeNC"); # TODO checking and NC version later

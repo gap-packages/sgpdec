@@ -18,22 +18,23 @@
 
 InstallGlobalFunction(Cascade,
 function(doms, deps)
-  local isgroup, type, x;
+  local isgroup, type, compdoms, depdom, depfuncs, f, x;
 
   if not IsDenseList(doms) then 
     Error("usage: <doms> should be a dense list of transformation semigroup\n",
     " or permutation groups,");
     return;
   else
-    isgroup:=false;
+    isgroup:=true;
     for x in doms do 
       if not IsPermGroup(x) then 
-        isgroup:=true;
+        isgroup:=false;
         if not IsTransformationSemigroup(x) then 
-          Error("usage: <doms> should be a dense list of transformation"
+          Error("usage: <doms> should be a dense list of transformation",
           " semigroup or permutation groups,");
           return;
         fi;
+      fi;
     od;
   fi;
 
@@ -61,6 +62,7 @@ end);
 
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
+  local f;
   
   f:=Objectify(type, rec());
   SetDomainOf(f, dom);
@@ -71,18 +73,41 @@ function(dom, compdoms, depfuncs, depdom, type)
   return f;
 end);
 
+#
+
 InstallGlobalFunction(IdentityCascade,
 function(comps) return Cascade(comps,[]); end);
 
+#
+
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
-  local comps, depdoms, tup, vals, len, x, j, k, val, i, depfuncs;
+  local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
 
-  if not IsListOfPermGroupsAndTransformationSemigroups(list) then
-    Error("the first argument should be a list of transformation semigroups",
-     " or perm groups,");
+  if not IsDenseList(list) then 
+    Error("usage: <doms> should be a dense list of transformation semigroup\n",
+    " or permutation groups,");
     return;
+  else
+    isgroup:=false;
+    for x in list do 
+      if not IsPermGroup(x) then 
+        isgroup:=true;
+        if not IsTransformationSemigroup(x) then 
+          Error("usage: <doms> should be a dense list of transformation",
+          " semigroup or permutation groups,");
+          return;
+        fi;
+      fi;
+    od;
   fi;
+
+  if isgroup then 
+    type:=PermCascadeType;
+  else
+    type:=TransCascadeType;
+  fi;
+  
   comps:=ComponentDomains(list);
   # create the enumerator for the dependency func
   depdoms:=DependencyDomains(comps);
@@ -110,7 +135,7 @@ function(list, numofdeps)
                    x -> DependencyFunction(depdoms[x],vals[x]));
 
   return CreateCascade(EnumeratorOfCartesianProduct(comps),
-                 comps, depfuncs, depdoms, CascadeType);
+                 comps, depfuncs, depdoms, type);
 end);
 
 ################################################################################
@@ -255,7 +280,7 @@ function(f, compsordomsizes)
 
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
-  return CreateCascade(dom, compdoms, depfuncs, depdoms, CascadeType);
+  return CreateCascade(dom, compdoms, depfuncs, depdoms, TransCascadeType);
 end);
 
 # dispatching to AsCascade for transformations after figuring out the degree
@@ -316,7 +341,7 @@ function(f,g)
   if (IsPermCascade(f)) and (IsPermCascade(g)) then
     type := PermCascadeType;
   else
-    type := CascadeType;
+    type := TransCascadeType;
   fi;
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
@@ -380,7 +405,7 @@ function(f)
   else
     str:="<perm ";
   fi;
-  Append(str, "cascade with ";
+  Append(str, "cascade with ");
   Append(str, String(NrComponents(f)));
   Append(str, " levels");
 
