@@ -2,13 +2,6 @@
 # some technical code - likely to be replaced by GAP library calls (once found)
 ################################################################################
 
-# Issue#24 for semigroups JDM
-InstallMethod(String, "for a transformation (SgpDec, will go to Semigroups)",
-        [IsTransformation],
-function(t)
-  return ReplacedString(String(ImageListOfTransformation(t))," ", "");
-end);
-
 InstallMethod(TransformationOp, "for object, list, function",
 [IsObject, IsList, IsFunction],
 function(f, D, act)
