@@ -119,24 +119,8 @@ InstallMethod(DomainOf,[IsDependencyFunction], df-> df!.dom);
 
 InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunction, IsDependencyFunction],
-        function(p,q)
-#  local i, pvals, qvals;
+function(p,q)
   return p!.dom = q!.dom and p!.vals = q!.vals;
-  #if p!.dom <> q!.dom then return false; fi;
-  #local variables for speeding up record member access
-#  pvals := p!.vals;
-#  qvals := q!.vals;
-#  if IsEmpty(pvals) and IsEmpty (qvals) then return true; fi;
-#  for i in [1..Size(p!.dom)] do
-#    if (not IsBound(pvals[i])) and (not IsBound(qvals[i])) then
-#      break; # none of them is defined
-#    fi;
-#    if IsBound(pvals[i]) and IsBound(qvals[i]) and  pvals[i] = qvals[i] then
-#      break; # both defined and equal
-#    fi;
-#    return false;
-#  od;
-#  return true;
 end);
 
 InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
