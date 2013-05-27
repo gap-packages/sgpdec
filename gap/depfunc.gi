@@ -173,11 +173,18 @@ function(df)
         String(NrDependencies(df))," dependencies.\n");
   vals := df!.vals;
   dom := df!.dom;
-  for i in [1..Size(vals)] do
+  
+  if IsBound(vals[1]) then 
+    Print(String(dom[1])," -> ");
+    Display(vals[1]);
+  fi;
+
+  for i in [2..Size(vals)] do
     if IsBound(vals[i]) then
+      Print("\n");
       Print(String(dom[i])," -> ");
       #TODO String(vals[i][j]) return <object>
-      Display(vals[i]);
+      Display(vals[i]); 
     fi;
   od;
   return;
