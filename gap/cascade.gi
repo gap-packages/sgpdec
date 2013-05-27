@@ -76,7 +76,9 @@ end);
 #
 
 InstallGlobalFunction(IdentityCascade,
-function(comps) return Cascade(comps,[]); end);
+function(comps) 
+  return Cascade(comps,[]); 
+end);
 
 #
 

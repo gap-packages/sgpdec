@@ -1,6 +1,7 @@
-gap> Read("variables.g");;
-
+#gap> Read("variables.g");;
 # cascade - previously cascade(d) transformation, cascade transform
+
+gap> SemigroupsStartTest();
 
 # Two ways to construct:
 # 1. high level, dependency domains + individual dependencise
@@ -32,6 +33,7 @@ Dependency function of depth 2 with 1 dependencies.
 [ 1 ] -> (1,2,3)
 gap> IsPermCascade(c);
 true
+
 # so the usual invertible multiplicative functions work
 gap> One(c);
 <cascade with 2 levels with (2, 3) pts, 0 dependencies>
@@ -52,6 +54,8 @@ gap> Cascade([[1..2],[1..3]],[]);
 # identity cascade
 gap> IdentityCascade([T3,Z2]);
 <cascade with 2 levels with (3, 2) pts, 0 dependencies>
+
+gap> SemigroupsStopTest();
 
 # random one: components, max number of nontrivial dependencies
 #gap> RandomCascade([T3,Z3],4); TODO
