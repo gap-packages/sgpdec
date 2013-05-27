@@ -121,6 +121,7 @@ InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunction, IsDependencyFunction],
         function(p,q)
   local i, pvals, qvals;
+  if p.dom <> q.dom then return false; fi;
   #local variables for speeding up record member access
   pvals := p!.vals;
   qvals := q!.vals;
@@ -154,7 +155,8 @@ InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
     else
       qval := ();
     fi;
-    if pval < qval then
+    #TODO this was a quick fix to avoid () < Transformation([...]) problem
+    if AsTransformation(pval) < AsTransformation(qval) then
       return true;
     else
       return false;
