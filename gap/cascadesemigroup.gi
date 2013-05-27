@@ -22,59 +22,26 @@ function(s)
                  f -> AsCascade(f, ComponentDomains(s)));
 end);
 
-#with ClosureSemigroup it is easier
-if GAPInfo.Version="4.dev" then
-  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-  [IsCascadeSemigroup],
-  function(s)
-    local func, n, out, i, j, x;
-
-    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponents(s);
-    out:=List([1..n], x->[]);
-
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do
-      for j in [1..n] do
-        if not IsEmpty(func[i][j]) then
-          if out[j]=[] then
-            out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
-          else
-            out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
-          fi;
-        fi;
-      od;
-    od;
-
-    return out;
-  end);
-else
-  #ClosureSemigroup is not available
-  InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-  [IsCascadeSemigroup],
-  function(s)
-    local func, n, out, i, j, x;
-
-    func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
-    n:=NrComponents(s);
-    out:=List([1..n], x->[]);
-
-    for i in [1..Length(GeneratorsOfSemigroup(s))] do
-      for j in [1..n] do
-        Append(out[i], Compacted(func[i][j]));
-      od;
-    od;
-
-    Apply(out,
-      function(x)
-        if not x=[] then
-          return Semigroup(x);
+InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+        [IsCascadeSemigroup],
+        function(s)
+  local func, n, out, i, j, x;
+  func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+  n:=NrComponents(s);
+  out:=List([1..n], x->[]);
+  for i in [1..Length(GeneratorsOfSemigroup(s))] do
+    for j in [1..n] do
+      if not IsEmpty(func[i][j]) then
+        if out[j]=[] then
+          out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
         else
-          return x;
+          out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
         fi;
-      end);
-    return out;
-  end);
-fi;
+      fi;
+    od;
+  od;
+  return out;
+end);
 
 ################################################################################
 # FULL CASCADE SEMIGROUP #######################################################
