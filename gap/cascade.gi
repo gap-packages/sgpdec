@@ -20,37 +20,23 @@ InstallGlobalFunction(Cascade,
 function(doms, deps)
   local isgroup, type, compdoms, depdom, depfuncs, f, x;
 
-  compdoms:=ComponentDomains(doms);
-  if not IsDenseList(doms) then 
-    Error("usage: <doms> should be a dense list of transformation semigroup\n",
-    " or permutation groups,");
-    return;
+  if IsListOfPermGroupsAndTransformationSemigroups(doms) then
+    compdoms:=ComponentDomains(doms);
   else
-    isgroup:=true;
-    for x in doms do 
-      if not IsPermGroup(x) then 
-        isgroup:=false;
-        if not IsTransformationSemigroup(x) then 
-          Error("usage: <doms> should be a dense list of transformation",
-          " semigroup or permutation groups,");
-          return;
-        fi;
-      fi;
-    od;
+    compdoms:=doms;
   fi;
 
-  if isgroup then 
-    type:=PermCascadeType;
-  else
-    type:=TransCascadeType;
+  if ForAll(doms, IsGroup) then 
+    f:=Objectify(PermCascadeType, rec());
+  else 
+    f:=Objectify(TransCascadeType, rec());
   fi;
   
   #maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
   depfuncs:=Deps2DepFuncs(depdom, deps);
   
-  f:=Objectify(type, rec());
-  SetDomainOf(f, EnumeratorOfCartesianProduct(doms));
+  SetDomainOf(f, EnumeratorOfCartesianProduct(compdoms));
   SetComponentDomains(f, compdoms);
   SetDependencyDomainsOf(f, depdom);
   SetDependencyFunctionsOf(f, depfuncs);
