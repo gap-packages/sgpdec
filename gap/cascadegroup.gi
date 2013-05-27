@@ -7,6 +7,9 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 
+#to get rid of the info message, perm cascades form cool group generator sets
+InstallTrueMethod(IsGeneratorsOfMagmaWithInverses,IsPermCascadeCollection);
+
 ################################################################################
 # CASCADE GROUP ################################################################
 ################################################################################
