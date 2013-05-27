@@ -1,4 +1,5 @@
-#gap> Read("variables.g");;
+gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
+> "/tst/variables.g"));;
 # cascade - previously cascade(d) transformation, cascade transform
 
 gap> SemigroupsStartTest();
