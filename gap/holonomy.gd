@@ -8,6 +8,8 @@
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
 ##
 
+DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
+
 DeclareGlobalFunction("PermutationResetSemigroup");
 DeclareGlobalFunction("ShiftGroupAction");
 
@@ -20,6 +22,8 @@ DeclareGlobalFunction("HolonomySets2Ints");
 DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareGlobalFunction("HolonomyDecomposition");
+#to store it on HolonomyCascade
+DeclareAttribute("HolonomyDecompositionOf",IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
