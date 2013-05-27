@@ -298,28 +298,13 @@ end);
 InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
-  local ps, qs, i;
-  ps := DependencyFunctionsOf(p);
-  qs := DependencyFunctionsOf(q);
-  #lexicographic order, it is enough to check the 1st differing entry
-  for i in [1..Size(ps)] do
-    if (ps[i] < qs[i]) then
-      return true;
-    elif (ps[i] > qs[i]) then
-      return false;
-    fi;
-  od;
-  #in case all equal
-  return false;
+  return DependencyFunctionsOf(p) < DependencyFunctionsOf(q);
 end);
 
 InstallOtherMethod(\=, "for cascade and cascade",
 [IsCascade, IsCascade],
 function(p,q)
-  local ps, qs;
-  ps := DependencyFunctionsOf(p);
-  qs := DependencyFunctionsOf(q);
-  return ForAll([1..Size(ps)],i->ps[i]=qs[i]);
+  return DependencyFunctionsOf(p) = DependencyFunctionsOf(q);
 end);
 
 # attributes
