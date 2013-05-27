@@ -301,6 +301,7 @@ function(p,q)
   local ps, qs, i;
   ps := DependencyFunctionsOf(p);
   qs := DependencyFunctionsOf(q);
+  #lexicographic order, it is enough to check the 1st differing entry
   for i in [1..Size(ps)] do
     if (ps[i] < qs[i]) then
       return true;
