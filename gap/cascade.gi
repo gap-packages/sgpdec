@@ -314,6 +314,7 @@ function(f,g)
   dep_g:=DependencyFunctionsOf(g);
   depdoms:=DependencyDomainsOf(f); #TODO get rid of this
   #empty values lookup table based on the sizes of depdoms
+  Error(); 
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
   #going through all depdoms
   for i in [1..Length(depdoms)] do
@@ -413,6 +414,7 @@ InstallMethod(Display, "for a cascade",
 [IsCascade],
 function(c)
   Perform(DependencyFunctionsOf(c),Display);
+  return;
 end);
 
 ################################################################################
