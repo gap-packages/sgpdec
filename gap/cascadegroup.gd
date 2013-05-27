@@ -9,9 +9,10 @@
 ## Groups built as cascade products.
 ##
 
+
 DeclareGlobalFunction("CascadeGroup");
 DeclareCategoryCollections("IsPermCascade");
-DeclareSynonymAttr("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
+DeclareCategory("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
 
 DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 

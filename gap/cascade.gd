@@ -9,24 +9,24 @@
 ## Cascade permutations and transformations.
 ##
 
-DeclareCategory("IsCascade", IsMultiplicativeElementWithOne and
-        IsAssociativeElement and IsAttributeStoringRep);
+DeclareCategory("IsCascade", IsMultiplicativeElementWithOne 
+        and IsAssociativeElement and IsAttributeStoringRep 
+        and IsMultiplicativeElementWithInverse);
+DeclareCategory("IsPermCascade", IsCascade);
+DeclareCategory("IsTransCascade", IsCascade);
 
-BindGlobal("CascadeFamily",
-        NewFamily("CascadeFamily",
-                IsCascade, CanEasilySortElements, CanEasilySortElements));
-
-BindGlobal("CascadeType", NewType(CascadeFamily,
-        IsCascade and IsAssociativeElement and IsAttributeStoringRep));
-
-#permutation cascade
-DeclareCategory("IsPermCascade",
-        IsCascade and IsMultiplicativeElementWithInverse);
 BindGlobal("PermCascadeFamily",
         NewFamily("PermCascadeFamily",
                 IsPermCascade, CanEasilySortElements, CanEasilySortElements));
-BindGlobal("PermCascadeType", NewType(PermCascadeFamily,
-        IsPermCascade and IsAssociativeElement));
+
+BindGlobal("TransCascadeFamily",
+        NewFamily("TransCascadeFamily",
+                IsTransCascade, CanEasilySortElements, CanEasilySortElements));
+
+BindGlobal("PermCascadeType", NewType(PermCascadeFamily, IsPermCascade));
+
+BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
+
 
 #constructors
 #DeclareGlobalFunction("CascadeNC"); # TODO checking and NC version later

@@ -124,6 +124,7 @@ function(s)
         gens[nrgens]:=CreateCascade(
                               DomainOf(s),
                               ComponentDomains(s),
+                              depdoms,
                               depfuncs,
                               CascadeType);
       od;
