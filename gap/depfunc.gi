@@ -164,29 +164,28 @@ function(x) Print("<depfunc of depth ",
         String(Size(Representative(DomainOf(x)))+1)," with ",
         String(NrDependencies(x))," deps>"); return; end);
 
-InstallMethod(Display, "for a dependency function",
+InstallMethod(DisplayString, "for a dependency function",
 [IsDependencyFunction],
 function(df)
-  local vals, dom, i;
-  Print("Dependency function of depth ",
-        String(Size(Representative(DomainOf(df)))+1)," with ",
-        String(NrDependencies(df))," dependencies.");
+  local vals, dom, i, str;
+  str := Concatenation("Dependency function of depth ",
+    String(Size(Representative(DomainOf(df)))+1)," with ",
+    String(NrDependencies(df))," dependencies.");
   vals := df!.vals;
   dom := df!.dom;
-  
-  if IsBound(vals[1]) then 
-    Print("\n");
-    Print(String(dom[1])," -> ");
-    Display(vals[1]);
+  if IsBound(vals[1]) then
+    Append(str, "\n");
+    Append(str,String(dom[1]));
+    Append(str," -> ");
+    Append(str, DisplayString(vals[1]));
   fi;
-
   for i in [2..Size(vals)] do
     if IsBound(vals[i]) then
-      Print("\n");
-      Print(String(dom[i])," -> ");
-      #TODO String(vals[i][j]) return <object>
-      Display(vals[i]); 
+      Append(str,"\n");
+      Append(str,Concatenation(String(dom[i])," -> "));
+      Append(str,DisplayString(vals[i]));
     fi;
   od;
-  return;
+  Append(str,"\n");
+  return str;
 end);
