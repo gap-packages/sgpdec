@@ -9,16 +9,3 @@
 ## Cascade products. (the general methods)
 ##
 
-DeclareSynonymAttr("IsCascadeProduct", IsMagma and IsCascadeCollection);
-DeclareProperty("IsFullCascadeProduct", IsCascadeProduct);
-
-DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeProduct);
-DeclareAttribute("DomainOf", IsCascadeProduct);
-
-DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
-        IsListOrCollection);
-DeclareAttribute("ComponentDomains", IsCascadeProduct);
-
-DeclareGlobalFunction("SizeOfFullCascadeProduct");
-DeclareGlobalFunction("SizeOfIteratedTransformationWreathProduct",
-        SizeOfFullCascadeProduct);
