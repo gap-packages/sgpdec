@@ -90,6 +90,14 @@ end);
 # PERMUTATION CASCADE ##########################################################
 ################################################################################
 
+InstallOtherMethod(OneOp, "for a cascade",
+[IsCascade],
+function(ct)
+  local id;
+  return IdentityCascade(ComponentDomains(ct));
+end);
+
+
 InstallOtherMethod(OneOp, "for a permutation cascade",
 [IsPermCascade],
 function(ct)
