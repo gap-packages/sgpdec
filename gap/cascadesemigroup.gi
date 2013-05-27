@@ -74,7 +74,7 @@ function(arg)
   od;
 
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
-  s:=Objectify( NewType( CollectionsFamily(CascadeFamily), filts ), rec());
+  s:=Objectify( NewType( CollectionsFamily(TransCascadeFamily), filts ), rec());
   SetComponentsOfCascadeProduct(s, arg);
   SetComponentDomains(s, ComponentDomains(arg));
   SetNrComponents(s, Length(arg));
@@ -126,7 +126,7 @@ function(s)
                               ComponentDomains(s),
                               depdoms,
                               depfuncs,
-                              CascadeType);
+                              TransCascadeType);
       od;
     od;
   od;

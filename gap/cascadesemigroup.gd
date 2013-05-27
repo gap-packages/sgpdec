@@ -10,7 +10,7 @@
 ##
 
 DeclareGlobalFunction("CascadeSemigroup");
-DeclareSynonymAttr("IsCascadeSemigroup", IsSemigroup and IsCascadeProduct);
+DeclareSynonym("IsCascadeSemigroup", IsSemigroup and IsCascadeCollection);
 
 DeclareProperty("IsFullCascadeSemigroup",
         IsCascadeSemigroup and IsFullCascadeProduct);
