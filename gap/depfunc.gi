@@ -121,17 +121,17 @@ InstallMethod(\=, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunction, IsDependencyFunction],
         function(p,q)
   local i, pvals, qvals;
-  if p.dom <> q.dom then return false; fi;
+  if p!.dom <> q!.dom then return false; fi;
   #local variables for speeding up record member access
   pvals := p!.vals;
   qvals := q!.vals;
   if IsEmpty(pvals) and IsEmpty (qvals) then return true; fi;
   for i in [1..Size(p!.dom)] do
     if (not IsBound(pvals[i])) and (not IsBound(qvals[i])) then
-      break; # that is good
+      break; # none of them is defined
     fi;
     if IsBound(pvals[i]) and IsBound(qvals[i]) and  pvals[i] = qvals[i] then
-      break; #that's also good
+      break; # both defined and equal
     fi;
     return false;
   od;
@@ -140,30 +140,10 @@ end);
 
 InstallMethod(\<, "for depfunc and depfunc", IsIdenticalObj,
 [IsDependencyFunction, IsDependencyFunction],
-        function(p,q)
-  local pval, qval,i;
-  #first compare the domains
-  if p!.dom <> q!.dom then return p!.dom < q!.dom; fi;
-  for i in [1..Size(p!.dom)] do
-    if IsBound(p!.vals[i]) then
-      pval := p!.vals[i];
-    else
-      pval := ();
-    fi;
-    if IsBound(q!.vals[i]) then
-      qval := q!.vals[i];
-    else
-      qval := ();
-    fi;
-    #TODO this was a quick fix to avoid () < Transformation([...]) problem
-    if AsTransformation(pval) < AsTransformation(qval) then
-      return true;
-    else
-      return false;
-    fi;
-  od;
+function(p,q)
+  if p!.dom <> q!.dom then return fail; fi;
+  return p!.vals < q!.vals;
 end);
-
 
 ################################################################################
 # ACTION #######################################################################
