@@ -1,0 +1,31 @@
+<#GAPDoc Label="DecompositionAccess">
+<ManSection><Heading>Accessing hierarchical decomposition internals</Heading>
+<Func Name="OrignalStructureOf" Arg="decomp"/>
+<Oper Name="CascadeShellOf" Arg="decomp"/>
+<Description>
+Access to the original permutation group or transformation semigroup which
+was decomposed.
+Also the cascade shell that were used to decomposition can be accessed.
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="Interpret">
+<ManSection>
+<Oper Name="Interpret" Arg="decomp,level,state" Comm="the meaning of a state of a component in the context of the original"/>
+<Description>
+This method shows the 'meaning' of a state of a component of the decomposition in the context of the original structure. Basically, this answers questions like, 'We have 3 states on the second level, but what do they correspond to?'.
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ComponentActions">
+<ManSection>
+<Oper Name="ComponentActions" Arg="decomp,operation,state" Comm=""/>
+<Description>
+The actions in the components when for an original permutation or transformation
+acts on a cascaded state. Usually lifting an operation into a cascaded operation
+ involves calculating these component actions.
+</Description>
+</ManSection>
+<#/GAPDoc>
