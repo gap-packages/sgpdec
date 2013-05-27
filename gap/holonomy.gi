@@ -431,11 +431,25 @@ AsTrans :=
 function(co,hd)
 local l, i;
   l := [];
-  for i in ListBlist([1..DegreeOfTransformationSemigroup(hd.original)],TopSet(hd.sk)) do
-    l[i] := AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
+  for i in ListBlist([1..DegreeOfTransformationSemigroup(hd.original)],
+          TopSet(hd.sk)) do
+    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
   return Transformation(l);
 end;
+
+InstallOtherMethod(HomomorphismTransformationSemigroup, "for a cascade product",
+[IsHolonomyCascadeSemigroup],
+function(s)
+  local t,hd;
+  hd := HolonomyDecompositionOf(s);
+  t:=Semigroup(List(GeneratorsOfSemigroup(s), g -> AsTrans(g,hd)));
+  return MagmaHomomorphismByFunctionNC(
+                 s,
+                 t,
+                 g -> AsTrans(g, hd));#,
+                 #f -> AsHolonomyCascade(f, hd));
+end);
 
 #Flattening the whole decomposition (gives back the original semigroup)
 #TODO this should be wrapped in the semigroup homomorphism
