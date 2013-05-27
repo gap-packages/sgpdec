@@ -20,6 +20,7 @@ InstallGlobalFunction(Cascade,
 function(doms, deps)
   local isgroup, type, compdoms, depdom, depfuncs, f, x;
 
+  compdoms:=ComponentDomains(doms);
   if not IsDenseList(doms) then 
     Error("usage: <doms> should be a dense list of transformation semigroup\n",
     " or permutation groups,");
@@ -45,7 +46,6 @@ function(doms, deps)
   fi;
   
   #maybe there should be a ShallowCopy here? JDM
-  compdoms:=ComponentDomains(doms);
   depdom:=DependencyDomains(compdoms);
   depfuncs:=Deps2DepFuncs(depdom, deps);
   
