@@ -15,48 +15,101 @@
 #  ways to create cascades
 # 1. Cascade, giving components/component domains and a list of dependencies
 # 2. by giving dependency functions
+
 InstallGlobalFunction(Cascade,
 function(doms, deps)
-  local type;
-  type := CascadeType;
-  #if components are given as semigroups then we have to get the domains
-  if IsListOfPermGroupsAndTransformationSemigroups(doms) then
-    if ForAll(doms, IsGroup) then type := PermCascadeType;fi;
-    doms:=ComponentDomains(doms);
+  local isgroup, type, compdoms, depdom, depfuncs, f, x;
+
+  compdoms:=ComponentDomains(doms);
+  if not IsDenseList(doms) then 
+    Error("usage: <doms> should be a dense list of transformation semigroup\n",
+    " or permutation groups,");
+    return;
+  else
+    isgroup:=true;
+    for x in doms do 
+      if not IsPermGroup(x) then 
+        isgroup:=false;
+        if not IsTransformationSemigroup(x) then 
+          Error("usage: <doms> should be a dense list of transformation",
+          " semigroup or permutation groups,");
+          return;
+        fi;
+      fi;
+    od;
   fi;
 
-  return CreateCascade(
-                 EnumeratorOfCartesianProduct(doms),
-                 doms,
-                 Deps2DepFuncs(DependencyDomains(doms), deps), type);
-end);
-#JDM install Cascade, check args are sensible.
-
-# domain, component domains, depfuncs, type
-InstallGlobalFunction(CreateCascade,
-function(dom, compdoms, depfuncs, type)
-local f;
+  if isgroup then 
+    type:=PermCascadeType;
+  else
+    type:=TransCascadeType;
+  fi;
+  
+  #maybe there should be a ShallowCopy here? JDM
+  depdom:=DependencyDomains(compdoms);
+  depfuncs:=Deps2DepFuncs(depdom, deps);
+  
   f:=Objectify(type, rec());
-  SetDomainOf(f, dom);
+  SetDomainOf(f, EnumeratorOfCartesianProduct(doms));
   SetComponentDomains(f, compdoms);
-  SetDependencyDomainsOf(f, DependencyDomains(compdoms));#ugly hack TODO no dup!
+  SetDependencyDomainsOf(f, depdom);
   SetDependencyFunctionsOf(f, depfuncs);
   SetNrComponents(f, Length(compdoms));
   return f;
 end);
 
+#
+
+InstallGlobalFunction(CreateCascade,
+function(dom, compdoms, depfuncs, depdom, type)
+  local f;
+  
+  f:=Objectify(type, rec());
+  SetDomainOf(f, dom);
+  SetComponentDomains(f, compdoms);
+  SetDependencyDomainsOf(f, depdom);
+  SetDependencyFunctionsOf(f, depfuncs);
+  SetNrComponents(f, Length(compdoms));
+  return f;
+end);
+
+#
+
 InstallGlobalFunction(IdentityCascade,
-function(comps) return Cascade(comps,[]); end);
+function(comps) 
+  return Cascade(comps,[]); 
+end);
+
+#
 
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
-  local comps, depdoms, tup, vals, len, x, j, k, val, i, depfuncs;
+  local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
 
-  if not IsListOfPermGroupsAndTransformationSemigroups(list) then
-    Error("the first argument should be a list of transformation semigroups",
-     " or perm groups,");
+  if not IsDenseList(list) then 
+    Error("usage: <doms> should be a dense list of transformation semigroup\n",
+    " or permutation groups,");
     return;
+  else
+    isgroup:=false;
+    for x in list do 
+      if not IsPermGroup(x) then 
+        isgroup:=true;
+        if not IsTransformationSemigroup(x) then 
+          Error("usage: <doms> should be a dense list of transformation",
+          " semigroup or permutation groups,");
+          return;
+        fi;
+      fi;
+    od;
   fi;
+
+  if isgroup then 
+    type:=PermCascadeType;
+  else
+    type:=TransCascadeType;
+  fi;
+  
   comps:=ComponentDomains(list);
   # create the enumerator for the dependency func
   depdoms:=DependencyDomains(comps);
@@ -82,23 +135,22 @@ function(list, numofdeps)
   od;
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
+
   return CreateCascade(EnumeratorOfCartesianProduct(comps),
-                 comps, depfuncs,CascadeType);
+                 comps, depfuncs, depdoms, type);
 end);
 
 ################################################################################
 # PERMUTATION CASCADE ##########################################################
 ################################################################################
 
-InstallOtherMethod(OneOp, "for a cascade",
-[IsCascade],
+InstallMethod(OneImmutable, "for a trans cascade",
+[IsTransCascade],
 function(ct)
-  local id;
   return IdentityCascade(ComponentDomains(ct));
 end);
 
-
-InstallOtherMethod(OneOp, "for a permutation cascade",
+InstallMethod(OneImmutable, "for a permutation cascade",
 [IsPermCascade],
 function(ct)
   local id;
@@ -107,14 +159,15 @@ function(ct)
   return CreateCascade(DomainOf(id),
                  ComponentDomains(id),
                  DependencyFunctionsOf(id),
+                 DependencyDomainsOf(id),
                  PermCascadeType);
 end);
-
 
 InstallOtherMethod(InverseMutable, "for a permutation cascade",
 [IsPermCascade],
 function(pc)
-  local dfs, depdoms, vals, x, i, j, depfuncs,type,pos;
+  local dfs, depdoms, vals, x, depfuncs, i, j;
+  
   dfs:=DependencyFunctionsOf(pc);
   depdoms:=DependencyDomainsOf(pc); #TODO get rid of this
   #empty values lookup table based on the sizes of depdoms
@@ -134,6 +187,7 @@ function(pc)
   return CreateCascade(DomainOf(pc),
                  ComponentDomains(pc),
                  depfuncs,
+                 depdoms,
                  PermCascadeType);
 end);
 
@@ -141,16 +195,17 @@ end);
 ################################################################################
 # CHANGING REPRESENTATION ######################################################
 ################################################################################
-InstallMethod(AsTransformation, "for cascade",
+
+InstallMethod(AsTransformation, "for trans cascade",
 [IsCascade],
 function(ct)
-return TransformationOp(ct, DomainOf(ct), OnCoordinates);
+  return TransformationOp(ct, DomainOf(ct), OnCoordinates);
 end);
 
-InstallMethod(AsPermutation, "for cascade",
+InstallMethod(AsPermutation, "for perm cascade",
 [IsPermCascade],
 function(ct)
-return AsPermutation(AsTransformation(ct));
+  return Permutation(ct, DomainOf(ct), OnCoordinates);
 end);
 
 # if the components are given then for groups permutations are produced
@@ -227,7 +282,7 @@ function(f, compsordomsizes)
 
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
-  return CreateCascade(dom, compdoms, depfuncs,CascadeType);
+  return CreateCascade(dom, compdoms, depfuncs, depdoms, TransCascadeType);
 end);
 
 # dispatching to AsCascade for transformations after figuring out the degree
@@ -264,7 +319,7 @@ function(coords, ct)
   return out;
 end);
 
-InstallMethod(\*, "for cascades", ReturnTrue, #any family can be combined
+InstallMethod(\*, "for cascades",
 [IsCascade, IsCascade],
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
@@ -288,37 +343,24 @@ function(f,g)
   if (IsPermCascade(f)) and (IsPermCascade(g)) then
     type := PermCascadeType;
   else
-    type := CascadeType;
+    type := TransCascadeType;
   fi;
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
-  return CreateCascade(DomainOf(f),ComponentDomains(f), depfuncs, type);
+  return CreateCascade(DomainOf(f), ComponentDomains(f), depfuncs, depdoms,
+  type);
 end);
 
 InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
 function(p,q)
-  local ps, qs, i;
-  ps := DependencyFunctionsOf(p);
-  qs := DependencyFunctionsOf(q);
-  for i in [1..Size(ps)] do
-    if (ps[i] < qs[i]) then
-      return true;
-    elif (ps[i] > qs[i]) then
-      return false;
-    fi;
-  od;
-  #in case all equal
-  return false;
+  return DependencyFunctionsOf(p) < DependencyFunctionsOf(q);
 end);
 
 InstallOtherMethod(\=, "for cascade and cascade",
 [IsCascade, IsCascade],
 function(p,q)
-  local ps, qs;
-  ps := DependencyFunctionsOf(p);
-  qs := DependencyFunctionsOf(q);
-  return ForAll([1..Size(ps)],i->ps[i]=qs[i]);
+  return DependencyFunctionsOf(p) = DependencyFunctionsOf(q);
 end);
 
 # attributes
@@ -346,7 +388,12 @@ InstallMethod(ViewObj, "for a cascade",
 function(f)
   local str, x;
 
-  str:="<cascade with ";
+  if IsTransCascade(f) then 
+    str:="<trans ";
+  else
+    str:="<perm ";
+  fi;
+  Append(str, "cascade with ");
   Append(str, String(NrComponents(f)));
   Append(str, " levels");
 
