@@ -436,18 +436,25 @@ local l, i;
   return Transformation(l);
 end);
 
+# cascade to ts
 InstallOtherMethod(HomomorphismTransformationSemigroup, "for a cascade product",
 [IsHolonomyCascadeSemigroup],
-function(s)
-  local t,hd;
-  hd := HolonomyDecompositionOf(s);
-  t:=Semigroup(List(GeneratorsOfSemigroup(s),
-             g -> AsHolonomyTransformation(g,hd)));
-  return MagmaHomomorphismByFunctionNC(
-                 s,
-                 t,
-                 g -> AsHolonomyTransformation(g, hd));
+function(cS)
+  local T,hd,f;
+  hd := HolonomyDecompositionOf(cS);
+  f := c -> AsHolonomyTransformation(c, hd);
+  T:=Semigroup(List(GeneratorsOfSemigroup(cS),f));
+  return MappingByFunction(cS,T,f);
 end);
+
+# ts to cascade
+HolonomyLifting := function(S)
+  local cS,hd,f;
+  cS := HolonomyCascadeSemigroup(S);
+  hd := HolonomyDecompositionOf(cS);
+  f := t -> AsHolonomyCascade(t, hd);
+  return MappingByFunction(S,cS,f);
+end;
 
 ################################################################################
 # ACCESS FUNCTIONS #############################################################
