@@ -547,7 +547,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   for i in [1..Length(classes)] do
     AppendTo(out,"subgraph cluster",String(i),"{\n");
     for node in classes[i] do
-      AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
+      AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
     od;
     AppendTo(out,"color=\"black\";");
     if DepthOfSet(sk, node) < DepthOfSkeleton(sk) then
@@ -572,7 +572,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     AppendTo(out, "{rank=same;",String(i),";");
     for class in SkeletonClassesOnDepth(sk,i) do
       for node in class do
-        AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
+        AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
       od;
     od;
     AppendTo(out,"}\n");
@@ -580,16 +580,16 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   #singletons
   AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
   for node in sk.singletons do
-    AppendTo(out,"\"",FiniteSetPrinter(node,states),"\";");
+    AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
   od;
   AppendTo(out,"}\n");
   #drawing the representatives as rectangles and their covers
   for class in AllRepresentativeSets(sk) do
-    AppendTo(out,"\"",FiniteSetPrinter(class,states),
+    AppendTo(out,"\"",TrueValuePositionsBlistString(class),
             "\" [shape=box,color=black];\n");
     for set in TilesOf(class,sk) do
-      AppendTo(out,"\"",FiniteSetPrinter(class,states),
-              "\" -> \"",FiniteSetPrinter(set,states),"\"\n");
+      AppendTo(out,"\"",TrueValuePositionsBlistString(class),
+              "\" -> \"",TrueValuePositionsBlistString(set),"\"\n");
     od;
   od;
   AppendTo(out,"}\n");
