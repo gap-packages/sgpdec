@@ -22,6 +22,7 @@ Read("mul.g");;
 Read("depextract.g");;
 Read("linnot.g");;
 Read("straightword.g");;
+Read("fl.g");;
 
 ########################################################
 ############MAIN########################################
@@ -42,6 +43,10 @@ TestMultiplicationByIdentity([MICROBUG,HEYBUG,ALIFEX]);
 
 TestMultiplication([BECKS,HEYBUG,S3]);
 TestMultiplication([MICROBUG,HEYBUG,ALIFEX]);
+
+for G in test_groups do
+  TestFLIsomorphism(G);
+od;
 
 #Dump the random seed in case there was something interesting.
 Print("#Random seed:", SEED, "\n");
