@@ -378,6 +378,7 @@ function(ts)
                t->Cascade(hd.comps,
                        HolonomyDependencies(hd,t))));
   SetHolonomyDecompositionOf(S,hd);
+  SetComponentsOfCascadeProduct(S,hd.comps);
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
 end);
