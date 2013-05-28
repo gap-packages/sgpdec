@@ -382,6 +382,8 @@ function(ts)
   return S;
 end);
 
+#this just enumerates the tile chains, convert to coordinates,
+#calls for the component actions, and records if nontrivial
 InstallGlobalFunction(HolonomyDependencies,
 function(hd, t)
 local i,state,sets,actions,depfuncs,holdom,cst;
@@ -418,18 +420,12 @@ local i,state,sets,actions,depfuncs,holdom,cst;
   return depfuncs; #TODO maybe sort them into a graded list
 end);
 
-
-#this just enumerates the tile chains, convert to coordinates,
-#calls for the component actions, and records if nontrivial
-
-# ENA this will go to AsCascadedTrans
-
-AsHolonomyCascade :=
+InstallGlobalFunction(AsHolonomyCascade,
 function(t,decomp)
   return Cascade(decomp.comps,HolonomyDependencies(decomp,t));
-end;
+end);
 
-AsTrans :=
+InstallGlobalFunction(AsHolonomyTransformation,
 function(co,hd)
 local l, i;
   l := [];
@@ -438,38 +434,27 @@ local l, i;
     l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
   return Transformation(l);
-end;
+end);
 
 InstallOtherMethod(HomomorphismTransformationSemigroup, "for a cascade product",
 [IsHolonomyCascadeSemigroup],
 function(s)
   local t,hd;
   hd := HolonomyDecompositionOf(s);
-  t:=Semigroup(List(GeneratorsOfSemigroup(s), g -> AsTrans(g,hd)));
+  t:=Semigroup(List(GeneratorsOfSemigroup(s),
+             g -> AsHolonomyTransformation(g,hd)));
   return MagmaHomomorphismByFunctionNC(
                  s,
                  t,
-                 g -> AsTrans(g, hd));#,
-                 #f -> AsHolonomyCascade(f, hd));
+                 g -> AsHolonomyTransformation(g, hd));
 end);
-
-#Flattening the whole decomposition (gives back the original semigroup)
-#TODO this should be wrapped in the semigroup homomorphism
-#AsSgp :=
-#function( hd )
-#    local g,gens;
-#    gens := [];
-#    for g in GeneratorsOfSemigroup(hd.original) do
-#        Add(gens,AsTrans(AsCascadedTrans(g,hd)));
-#    od;
-#    return Semigroup(gens);
-#end;
 
 ################################################################################
 # ACCESS FUNCTIONS #############################################################
 InstallGlobalFunction(GroupComponentsOnDepth,
 function(hd, depth) return hd.groupcomponents[depth];end);
 
+#TODO does this work?
 #changing the representative
 InstallGlobalFunction(ChangeCoveredSet,
 function(hd, set)
@@ -487,20 +472,10 @@ local skeleton,oldrep, pos, depth,i, tiles;
   for i in [1..Length(tiles)] do
     hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
   od;
-  #TODO!! we may have lost the CoverGroup's mapping
-  #to coordinate points as integers, but for the time being
-  #it does not seem to matter
 end);
 
 ################################################################################
 # REIMPLEMENTED GAP OPERATIONS #################################################
-
-
-#InstallMethod(PrintObj,"for a holonomy decomposition",
-#        [ IsRecord ],
-#function( hd )
-#  Print("<holonomy decomposition of ",hd.original, ">");
-#end);
 
 NumOfPointsInSlot := function(hd, level, slot)
   return hd.shifts[level][slot+1] - hd.shifts[level][slot];

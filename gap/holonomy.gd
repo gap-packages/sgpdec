@@ -22,10 +22,12 @@ DeclareGlobalFunction("HolonomySets2Ints");
 DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareGlobalFunction("HolonomyDecomposition");
-#to store it on HolonomyCascade
 DeclareAttribute("HolonomyDecompositionOf",IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
+
+DeclareGlobalFunction("AsHolonomyCascade");
+DeclareGlobalFunction("AsHolonomyTransformation");
 
 DeclareInfoClass("HolonomyInfoClass");
