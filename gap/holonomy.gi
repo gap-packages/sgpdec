@@ -346,7 +346,9 @@ local action,
         ncoordval:=hd.coordvals[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
-        Print(depth," HEY!!! ",FSP(P),"*",s,"=",FSP(Ps),"but Q=",FSP(Q),"\n");
+        Print(depth," HEY!!! ",TrueValuePositionsBlistString(P),"*",s,"=",
+              TrueValuePositionsBlistString(Ps),"but Q=",
+              TrueValuePositionsBlistString(Q),"\n");
       fi;
       # ncoordval is a cover set of rep Q and we send it to a cover set of Q
       Q := RealTile(ncoordval, Q, sk);

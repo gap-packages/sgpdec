@@ -1,5 +1,15 @@
-# functions for imitating finiteset functions using blists
+#############################################################################
+##
+## finiteset.gi           SgpDec package
+##
+## Copyright (C) 2010-2013
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Just a wrap around blists to behave as finite sets.
+##
 
+# functions for imitating finiteset functions using blists
 InstallGlobalFunction(FiniteSet,
 function(arg)
   if Length(arg)=1 then
@@ -46,8 +56,13 @@ local i;
   return true;
 end);
 
-FiniteSetPrinter := function(bl,states)
-local i,n,size,str;
+################################################################################
+### ToggleFiniSetDisplay #######################################################
+
+InstallGlobalFunction(TrueValuePositionsBlistString,
+function(bl)
+local i,n,size,str,states;
+  states := [1..Size(bl)];
   n := 0;
   size := SizeBlist(bl);
   str:="{";
@@ -64,23 +79,25 @@ local i,n,size,str;
   od;
   str := Concatenation(str,"}");
   return str;
-end;
+end);
 
-FSP := function(bl)
-  return FiniteSetPrinter(bl,[1..Size(bl)]);
-end;
+# TODO there is a bit of a confusion which method to redefine
+InstallMethod(ViewObj,"for a blist (SgpDec)",
+    [ IsBlistRep ],5,
+function(bl)
+  if UserPreference ("DisplayTrueValuePositionsBlist") then
+    Print(DisplayString(bl));
+  else
+    TryNextMethod();
+  fi;
+end);
 
-
-PrintFiniteSet := function(bl)
-  Print(FiniteSetPrinter(bl,[1..Size(bl)]));
-end;
-
-#redefining, this is ugly with the ranks at the moment TODO
-InstallMethod(ViewObj,"for a blist (redefined)",
-    [ IsBlistRep ],333, PrintFiniteSet);
-
-InstallMethod(PrintObj,"for a blist (redefined)",
-    [ IsBlistRep ],333, PrintFiniteSet);
-
-InstallMethod(Display,"for a blist (redefined)",
-    [ IsBlistRep ],333, PrintFiniteSet);
+InstallMethod(DisplayString,"for a blist (SgpDec)",
+    [ IsBlistRep ],5,
+function(bl)
+  if UserPreference ("DisplayTrueValuePositionsBlist") then
+    return TrueValuePositionsBlistString(bl);
+  else
+    TryNextMethod();
+  fi;
+end);
