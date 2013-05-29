@@ -408,13 +408,26 @@ end);
 
 InstallMethod(PrintObj, "for a cascade",
 [IsCascade],
-function(c)
+function(c)   
   Print("Cascade( ");
   Print(ComponentDomains(c));
   Print(", ");
   Print(DependenciesOfCascade(c));
   Print(" )");
   return;
+end);
+
+InstallMethod(PrintString, "for a cascade",
+[IsCascade],
+function(c)
+  local str;
+
+  str:="Cascade( ";
+  Append(str, PrintString(ComponentDomains(c)));
+  Append(str, ", ");
+  Append(str, PrintString(DependenciesOfCascade(c)));
+  Append(str, " )");
+  return str;
 end);
 
 InstallMethod(Display, "for a cascade",
