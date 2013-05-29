@@ -77,10 +77,10 @@ function(list, numofdeps)
     " or permutation groups,");
     return;
   else
-    isgroup:=false;
+    isgroup:=true;
     for x in list do 
       if not IsPermGroup(x) then 
-        isgroup:=true;
+        isgroup:=false;
         if not IsTransformationSemigroup(x) then 
           Error("usage: <doms> should be a dense list of transformation",
           " semigroup or permutation groups,");
@@ -407,7 +407,15 @@ function(f)
 end);
 
 InstallMethod(PrintObj, "for a cascade",
-[IsCascade], ViewObj);
+[IsCascade],
+function(c)
+  Print("Cascade( ");
+  Print(ComponentDomains(c));
+  Print(", ");
+  Print(DependenciesOfCascade(c));
+  Print(" )");
+  return;
+end);
 
 InstallMethod(Display, "for a cascade",
 [IsCascade],
