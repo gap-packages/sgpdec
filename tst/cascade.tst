@@ -58,6 +58,59 @@ gap> Cascade([[1..2],[1..3]],[]);
 gap> IdentityCascade([T3,Z2]);
 <trans cascade with 2 levels with (3, 2) pts, 0 dependencies>
 
+#from here on just testing (no descriptions)...
+#formerly mul.g....
+
+#becks
+gap> semis := [
+> [Transformation([1,2,3,1,1,1]), Transformation([4,4,4,5,4,6]),
+> Transformation([4,4,4,5,6,4]), Transformation([4,4,4,4,5,5]),
+> Transformation([4,4,4,1,2,3]), Transformation([2,3,1,4,4,4])]];;
+
+#heybug
+gap> Add(semis, [Transformation( [ 2,2,4,4,6,6,8,8 ] ),
+> Transformation( [ 1,2,3,5,5,6,7,5 ] ),
+> Transformation( [ 1,2,3,4,3,4,3,4 ] ) ]);;
+
+#microbug
+gap> Add(semis, [Transformation( [ 1,2,1 ] ),Transformation( [ 3,3,1 ] )]);;
+
+#alifex
+gap> Add(semis, [Transformation([2,2,3,3,3]),Transformation([3,3,3,5,4])]);;
+gap> semis:=List(semis, Semigroup);
+[ <transformation semigroup on 6 pts with 6 generators>, 
+  <transformation semigroup on 8 pts with 3 generators>, 
+  <transformation semigroup on 3 pts with 2 generators>, 
+  <transformation semigroup on 5 pts with 2 generators> ]
+
+#test the multiplication
+gap> comps:=[semis[1], semis[2], SymmetricGroup(3)];;
+gap> for i in [1..333] do
+>   rc1 := RandomCascade(comps, 13);
+>   rc2 := RandomCascade(comps, 11);
+>   if AsTransformation(rc1*rc2)<>AsTransformation(rc1) * AsTransformation(rc2)
+>     then Print("multiplication of cascades isn't working...1\n");
+>   fi;
+>   if AsCascade(AsTransformation(rc2) * AsTransformation(rc1), comps)<>
+>    rc2*rc1 then  
+>     Print("multiplication of cascades isn't working...2\n");
+>   fi;
+> od;
+
+#
+gap> comps:=[semis[3], semis[2], semis[4]];;
+gap> for i in [1..333] do
+>   rc1 := RandomCascade(comps, 13);
+>   rc2 := RandomCascade(comps, 11);
+>   if AsTransformation(rc1*rc2)<>AsTransformation(rc1) * AsTransformation(rc2)
+>     then Print("multiplication of cascades isn't working...3\n");
+>   fi;
+>   if AsCascade(AsTransformation(rc2) * AsTransformation(rc1), comps)<>
+>    rc2*rc1 then  
+>     Print("multiplication of cascades isn't working...4\n");
+>   fi;
+> od;
+
 #
 gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
