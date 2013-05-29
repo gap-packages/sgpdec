@@ -491,10 +491,11 @@ end;
 MakeReadOnlyGlobal("NumOfPointsInSlot");
 
 #detailed print of the components
-DisplayHolDec := #,"for a holonomy decomposition",
-        #[ IsRecord ],
-function(hd)
-  local groupnames,level, i,l,groups;
+InstallMethod(DisplayString,"for a holonomy decomposition",
+        [ IsHolonomyCascadeSemigroup ],
+function(HCS)
+  local groupnames,level, i,l,groups,hd,str;;
+  hd := HolonomyDecompositionOf(HCS);
   groupnames := [];
   for level in [1..hd.d] do
     l := [];
@@ -512,9 +513,11 @@ function(hd)
     od;
     Add(groupnames,l);
   od;
+  str := "";
   for i in [1..Length(groupnames)] do
-    Print(i,":");
-    Perform(groupnames[i], function(x) Print(" ",x);end);
-    Print("\n");
+    Append(str, Concatenation(String(i),":"));
+    Perform(groupnames[i], function(x) Append(str,Concatenation(" ",x));end);
+    Append(str,"\n");
   od;
-end;#);
+  return str;
+end);
