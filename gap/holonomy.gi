@@ -378,6 +378,7 @@ function(ts)
                t->Cascade(hd.comps,
                        HolonomyDependencies(hd,t))));
   SetHolonomyDecompositionOf(S,hd);
+  SetGroupComponents(S,hd.groupcomponents);
   SetComponentsOfCascadeProduct(S,hd.comps);
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
@@ -457,11 +458,6 @@ HolonomyLifting := function(S)
   return MappingByFunction(S,cS,f);
 end;
 
-################################################################################
-# ACCESS FUNCTIONS #############################################################
-InstallGlobalFunction(GroupComponentsOnDepth,
-function(hd, depth) return hd.groupcomponents[depth];end);
-
 #TODO does this work?
 #changing the representative
 InstallGlobalFunction(ChangeCoveredSet,
@@ -499,7 +495,7 @@ function(HCS)
   groupnames := [];
   for level in [1..hd.d] do
     l := [];
-    groups := GroupComponentsOnDepth(hd, level);
+    groups := GroupComponents(HCS)[level];
     for i in [1..Length(groups)]  do
       if IsTrivial(groups[i]) then
         Add(l, String(NumOfPointsInSlot(hd,level,i)));
