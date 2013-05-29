@@ -70,7 +70,7 @@ function(skeleton)
 local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
-  holrec.original := skeleton.ts;
+  holrec.origdeg := DegreeOfTransformationSemigroup(skeleton.ts);
 
   # 2. get the group components
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
@@ -430,7 +430,7 @@ InstallGlobalFunction(AsHolonomyTransformation,
 function(co,hd)
 local l, i;
   l := [];
-  for i in ListBlist([1..DegreeOfTransformationSemigroup(hd.original)],
+  for i in ListBlist([1..hd.origdeg],
           TopSet(hd.sk)) do
     l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
