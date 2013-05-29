@@ -1,6 +1,7 @@
+gap> START_TEST("Sgpdec package: cascade.tst"); 
+gap> LoadPackage("sgpdec", false);;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
-gap> LoadPackage("sgpdec", false);;
 
 # cascade - previously cascade(d) transformation, cascade transform
 gap> SemigroupsStartTest();
@@ -59,3 +60,4 @@ gap> IdentityCascade([T3,Z2]);
 
 #
 gap> SemigroupsStopTest();
+gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
