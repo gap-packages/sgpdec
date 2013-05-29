@@ -1,4 +1,4 @@
-gap> START_TEST("Sgpdec package: cascade.tst"); 
+gap> START_TEST("Sgpdec package: cascade.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
