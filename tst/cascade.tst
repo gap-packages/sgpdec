@@ -112,5 +112,84 @@ gap> for i in [1..333] do
 > od;
 
 #
+gap> c:=
+> Cascade( [ [ 1 .. 3 ], [ 1 .. 8 ], [ 1 .. 5 ] ], 
+> [ [ [  ], Transformation( [ 3, 3, 3 ] ) ], 
+>   [ [ 1 ], Transformation( [ 2, 2, 4, 6, 6, 6, 8, 6 ] ) ], 
+>   [ [ 2 ], Transformation( [ 2, 2, 6, 6, 6, 6, 6, 6 ] ) ], 
+>   [ [ 3 ], Transformation( [ 2, 2, 4, 4, 4, 4, 4, 4 ] ) ], 
+>   [ [ 1, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 2 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 3 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 1, 4 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 1, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 1 ], Transformation( [ 3, 3, 3 ] ) ], 
+>   [ [ 2, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 2, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 5 ], Transformation( [ 3, 3, 3, 5, 4 ] ) ], 
+>   [ [ 2, 6 ], Transformation( [ 3, 3, 3 ] ) ], 
+>   [ [ 2, 7 ], Transformation( [ 3, 3, 3, 5, 4 ] ) ], 
+>   [ [ 2, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 3, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] );
+<trans cascade with 3 levels with (3, 8, 5) pts, 28 dependencies>
+gap> d:=
+> Cascade( [ [ 1 .. 3 ], [ 1 .. 8 ], [ 1 .. 5 ] ], 
+> [ [ [  ], Transformation( [ 1, 1, 1 ] ) ], 
+>   [ [ 3 ], Transformation( [ 2, 2, 5, 5, 6, 6, 5, 5 ] ) ], 
+>   [ [ 1, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 1, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 1, 5 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 1, 6 ], Transformation( [ 3, 3, 3, 5, 4 ] ) ], 
+>   [ [ 1, 7 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 1, 8 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 2, 1 ], Transformation( [ 3, 3, 3, 5, 4 ] ) ], 
+>   [ [ 2, 2 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 5 ], Transformation( [ 3, 3, 3, 5, 4 ] ) ], 
+>   [ [ 2, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 2, 7 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 2, 8 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], 
+>   [ [ 3, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], 
+>   [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] );
+<trans cascade with 3 levels with (3, 8, 5) pts, 20 dependencies>
+gap> c*d;
+<trans cascade with 3 levels with (3, 8, 5) pts, 28 dependencies>
+gap> PrintString(c*d);
+"Cascade( [ [ 1 .. 3 ], [ 1 .. 8 ], [ 1 .. 5 ] ], [ [ [ ], Transformation( [ 1\
+, 1, 1 ] ) ], [ [ 1 ], Transformation( [ 2, 2, 5, 6, 6, 6, 5, 6 ] ) ], [ [ 2 ]\
+, Transformation( [ 2, 2, 6, 6, 6, 6, 6, 6 ] ) ], [ [ 3 ], Transformation( [ 2\
+, 2, 5, 5, 5, 5, 5, 5 ] ) ], [ [ 1, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
+, [ [ 1, 2 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 3 ], Transformatio\
+n( [ 2, 2, 3, 3, 3 ] ) ], [ [ 1, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [\
+ [ 1, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 6 ], Transformation( \
+[ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ \
+1, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 1 ], Transformation( [ 3\
+, 3, 3 ] ) ], [ [ 2, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], [ [ 2, 3 ], T\
+ransformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 4 ], Transformation( [ 3, 3, 3, 3\
+, 3 ] ) ], [ [ 2, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 6 ], Tran\
+sformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 7 ], Transformation( [ 3, 3, 3, 3, 3\
+ ] ) ], [ [ 2, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 1 ], Transfo\
+rmation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] \
+) ], [ [ 3, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 4 ], Transforma\
+tion( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
+, [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 7 ], Transformatio\
+n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
+)"
+
+#
 gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
