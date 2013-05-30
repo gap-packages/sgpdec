@@ -19,10 +19,8 @@ Read("cartesianenum.g");;
 Read("wreath.g");;
 Read("idmul.g");;
 Read("mul.g");;
-Read("depextract.g");;
 Read("linnot.g");;
 Read("straightword.g");;
-Read("fl.g");;
 
 ########################################################
 ############MAIN########################################
@@ -35,18 +33,11 @@ TestLinearNotation(51);
 
 TestStraightWords(GeneratorsOfSemigroup(T5), 6222);
 
-TestDependencyExtraction([MICROBUG,HEYBUG,ALIFEX]);
-TestDependencyExtraction([BECKS,HEYBUG,S3]);
-
 TestMultiplicationByIdentity([BECKS,HEYBUG,S3]);
 TestMultiplicationByIdentity([MICROBUG,HEYBUG,ALIFEX]);
 
 TestMultiplication([BECKS,HEYBUG,S3]);
 TestMultiplication([MICROBUG,HEYBUG,ALIFEX]);
-
-for G in test_groups do
-  TestFLIsomorphism(G);
-od;
 
 #Dump the random seed in case there was something interesting.
 Print("#Random seed:", SEED, "\n");
