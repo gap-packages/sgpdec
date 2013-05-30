@@ -71,23 +71,18 @@ local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   # 2. get the group components
-  Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
   d := DepthOfSkeleton(holrec.sk) - 1;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(skeleton.ts);
+  Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
   holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
   holrec.coordvals := [];
   holrec.shifts := [];
   for depth in [1..d] do
-    groups := [];
-    coords := [];
-    reps := [];
-    shifts := [];
-    shift := 0;
-    Add(shifts,shift);
-
+    groups := [];coords := [];reps := [];shifts := [];
+    shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.sk,depth) do
       tiles := TilesOf(rep, holrec.sk);
@@ -126,7 +121,7 @@ GetSlot := function(set,hd)
   return Position(hd.reps[DepthOfSet(hd.sk,set)], RepresentativeSet(hd.sk,set));
 end;
 
-# decoding: integers -> sets
+# decoding: integers -> sets, integers simply code the positions hd.coordvals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(hd, ints)
 local sets, level;
@@ -142,7 +137,7 @@ local sets, level;
   return sets;
 end);
 
-# encoding: sets -> integers
+# encoding: sets -> integers, we need to find the set in the right slot
 InstallGlobalFunction(HolonomySets2Ints,
 function(hd, sets)
 local set,level,ints,slot, sk;
@@ -153,7 +148,7 @@ local set,level,ints,slot, sk;
     if sets[level] = 0 then
       Add(ints,0);
     else
-      slot := GetSlot(set, hd);
+      slot := GetSlot(set, hd); #TODO how can we make sure about the right slot?
       Add(ints,Position(hd.coordvals[level],
               sets[level],
               hd.shifts[level][slot]));
@@ -182,7 +177,7 @@ RepTile := function(realcover, P, skeleton)
 end;
 
 # (successive approximation)
-InstallGlobalFunction(CoverChain,
+InstallGlobalFunction(TileChain,
 function(hd, coordinates)
 local chain,P,depth,skeleton;
   skeleton := hd.sk;
@@ -219,7 +214,7 @@ InstallGlobalFunction(AllHolonomyLifts,
 function(hd, point)
 local sk;
   sk := hd.sk;
-  return List(AllCoverChainsToSet(sk, FiniteSet([point],sk.degree)),
+  return List(AllTileChainsToSet(sk, FiniteSet([point],sk.degree)),
             c -> HolonomySets2Ints(hd,Coordinates(hd,c)));
 end);
 
@@ -236,7 +231,7 @@ AsHolonomyPoint :=
 #    [IsDenseList,IsRecord],
 function(cs,hd)
   local coverchain;
-  coverchain := CoverChain(hd, HolonomyInts2Sets(hd,cs));
+  coverchain := TileChain(hd, HolonomyInts2Sets(hd,cs));
   # extracting the singleton element from the cover chains
   return ListBlist([1..hd.n],coverchain[Length(coverchain)])[1];
 end;#);
@@ -248,7 +243,7 @@ AsHolonomyCoords :=
 function(k,hd)
   return HolonomySets2Ints(hd,
                  Coordinates(hd,
-                         RandomCoverChain(hd.sk,k)));
+                         RandomTileChain(hd.sk,k)));
 end;#);
 
 IsConstantMap := function(t)
