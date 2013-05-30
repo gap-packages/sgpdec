@@ -1,3 +1,4 @@
-ReadTest("depfunc.tst");
-ReadTest("cascade.tst");
-ReadTest("fl.tst");
+Test("depfunc.tst");
+Test("cascade.tst");
+Test("fl.tst");
+Test("wreath.tst");
