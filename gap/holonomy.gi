@@ -67,22 +67,20 @@ end);
 # CONSTRUCTOR ##################################################################
 InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
-local holrec,depth,rep,groups,coords,n,reps, shift, shifts,t,tiles;
+local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
-  holrec.origdeg := DegreeOfTransformationSemigroup(skeleton.ts);
-
   # 2. get the group components
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  n := DepthOfSkeleton(holrec.sk) - 1;
-  holrec.d := n;
+  d := DepthOfSkeleton(holrec.sk) - 1;
+  holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(skeleton.ts);
   holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
   holrec.coordvals := [];
   holrec.shifts := [];
-  for depth in [1..n] do
+  for depth in [1..d] do
     groups := [];
     coords := [];
     reps := [];
@@ -431,7 +429,7 @@ InstallGlobalFunction(AsHolonomyTransformation,
 function(co,hd)
 local l, i;
   l := [];
-  for i in ListBlist([1..hd.origdeg],
+  for i in ListBlist([1..hd.n],
           TopSet(hd.sk)) do
     l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
