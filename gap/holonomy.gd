@@ -14,7 +14,7 @@ DeclareGlobalFunction("PermutationResetSemigroup");
 DeclareGlobalFunction("ShiftGroupAction");
 
 DeclareGlobalFunction("Coordinates");
-DeclareGlobalFunction("CoverChain");
+DeclareGlobalFunction("TileChain");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");

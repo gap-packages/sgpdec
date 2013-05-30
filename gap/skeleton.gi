@@ -311,7 +311,7 @@ function(A,sk)
   return Images(sk.inclusionHD,A);
 end);
 
-InstallGlobalFunction(RandomCoverChain,
+InstallGlobalFunction(RandomTileChain,
 function(sk,k)
 local chain, set, topset;
   chain := [];
@@ -326,16 +326,16 @@ local chain, set, topset;
 end);
 
 
-InstallGlobalFunction(NumberOfCoverChainsToSet,
+InstallGlobalFunction(NumberOfTileChainsToSet,
 function(sk,set)
 local sizes, preimgs;
   if set = sk.stateset then return 1; fi;
   preimgs := PreImages(sk.inclusionHD, set);
-  sizes := List(preimgs, x -> NumberOfCoverChainsToSet(sk,x));
+  sizes := List(preimgs, x -> NumberOfTileChainsToSet(sk,x));
   return Length(sizes)*Product(sizes);
 end);
 
-RecAllCoverChainsToSet := function(sk,chain ,coll, relation)
+RecAllTileChainsToSet := function(sk,chain ,coll, relation)
 local set,preimg, l;
   set := chain[Length(chain)];
   if set = sk.stateset then
@@ -347,28 +347,28 @@ local set,preimg, l;
   for preimg in  PreImages(relation, set) do
     if preimg <> chain[Length(chain)] then
       Add(chain, preimg);
-      RecAllCoverChainsToSet(sk, chain, coll,relation);
+      RecAllTileChainsToSet(sk, chain, coll,relation);
       Remove(chain);
     fi;
   od;
   return;
 end;
-MakeReadOnlyGlobal("RecAllCoverChainsToSet");
+MakeReadOnlyGlobal("RecAllTileChainsToSet");
 
-InstallGlobalFunction(AllCoverChainsToSet,
+InstallGlobalFunction(AllTileChainsToSet,
 function(sk, set)
 local coll;
   coll := [];
-  RecAllCoverChainsToSet(sk, [set], coll, sk.inclusionHD);
+  RecAllTileChainsToSet(sk, [set], coll, sk.inclusionHD);
   return coll;
 end);
 
-InstallGlobalFunction(AllCoverChains,
+InstallGlobalFunction(AllTileChains,
 function(sk)
 local coll,i;
   coll := [];
   for i in [1..sk.degree] do
-    Append(coll, AllCoverChainsToSet(sk, FiniteSet([i],sk.degree)));
+    Append(coll, AllTileChainsToSet(sk, FiniteSet([i],sk.degree)));
   od;
   return coll;
 end);
