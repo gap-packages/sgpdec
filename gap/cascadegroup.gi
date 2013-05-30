@@ -121,6 +121,7 @@ function(s)
                               DomainOf(s),
                               ComponentDomains(s),
                               depfuncs,
+                              depdoms,
                               PermCascadeType);
       od;
     od;
