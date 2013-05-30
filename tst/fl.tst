@@ -17,4 +17,4 @@ gap> IsomorphismGroups(G, FLCascadeGroup(G));
 
 #
 gap> SemigroupsStopTest();
-gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);
+gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);

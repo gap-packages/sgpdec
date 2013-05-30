@@ -5,6 +5,7 @@ local test;
           "cascade",
           "depfunc",
           "fl",
+          "holonomy",
           "cartesianenum",
           "transnot",
           "straightword"
