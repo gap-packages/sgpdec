@@ -14,3 +14,5 @@ ReadPackage("SgpDec","/gap/cascadesemigroup.gi");
 ReadPackage("SgpDec","/gap/cascadegroup.gi");
 ReadPackage("SgpDec","/gap/fl.gi");
 ReadPackage("SgpDec","/gap/holonomy.gi");
+#just the test calling functions
+ReadPackage("SgpDec","/tst/testfunctions.g");
