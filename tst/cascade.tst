@@ -189,10 +189,12 @@ tion( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
 , [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 7 ], Transformatio\
 n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
 )"
+
 # testing extracted dependencies
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
 gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
 true
+
 #
 gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
