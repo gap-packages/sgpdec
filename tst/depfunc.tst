@@ -85,4 +85,4 @@ Dependency function of depth 3 with 2 dependencies.
 
 #
 gap> SemigroupsStopTest();
-gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);
+gap> STOP_TEST( "Sgpdec package: depfunc.tst", 10000);
