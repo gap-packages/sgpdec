@@ -13,4 +13,4 @@ true
 
 #
 gap> SemigroupsStopTest();
-gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);
+gap> STOP_TEST( "Sgpdec package: transnot.tst", 10000);
