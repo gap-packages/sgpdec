@@ -9,4 +9,5 @@
 ## One line notation for transformations.
 
 DeclareGlobalFunction("LinearNotation");
+DeclareGlobalFunction("CompactNotation");
 DeclareGlobalFunction("SimplerLinearNotation");

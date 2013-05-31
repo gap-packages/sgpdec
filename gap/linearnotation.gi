@@ -79,6 +79,73 @@ local preimgs,p;
 end;
 MakeReadOnlyGlobal("TreePrint");
 
+################################################################################
+# Recursively prints the tree incoming into a point. The point's cycle also
+# needs to be known to exclude tho preimages in the cycle.
+# point - the root of the tree,
+# t - transformation,
+# cycle - the cycle of the component
+# str - the buffer string in which to print
+TreePrint2 := function(point, t,cycle, str)
+local preimgs,p, conveyorbelt,s;
+  #we reverse the arrows in the graph for the recursion, but not the cycle
+  preimgs := Difference(PreimagesOfTransformation(t, point),cycle);
+  if IsEmpty(preimgs) then   #if it is a terminal point, just print it
+    str := Concatenation(str,String(point));
+    return str;
+  elif Size(preimgs) = 1 then
+    conveyorbelt := [];
+    while Size(preimgs) = 1 do
+      Add(conveyorbelt,preimgs[1]);
+      preimgs := Difference(PreimagesOfTransformation(t, preimgs[1]),cycle);
+    od;
+    str := Concatenation(str,"["); #starting the tree notation
+    str := TreePrint2(Remove(conveyorbelt),t,cycle,str);
+    str := Concatenation(str,",");
+    s := String(Reversed(conveyorbelt));
+    RemoveCharacters(s," ");
+    if Size(s) > 2 then str := Concatenation(str, s{[2..Size(s)-1]},",");fi;
+    str := Concatenation(str,String(point),"]"); # ending the tree notation
+  else
+    str := Concatenation(str,"["); #starting the tree notation
+    for p in preimgs do
+      str := TreePrint2(p,t,cycle,str);
+      str := Concatenation(str,",");
+    od;
+    if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
+    str := Concatenation(str,"|");
+    str := Concatenation(str,String(point),"]"); # ending the tree notation
+  fi;
+  return str;
+end;
+MakeReadOnlyGlobal("TreePrint2");
+
+#Returns the linear notation of the transformation in a string
+InstallGlobalFunction(CompactNotation,
+function(t)
+  local comp,cycle,point,str;
+  #this special case would be difficult to handle
+  if IsOne(t) then return "()";fi;
+  str := "";
+  for comp in TransformationComponents(t) do
+    if Size(comp) = 1 then continue; fi;#fixed points are not displayed
+    #1-cycles are not displayed as cycles (but it can be a tree)
+    cycle := CycleOfTransformationFromPoint(t,comp[1]);
+    if (Length(cycle) > 1) then #if it is a permutation
+      str := Concatenation(str,"(");
+    fi;
+    for point in cycle do
+      str := TreePrint2(point,t,cycle,str);
+      str := Concatenation(str,",");
+    od;
+    Remove(str); #removing unnecessary last comma
+    if (Length(cycle) > 1 ) then
+      str := Concatenation(str,")");
+    fi;
+  od;
+  return str;
+end);
+
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
 function(t)
