@@ -2,6 +2,7 @@
 Z2 := CyclicGroup(IsPermGroup,2);
 Z3 := CyclicGroup(IsPermGroup,3);
 Z5 := CyclicGroup(IsPermGroup,5);
+S3 := SymmetricGroup(IsPermGroup,3);
 S4 := SymmetricGroup(IsPermGroup,4);
 S5 := SymmetricGroup(IsPermGroup,5);
 S6 := SymmetricGroup(IsPermGroup,6);
