@@ -333,7 +333,7 @@ local action,
         # also, what happens to Q under s TODO is this really Qs???
         ncoordval := OnFiniteSets(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
-        #look for a covering set of Q that contains Ps
+        #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
         actions[depth] := FindATile(set, depth,slot, hd);
         ncoordval:=hd.coordvals[depth][1^actions[depth]];# applying the constant
@@ -343,7 +343,7 @@ local action,
               TrueValuePositionsBlistString(Ps),"but Q=",
               TrueValuePositionsBlistString(Q),"\n");
       fi;
-      # ncoordval is a cover set of rep Q and we send it to a cover set of Q
+      # ncoordval is a tile of rep Q and we send it to a tile of Q
       Q := RealTile(ncoordval, Q, sk);
     fi;
     #if we are on the right level for P
