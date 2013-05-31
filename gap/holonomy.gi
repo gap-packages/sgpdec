@@ -274,8 +274,8 @@ local dfs, copy, out, len, i, action;
   return out;
 end;
 
-# creating the action on the tiles, shifted properly to the slot
-TileAction := function(action, depth, slot, hd)
+# creating the permutation action on the tiles, shifted properly to the slot
+PermutationOfTiles := function(action, depth, slot, hd)
   local tileaction, shift, width;
   tileaction := ImageListOfTransformation(
                         TransformationOp(action,
@@ -290,7 +290,9 @@ TileAction := function(action, depth, slot, hd)
                  [shift+Size(tileaction)+1..width]));
 end;
 
-FindATile := function(set, depth, slot, hd)
+#looking for a tile that contain the given set on a given level in a given slot
+#then creating a constant map resetting to that tile
+ConstantMapToATile := function(set, depth, slot, hd)
   local pos, width;
   pos := hd.shifts[depth][slot]+1;
   while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
@@ -300,7 +302,8 @@ FindATile := function(set, depth, slot, hd)
   return Transformation(List([1..width],x->pos));
 end;
 
-# how s acts on the given states
+# investigate how s acts on the given states
+# returns a list of component actions, one for each level
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,coords)
 local action,
@@ -326,16 +329,15 @@ local action,
       Ps := OnFiniteSets(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # rountrip: from the rep to P, then to Ps=Q, then back to Q's rep
-        # thus the action is a permutation of Q
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
         # calculating the action on the covers
-        actions[depth] := TileAction(action, depth, slot, hd);
+        actions[depth] := PermutationOfTiles(action, depth, slot, hd);
         # also, what happens to Q under s TODO is this really Qs???
         ncoordval := OnFiniteSets(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
-        actions[depth] := FindATile(set, depth,slot, hd);
+        actions[depth] := ConstantMapToATile(set, depth,slot, hd);
         ncoordval:=hd.coordvals[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
