@@ -304,6 +304,8 @@ end;
 
 # investigate how s acts on the given states
 # returns a list of component actions, one for each level
+# P represents a tilechain and we hit it by s so we get a subset chain
+# and Q approximates the subset chain with a non-unique tile chain
 InstallGlobalFunction(HolonomyComponentActions,
 function(hd,s,coords)
 local action,
@@ -328,7 +330,7 @@ local action,
       slot := GetSlot(Q,hd);
       Ps := OnFiniteSets(P,s);
       if Ps = Q then #PERMUTATION###############################################
-        # rountrip: from the rep to P, then to Ps=Q, then back to Q's rep
+        # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
         # calculating the action on the covers
         actions[depth] := PermutationOfTiles(action, depth, slot, hd);
