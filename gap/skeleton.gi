@@ -340,7 +340,7 @@ local set,preimg, l;
   set := chain[Length(chain)];
   if set = sk.stateset then
     l :=  ShallowCopy(chain);
-    Remove(l);# we don't need the top
+    #Remove(l);# we don't need the top
     Add(coll, Reversed(l));
     return;
   fi;
