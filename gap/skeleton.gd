@@ -39,6 +39,7 @@ DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("HeightOfSet");
 DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
+DeclareGlobalFunction("SkeletonClassOfSet");
 DeclareGlobalFunction("DotSkeleton");
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
