@@ -44,6 +44,7 @@ DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("SkeletonClassOfSet");
 DeclareGlobalFunction("DotSkeleton");
+DeclareGlobalFunction("EvalWordInSkeleton");
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
 DeclareGlobalFunction("NontrivialRoundTripWords");
