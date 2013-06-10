@@ -5,6 +5,7 @@ local test;
           "cascade",
           "depfunc",
           "fl",
+          "skeleton",
           "holonomy",
           "cartesianenum",
           "transnot",
