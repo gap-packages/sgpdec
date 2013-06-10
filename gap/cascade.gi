@@ -449,11 +449,12 @@ function(ct)
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
         emptyvlabel,greyedgelabelprefix,
-        livevlabelprefix,livelabelprefix, edgeDB;
+        livevlabelprefix,livelabelprefix, edgeDB,arg, val;
   #-----------------------------------------------------------------------------
   # printing the graph data to the stream
   DotPrintGraph := function(outstream, vs, vlabels,es)
     local i;
+    #Print(vlabels);
     for i in [1..Size(vs)] do
       if IsBound(vlabels.(vs[i])) then
         AppendTo(outstream, vs[i]," ",vlabels.(vs[i]),";\n");
@@ -470,7 +471,7 @@ function(ct)
   edgeDB := []; # to keep track of the already drawn black edges
   #no label vertex
   emptyvlabel :=
-    " [shape=box,color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
+    " [color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
   greyedgelabelprefix := " [color=grey,label=\"";
   livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
@@ -483,30 +484,26 @@ function(ct)
   #first we draw the intereseting paths, the ones that are in a nontrivial dep
   deps := DependenciesOfCascade(ct);
   for dep in deps do
-    level := 0;
+    arg := dep[1];
+    val := dep[2];
     coordsname := "n";
-    repeat
+    AddSet(vertices, coordsname);
+    for level in [1..Size(arg)] do
+      coord := arg[level];
+      newcoordsname := Concatenation(coordsname,"_",String(coord));
+      edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
+                      String(coord),
+                      "\",fontcolor=black]");
+      AddSet(edgeDB, [coordsname,newcoordsname]);
+      AddSet(edges, edge);
+      #we can now forget about the
+      coordsname := newcoordsname;
       AddSet(vertices, coordsname);
-      level := level + 1;
-      #adding a default label
-      vertexlabels.(coordsname):= Concatenation(livelabelprefix,"\"]");
-      #if there is an edge still, then draw it
-      if level <= Size(dep[1]) then
-        coord := dep[1][level];
-        newcoordsname := Concatenation(coordsname,"_",String(coord));
-        edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
-                        String(coord),
-                        "\",fontcolor=black]");
-        AddSet(edgeDB, [coordsname,newcoordsname]);
-        AddSet(edges, edge);
-        #we can now forget about the
-        coordsname := newcoordsname;
-      fi;
-    until level > Size(dep[1]);
+    od;
     #coordsnames are created like n_#1_#2_...._#n
     #putting the proper label there as we are at the end of the coordinates
-    vertexlabels.(coordsname) := Concatenation(livelabelprefix,
-                                         String(dep[2]),"\"]");
+    vertexlabels.(coordsname):=Concatenation(livelabelprefix,
+                                       CompactNotation(val),"\"]");
   od;
   #now putting the gray edges for the remaining vertices
   dom := DomainOf(ct);
