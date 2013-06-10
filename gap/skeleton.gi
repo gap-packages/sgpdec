@@ -15,7 +15,7 @@ local i,j,dom,tups,h;
     od;
   od;
   h := GeneralMappingByElements(dom,dom, tups);
-  SetIsHasseDiagram(h, true);
+  #SetIsHasseDiagram(h, true);
   return h;
 end;
 MakeReadOnlyGlobal("HasseDiagramByCoverFuncNC");
@@ -115,6 +115,7 @@ MakeReadOnlyGlobal("DirectImagesReps");
 # indx - the index of an orbit element
 InclusionCoverReps := function(sk,indx)
 local l, rep, tmpl,i;
+  #convert the image sets into their indices
   tmpl := List(TilesOf(sk.orb[indx],sk),x->Position(sk.orb,x));
   l := [];
   for i in tmpl do
@@ -507,6 +508,14 @@ InstallGlobalFunction(SkeletonClassesOnDepth,
 function(sk, depth)
   return List(OrbSCC(sk.orb){Positions(sk.depths, depth)},
               x->List(x, y->sk.orb[y]));
+end);
+
+InstallGlobalFunction(SkeletonClassOfSet,
+function(sk, set)
+  return List(
+              OrbSCC(sk.orb)[
+                      OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
+              x-> sk.orb[x]);
 end);
 
 ################################################################################
