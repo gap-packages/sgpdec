@@ -26,6 +26,8 @@ DeclareAttribute("HolonomyDecompositionOf",IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
+DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
+DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
 
 DeclareGlobalFunction("AsHolonomyCascade");
 DeclareGlobalFunction("AsHolonomyTransformation");

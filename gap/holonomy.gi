@@ -476,6 +476,19 @@ local skeleton,oldrep, pos, depth,i, tiles;
 end);
 
 ################################################################################
+# HOLONOMY ACCESS
+################################################################################
+InstallGlobalFunction(UnderlyingSetsForHolonomyGroups,
+function(holonomycascadesgp)
+  return HolonomyDecompositionOf(holonomycascadesgp).reps;
+end);
+
+InstallGlobalFunction(UnderlyingSetsForHolonomyGroupsOnDepth,
+function(holonomycascadesgp, depth)
+  return HolonomyDecompositionOf(holonomycascadesgp).reps[depth];
+end);
+
+################################################################################
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
 NumOfPointsInSlot := function(hd, level, slot)
