@@ -58,6 +58,10 @@ end);
 
 ################################################################################
 ### ToggleFiniSetDisplay #######################################################
+InstallGlobalFunction(SgpDecFiniteSetDisplayOn,
+function()
+  SetUserPreference("DisplayTrueValuePositionsBlist",true);
+end);
 
 InstallGlobalFunction(TrueValuePositionsBlistString,
 function(bl)
