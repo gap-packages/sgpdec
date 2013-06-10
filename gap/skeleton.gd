@@ -29,6 +29,7 @@ DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
 DeclareGlobalFunction("GetOUTw");
 DeclareGlobalFunction("TilesOf");
+DeclareSynonym("HolonomyGroupStates", TilesOf);
 DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");
@@ -43,6 +44,8 @@ DeclareGlobalFunction("SkeletonClassOfSet");
 DeclareGlobalFunction("DotSkeleton");
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
+DeclareGlobalFunction("NontrivialRoundTripWords");
+DeclareSynonym("HolonomyGroupGeneratorWords", NontrivialRoundTripWords);
 DeclareGlobalFunction("PermutatorSemigroupElts");
 DeclareGlobalFunction("PermutatorGroup");
 DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
