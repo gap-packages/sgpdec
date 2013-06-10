@@ -512,9 +512,7 @@ end);
 
 InstallGlobalFunction(SkeletonClassOfSet,
 function(sk, set)
-  return List(
-              OrbSCC(sk.orb)[
-                      OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
+  return List(OrbSCC(sk.orb)[OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
               x-> sk.orb[x]);
 end);
 
