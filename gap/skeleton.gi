@@ -124,7 +124,7 @@ MakeReadOnlyGlobal("DirectImagesReps");
 InclusionCoverReps := function(sk,indx)
 local l, rep, tmpl,i;
   #convert the image sets into their indices
-  tmpl := List(TilesOf(sk.orb[indx],sk),x->Position(sk.orb,x));
+  tmpl := List(TilesOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
   l := [];
   for i in tmpl do
     if i <> fail then # some singletons may not be in the orbit
@@ -345,7 +345,7 @@ end);
 ################################################################################
 
 InstallGlobalFunction(TilesOf,
-function(A,sk)
+function(sk,A)
   return Images(sk.inclusionHD,A);
 end);
 
@@ -501,7 +501,7 @@ function(sk,set)
   imggens := List(GeneratorsOfGroup(permgroup),
                   g->AsPermutation(
                           TransformationOp(g,
-                                  TilesOf(set,sk),
+                                  TilesOf(sk,set),
                                   OnFiniteSets)));
   homgens := DuplicateFreeList(imggens);
   return GroupHomomorphismByImages(permgroup,
@@ -639,7 +639,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   for class in AllRepresentativeSets(sk) do
     AppendTo(out,"\"",TrueValuePositionsBlistString(class),
             "\" [shape=box,color=black];\n");
-    for set in TilesOf(class,sk) do
+    for set in TilesOf(sk,class) do
       AppendTo(out,"\"",TrueValuePositionsBlistString(class),
               "\" -> \"",TrueValuePositionsBlistString(set),"\"\n");
     od;

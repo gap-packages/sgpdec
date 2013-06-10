@@ -85,7 +85,7 @@ local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativesOnDepth(holrec.sk,depth) do
-      tiles := TilesOf(rep, holrec.sk);
+      tiles := TilesOf(holrec.sk, rep);
       Add(groups,HolonomyGroup@(holrec.sk, rep));#stored unshifted
       shift := shift + Size(tiles);
       Add(shifts,shift);
@@ -469,7 +469,7 @@ local skeleton,oldrep, pos, depth,i, tiles;
   depth := DepthOfSet(skeleton, set);
   pos := Position(hd.reps[depth], oldrep);
   hd.reps[depth][pos] := set;
-  tiles := TilesOf(set, skeleton);
+  tiles := TilesOf(skeleton, set);
   for i in [1..Length(tiles)] do
     hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
   od;
