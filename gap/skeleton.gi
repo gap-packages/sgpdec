@@ -256,7 +256,18 @@ function(sk, P, Q)
                                  rec(schreier:=true,orbitgraph:=true));
     Enumerate(sk.partialorbs[Qindx]);
   fi;
-  return P in sk.partialorbs[Qindx];
+  return ForAny(sk.partialorbs[Qindx],
+                Qs -> IsSubsetBlist(Qs,P));
+end);
+
+#TODO it is not optimal to search twice for a superset
+InstallGlobalFunction(SubductionWitness,
+function(sk, P, Q)
+  local Qorb,Qs;
+  if not IsSubductionRelated(sk,P,Q) then return fail; fi;
+  Qorb := sk.partialorbs[Position(sk.orb,Q)];
+  Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
+  return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
 
 
