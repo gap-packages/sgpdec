@@ -413,6 +413,18 @@ local roundtrips,i,j,nset,scc,word;
   return roundtrips;
 end);
 
+InstallGlobalFunction(NontrivialRoundTripWords,
+function(sk,set)
+local roundtrips,rtws,nontrivs;
+  rtws := RoundTripWords(sk,set);
+  roundtrips := List(rtws, w->BuildByWord(w, sk.gens, sk.id,\*));
+  nontrivs := Filtered([1..Size(roundtrips)],
+                      x->not IsIdentityOnFiniteSet(roundtrips[x],set));
+  Info(SkeletonInfoClass, 2, "Nonidentity roundtrips/all roundtrips: ",
+       Size(rtws), "/", Size(nontrivs));
+  return rtws{nontrivs};
+end);
+
 #TODO this is brute force! any other idea?
 InstallGlobalFunction(PermutatorSemigroupElts,
 function(sk,set)
@@ -428,12 +440,9 @@ end);
 
 InstallGlobalFunction(PermutatorGroup,
 function(sk,set)
-local permgens,gens,n, roundtrips, permgenwords;
-  roundtrips := List(RoundTripWords(sk,set),
-                     w->BuildByWord(w, sk.gens, sk.id,\*));
-  permgens := Filtered(roundtrips, w -> not (IsIdentityOnFiniteSet(w,set)));
-  Info(SkeletonInfoClass, 2, "Nonidentity roundtrips/all roundtrips: ",
-       Size(permgens), "/", Size(roundtrips));
+local permgens,gens,n, permgenwords;
+  permgens := List(NontrivialRoundTripWords(sk,set),
+                   w -> BuildByWord(w,sk.gens,sk.id,OnRight));
   gens := AsSet(List(permgens,
                   t -> AsPermutation(
                           RestrictedTransformation(t,
@@ -448,7 +457,6 @@ local permgens,gens,n, roundtrips, permgenwords;
   fi;
 end);
 
-#TODO are all these isomorphisms?
 InstallGlobalFunction(PermutatorHolonomyHomomorphism,
 function(sk,set)
   local permgroup,imggens,homgens;
