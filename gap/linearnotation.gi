@@ -126,6 +126,7 @@ function(t)
   local comp,cycle,point,str;
   #this special case would be difficult to handle
   if IsOne(t) then return "()";fi;
+  if IsPerm(t) then return PrintString(t); fi;
   str := "";
   for comp in TransformationComponents(t) do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
