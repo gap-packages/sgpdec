@@ -1,10 +1,10 @@
 ################################################################################
 # util wrapping function for the often called BuildByWords
 # to fend off likely future changes
-EvalWordInSkeleton := function(sk, w)
+InstallGlobalFunction(EvalWordInSkeleton,
+function(sk, w)
   return BuildByWord(w, sk.gens, sk.id, OnRight);
-end;
-MakeReadOnlyGlobal("EvalWordInSkeleton");
+end);
 
 ################################################################################
 ##Functions for calculating the Hasse diagram of relations on the set of subsets
