@@ -200,6 +200,10 @@ local sk;
   sk.INw := [];
   sk.OUT := [];
   sk.OUTw := [];
+  #TODO bit a of a hack to calculate subduction
+  #we keep here the orbits from points
+  #the first is the state set itself for sure, the rest will be calced on demand
+  sk.partialorbs := [sk.orb];
   return sk;
 end);
 
@@ -236,11 +240,25 @@ local pos;
   sk.OUTw := [];
 end);
 
-#InstallGlobalFunction(IsEquivalent,
-#function(sk, A, B)
-#  return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
-#         = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
-#end);
+InstallGlobalFunction(IsSubductionEquivalent,
+function(sk, A, B)
+  return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
+         = OrbSCCLookup(sk.orb)[Position(sk.orb, B)];
+end);
+
+# true is P \subseteq Qs
+InstallGlobalFunction(IsSubductionRelated,
+function(sk, P, Q)
+  local Qindx;
+  Qindx := Position(sk.orb,Q);
+  if not IsBound(sk.partialorbs[Qindx]) then
+    sk.partialorbs[Qindx] := Orb(sk.ts, Q, OnFiniteSets,
+                                 rec(schreier:=true,orbitgraph:=true));
+    Enumerate(sk.partialorbs[Qindx]);
+  fi;
+  return P in sk.partialorbs[Qindx];
+end);
+
 
 ################################################################################
 ### INs and OUTs with a primitive caching method to avoid double calculation ###
