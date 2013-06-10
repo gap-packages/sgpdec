@@ -25,6 +25,7 @@ DeclareGlobalFunction("ChangeRepresentativeSet");
 DeclareGlobalFunction("AllRepresentativeSets");
 DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionRelated");
+DeclareGlobalFunction("SubductionWitness");
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
