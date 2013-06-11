@@ -255,7 +255,7 @@ function(sk, A, B)
 end);
 
 # true is P \subseteq Qs
-InstallGlobalFunction(IsSubductionRelated,
+InstallGlobalFunction(IsSubductionLessOrEquivalent,
 function(sk, P, Q)
   local Qindx;
   Qindx := Position(sk.orb,Q);
@@ -272,7 +272,7 @@ end);
 InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
   local Qorb,Qs;
-  if not IsSubductionRelated(sk,P,Q) then return fail; fi;
+  if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
   Qorb := sk.partialorbs[Position(sk.orb,Q)];
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
