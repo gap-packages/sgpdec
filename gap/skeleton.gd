@@ -31,7 +31,7 @@ DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
 DeclareGlobalFunction("GetOUTw");
 DeclareGlobalFunction("TilesOf");
-DeclareSynonym("HolonomyGroupStates", TilesOf);
+DeclareSynonym("HolonomyGroupTiles", TilesOf);
 DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");
