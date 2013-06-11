@@ -105,3 +105,16 @@ function(bl)
     TryNextMethod();
   fi;
 end);
+
+################################################################################
+# Hash function for blists - salvaged from Citrus
+InstallGlobalFunction(HashFunctionForBlist,
+function(v, data)
+  return ORB_HashFunctionForIntList(ListBlist([1..Length(v)], v), data);
+end);
+
+InstallMethod(ChooseHashFunction, "for blist and pos. int.",
+[IsBlistRep, IsPosInt],
+function(p, hashlen)
+  return rec(func := HashFunctionForBlist, data := [101, hashlen]);
+end);
