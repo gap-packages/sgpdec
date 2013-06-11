@@ -248,6 +248,14 @@ local pos;
   sk.OUTw := [];
 end);
 
+CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
+  if not IsBound(sk.partialorbs[Qindx]) then
+    sk.partialorbs[Qindx] := Orb(sk.ts, Q, OnFiniteSets,
+                                 rec(schreier:=true,orbitgraph:=true));
+    Enumerate(sk.partialorbs[Qindx]);
+  fi;
+end;
+
 InstallGlobalFunction(IsSubductionEquivalent,
 function(sk, A, B)
   return OrbSCCLookup(sk.orb)[Position(sk.orb, A)]
@@ -259,11 +267,7 @@ InstallGlobalFunction(IsSubductionLessOrEquivalent,
 function(sk, P, Q)
   local Qindx;
   Qindx := Position(sk.orb,Q);
-  if not IsBound(sk.partialorbs[Qindx]) then
-    sk.partialorbs[Qindx] := Orb(sk.ts, Q, OnFiniteSets,
-                                 rec(schreier:=true,orbitgraph:=true));
-    Enumerate(sk.partialorbs[Qindx]);
-  fi;
+  CalcPartialOrbitOnDemand(sk,Q, Qindx);
   return ForAny(sk.partialorbs[Qindx],
                 Qs -> IsSubsetBlist(Qs,P));
 end);
@@ -276,6 +280,21 @@ function(sk, P, Q)
   Qorb := sk.partialorbs[Position(sk.orb,Q)];
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
+end);
+
+#return w s.t. P=Qs
+InstallGlobalFunction(ImageWitness,
+function(sk, P, Q)
+  local Qorb,Qs,Qindx;
+  Qindx := Position(sk.orb,Q);
+  CalcPartialOrbitOnDemand(sk,Q, Qindx);
+  Qorb := sk.partialorbs[Qindx];
+  Qs := First(Qorb, Qs=P);
+  if Qs = fail then
+    return fail;
+  else
+    return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
+  fi;
 end);
 
 
@@ -359,7 +378,7 @@ local chain, set, topset;
     set := Random(PreImages(sk.inclusionHD, set));
     Add(chain,set);
   od;
-  Remove(chain);#TODO quick hack - we don't need the full set in the chain
+  #Remove(chain);#TODO quick hack - we don't need the full set in the chain
   return Reversed(chain);
 end);
 
