@@ -24,7 +24,7 @@ DeclareGlobalFunction("RepresentativesOnDepth");
 DeclareGlobalFunction("ChangeRepresentativeSet");
 DeclareGlobalFunction("AllRepresentativeSets");
 DeclareGlobalFunction("IsSubductionEquivalent");
-DeclareGlobalFunction("IsSubductionRelated");
+DeclareGlobalFunction("IsSubductionLessOrEquivalent");
 DeclareGlobalFunction("SubductionWitness");
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
