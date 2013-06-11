@@ -59,3 +59,6 @@ DeclareInfoClass("SkeletonInfoClass");
 
 # to be reimplemented
 DeclareGlobalFunction("ActionMatrix");
+
+#EXPERIMENTAL
+DeclareGlobalFunction("WeakControlWords");
