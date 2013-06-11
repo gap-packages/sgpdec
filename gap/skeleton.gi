@@ -297,6 +297,18 @@ function(sk, P, Q)
   fi;
 end);
 
+InstallGlobalFunction(WeakControlWords,
+function(sk, X, Y)
+  local Xp,Xclass;
+  if IsSubsetBlist(X,Y) then
+    Xp := X;
+  else
+    Xclass := SkeletonClassOfSet(sk,X);
+    Xp := First(Xclass, XC->IsSubsetBlist(XC,Y));
+  fi;
+  if Xp = fail then return fail; fi;
+  return [ImageWitness(sk,Xp,X), ImageWitness(sk,Y,Xp)];
+end);
 
 ################################################################################
 ### INs and OUTs with a primitive caching method to avoid double calculation ###
