@@ -282,14 +282,14 @@ function(sk, P, Q)
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
 
-#return w s.t. P=Qs
+#return s such that P=Qs
 InstallGlobalFunction(ImageWitness,
 function(sk, P, Q)
   local Qorb,Qs,Qindx;
   Qindx := Position(sk.orb,Q);
   CalcPartialOrbitOnDemand(sk,Q, Qindx);
   Qorb := sk.partialorbs[Qindx];
-  Qs := First(Qorb, Qs=P);
+  Qs := First(Qorb, Qs->Qs=P);
   if Qs = fail then
     return fail;
   else
