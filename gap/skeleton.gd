@@ -26,6 +26,7 @@ DeclareGlobalFunction("AllRepresentativeSets");
 DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionLessOrEquivalent");
 DeclareGlobalFunction("SubductionWitness");
+DeclareGlobalFunction("ImageWitness");
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
