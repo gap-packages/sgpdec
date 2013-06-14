@@ -21,7 +21,8 @@ end);
 InstallMethod(ForwardOrbit, "for a skeleton (SgpDec)", [IsSKELETON],
 function(sk)
   local o;
-  o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSets);
+  o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSets,
+           rec(schreier:=true,orbitgraph:=true));
   Enumerate(o);
   return o;
 end);
