@@ -7,3 +7,4 @@ DeclareAttribute("TransSgp",IsSKELETON);
 DeclareAttribute("BaseSet",IsSKELETON);
 DeclareAttribute("Generators",IsSKELETON);
 DeclareAttribute("DegreeOfSKELETON",IsSKELETON);
+DeclareAttribute("Singletons",IsSKELETON);
