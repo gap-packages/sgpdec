@@ -17,3 +17,11 @@ function(sk)
   return List([1..DegreeOfSKELETON(sk)],
               i -> FiniteSet([i], DegreeOfSKELETON(sk)));
 end);
+
+InstallMethod(ForwardOrbit, "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  local o;
+  o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSets);
+  Enumerate(o);
+  return o;
+end);
