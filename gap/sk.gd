@@ -8,3 +8,4 @@ DeclareAttribute("BaseSet",IsSKELETON);
 DeclareAttribute("Generators",IsSKELETON);
 DeclareAttribute("DegreeOfSKELETON",IsSKELETON);
 DeclareAttribute("Singletons",IsSKELETON);
+DeclareAttribute("ForwardOrbit",IsSKELETON);
