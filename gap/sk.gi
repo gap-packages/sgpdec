@@ -11,3 +11,9 @@ function(ts)
   SetBaseSet(o, FiniteSet([1..DegreeOfSKELETON(o)]));
   return o;
 end);
+
+InstallMethod(Singletons, "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  return List([1..DegreeOfSKELETON(sk)],
+              i -> FiniteSet([i], DegreeOfSKELETON(sk)));
+end);
