@@ -9,3 +9,5 @@ DeclareAttribute("Generators",IsSKELETON);
 DeclareAttribute("DegreeOfSKELETON",IsSKELETON);
 DeclareAttribute("Singletons",IsSKELETON);
 DeclareAttribute("ForwardOrbit",IsSKELETON);
+DeclareAttribute("SKELETONTransversal",IsSKELETON);
+DeclareAttribute("ExtendedImageSet",IsSKELETON);
