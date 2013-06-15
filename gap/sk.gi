@@ -103,3 +103,25 @@ local covers, pos, flag,s;
   return covers;
 end;
 MakeReadOnlyGlobal("MaximalSubsets");
+
+# binary relation defined by covering elements (sort of HasseDiagram)
+BinaryRelationByCoverFuncNC := function(set, coverfunc)
+local i,j,dom,tups,h;
+  dom := Domain(set);
+  tups := [];
+  for i in dom do
+    for j in coverfunc(i) do
+      Add(tups, Tuple([i, j]));
+    od;
+  od;
+  h := BinaryRelationByElements(dom, tups);
+  return h;
+end;
+MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
+
+InstallMethod(InclusionCoverBinaryRelation,
+        "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
+                 set->MaximalSubsets(set, ExtendedImageSet(sk)));
+end);
