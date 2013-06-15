@@ -159,16 +159,6 @@ MakeReadOnlyGlobal("CoversOfSCC");
 ################################################################################
 ###CONSTRUCTOR##################################################################
 
-#for sorting finitesets, first by size, then by content
-DescendingSizeSorter := function(v,w)
-  if Size(v) <> Size(w) then
-    return Size(v)>Size(w);
-  else
-    return v<w;
-  fi;
-end;
-MakeReadOnlyGlobal("DescendingSizeSorter");
-
 InstallGlobalFunction(Skeleton,
 function(ts)
 local sk;
