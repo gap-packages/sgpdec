@@ -242,3 +242,14 @@ local o;
   o := ForwardOrbit(sk);
   return o[SKELETONTransversal(sk)[OrbSCCLookup(o)[Position(o, finiteset)]]];
 end);
+
+InstallGlobalFunction(RepresentativeSetsOnDepth,
+function(sk, d)
+  return List(Positions(Depths(sk), d),
+              x->ForwardOrbit(sk)[SKELETONTransversal(sk)[x]]);
+end);
+
+InstallGlobalFunction(SKAllRepresentativeSets,
+function(sk)
+  return List(SKELETONTransversal(sk), x->ForwardOrbit(sk)[x]);
+end);
