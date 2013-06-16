@@ -24,3 +24,7 @@ DeclareGlobalFunction("SKTilesOf");
 DeclareGlobalFunction("SKRepresentativeSet");
 DeclareGlobalFunction("RepresentativeSetsOnDepth");
 DeclareGlobalFunction("SKAllRepresentativeSets");
+DeclareGlobalFunction("SKRandomTileChain");
+DeclareGlobalFunction("SKAllTileChainsToSet");
+DeclareGlobalFunction("SKAllTileChains");
+DeclareGlobalFunction("SKNumberOfTileChainsToSet");

@@ -235,6 +235,67 @@ function(sk,set)
   return Images(InclusionCoverBinaryRelation(sk),set);
 end);
 
+InstallGlobalFunction(SKRandomTileChain,
+function(sk,k)
+local chain, set;
+  chain := [];
+  set := FiniteSet([k], sk.degree);
+  Add(chain,set);
+  while set <> BaseSet(sk) do
+    set := Random(PreImages(InclusionCoverBinaryRelation(sk), set));
+    Add(chain,set);
+  od;
+  return Reversed(chain);
+end);
+
+
+InstallGlobalFunction(SKNumberOfTileChainsToSet,
+function(sk,set)
+local sizes, preimgs;
+  if set = BaseSet(sk) then return 1; fi;
+  preimgs := PreImages(InclusionCoverBinaryRelation(sk), set);
+  sizes := List(preimgs, x -> NumberOfTileChainsToSet(sk,x));
+  return Length(sizes)*Product(sizes); #TODO is this correct?
+end);
+
+SKRecAllTileChainsToSet := function(sk,chain ,coll)
+local set,preimg, l;
+  set := chain[Length(chain)];
+  if set = BaseSet(sk) then
+    l :=  ShallowCopy(chain);
+    Add(coll, Reversed(l));
+    return;
+  fi;
+  for preimg in  PreImages(InclusionCoverBinaryRelation(sk), set) do
+    if preimg <> chain[Length(chain)] then
+      Add(chain, preimg);
+      SKRecAllTileChainsToSet(sk, chain, coll);
+      Remove(chain);
+    fi;
+  od;
+  return;
+end;
+MakeReadOnlyGlobal("SKRecAllTileChainsToSet");
+
+InstallGlobalFunction(SKAllTileChainsToSet,
+function(sk, set)
+local coll;
+  coll := [];
+  SKRecAllTileChainsToSet(sk, [set], coll);
+  return coll;
+end);
+
+InstallGlobalFunction(SKAllTileChains,
+function(sk)
+local coll,s;
+  coll := [];
+  for s in Singletons(sk) do
+    Append(coll, SKAllTileChainsToSet(sk,s));
+  od;
+  return coll;
+end);
+################################################################################
+
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(SKRepresentativeSet,
 function(sk, finiteset)
