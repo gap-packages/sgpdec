@@ -16,6 +16,8 @@ DeclareAttribute("SKELETONTransversal",IsSKELETON);
 DeclareAttribute("ExtendedImageSet",IsSKELETON);
 DeclareAttribute("InclusionCoverBinaryRelation",IsSKELETON);
 DeclareAttribute("RepSubductionCoverBinaryRelation",IsSKELETON);
+DeclareAttribute("Depths",IsSKELETON);
+DeclareAttribute("Heights",IsSKELETON);
 
 #functions
 DeclareGlobalFunction("SKTilesOf");

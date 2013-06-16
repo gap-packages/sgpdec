@@ -151,44 +151,85 @@ end;
 MakeReadOnlyGlobal("DirectSCCImages");
 
 # indx - the index of an orbit element
-SKInclusionCoverReps := function(sk,indx)
-local l, rep, tmpl,i;
-  #convert the image sets into their indices
-  tmpl := List(TilesOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
-  l := [];
-  for i in tmpl do
-    if i <> fail then # some singletons may not be in the orbit
-      AddSet(l, OrbSCCLookup(sk.orb)[i]);
-    fi;
-  od;
-  rep := OrbSCCLookup(sk.orb)[indx];
-  if rep in l then Remove(l, Position(l,rep));fi;
-  return l;
-end;
-MakeReadOnlyGlobal("SKInclusionCoverReps");
-
-#collecting the direct images and inclusion covers of an SCC
-#thus building the generalized inclusion covers
-SKCoversOfSCC := function(sk, sccindx)
-local l,covers;
+InclusionSCCCovers := function(sk,sccindx)
+local covers, rep, l,i,o,ol,indx;
+  o := ForwardOrbit(sk);
+  ol := OrbSCCLookup(o);
   covers := [];
-  #the covers in the inclusion relation
-  for l in List(OrbSCC(sk.orb)[sccindx],
-          x -> InclusionCoverReps(sk,x)) do
-    Perform(l, function(x) AddSet(covers, x);end);
-  od;
-  #the direct image covers
-  for l in List(OrbSCC(sk.orb)[sccindx],
-          x -> DirectImagesReps(sk,x)) do
-    Perform(l, function(x) AddSet(covers, x);end);
+  for indx in OrbSCC(o)[sccindx] do
+    #convert the tiles into their indices
+    l := List(SKTilesOf(sk,o[indx]),x->Position(o,x));
+    for i in l do
+      if i <> fail then # some singletons may not be in the orbit
+        AddSet(covers, ol[i]);
+      fi;
+    od;
   od;
   return covers;
 end;
-MakeReadOnlyGlobal("SKCoversOfSCC");
+MakeReadOnlyGlobal("InclusionSCCCovers");
 
+#collecting the direct images and inclusion covers of an SCC
+#thus building the generalized inclusion covers
+InstallMethod(RepSubductionCoverBinaryRelation,
+        "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  return BinaryRelationByCoverFuncNC([1..Size(SKELETONTransversal(sk))],
+                 x->Union(InclusionSCCCovers(sk,x),DirectSCCImages(sk,x)));
+end);
 
+################################################################################
+# HEIGHT, DEPTH ################################################################
 
+InstallMethod(Heights,
+        "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  local leaves, leaf, correction,o,reps,heights,depths,RecHeight;
+  o := ForwardOrbit(sk);
+  reps := SKELETONTransversal(sk);
+  heights := ListWithIdenticalEntries(Size(reps),0);
+  #-----------------------------------------------------------------------------
+  RecHeight := function(sk, eqclassindx ,height)
+    local p,parents;
+    parents := PreImages(RepSubductionCoverBinaryRelation(sk), eqclassindx);
+    for p in parents do
+      if not IsSingleton(o[reps[p]]) then #if it is not a singleton
+        if heights[p] < height+1 then
+          heights[p] := height+1;
+          #only call when the height is raised (this saves a lot of calls)
+          RecHeight(sk,p,height+1);
+        fi;
+      fi;
+    od;
+  end;
+  #-----------------------------------------------------------------------------
 
+  #If there is no singleton image, then we need to add one to the depth
+  correction := 1;
+  #we start chains from the elements with no children
+  leaves := Filtered([1..Length(reps)],
+                    x->IsEmpty(Images(RepSubductionCoverBinaryRelation(sk),x)));
+  for leaf in leaves do
+    if IsSingleton(o[reps[leaf]]) then
+      correction:=0;#there is a singleton image, so no correction needed
+      heights[leaf] := 0;
+      RecHeight(sk,leaf,0);
+    else
+      heights[leaf] := 1;
+      RecHeight(sk,leaf,1);
+    fi;
+  od;
+  #calculating depth based on upside down height
+  return heights;
+end);
+
+InstallMethod(Depths,
+        "for a skeleton (SgpDec)", [IsSKELETON],
+function(sk)
+  return List(Heights(sk), x-> Heights(sk)[1]-x + 1);
+end);
+
+################################################################################
 InstallGlobalFunction(SKTilesOf,
 function(sk,set)
   return Images(InclusionCoverBinaryRelation(sk),set);
