@@ -27,10 +27,6 @@ DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionLessOrEquivalent");
 DeclareGlobalFunction("SubductionWitness");
 DeclareGlobalFunction("ImageWitness");
-DeclareGlobalFunction("GetIN");
-DeclareGlobalFunction("GetINw");
-DeclareGlobalFunction("GetOUT");
-DeclareGlobalFunction("GetOUTw");
 DeclareGlobalFunction("TilesOf");
 DeclareSynonym("HolonomyGroupTiles", TilesOf);
 DeclareGlobalFunction("RandomTileChain");
@@ -45,15 +41,6 @@ DeclareGlobalFunction("SkeletonClasses");
 DeclareGlobalFunction("SkeletonClassesOnDepth");
 DeclareGlobalFunction("SkeletonClassOfSet");
 DeclareGlobalFunction("DotSkeleton");
-DeclareGlobalFunction("EvalWordInSkeleton");
-#PERMUTATORS
-DeclareGlobalFunction("RoundTripWords");
-DeclareGlobalFunction("NontrivialRoundTripWords");
-DeclareSynonym("HolonomyGroupGeneratorWords", NontrivialRoundTripWords);
-DeclareGlobalFunction("PermutatorSemigroupElts");
-DeclareGlobalFunction("PermutatorGroup");
-DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
-DeclareGlobalFunction("HolonomyGroup@");
 
 DeclareInfoClass("SkeletonInfoClass");
 
