@@ -116,7 +116,7 @@ local roundtrips,i,j,nset,scc,word,o;
     roundtrips := List(roundtrips,
                        x -> Reduce2StraightWord(x,
                                Generators(sk),
-                               One(TransSgp(sk)),
+                               (),
                                \*));
     # straightening may introduce duplicates #TODO Does it really?
     roundtrips := DuplicateFreeList(roundtrips);
@@ -194,5 +194,5 @@ end);
 # to fend off likely future changes
 InstallGlobalFunction(EvalWordInSkeleton,
 function(sk, w)
-  return BuildByWord(w, Generators(sk), IdentityTransformation(), OnRight);
+  return BuildByWord(w, Generators(sk), (), OnRight);
 end);
