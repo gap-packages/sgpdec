@@ -1,3 +1,10 @@
+InMaps := NewAttribute("InMaps",IsSkeleton,"mutable");
+InWords := NewAttribute("InWords",IsSkeleton,"mutable");
+OutMaps := NewAttribute("OutMaps",IsSkeleton,"mutable");
+OutWords := NewAttribute("OutWords",IsSkeleton,"mutable");
+#TODO make them readonly
+
+
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
