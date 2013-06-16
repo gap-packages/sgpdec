@@ -37,6 +37,9 @@ DeclareGlobalFunction("IsSubductionLessOrEquivalent");
 DeclareGlobalFunction("SubductionWitness");
 DeclareGlobalFunction("ImageWitness");
 DeclareGlobalFunction("SkeletonClassOfSet");
+DeclareGlobalFunction("SkeletonClasses");
+DeclareGlobalFunction("SkeletonClassesOnDepth");
+DeclareGlobalFunction("DotSkeleton");
 
 DeclareInfoClass("SkeletonInfoClass");
 
