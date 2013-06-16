@@ -79,6 +79,7 @@ end);
 # returns the maximal subsets of the given set found in the given ordered set
 # of sets, for the skeleton the extended set of images
 #TODO can this be further improved by recursion
+#TODO this is TilesOf, but not stored
 MaximalSubsets := function(set, orderedsubsets)
 local covers, pos, flag,s;
   #singletons have no covers
@@ -124,4 +125,9 @@ InstallMethod(InclusionCoverBinaryRelation,
 function(sk)
   return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
                  set->MaximalSubsets(set, ExtendedImageSet(sk)));
+end);
+
+InstallGlobalFunction(SKTilesOf,
+function(sk,set)
+  return Images(InclusionCoverBinaryRelation(sk),set);
 end);
