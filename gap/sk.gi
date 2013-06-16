@@ -229,6 +229,13 @@ function(sk)
   return List(Heights(sk), x-> Heights(sk)[1]-x + 1);
 end);
 
+InstallMethod(DepthOfSkeleton,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  return Maximum(Depths(sk));
+end);
+
+
 ################################################################################
 InstallGlobalFunction(TilesOf,
 function(sk,set)
@@ -295,6 +302,15 @@ local coll,s;
   return coll;
 end);
 ################################################################################
+
+InstallGlobalFunction(DepthOfSet,
+function(sk,A)
+  if IsSingleton(A) then return DepthOfSkeleton(sk); fi;
+  return Depths(sk)[
+                 OrbSCCLookup(ForwardOrbit(sk))[Position(ForwardOrbit(sk),A)]
+                 ];
+end);
+
 
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,

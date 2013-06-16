@@ -17,10 +17,12 @@ DeclareAttribute("ExtendedImageSet",IsSkeleton);
 DeclareAttribute("InclusionCoverBinaryRelation",IsSkeleton);
 DeclareAttribute("RepSubductionCoverBinaryRelation",IsSkeleton);
 DeclareAttribute("Depths",IsSkeleton);
+DeclareAttribute("DepthOfSkeleton",IsSkeleton);
 DeclareAttribute("Heights",IsSkeleton);
 
 #functions
 DeclareGlobalFunction("TilesOf");
+DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RepresentativeSetsOnDepth");
 DeclareGlobalFunction("AllRepresentativeSets");
