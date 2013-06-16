@@ -127,6 +127,68 @@ function(sk)
                  set->MaximalSubsets(set, ExtendedImageSet(sk)));
 end);
 
+################################################################################
+# SUBDUCTION ###################################################################
+
+#the subduction Hasse diagram of representatives
+
+# returns the indices of the direct images of the scc indexed by indx
+# indx - the index of an orbit element
+DirectSCCImages := function(sk,sccindx)
+local rep,o,indx,og,covers,ol;
+  o := ForwardOrbit(sk);
+  og := OrbitGraph(o);
+  ol := OrbSCCLookup(o);
+  covers := [];
+  #for all elements in the SCC
+  for indx in OrbSCC(o)[sccindx] do
+    Perform(og[indx], function(x) AddSet(covers, ol[x]);end);
+  od;
+  #removing self-image
+  if sccindx in covers then Remove(covers, Position(covers,sccindx));fi;
+  return covers;
+end;
+MakeReadOnlyGlobal("DirectSCCImages");
+
+# indx - the index of an orbit element
+SKInclusionCoverReps := function(sk,indx)
+local l, rep, tmpl,i;
+  #convert the image sets into their indices
+  tmpl := List(TilesOf(sk,sk.orb[indx]),x->Position(sk.orb,x));
+  l := [];
+  for i in tmpl do
+    if i <> fail then # some singletons may not be in the orbit
+      AddSet(l, OrbSCCLookup(sk.orb)[i]);
+    fi;
+  od;
+  rep := OrbSCCLookup(sk.orb)[indx];
+  if rep in l then Remove(l, Position(l,rep));fi;
+  return l;
+end;
+MakeReadOnlyGlobal("SKInclusionCoverReps");
+
+#collecting the direct images and inclusion covers of an SCC
+#thus building the generalized inclusion covers
+SKCoversOfSCC := function(sk, sccindx)
+local l,covers;
+  covers := [];
+  #the covers in the inclusion relation
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> InclusionCoverReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  #the direct image covers
+  for l in List(OrbSCC(sk.orb)[sccindx],
+          x -> DirectImagesReps(sk,x)) do
+    Perform(l, function(x) AddSet(covers, x);end);
+  od;
+  return covers;
+end;
+MakeReadOnlyGlobal("SKCoversOfSCC");
+
+
+
+
 InstallGlobalFunction(SKTilesOf,
 function(sk,set)
   return Images(InclusionCoverBinaryRelation(sk),set);
