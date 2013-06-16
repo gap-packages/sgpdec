@@ -22,3 +22,5 @@ DeclareAttribute("Heights",IsSKELETON);
 #functions
 DeclareGlobalFunction("SKTilesOf");
 DeclareGlobalFunction("SKRepresentativeSet");
+DeclareGlobalFunction("RepresentativeSetsOnDepth");
+DeclareGlobalFunction("SKAllRepresentativeSets");
