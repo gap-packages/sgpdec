@@ -94,7 +94,7 @@ local roundtrips,i,j,nset,scc,word,o;
   #we grab the equivalence class of the set, its strongly connected component
   scc := List(OrbSCC(o)[OrbSCCLookup(o)[Position(o, set)]],x->o[x]);
   Sort(scc); #for quicker lookup
-  Print(set, " " , scc, "\n");
+  #Print(set, " " , scc, "\n");
   #for all elements of the equivalence class of the set
   for i in [1..Length(scc)] do
     #for all generators
@@ -194,5 +194,5 @@ end);
 # to fend off likely future changes
 InstallGlobalFunction(EvalWordInSkeleton,
 function(sk, w)
-  return BuildByWord(w, Generators(sk), One(TransSgp(sk)), OnRight);
+  return BuildByWord(w, Generators(sk), IdentityTransformation(), OnRight);
 end);

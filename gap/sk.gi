@@ -178,6 +178,83 @@ function(sk)
                  x->Union(InclusionSCCCovers(sk,x),DirectSCCImages(sk,x)));
 end);
 
+#just empty lists in the beginning, built on demand
+InstallMethod(PartialOrbits, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk) return []; end);
+
+
+CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
+  if not IsBound(PartialOrbits(sk)[Qindx]) then
+    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSets,
+                                 rec(schreier:=true,orbitgraph:=true));
+    Enumerate(PartialOrbits(sk)[Qindx]);
+  fi;
+end;
+
+InstallGlobalFunction(IsSubductionEquivalent,
+function(sk, A, B)
+  local o;
+  o := ForwardOrbit(sk);
+  return OrbSCCLookup(o)[Position(o, A)]
+         = OrbSCCLookup(o)[Position(o, B)];
+end);
+
+# true is P \subseteq Qs
+InstallGlobalFunction(IsSubductionLessOrEquivalent,
+function(sk, P, Q)
+  local Qindx;
+  Qindx := Position(ForwardOrbit(sk),Q);
+  CalcPartialOrbitOnDemand(sk,Q, Qindx);
+  return ForAny(PartialOrbits(sk)[Qindx],
+                Qs -> IsSubsetBlist(Qs,P));
+end);
+
+#TODO it is not optimal to search twice for a superset
+InstallGlobalFunction(SubductionWitness,
+function(sk, P, Q)
+  local Qorb,Qs;
+  if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
+  Qorb := PartialOrbits(sk)[Position(ForwardOrbit(sk),Q)];
+  Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
+  return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
+end);
+
+#return s such that P=Qs
+InstallGlobalFunction(ImageWitness,
+function(sk, P, Q)
+  local Qorb,Qs,Qindx;
+  Qindx := Position(ForwardOrbit(sk),Q);
+  CalcPartialOrbitOnDemand(sk,Q, Qindx);
+  Qorb := PartialOrbits(sk)[Qindx];
+  Qs := First(Qorb, Qs->Qs=P);
+  if Qs = fail then
+    return fail;
+  else
+    return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
+  fi;
+end);
+
+InstallGlobalFunction(SkeletonClassOfSet,
+function(sk, set)
+  local o;
+  o := ForwardOrbit(sk);
+  return List(OrbSCC(o)[OrbSCCLookup(o)[Position(o, set)]],x-> o[x]);
+end);
+
+InstallGlobalFunction(WeakControlWords,
+function(sk, X, Y)
+  local Xp,Xclass;
+  if IsSubsetBlist(X,Y) then
+    Xp := X;
+  else
+    Xclass := SkeletonClassOfSet(sk,X);
+    Xp := First(Xclass, XC->IsSubsetBlist(XC,Y));
+  fi;
+  if Xp = fail then return fail; fi;
+  return [ImageWitness(sk,Xp,X), ImageWitness(sk,Y,Xp)];
+end);
+
+
 ################################################################################
 # HEIGHT, DEPTH ################################################################
 
@@ -246,7 +323,7 @@ InstallGlobalFunction(RandomTileChain,
 function(sk,k)
 local chain, set;
   chain := [];
-  set := FiniteSet([k], sk.degree);
+  set := FiniteSet([k], DegreeOfSkeleton(sk));
   Add(chain,set);
   while set <> BaseSet(sk) do
     set := Random(PreImages(InclusionCoverBinaryRelation(sk), set));
