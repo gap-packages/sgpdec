@@ -1,3 +1,5 @@
+0.7.14
+	2nd gen Skeleton replaced by 3rd gen Skeleton. Skeleton is not a big record, but an object with attributes. Permutator part of the code is separated to avoid huge source files. Proper binary relations for inclusion and subduction added. Subduction relation functions added.
 0.7.13
 	SgpDecTestInstall added. Fixing broken WreathProductGroup.
 0.7.12
