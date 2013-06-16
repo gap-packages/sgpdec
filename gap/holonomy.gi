@@ -214,7 +214,7 @@ InstallGlobalFunction(AllHolonomyLifts,
 function(hd, point)
 local sk;
   sk := hd.sk;
-  return List(AllTileChainsToSet(sk, FiniteSet([point],sk.degree)),
+  return List(AllTileChainsToSet(sk, FiniteSet([point],hd.n)),
             c -> HolonomySets2Ints(hd,Coordinates(hd,c)));
 end);
 

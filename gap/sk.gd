@@ -19,6 +19,8 @@ DeclareAttribute("RepSubductionCoverBinaryRelation",IsSkeleton);
 DeclareAttribute("Depths",IsSkeleton);
 DeclareAttribute("DepthOfSkeleton",IsSkeleton);
 DeclareAttribute("Heights",IsSkeleton);
+PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
+#TODO make it readonly
 
 #functions
 DeclareGlobalFunction("TilesOf");
@@ -30,5 +32,13 @@ DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("NumberOfTileChainsToSet");
+DeclareGlobalFunction("IsSubductionEquivalent");
+DeclareGlobalFunction("IsSubductionLessOrEquivalent");
+DeclareGlobalFunction("SubductionWitness");
+DeclareGlobalFunction("ImageWitness");
+DeclareGlobalFunction("SkeletonClassOfSet");
 
 DeclareInfoClass("SkeletonInfoClass");
+
+#EXPERIMENTAL
+DeclareGlobalFunction("WeakControlWords");
