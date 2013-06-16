@@ -1,21 +1,21 @@
 ################################################################################
 # CONSTRUCTOR ##################################################################
 # setting the basic attributes of the skeleton
-InstallGlobalFunction(SKELETON,
+InstallGlobalFunction(Skeleton,
 function(ts)
   local o;
-  o := Objectify(SKELETONType, rec());
+  o := Objectify(SkeletonType, rec());
   SetTransSgp(o,ts);
   SetGenerators(o,GeneratorsOfSemigroup(ts));
-  SetDegreeOfSKELETON(o,DegreeOfTransformationSemigroup(ts));
-  SetBaseSet(o, FiniteSet([1..DegreeOfSKELETON(o)]));
+  SetDegreeOfSkeleton(o,DegreeOfTransformationSemigroup(ts));
+  SetBaseSet(o, FiniteSet([1..DegreeOfSkeleton(o)]));
   return o;
 end);
 
 ################################################################################
 # ORBIT OF THE STATE SET #######################################################
 # the main orbit calculation is done by Orb from the orb package
-InstallMethod(ForwardOrbit, "for a skeleton (SgpDec)", [IsSKELETON],
+InstallMethod(ForwardOrbit, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local o;
   o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSets,
@@ -25,7 +25,7 @@ function(sk)
 end);
 
 # the list of representatives as indices
-InstallMethod(SKELETONTransversal, "for a skeleton (SgpDec)", [IsSKELETON],
+InstallMethod(SkeletonTransversal, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return List(OrbSCC(ForwardOrbit(sk)), x->x[1]);
 end);
@@ -34,10 +34,10 @@ end);
 # EXTENDED IMAGE SET ###########################################################
 
 # 1-element subsets of the state set (may not be images)
-InstallMethod(Singletons, "for a skeleton (SgpDec)", [IsSKELETON],
+InstallMethod(Singletons, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List([1..DegreeOfSKELETON(sk)],
-              i -> FiniteSet([i], DegreeOfSKELETON(sk)));
+  return List([1..DegreeOfSkeleton(sk)],
+              i -> FiniteSet([i], DegreeOfSkeleton(sk)));
 end);
 
 #for sorting finitesets, first by size, then by content
@@ -51,7 +51,7 @@ end;
 MakeReadOnlyGlobal("DescendingSizeSorter");
 
 # the image set extended with singletons and ordered
-InstallMethod(ExtendedImageSet, "for a skeleton (SgpDec)", [IsSKELETON],
+InstallMethod(ExtendedImageSet, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local imageset;
   #we have to copy it
@@ -121,7 +121,7 @@ end;
 MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
 
 InstallMethod(InclusionCoverBinaryRelation,
-        "for a skeleton (SgpDec)", [IsSKELETON],
+        "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
                  set->MaximalSubsets(set, ExtendedImageSet(sk)));
@@ -158,7 +158,7 @@ local covers, rep, l,i,o,ol,indx;
   covers := [];
   for indx in OrbSCC(o)[sccindx] do
     #convert the tiles into their indices
-    l := List(SKTilesOf(sk,o[indx]),x->Position(o,x));
+    l := List(TilesOf(sk,o[indx]),x->Position(o,x));
     for i in l do
       if i <> fail then # some singletons may not be in the orbit
         AddSet(covers, ol[i]);
@@ -172,9 +172,9 @@ MakeReadOnlyGlobal("InclusionSCCCovers");
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
 InstallMethod(RepSubductionCoverBinaryRelation,
-        "for a skeleton (SgpDec)", [IsSKELETON],
+        "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return BinaryRelationByCoverFuncNC([1..Size(SKELETONTransversal(sk))],
+  return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
                  x->Union(InclusionSCCCovers(sk,x),DirectSCCImages(sk,x)));
 end);
 
@@ -182,11 +182,11 @@ end);
 # HEIGHT, DEPTH ################################################################
 
 InstallMethod(Heights,
-        "for a skeleton (SgpDec)", [IsSKELETON],
+        "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local leaves, leaf, correction,o,reps,heights,depths,RecHeight;
   o := ForwardOrbit(sk);
-  reps := SKELETONTransversal(sk);
+  reps := SkeletonTransversal(sk);
   heights := ListWithIdenticalEntries(Size(reps),0);
   #-----------------------------------------------------------------------------
   RecHeight := function(sk, eqclassindx ,height)
@@ -224,18 +224,18 @@ function(sk)
 end);
 
 InstallMethod(Depths,
-        "for a skeleton (SgpDec)", [IsSKELETON],
+        "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return List(Heights(sk), x-> Heights(sk)[1]-x + 1);
 end);
 
 ################################################################################
-InstallGlobalFunction(SKTilesOf,
+InstallGlobalFunction(TilesOf,
 function(sk,set)
   return Images(InclusionCoverBinaryRelation(sk),set);
 end);
 
-InstallGlobalFunction(SKRandomTileChain,
+InstallGlobalFunction(RandomTileChain,
 function(sk,k)
 local chain, set;
   chain := [];
@@ -249,7 +249,7 @@ local chain, set;
 end);
 
 
-InstallGlobalFunction(SKNumberOfTileChainsToSet,
+InstallGlobalFunction(NumberOfTileChainsToSet,
 function(sk,set)
 local sizes, preimgs;
   if set = BaseSet(sk) then return 1; fi;
@@ -258,7 +258,7 @@ local sizes, preimgs;
   return Length(sizes)*Product(sizes); #TODO is this correct?
 end);
 
-SKRecAllTileChainsToSet := function(sk,chain ,coll)
+RecAllTileChainsToSet := function(sk,chain ,coll)
 local set,preimg, l;
   set := chain[Length(chain)];
   if set = BaseSet(sk) then
@@ -269,48 +269,48 @@ local set,preimg, l;
   for preimg in  PreImages(InclusionCoverBinaryRelation(sk), set) do
     if preimg <> chain[Length(chain)] then
       Add(chain, preimg);
-      SKRecAllTileChainsToSet(sk, chain, coll);
+      RecAllTileChainsToSet(sk, chain, coll);
       Remove(chain);
     fi;
   od;
   return;
 end;
-MakeReadOnlyGlobal("SKRecAllTileChainsToSet");
+MakeReadOnlyGlobal("RecAllTileChainsToSet");
 
-InstallGlobalFunction(SKAllTileChainsToSet,
+InstallGlobalFunction(AllTileChainsToSet,
 function(sk, set)
 local coll;
   coll := [];
-  SKRecAllTileChainsToSet(sk, [set], coll);
+  RecAllTileChainsToSet(sk, [set], coll);
   return coll;
 end);
 
-InstallGlobalFunction(SKAllTileChains,
+InstallGlobalFunction(AllTileChains,
 function(sk)
 local coll,s;
   coll := [];
   for s in Singletons(sk) do
-    Append(coll, SKAllTileChainsToSet(sk,s));
+    Append(coll, AllTileChainsToSet(sk,s));
   od;
   return coll;
 end);
 ################################################################################
 
 #returns the representative element of the scc of a finiteset
-InstallGlobalFunction(SKRepresentativeSet,
+InstallGlobalFunction(RepresentativeSet,
 function(sk, finiteset)
 local o;
   o := ForwardOrbit(sk);
-  return o[SKELETONTransversal(sk)[OrbSCCLookup(o)[Position(o, finiteset)]]];
+  return o[SkeletonTransversal(sk)[OrbSCCLookup(o)[Position(o, finiteset)]]];
 end);
 
 InstallGlobalFunction(RepresentativeSetsOnDepth,
 function(sk, d)
   return List(Positions(Depths(sk), d),
-              x->ForwardOrbit(sk)[SKELETONTransversal(sk)[x]]);
+              x->ForwardOrbit(sk)[SkeletonTransversal(sk)[x]]);
 end);
 
-InstallGlobalFunction(SKAllRepresentativeSets,
+InstallGlobalFunction(AllRepresentativeSets,
 function(sk)
-  return List(SKELETONTransversal(sk), x->ForwardOrbit(sk)[x]);
+  return List(SkeletonTransversal(sk), x->ForwardOrbit(sk)[x]);
 end);

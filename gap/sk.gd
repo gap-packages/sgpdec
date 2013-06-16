@@ -1,30 +1,32 @@
-DeclareCategory("IsSKELETON", IsObject and IsAttributeStoringRep);
-BindGlobal("SKELETONFamily",NewFamily("SKELETONFamily", IsSKELETON));
-BindGlobal("SKELETONType", NewType(SKELETONFamily,IsSKELETON));
+DeclareCategory("IsSkeleton", IsObject and IsAttributeStoringRep);
+BindGlobal("SkeletonFamily",NewFamily("SkeletonFamily", IsSkeleton));
+BindGlobal("SkeletonType", NewType(SkeletonFamily,IsSkeleton));
 
 #constructor
-DeclareGlobalFunction("SKELETON");
+DeclareGlobalFunction("Skeleton");
 
 #stored attributes
-DeclareAttribute("TransSgp",IsSKELETON);
-DeclareAttribute("BaseSet",IsSKELETON);
-DeclareAttribute("Generators",IsSKELETON);
-DeclareAttribute("DegreeOfSKELETON",IsSKELETON);
-DeclareAttribute("Singletons",IsSKELETON);
-DeclareAttribute("ForwardOrbit",IsSKELETON);
-DeclareAttribute("SKELETONTransversal",IsSKELETON);
-DeclareAttribute("ExtendedImageSet",IsSKELETON);
-DeclareAttribute("InclusionCoverBinaryRelation",IsSKELETON);
-DeclareAttribute("RepSubductionCoverBinaryRelation",IsSKELETON);
-DeclareAttribute("Depths",IsSKELETON);
-DeclareAttribute("Heights",IsSKELETON);
+DeclareAttribute("TransSgp",IsSkeleton);
+DeclareAttribute("BaseSet",IsSkeleton);
+DeclareAttribute("Generators",IsSkeleton);
+DeclareAttribute("DegreeOfSkeleton",IsSkeleton);
+DeclareAttribute("Singletons",IsSkeleton);
+DeclareAttribute("ForwardOrbit",IsSkeleton);
+DeclareAttribute("SkeletonTransversal",IsSkeleton);
+DeclareAttribute("ExtendedImageSet",IsSkeleton);
+DeclareAttribute("InclusionCoverBinaryRelation",IsSkeleton);
+DeclareAttribute("RepSubductionCoverBinaryRelation",IsSkeleton);
+DeclareAttribute("Depths",IsSkeleton);
+DeclareAttribute("Heights",IsSkeleton);
 
 #functions
-DeclareGlobalFunction("SKTilesOf");
-DeclareGlobalFunction("SKRepresentativeSet");
+DeclareGlobalFunction("TilesOf");
+DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RepresentativeSetsOnDepth");
-DeclareGlobalFunction("SKAllRepresentativeSets");
-DeclareGlobalFunction("SKRandomTileChain");
-DeclareGlobalFunction("SKAllTileChainsToSet");
-DeclareGlobalFunction("SKAllTileChains");
-DeclareGlobalFunction("SKNumberOfTileChainsToSet");
+DeclareGlobalFunction("AllRepresentativeSets");
+DeclareGlobalFunction("RandomTileChain");
+DeclareGlobalFunction("AllTileChainsToSet");
+DeclareGlobalFunction("AllTileChains");
+DeclareGlobalFunction("NumberOfTileChainsToSet");
+
+DeclareInfoClass("SkeletonInfoClass");
