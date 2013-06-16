@@ -6,7 +6,7 @@ function(ts)
   local o;
   o := Objectify(SkeletonType, rec());
   SetTransSgp(o,ts);
-  SetGenerators(o,GeneratorsOfSemigroup(ts));
+  SetGenerators(o,Generators(ts));
   SetDegreeOfSkeleton(o,DegreeOfTransformationSemigroup(ts));
   SetBaseSet(o, FiniteSet([1..DegreeOfSkeleton(o)]));
   return o;

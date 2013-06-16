@@ -1,41 +1,61 @@
 ################################################################################
 ### INs and OUTs with a primitive caching method to avoid double calculation ###
 
+#just empty lists in the beginning, built on demand
+InstallMethod(InMaps, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk) return []; end);
+
+InstallMethod(InWords, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk) return []; end);
+
+InstallMethod(OutMaps, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk) return []; end);
+
+InstallMethod(OutWords, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk) return []; end);
+
+
 #returns the word  that takes the representative
 #to the set A - so a path that goes INto A
 InstallGlobalFunction(GetINw,
 function(sk, A)
-local pos, scc;
-  pos := Position(sk.orb, A);
-  if not IsBound(sk.INw[pos]) then
-    scc := OrbSCCLookup(sk.orb)[pos];
-    sk.INw[pos] := Concatenation(
-                           TraceSchreierTreeOfSCCBack(sk.orb,scc,sk.reps[scc]),
-                           TraceSchreierTreeOfSCCForward(sk.orb, scc, pos));
+local pos, scc,o;
+  o := ForwardOrbit(sk);
+  pos := Position(o, A);
+  if not IsBound(InWords(sk)[pos]) then
+    scc := OrbSCCLookup(o)[pos];
+    InWords(sk)[pos] :=
+      Concatenation(
+              TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
+              TraceSchreierTreeOfSCCForward(o, scc, pos));
   fi;
-  return sk.INw[pos];
+  return InWords(sk)[pos];
 end);
 
 InstallGlobalFunction(GetIN,
 function(sk, A)
 local pos;
-  pos := Position(sk.orb, A);
-  if not IsBound(sk.IN[pos]) then
-    sk.IN[pos] := EvalWordInSkeleton(sk, GetINw(sk,A));
+  pos := Position(ForwardOrbit(sk), A);
+  if not IsBound(InMaps(sk)[pos]) then
+    InMaps(sk)[pos] := EvalWordInSkeleton(sk, GetINw(sk,A));
   fi;
-  return sk.IN[pos];
+  return InMaps(sk)[pos];
 end);
 
 #returns the word  that takes A to its representative
 # i.e. the route OUT from A
 InstallGlobalFunction(GetOUTw,
 function(sk, A)
-local pos, scc, n, outw, fg, inw, out,l;
-  pos := Position(sk.orb, A);
-  if not IsBound(sk.OUTw[pos]) then
-    scc := OrbSCCLookup(sk.orb)[pos];
-    outw :=  Concatenation(TraceSchreierTreeOfSCCBack(sk.orb, scc, pos),
-                     TraceSchreierTreeOfSCCForward(sk.orb, scc, sk.reps[scc]));
+local pos, scc, n, outw, fg, inw, out,l,o;
+  o := ForwardOrbit(sk);
+  pos := Position(o, A);
+  if not IsBound(OutWords(sk)[pos]) then
+    scc := OrbSCCLookup(o)[pos];
+    outw :=
+      Concatenation(
+              TraceSchreierTreeOfSCCBack(o, scc, pos),
+              TraceSchreierTreeOfSCCForward(o,scc,
+                      SkeletonTransversal(sk)[scc]));
     out := EvalWordInSkeleton(sk, outw);
     inw := GetINw(sk,A);
     #now doing it properly (Lemma 5.9. in ENA PhD thesis)
@@ -46,19 +66,19 @@ local pos, scc, n, outw, fg, inw, out,l;
     Add(l, outw);
     fg := Flat([inw,outw]);
     Add(l, ListWithIdenticalEntries(n,fg));
-    sk.OUTw[pos] := Flat(l);
+    OutWords(sk)[pos] := Flat(l);
   fi;
-  return sk.OUTw[pos];
+  return OutWords(sk)[pos];
 end);
 
 InstallGlobalFunction(GetOUT,
 function(sk, A)
 local pos;
-  pos := Position(sk.orb, A);
-  if not IsBound(sk.OUT[pos]) then
-    sk.OUT[pos] := EvalWordInSkeleton(sk,GetOUTw(sk,A));
+  pos := Position(ForwardOrbit(sk), A);
+  if not IsBound(OutMaps(sk)[pos]) then
+    OutMaps(sk)[pos] := EvalWordInSkeleton(sk,GetOUTw(sk,A));
   fi;
-  return sk.OUT[pos];
+  return OutMaps(sk)[pos];
 end);
 
 ################################################################################
@@ -67,19 +87,20 @@ end);
 #roundtrips from the representative conjugated to the given set
 InstallGlobalFunction(RoundTripWords,
 function(sk,set)
-local roundtrips,i,j,nset,scc,word;
+local roundtrips,i,j,nset,scc,word,o;
+  o := ForwardOrbit(sk);
   roundtrips := [];
 
   #we grab the equivalence class of the set, its strongly connected component
-  scc := List(OrbSCC(sk.orb)[OrbSCCLookup(sk.orb)[Position(sk.orb, set)]],
-              x->sk.orb[x]);
+  scc := List(OrbSCC(o)[OrbSCCLookup(o)[Position(o, set)]],x->o[x]);
   Sort(scc); #for quicker lookup
+  Print(set, " " , scc, "\n");
   #for all elements of the equivalence class of the set
   for i in [1..Length(scc)] do
     #for all generators
-    for j in [1..Length(sk.gens)] do
+    for j in [1..Length(Generators(sk))] do
       #we hit an element in the class by a generator
-      nset := OnFiniteSets(scc[i],sk.gens[j]);
+      nset := OnFiniteSets(scc[i],Generators(sk)[j]);
       #if it stays in the class then it will give rise to a permutator
       if nset in scc then
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
@@ -93,7 +114,10 @@ local roundtrips,i,j,nset,scc,word;
   if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
     #reducing on sets yield alien actions
     roundtrips := List(roundtrips,
-                        x -> Reduce2StraightWord(x, sk.gens, sk.id, \*));
+                       x -> Reduce2StraightWord(x,
+                               Generators(sk),
+                               One(TransSgp(sk)),
+                               \*));
     # straightening may introduce duplicates #TODO Does it really?
     roundtrips := DuplicateFreeList(roundtrips);
   fi;
@@ -117,7 +141,7 @@ InstallGlobalFunction(PermutatorSemigroupElts,
 function(sk,set)
 local permutators, transformation;
   permutators := [];
-  for transformation in sk.ts do
+  for transformation in TransSgp(sk) do
     if OnFiniteSets(set,transformation) = set then
       Add(permutators, transformation);
     fi;
@@ -170,5 +194,5 @@ end);
 # to fend off likely future changes
 InstallGlobalFunction(EvalWordInSkeleton,
 function(sk, w)
-  return BuildByWord(w, sk.gens, sk.id, OnRight);
+  return BuildByWord(w, Generators(sk), One(TransSgp(sk)), OnRight);
 end);
