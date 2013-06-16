@@ -97,7 +97,7 @@ local roundtrips,i,j,nset,scc,word,o;
   #Print(set, " " , scc, "\n");
   #for all elements of the equivalence class of the set
   for i in [1..Length(scc)] do
-    #for all generators
+    #for all generators #TODO do this with orbitgraph
     for j in [1..Length(Generators(sk))] do
       #we hit an element in the class by a generator
       nset := OnFiniteSets(scc[i],Generators(sk)[j]);
