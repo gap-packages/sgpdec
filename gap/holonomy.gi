@@ -73,7 +73,7 @@ local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
   # 2. get the group components
   d := DepthOfSkeleton(holrec.sk) - 1;
   holrec.d := d;
-  holrec.n := DegreeOfTransformationSemigroup(skeleton.ts);
+  holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
   holrec.groupcomponents := [];
   holrec.reps := [];
@@ -84,7 +84,7 @@ local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
     groups := [];coords := [];reps := [];shifts := [];
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
-    for rep in RepresentativesOnDepth(holrec.sk,depth) do
+    for rep in RepresentativeSetsOnDepth(holrec.sk,depth) do
       tiles := TilesOf(holrec.sk, rep);
       Add(groups,HolonomyGroup@(holrec.sk, rep));#stored unshifted
       shift := shift + Size(tiles);
@@ -142,7 +142,7 @@ InstallGlobalFunction(HolonomySets2Ints,
 function(hd, sets)
 local set,level,ints,slot, sk;
   sk := hd.sk;
-  set := TopSet(sk);
+  set := BaseSet(sk);
   ints := [];
   for level in [1..Length(sets)] do
     if sets[level] = 0 then
@@ -183,7 +183,7 @@ local chain,P,depth,skeleton;
   skeleton := hd.sk;
   chain := [];
   depth := 1;
-  P := TopSet(skeleton); #we start to approximate from the top set
+  P := BaseSet(skeleton); #we start to approximate from the top set
   while depth <= hd.d do
     #we go from the cover of the rep to the cover of the chain element
     P := RealTile(coordinates[depth],P,skeleton);
@@ -200,7 +200,7 @@ local sets,i, P, skeleton;
   skeleton := hd.sk;
   #filling up with zeros - jumped over levels are abstract
   sets := List([1..hd.d], x->  0);
-  P := TopSet(skeleton);
+  P := BaseSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
     sets[DepthOfSet(skeleton, P)] := RepTile(chain[i], P, skeleton);
@@ -323,7 +323,7 @@ local action,
   #initializing actions to identity
   actions := List([1..hd.d], x -> One(hd.comps[x]));
   #initial successive approximation are the same for both
-  P := TopSet(sk);
+  P := BaseSet(sk);
   Q := P;
   for depth in [1..hd.d] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
@@ -429,7 +429,7 @@ function(co,hd)
 local l, i;
   l := [];
   for i in ListBlist([1..hd.n],
-          TopSet(hd.sk)) do
+          BaseSet(hd.sk)) do
     l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
   od;
   return Transformation(l);
@@ -457,23 +457,23 @@ end;
 
 #TODO does this work?
 #changing the representative
-InstallGlobalFunction(ChangeCoveredSet,
-function(hd, set)
-local skeleton,oldrep, pos, depth,i, tiles;
-  if IsSingleton(set) then
-    Print("#W not changing singleton representative\n");return;
-  fi;
-  skeleton := hd.sk;
-  oldrep := RepresentativeSet(skeleton,set);
-  ChangeRepresentativeSet(skeleton,set);
-  depth := DepthOfSet(skeleton, set);
-  pos := Position(hd.reps[depth], oldrep);
-  hd.reps[depth][pos] := set;
-  tiles := TilesOf(skeleton, set);
-  for i in [1..Length(tiles)] do
-    hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
-  od;
-end);
+#InstallGlobalFunction(ChangeCoveredSet,
+#function(hd, set)
+#local skeleton,oldrep, pos, depth,i, tiles;
+#  if IsSingleton(set) then
+#    Print("#W not changing singleton representative\n");return;
+#  fi;
+#  skeleton := hd.sk;
+#  oldrep := RepresentativeSet(skeleton,set);
+#  ChangeRepresentativeSet(skeleton,set);
+#  depth := DepthOfSet(skeleton, set);
+#  pos := Position(hd.reps[depth], oldrep);
+#  hd.reps[depth][pos] := set;
+#  tiles := TilesOf(skeleton, set);
+#  for i in [1..Length(tiles)] do
+#    hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
+#  od;
+#end);
 
 ################################################################################
 # HOLONOMY ACCESS
