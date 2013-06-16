@@ -131,3 +131,11 @@ InstallGlobalFunction(SKTilesOf,
 function(sk,set)
   return Images(InclusionCoverBinaryRelation(sk),set);
 end);
+
+#returns the representative element of the scc of a finiteset
+InstallGlobalFunction(SKRepresentativeSet,
+function(sk, finiteset)
+local o;
+  o := ForwardOrbit(sk);
+  return o[SKELETONTransversal(sk)[OrbSCCLookup(o)[Position(o, finiteset)]]];
+end);
