@@ -4,6 +4,7 @@ OutMaps := NewAttribute("OutMaps",IsSkeleton,"mutable");
 OutWords := NewAttribute("OutWords",IsSkeleton,"mutable");
 #TODO make them readonly
 
+DeclareAttribute("GroupComponents", IsSkeleton);
 
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
