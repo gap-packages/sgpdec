@@ -168,6 +168,9 @@ local permgens,gens,n, permgenwords;
   fi;
 end);
 
+################################################################################
+# HOLONOMY GROUPS ##############################################################
+################################################################################
 InstallGlobalFunction(PermutatorHolonomyHomomorphism,
 function(sk,set)
   local permgroup,imggens,homgens;
@@ -187,6 +190,18 @@ end);
 InstallGlobalFunction(HolonomyGroup@,
 function(sk,set)
   return Image(PermutatorHolonomyHomomorphism(sk,set));
+end);
+
+InstallMethod(GroupComponents, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+local d,groups;
+  groups := [];
+  for d in [1..DepthOfSkeleton(sk)-1] do
+    Add(groups,
+        List(RepresentativeSetsOnDepth(sk,d),
+             rep -> HolonomyGroup@(sk, rep)));
+  od;
+  return groups;
 end);
 
 ################################################################################
