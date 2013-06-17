@@ -67,7 +67,7 @@ end);
 # CONSTRUCTOR ##################################################################
 InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
-local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
+local holrec,depth,rep,grpcomps,coords,d,reps, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   # 2. get the group components
@@ -75,34 +75,29 @@ local holrec,depth,rep,groups,coords,d,reps, shift, shifts,t,tiles;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  holrec.groupcomponents := [];
   holrec.reps := [];
   holrec.coords := [];
   holrec.coordvals := [];
   holrec.shifts := [];
   for depth in [1..d] do
-    groups := [];coords := [];reps := [];shifts := [];
+    coords := [];reps := [];shifts := [];
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativeSetsOnDepth(holrec.sk,depth) do
       tiles := TilesOf(holrec.sk, rep);
-      Add(groups,HolonomyGroup@(holrec.sk, rep));#stored unshifted
       shift := shift + Size(tiles);
       Add(shifts,shift);
       Add(reps,rep);
       Add(coords,tiles);
-      Info(HolonomyInfoClass, 2, "  ",
-           StructureDescription(groups[Length(groups)])," ",
-           FormattedTimeString(Runtime() -t));t := Runtime();
     od;
     Add(holrec.shifts, shifts);
-    Add(holrec.groupcomponents,groups);
     Add(holrec.reps, reps);
     Add(holrec.coords,coords);
     Add(holrec.coordvals,Concatenation(coords));
   od;
-  holrec.comps := List([1..Length(holrec.groupcomponents)],
-                       x -> PermutationResetSemigroup(holrec.groupcomponents[x],
+  grpcomps := GroupComponents(skeleton);
+  holrec.comps := List([1..Length(grpcomps)],
+                       x -> PermutationResetSemigroup(grpcomps[x],
                                holrec.shifts[x]));
   holrec.domain := DomainOf(IdentityCascade(holrec.comps)); #TODO this is clumsy
   holrec.compdoms := ComponentDomains(holrec.comps);
@@ -375,7 +370,7 @@ function(ts)
                t->Cascade(hd.comps,
                        HolonomyDependencies(hd,t))));
   SetHolonomyDecompositionOf(S,hd);
-  SetGroupComponents(S,hd.groupcomponents);
+  SetGroupComponents(S,GroupComponents(hd.sk));
   SetComponentsOfCascadeProduct(S,hd.comps);
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
