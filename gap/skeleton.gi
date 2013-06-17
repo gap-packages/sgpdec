@@ -388,7 +388,6 @@ function(sk,A)
                  ];
 end);
 
-
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,
 function(sk, finiteset)
@@ -397,15 +396,13 @@ local o;
   return o[SkeletonTransversal(sk)[OrbSCCLookup(o)[Position(o, finiteset)]]];
 end);
 
-InstallGlobalFunction(RepresentativeSetsOnDepth,
-function(sk, d)
-  return List(Positions(Depths(sk), d),
-              x->ForwardOrbit(sk)[SkeletonTransversal(sk)[x]]);
-end);
-
-InstallGlobalFunction(AllRepresentativeSets,
+InstallMethod(RepresentativeSets, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(SkeletonTransversal(sk), x->ForwardOrbit(sk)[x]);
+  local reps;
+  reps := List([1..DepthOfSkeleton(sk)], i -> []);
+  Perform(List(SkeletonTransversal(sk),x->ForwardOrbit(sk)[x]),
+          function(x)Add(reps[DepthOfSet(sk,x)],x);end);
+  return reps;
 end);
 
 InstallGlobalFunction(SkeletonClasses,
@@ -499,7 +496,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   od;
   AppendTo(out,"}\n");
   #drawing the representatives as rectangles and their covers
-  for class in AllRepresentativeSets(sk) do
+  for class in Union(RepresentativeSets(sk)) do
     AppendTo(out,"\"",TrueValuePositionsBlistString(class),
             "\" [shape=box,color=black];\n");
     for set in TilesOf(sk,class) do
