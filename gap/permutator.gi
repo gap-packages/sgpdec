@@ -198,7 +198,7 @@ local d,groups;
   groups := [];
   for d in [1..DepthOfSkeleton(sk)-1] do
     Add(groups,
-        List(RepresentativeSetsOnDepth(sk,d),
+        List(RepresentativeSets(sk)[d],
              rep -> HolonomyGroup@(sk, rep)));
   od;
   return groups;

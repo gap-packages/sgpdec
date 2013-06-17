@@ -19,6 +19,7 @@ DeclareAttribute("RepSubductionCoverBinaryRelation",IsSkeleton);
 DeclareAttribute("Depths",IsSkeleton);
 DeclareAttribute("DepthOfSkeleton",IsSkeleton);
 DeclareAttribute("Heights",IsSkeleton);
+DeclareAttribute("RepresentativeSets",IsSkeleton);
 PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
 #TODO make it readonly
 
@@ -26,8 +27,6 @@ PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
 DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
-DeclareGlobalFunction("RepresentativeSetsOnDepth");
-DeclareGlobalFunction("AllRepresentativeSets");
 DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");

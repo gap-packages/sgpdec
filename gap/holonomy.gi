@@ -83,7 +83,7 @@ local holrec,depth,rep,grpcomps,coords,d,reps, shift, shifts,t,tiles;
     coords := [];reps := [];shifts := [];
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
-    for rep in RepresentativeSetsOnDepth(holrec.sk,depth) do
+    for rep in RepresentativeSets(holrec.sk)[depth] do
       tiles := TilesOf(holrec.sk, rep);
       shift := shift + Size(tiles);
       Add(shifts,shift);
