@@ -67,7 +67,7 @@ end);
 # CONSTRUCTOR ##################################################################
 InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
-local holrec,depth,rep,grpcomps,coords,d,reps, shift, shifts,t,tiles;
+local holrec,depth,rep,grpcomps,coords,d, shift, shifts,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   # 2. get the group components
@@ -75,23 +75,20 @@ local holrec,depth,rep,grpcomps,coords,d,reps, shift, shifts,t,tiles;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  holrec.reps := [];
   holrec.coords := [];
   holrec.coordvals := [];
   holrec.shifts := [];
   for depth in [1..d] do
-    coords := [];reps := [];shifts := [];
+    coords := [];shifts := [];
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativeSets(holrec.sk)[depth] do
       tiles := TilesOf(holrec.sk, rep);
       shift := shift + Size(tiles);
       Add(shifts,shift);
-      Add(reps,rep);
       Add(coords,tiles);
     od;
     Add(holrec.shifts, shifts);
-    Add(holrec.reps, reps);
     Add(holrec.coords,coords);
     Add(holrec.coordvals,Concatenation(coords));
   od;
@@ -113,7 +110,8 @@ end);
 
 # figures out that which slot its representative belongs to (on the same level)
 GetSlot := function(set,hd)
-  return Position(hd.reps[DepthOfSet(hd.sk,set)], RepresentativeSet(hd.sk,set));
+  return Position(RepresentativeSets(hd.sk)[DepthOfSet(hd.sk,set)],
+                 RepresentativeSet(hd.sk,set));
 end;
 
 # decoding: integers -> sets, integers simply code the positions hd.coordvals
@@ -473,6 +471,7 @@ end;
 ################################################################################
 # HOLONOMY ACCESS
 ################################################################################
+# TODO slated for removal
 InstallGlobalFunction(UnderlyingSetsForHolonomyGroups,
 function(holonomycascadesgp)
   return HolonomyDecompositionOf(holonomycascadesgp).reps;
