@@ -75,22 +75,17 @@ local holrec,depth,rep,grpcomps,coords,d, shift, shifts,t,tiles;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
   Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  holrec.coords := [];
-  holrec.coordvals := [];
   holrec.shifts := [];
   for depth in [1..d] do
-    coords := [];shifts := [];
+    shifts := [];
     shift := 0; Add(shifts,shift);
     Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
     for rep in RepresentativeSets(holrec.sk)[depth] do
       tiles := TilesOf(holrec.sk, rep);
       shift := shift + Size(tiles);
       Add(shifts,shift);
-      Add(coords,tiles);
     od;
     Add(holrec.shifts, shifts);
-    Add(holrec.coords,coords);
-    Add(holrec.coordvals,Concatenation(coords));
   od;
   grpcomps := GroupComponents(skeleton);
   holrec.comps := List([1..Length(grpcomps)],
@@ -124,7 +119,7 @@ local sets, level;
           Add(sets,0); #zero if the level is jumped over
         else
           # the set at the position coded by the integer
-          Add(sets,hd.coordvals[level][ints[level]]);
+          Add(sets,CoordVals(hd.sk)[level][ints[level]]);
       fi;
   od;
   return sets;
@@ -142,7 +137,7 @@ local set,level,ints,slot, sk;
       Add(ints,0);
     else
       slot := GetSlot(set, hd); #TODO how can we make sure about the right slot?
-      Add(ints,Position(hd.coordvals[level],
+      Add(ints,Position(CoordVals(hd.sk)[level],
               sets[level],
               hd.shifts[level][slot]));
       set := sets[level];
@@ -215,7 +210,7 @@ end);
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
 function(hd,level,state)
-  return hd.coordvals[level][state];
+  return CoordVals(hd.sk)[level][state];
 end);
 #AsPoint
 AsHolonomyPoint :=
@@ -272,11 +267,11 @@ PermutationOfTiles := function(action, depth, slot, hd)
   local tileaction, shift, width;
   tileaction := ImageListOfTransformation(
                         TransformationOp(action,
-                                hd.coords[depth][slot],
+                                TileCoords(hd.sk)[depth][slot],
                                 OnFiniteSets));
   #technical bit: shifting the action to the right slot
   shift := hd.shifts[depth][slot];
-  width := Size(hd.coordvals[depth]);
+  width := Size(CoordVals(hd.sk)[depth]);
   return Transformation(Concatenation(
                  [1..shift],
                  tileaction + shift,
@@ -288,10 +283,10 @@ end;
 ConstantMapToATile := function(set, depth, slot, hd)
   local pos, width;
   pos := hd.shifts[depth][slot]+1;
-  while not (IsSubsetBlist(hd.coordvals[depth][pos],set)) do
+  while not (IsSubsetBlist(CoordVals(hd.sk)[depth][pos],set)) do
     pos := pos + 1;
   od;
-  width := Size(hd.coordvals[depth]);
+  width := Size(CoordVals(hd.sk)[depth]);
   return Transformation(List([1..width],x->pos));
 end;
 
@@ -333,7 +328,7 @@ local action,
         #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
         actions[depth] := ConstantMapToATile(set, depth,slot, hd);
-        ncoordval:=hd.coordvals[depth][1^actions[depth]];# applying the constant
+        ncoordval:=CoordVals(hd.sk)[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
         Print(depth," HEY!!! ",TrueValuePositionsBlistString(P),"*",s,"=",
@@ -464,7 +459,7 @@ end;
 #  hd.reps[depth][pos] := set;
 #  tiles := TilesOf(skeleton, set);
 #  for i in [1..Length(tiles)] do
-#    hd.coordvals[depth][hd.shifts[depth][pos]+i] := tiles[i];
+#    CoordVals(hd.sk)[depth][hd.shifts[depth][pos]+i] := tiles[i];
 #  od;
 #end);
 
