@@ -218,6 +218,11 @@ local d,coords,l,rep;
   return coords;
 end);
 
+InstallMethod(CoordVals, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  return List(TileCoords(sk), Concatenation);
+end);
+
 ################################################################################
 # util wrapping function for the often called BuildByWords
 # to fend off likely future changes
