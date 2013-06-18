@@ -4,8 +4,6 @@ OutMaps := NewAttribute("OutMaps",IsSkeleton,"mutable");
 OutWords := NewAttribute("OutWords",IsSkeleton,"mutable");
 #TODO make them readonly
 
-DeclareAttribute("GroupComponents", IsSkeleton);
-
 DeclareGlobalFunction("GetIN");
 DeclareGlobalFunction("GetINw");
 DeclareGlobalFunction("GetOUT");
@@ -20,3 +18,9 @@ DeclareGlobalFunction("PermutatorGroup");
 DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
 DeclareGlobalFunction("HolonomyGroup@");
 DeclareGlobalFunction("EvalWordInSkeleton");
+
+#holonomy parallel component shifting stuff
+DeclareAttribute("GroupComponents", IsSkeleton);
+DeclareAttribute("TileCoords", IsSkeleton);
+DeclareAttribute("CoordVals", IsSkeleton);
+DeclareAttribute("Shifts", IsSkeleton);
