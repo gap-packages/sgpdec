@@ -204,6 +204,20 @@ local d,groups;
   return groups;
 end);
 
+InstallMethod(TileCoords, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+local d,coords,l,rep;
+  coords := [];
+  for d in [1..DepthOfSkeleton(sk)-1] do
+    l := [];
+    for rep in RepresentativeSets(sk)[d] do
+      Add(l,TilesOf(sk, rep));
+    od;
+    Add(coords,l);
+  od;
+  return coords;
+end);
+
 ################################################################################
 # util wrapping function for the often called BuildByWords
 # to fend off likely future changes
