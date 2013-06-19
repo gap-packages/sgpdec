@@ -74,12 +74,11 @@ local holrec,depth,rep,grpcomps,coords,d,t,tiles;
   d := DepthOfSkeleton(holrec.sk) - 1;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
-  grpcomps := GroupComponents(skeleton);
-  holrec.comps := List([1..Length(grpcomps)],
-                       x -> PermutationResetSemigroup(grpcomps[x],
-                               Shifts(skeleton)[x]));
-  holrec.domain := DomainOf(IdentityCascade(holrec.comps)); #TODO this is clumsy
-  holrec.compdoms := ComponentDomains(holrec.comps);
+  holrec.domain :=
+    DomainOf(IdentityCascade(
+            HolonomyPermutationResetComponents(skeleton))); #TODO this is clumsy
+  holrec.compdoms := ComponentDomains(
+                             HolonomyPermutationResetComponents(skeleton));
   return holrec;
 end);
 
@@ -296,7 +295,7 @@ local action,
       set;
   sk := hd.sk; #it is used often so it's better to have it
   #initializing actions to identity
-  actions := List([1..hd.d], x -> One(hd.comps[x]));
+  actions := List([1..hd.d], x -> One( HolonomyPermutationResetComponents(hd.sk)[x]));
   #initial successive approximation are the same for both
   P := BaseSet(sk);
   Q := P;
@@ -334,7 +333,7 @@ local action,
   # paranoid check whether the action is in the component
   if SgpDecOptionsRec.PARANOID then
     for depth in [1..hd.d] do
-      if not actions[depth] in hd.comps[depth] then
+      if not actions[depth] in  HolonomyPermutationResetComponents(hd.sk)[depth] then
         Error("Alien component action!");
       fi;
     od;
@@ -347,11 +346,11 @@ function(ts)
   local hd, S;
   hd := HolonomyDecomposition(Skeleton(ts));
   S := Semigroup(List(GeneratorsOfSemigroup(ts),
-               t->Cascade(hd.comps,
+               t->Cascade( HolonomyPermutationResetComponents(hd.sk),
                        HolonomyDependencies(hd,t))));
   SetHolonomyDecompositionOf(S,hd);
   SetGroupComponents(S,GroupComponents(hd.sk));
-  SetComponentsOfCascadeProduct(S,hd.comps);
+  SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(hd.sk));
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
 end);
@@ -395,8 +394,9 @@ local i,state,sets,actions,depfuncs,holdom,cst;
 end);
 
 InstallGlobalFunction(AsHolonomyCascade,
-function(t,decomp)
-  return Cascade(decomp.comps,HolonomyDependencies(decomp,t));
+function(t,hd)
+  return Cascade( HolonomyPermutationResetComponents(hd.sk),
+                 HolonomyDependencies(hd,t));
 end);
 
 InstallGlobalFunction(AsHolonomyTransformation,
