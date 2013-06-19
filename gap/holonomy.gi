@@ -448,7 +448,7 @@ function(HCS)
   groupnames := [];
   for level in [1..DepthOfSkeleton(sk)-1] do
     l := [];
-    groups := GroupComponents(HCS)[level];
+    groups := GroupComponents(SkeletonOf(HCS))[level];
     for i in [1..Length(groups)]  do
       if IsTrivial(groups[i]) then
         Add(l, String(NumOfPointsInSlot(sk,level,i)));
