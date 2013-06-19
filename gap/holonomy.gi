@@ -71,8 +71,6 @@ local holrec,depth,rep,grpcomps,coords,d,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   # 2. get the group components
-  d := DepthOfSkeleton(holrec.sk) - 1;
-  holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
   holrec.domain :=
     DomainOf(IdentityCascade(
@@ -158,7 +156,7 @@ local chain,P,depth,skeleton;
   chain := [];
   depth := 1;
   P := BaseSet(skeleton); #we start to approximate from the top set
-  while depth <= hd.d do
+  while depth < DepthOfSkeleton(skeleton) do
     #we go from the cover of the rep to the cover of the chain element
     P := RealTile(coordinates[depth],P,skeleton);
     Add(chain,P);
@@ -173,7 +171,7 @@ function(hd, chain)
 local sets,i, P, skeleton;
   skeleton := hd.sk;
   #filling up with zeros - jumped over levels are abstract
-  sets := List([1..hd.d], x->  0);
+  sets := List([1..DepthOfSkeleton(skeleton)-1], x->  0);
   P := BaseSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
@@ -295,11 +293,12 @@ local action,
       set;
   sk := hd.sk; #it is used often so it's better to have it
   #initializing actions to identity
-  actions := List([1..hd.d], x -> One( HolonomyPermutationResetComponents(hd.sk)[x]));
+  actions := List([1..DepthOfSkeleton(sk)-1],
+                  x -> One( HolonomyPermutationResetComponents(hd.sk)[x]));
   #initial successive approximation are the same for both
   P := BaseSet(sk);
   Q := P;
-  for depth in [1..hd.d] do
+  for depth in [1..DepthOfSkeleton(sk)-1] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       slot := GetSlot(Q,hd);
       Ps := OnFiniteSets(P,s);
@@ -332,7 +331,7 @@ local action,
   od;
   # paranoid check whether the action is in the component
   if SgpDecOptionsRec.PARANOID then
-    for depth in [1..hd.d] do
+    for depth in [1..DepthOfSkeleton(sk)-1] do
       if not actions[depth] in  HolonomyPermutationResetComponents(hd.sk)[depth] then
         Error("Alien component action!");
       fi;
@@ -479,7 +478,7 @@ function(HCS)
   local groupnames,level, i,l,groups,hd,str;;
   hd := HolonomyDecompositionOf(HCS);
   groupnames := [];
-  for level in [1..hd.d] do
+  for level in [1..DepthOfSkeleton(hd.sk)-1] do
     l := [];
     groups := GroupComponents(HCS)[level];
     for i in [1..Length(groups)]  do
