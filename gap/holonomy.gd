@@ -21,13 +21,13 @@ DeclareGlobalFunction("HolonomySets2Ints");
 DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareGlobalFunction("HolonomyDecomposition");
-DeclareAttribute("GroupComponents", IsHolonomyCascadeSemigroup);
-DeclareAttribute("HolonomyDecompositionOf",IsHolonomyCascadeSemigroup);
+DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
-DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
-DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
+#TODO, put these back as synonyms
+#DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
+#DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
 
 DeclareGlobalFunction("AsHolonomyCascade");
 DeclareGlobalFunction("AsHolonomyTransformation");
