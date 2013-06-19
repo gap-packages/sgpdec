@@ -235,6 +235,16 @@ local tilecoords,d,l,s,shifts;
   return shifts;
 end);
 
+InstallMethod(HolonomyPermutationResetComponents,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+local grpcomps;
+  grpcomps := GroupComponents(sk);
+  return List([1..Length(grpcomps)],
+              x -> PermutationResetSemigroup(grpcomps[x],
+                      Shifts(sk)[x]));
+end);
+
 ################################################################################
 # util wrapping function for the often called BuildByWords
 # to fend off likely future changes

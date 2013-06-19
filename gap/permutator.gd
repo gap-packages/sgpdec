@@ -24,3 +24,4 @@ DeclareAttribute("GroupComponents", IsSkeleton);
 DeclareAttribute("TileCoords", IsSkeleton);
 DeclareAttribute("CoordVals", IsSkeleton);
 DeclareAttribute("Shifts", IsSkeleton);
+DeclareAttribute("HolonomyPermutationResetComponents", IsSkeleton);
