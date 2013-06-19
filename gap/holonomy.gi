@@ -67,30 +67,17 @@ end);
 # CONSTRUCTOR ##################################################################
 InstallGlobalFunction(HolonomyDecomposition,
 function(skeleton)
-local holrec,depth,rep,grpcomps,coords,d, shift, shifts,t,tiles;
+local holrec,depth,rep,grpcomps,coords,d,t,tiles;
   # 1. put the skeleton into the record
   holrec := rec(sk:=skeleton);
   # 2. get the group components
   d := DepthOfSkeleton(holrec.sk) - 1;
   holrec.d := d;
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
-  Info(HolonomyInfoClass, 2, "HOLONOMY"); t := Runtime();
-  holrec.shifts := [];
-  for depth in [1..d] do
-    shifts := [];
-    shift := 0; Add(shifts,shift);
-    Info(HolonomyInfoClass, 2, "Component(s) on depth ",depth); t := Runtime();
-    for rep in RepresentativeSets(holrec.sk)[depth] do
-      tiles := TilesOf(holrec.sk, rep);
-      shift := shift + Size(tiles);
-      Add(shifts,shift);
-    od;
-    Add(holrec.shifts, shifts);
-  od;
   grpcomps := GroupComponents(skeleton);
   holrec.comps := List([1..Length(grpcomps)],
                        x -> PermutationResetSemigroup(grpcomps[x],
-                               holrec.shifts[x]));
+                               Shifts(skeleton)[x]));
   holrec.domain := DomainOf(IdentityCascade(holrec.comps)); #TODO this is clumsy
   holrec.compdoms := ComponentDomains(holrec.comps);
   return holrec;
@@ -139,7 +126,7 @@ local set,level,ints,slot, sk;
       slot := GetSlot(set, hd); #TODO how can we make sure about the right slot?
       Add(ints,Position(CoordVals(hd.sk)[level],
               sets[level],
-              hd.shifts[level][slot]));
+              Shifts(hd.sk)[level][slot]));
       set := sets[level];
     fi;
   od;
@@ -270,7 +257,7 @@ PermutationOfTiles := function(action, depth, slot, hd)
                                 TileCoords(hd.sk)[depth][slot],
                                 OnFiniteSets));
   #technical bit: shifting the action to the right slot
-  shift := hd.shifts[depth][slot];
+  shift := Shifts(hd.sk)[depth][slot];
   width := Size(CoordVals(hd.sk)[depth]);
   return Transformation(Concatenation(
                  [1..shift],
@@ -282,7 +269,7 @@ end;
 #then creating a constant map resetting to that tile
 ConstantMapToATile := function(set, depth, slot, hd)
   local pos, width;
-  pos := hd.shifts[depth][slot]+1;
+  pos := Shifts(hd.sk)[depth][slot]+1;
   while not (IsSubsetBlist(CoordVals(hd.sk)[depth][pos],set)) do
     pos := pos + 1;
   od;
@@ -459,7 +446,7 @@ end;
 #  hd.reps[depth][pos] := set;
 #  tiles := TilesOf(skeleton, set);
 #  for i in [1..Length(tiles)] do
-#    CoordVals(hd.sk)[depth][hd.shifts[depth][pos]+i] := tiles[i];
+#    CoordVals(hd.sk)[depth][Shifts(hd.sk)[depth][pos]+i] := tiles[i];
 #  od;
 #end);
 
@@ -481,7 +468,7 @@ end);
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
 NumOfPointsInSlot := function(hd, level, slot)
-  return hd.shifts[level][slot+1] - hd.shifts[level][slot];
+  return Shifts(hd.sk)[level][slot+1] - Shifts(hd.sk)[level][slot];
 end;
 MakeReadOnlyGlobal("NumOfPointsInSlot");
 
