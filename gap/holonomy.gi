@@ -64,20 +64,6 @@ function(arg)
 end);
 
 ################################################################################
-# CONSTRUCTOR ##################################################################
-InstallGlobalFunction(HolonomyDecomposition,
-function(skeleton)
-local holrec,depth,rep,grpcomps,coords,d,t,tiles;
-  # 1. put the skeleton into the record
-  holrec := rec(sk:=skeleton);
-  # 2. get the group components
-  holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
-  holrec.compdoms := ComponentDomains(
-                             HolonomyPermutationResetComponents(skeleton));
-  return holrec;
-end);
-
-################################################################################
 # CODING OF THE HOLONOMY COMPONENT STATES ######################################
 
 # CODEC: INTEGERS <--> SETS
@@ -85,14 +71,14 @@ end);
 # it still has to be converted to integers
 
 # figures out that which slot its representative belongs to (on the same level)
-GetSlot := function(set,hd)
-  return Position(RepresentativeSets(hd.sk)[DepthOfSet(hd.sk,set)],
-                 RepresentativeSet(hd.sk,set));
+GetSlot := function(set,sk)
+  return Position(RepresentativeSets(sk)[DepthOfSet(sk,set)],
+                 RepresentativeSet(sk,set));
 end;
 
-# decoding: integers -> sets, integers simply code the positions hd.coordvals
+# decoding: integers -> sets, integers simply code the positions sk.coordvals
 InstallGlobalFunction(HolonomyInts2Sets,
-function(hd, ints)
+function(sk, ints)
 local sets, level;
   sets := [];
   for level in [1..Length(ints)] do
@@ -100,7 +86,7 @@ local sets, level;
           Add(sets,0); #zero if the level is jumped over
         else
           # the set at the position coded by the integer
-          Add(sets,CoordVals(hd.sk)[level][ints[level]]);
+          Add(sets,CoordVals(sk)[level][ints[level]]);
       fi;
   od;
   return sets;
@@ -108,19 +94,18 @@ end);
 
 # encoding: sets -> integers, we need to find the set in the right slot
 InstallGlobalFunction(HolonomySets2Ints,
-function(hd, sets)
-local set,level,ints,slot, sk;
-  sk := hd.sk;
+function(sk, sets)
+local set,level,ints,slot;
   set := BaseSet(sk);
   ints := [];
   for level in [1..Length(sets)] do
     if sets[level] = 0 then
       Add(ints,0);
     else
-      slot := GetSlot(set, hd); #TODO how can we make sure about the right slot?
-      Add(ints,Position(CoordVals(hd.sk)[level],
+      slot := GetSlot(set, sk); #TODO how can we make sure about the right slot?
+      Add(ints,Position(CoordVals(sk)[level],
               sets[level],
-              Shifts(hd.sk)[level][slot]));
+              Shifts(sk)[level][slot]));
       set := sets[level];
     fi;
   od;
@@ -147,9 +132,9 @@ end;
 
 # (successive approximation)
 InstallGlobalFunction(TileChain,
-function(hd, coordinates)
+function(sk, coordinates)
 local chain,P,depth,skeleton;
-  skeleton := hd.sk;
+  skeleton := sk;
   chain := [];
   depth := 1;
   P := BaseSet(skeleton); #we start to approximate from the top set
@@ -164,9 +149,9 @@ end);
 
 #the inverse of successive approximation
 InstallGlobalFunction(Coordinates,
-function(hd, chain)
+function(sk, chain)
 local sets,i, P, skeleton;
-  skeleton := hd.sk;
+  skeleton := sk;
   #filling up with zeros - jumped over levels are abstract
   sets := List([1..DepthOfSkeleton(skeleton)-1], x->  0);
   P := BaseSet(skeleton);
@@ -180,39 +165,38 @@ end);
 
 #all coordinate lifts of a point
 InstallGlobalFunction(AllHolonomyLifts,
-function(hd, point)
-local sk;
-  sk := hd.sk;
-  return List(AllTileChainsToSet(sk, FiniteSet([point],hd.n)),
-            c -> HolonomySets2Ints(hd,Coordinates(hd,c)));
+function(sk, point)
+  return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
+            c -> HolonomySets2Ints(sk,Coordinates(sk,c)));
 end);
 
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
-function(hd,level,state)
-  return CoordVals(hd.sk)[level][state];
+function(sk,level,state)
+  return CoordVals(sk)[level][state];
 end);
 #AsPoint
 AsHolonomyPoint :=
 #    "flatten a cascaded state",
 #    true,
 #    [IsDenseList,IsRecord],
-function(cs,hd)
+function(cs,sk)
   local coverchain;
-  coverchain := TileChain(hd, HolonomyInts2Sets(hd,cs));
+  coverchain := TileChain(sk, HolonomyInts2Sets(sk,cs));
   # extracting the singleton element from the cover chains
-  return ListBlist([1..hd.n],coverchain[Length(coverchain)])[1];
+  return ListBlist([1..DegreeOfSkeleton(sk)],
+                 coverchain[Length(coverchain)])[1];
 end;#);
 
 AsHolonomyCoords :=
 #    "raise a flat state into holonomy decomposition",
 #    true,
 #    [IsInt, IsRecord],
-function(k,hd)
-  return HolonomySets2Ints(hd,
-                 Coordinates(hd,
-                         RandomTileChain(hd.sk,k)));
+function(k,sk)
+  return HolonomySets2Ints(sk,
+                 Coordinates(sk,
+                         RandomTileChain(sk,k)));
 end;#);
 
 IsConstantMap := function(t)
@@ -244,15 +228,15 @@ local dfs, copy, out, len, i, action;
 end;
 
 # creating the permutation action on the tiles, shifted properly to the slot
-PermutationOfTiles := function(action, depth, slot, hd)
+PermutationOfTiles := function(action, depth, slot, sk)
   local tileaction, shift, width;
   tileaction := ImageListOfTransformation(
                         TransformationOp(action,
-                                TileCoords(hd.sk)[depth][slot],
+                                TileCoords(sk)[depth][slot],
                                 OnFiniteSets));
   #technical bit: shifting the action to the right slot
-  shift := Shifts(hd.sk)[depth][slot];
-  width := Size(CoordVals(hd.sk)[depth]);
+  shift := Shifts(sk)[depth][slot];
+  width := Size(CoordVals(sk)[depth]);
   return Transformation(Concatenation(
                  [1..shift],
                  tileaction + shift,
@@ -261,13 +245,13 @@ end;
 
 #looking for a tile that contain the given set on a given level in a given slot
 #then creating a constant map resetting to that tile
-ConstantMapToATile := function(set, depth, slot, hd)
+ConstantMapToATile := function(set, depth, slot, sk)
   local pos, width;
-  pos := Shifts(hd.sk)[depth][slot]+1;
-  while not (IsSubsetBlist(CoordVals(hd.sk)[depth][pos],set)) do
+  pos := Shifts(sk)[depth][slot]+1;
+  while not (IsSubsetBlist(CoordVals(sk)[depth][pos],set)) do
     pos := pos + 1;
   od;
-  width := Size(CoordVals(hd.sk)[depth]);
+  width := Size(CoordVals(sk)[depth]);
   return Transformation(List([1..width],x->pos));
 end;
 
@@ -276,7 +260,7 @@ end;
 # P represents a tilechain and we hit it by s so we get a subset chain
 # and Q approximates the subset chain with a non-unique tile chain
 InstallGlobalFunction(HolonomyComponentActions,
-function(hd,s,coords)
+function(sk,s,coords)
 local action,
       actions,
       depth,
@@ -284,33 +268,31 @@ local action,
       Q,
       Ps,
       ncoordval,
-      sk,
       j,
       slot,
       set;
-  sk := hd.sk; #it is used often so it's better to have it
   #initializing actions to identity
   actions := List([1..DepthOfSkeleton(sk)-1],
-                  x -> One( HolonomyPermutationResetComponents(hd.sk)[x]));
+                  x -> One( HolonomyPermutationResetComponents(sk)[x]));
   #initial successive approximation are the same for both
   P := BaseSet(sk);
   Q := P;
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
-      slot := GetSlot(Q,hd);
+      slot := GetSlot(Q,sk);
       Ps := OnFiniteSets(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
         # calculating the action on the covers
-        actions[depth] := PermutationOfTiles(action, depth, slot, hd);
+        actions[depth] := PermutationOfTiles(action, depth, slot, sk);
         # also, what happens to Q under s TODO is this really Qs???
         ncoordval := OnFiniteSets(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
-        actions[depth] := ConstantMapToATile(set, depth,slot, hd);
-        ncoordval:=CoordVals(hd.sk)[depth][1^actions[depth]];# applying the constant
+        actions[depth] := ConstantMapToATile(set, depth,slot, sk);
+        ncoordval:=CoordVals(sk)[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
         Print(depth," HEY!!! ",TrueValuePositionsBlistString(P),"*",s,"=",
@@ -329,7 +311,7 @@ local action,
   # paranoid check whether the action is in the component
   if SgpDecOptionsRec.PARANOID then
     for depth in [1..DepthOfSkeleton(sk)-1] do
-      if not actions[depth] in  HolonomyPermutationResetComponents(hd.sk)[depth] then
+      if not actions[depth] in  HolonomyPermutationResetComponents(sk)[depth] then
         Error("Alien component action!");
       fi;
     od;
@@ -339,14 +321,13 @@ end);
 
 InstallGlobalFunction(HolonomyCascadeSemigroup,
 function(ts)
-  local hd, S;
-  hd := HolonomyDecomposition(Skeleton(ts));
+  local sk, S;
+  sk := Skeleton(ts);
   S := Semigroup(List(GeneratorsOfSemigroup(ts),
-               t->Cascade( HolonomyPermutationResetComponents(hd.sk),
-                       HolonomyDependencies(hd,t))));
-  SetHolonomyDecompositionOf(S,hd);
-  SetGroupComponents(S,GroupComponents(hd.sk));
-  SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(hd.sk));
+               t->Cascade( HolonomyPermutationResetComponents(sk),
+                       HolonomyDependencies(sk,t))));
+  SetSkeletonOf(S,sk);
+  SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(sk));
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
 end);
@@ -354,22 +335,23 @@ end);
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(HolonomyDependencies,
-function(hd, t)
+function(sk, t)
 local i,state,sets,actions,depfuncs,holdom,cst;
   #identity needs no further calculations
   #if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
-  holdom := Union(List([1..hd.n], i -> AllHolonomyLifts(hd,i)));
+  holdom := Union(List([1..DegreeOfSkeleton(sk)],
+                    i -> AllHolonomyLifts(sk,i)));
   #padding with 1: it is precarious but works
   #holdom := List(holdom,
   #               x->List(x,
   #                      function(i)if i=0 then return 1;else return i;fi;end));
   #Print(holdom,"cukki\c\n");
   for state in holdom do
-    sets := HolonomyInts2Sets(hd,state);
+    sets := HolonomyInts2Sets(sk,state);
     #get the component actions on a state
-    actions := HolonomyComponentActions(hd, t, sets);
+    actions := HolonomyComponentActions(sk, t, sets);
     #examine whether there is a nontrivial action, then add
     for i in [1..Length(actions)] do
       if not IsOne(actions[i]) then
@@ -377,7 +359,10 @@ local i,state,sets,actions,depfuncs,holdom,cst;
         if i = 1 then
           AddSet(depfuncs,[[],actions[1]]);
         else
-          for cst in AllConcreteCoords(hd.compdoms,state{[1..(i-1)]}) do
+          for cst in
+            AllConcreteCoords(ComponentDomains(
+                    HolonomyPermutationResetComponents(sk)),
+                  state{[1..(i-1)]}) do
             #Print("-"); Display(cst);
             #AddSet(depfuncs,[cst,actions[i]]);
             AddSet(depfuncs,[cst,actions[i]]);
@@ -390,18 +375,18 @@ local i,state,sets,actions,depfuncs,holdom,cst;
 end);
 
 InstallGlobalFunction(AsHolonomyCascade,
-function(t,hd)
-  return Cascade( HolonomyPermutationResetComponents(hd.sk),
-                 HolonomyDependencies(hd,t));
+function(t,sk)
+  return Cascade( HolonomyPermutationResetComponents(sk),
+                 HolonomyDependencies(sk,t));
 end);
 
 InstallGlobalFunction(AsHolonomyTransformation,
-function(co,hd)
+function(co,sk)
 local l, i;
   l := [];
-  for i in ListBlist([1..hd.n],
-          BaseSet(hd.sk)) do
-    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,hd),co),hd);
+  for i in ListBlist([1..DegreeOfSkeleton(sk)],
+          BaseSet(sk)) do
+    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
   od;
   return Transformation(l);
 end);
@@ -410,61 +395,47 @@ end);
 InstallOtherMethod(HomomorphismTransformationSemigroup, "for a cascade product",
 [IsHolonomyCascadeSemigroup],
 function(cS)
-  local T,hd,f;
-  hd := HolonomyDecompositionOf(cS);
-  f := c -> AsHolonomyTransformation(c, hd);
+  local T,sk,f;
+  sk := SkeletonOf(cS);
+  f := c -> AsHolonomyTransformation(c, sk);
   T:=Semigroup(List(GeneratorsOfSemigroup(cS),f));
   return MappingByFunction(cS,T,f);
 end);
 
 # ts to cascade
 HolonomyLifting := function(S)
-  local cS,hd,f;
+  local cS,sk,f;
   cS := HolonomyCascadeSemigroup(S);
-  hd := HolonomyDecompositionOf(cS);
-  f := t -> AsHolonomyCascade(t, hd);
+  sk := SkeletonOf(cS);
+  f := t -> AsHolonomyCascade(t, sk);
   return MappingByFunction(S,cS,f);
 end;
 
 #TODO does this work?
 #changing the representative
 #InstallGlobalFunction(ChangeCoveredSet,
-#function(hd, set)
+#function(sk, set)
 #local skeleton,oldrep, pos, depth,i, tiles;
 #  if IsSingleton(set) then
 #    Print("#W not changing singleton representative\n");return;
 #  fi;
-#  skeleton := hd.sk;
+#  skeleton := sk;
 #  oldrep := RepresentativeSet(skeleton,set);
 #  ChangeRepresentativeSet(skeleton,set);
 #  depth := DepthOfSet(skeleton, set);
-#  pos := Position(hd.reps[depth], oldrep);
-#  hd.reps[depth][pos] := set;
+#  pos := Position(sk.reps[depth], oldrep);
+#  sk.reps[depth][pos] := set;
 #  tiles := TilesOf(skeleton, set);
 #  for i in [1..Length(tiles)] do
-#    CoordVals(hd.sk)[depth][Shifts(hd.sk)[depth][pos]+i] := tiles[i];
+#    CoordVals(sk)[depth][Shifts(sk)[depth][pos]+i] := tiles[i];
 #  od;
 #end);
 
 ################################################################################
-# HOLONOMY ACCESS
-################################################################################
-# TODO slated for removal
-InstallGlobalFunction(UnderlyingSetsForHolonomyGroups,
-function(holonomycascadesgp)
-  return HolonomyDecompositionOf(holonomycascadesgp).reps;
-end);
-
-InstallGlobalFunction(UnderlyingSetsForHolonomyGroupsOnDepth,
-function(holonomycascadesgp, depth)
-  return HolonomyDecompositionOf(holonomycascadesgp).reps[depth];
-end);
-
-################################################################################
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
-NumOfPointsInSlot := function(hd, level, slot)
-  return Shifts(hd.sk)[level][slot+1] - Shifts(hd.sk)[level][slot];
+NumOfPointsInSlot := function(sk, level, slot)
+  return Shifts(sk)[level][slot+1] - Shifts(sk)[level][slot];
 end;
 MakeReadOnlyGlobal("NumOfPointsInSlot");
 
@@ -472,20 +443,20 @@ MakeReadOnlyGlobal("NumOfPointsInSlot");
 InstallMethod(DisplayString,"for a holonomy decomposition",
         [ IsHolonomyCascadeSemigroup ],
 function(HCS)
-  local groupnames,level, i,l,groups,hd,str;;
-  hd := HolonomyDecompositionOf(HCS);
+  local groupnames,level, i,l,groups,sk,str;;
+  sk := SkeletonOf(HCS);
   groupnames := [];
-  for level in [1..DepthOfSkeleton(hd.sk)-1] do
+  for level in [1..DepthOfSkeleton(sk)-1] do
     l := [];
     groups := GroupComponents(HCS)[level];
     for i in [1..Length(groups)]  do
       if IsTrivial(groups[i]) then
-        Add(l, String(NumOfPointsInSlot(hd,level,i)));
+        Add(l, String(NumOfPointsInSlot(sk,level,i)));
       elif SgpDecOptionsRec.SMALL_GROUPS then
-        Add(l, Concatenation("(",String(NumOfPointsInSlot(hd,level,i)),
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
                 ",", StructureDescription(groups[i]),")"));
       else
-        Add(l, Concatenation("(",String(NumOfPointsInSlot(hd,level,i)),
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
                 ",G", String(Order(groups[i])),")"));
       fi;
     od;
