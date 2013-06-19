@@ -72,9 +72,6 @@ local holrec,depth,rep,grpcomps,coords,d,t,tiles;
   holrec := rec(sk:=skeleton);
   # 2. get the group components
   holrec.n := DegreeOfTransformationSemigroup(TransSgp(skeleton));
-  holrec.domain :=
-    DomainOf(IdentityCascade(
-            HolonomyPermutationResetComponents(skeleton))); #TODO this is clumsy
   holrec.compdoms := ComponentDomains(
                              HolonomyPermutationResetComponents(skeleton));
   return holrec;
