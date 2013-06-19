@@ -223,6 +223,18 @@ function(sk)
   return List(TileCoords(sk), Concatenation);
 end);
 
+InstallMethod(Shifts, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+local tilecoords,d,l,s,shifts;
+  shifts := [];
+  for d in [1..DepthOfSkeleton(sk)-1] do
+    l := List(TileCoords(sk)[d], Size);
+    s := List([0..Size(l)], x->Sum(l{[1..x]}));
+    Add(shifts, s);
+  od;
+  return shifts;
+end);
+
 ################################################################################
 # util wrapping function for the often called BuildByWords
 # to fend off likely future changes
