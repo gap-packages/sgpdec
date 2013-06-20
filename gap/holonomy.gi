@@ -338,7 +338,7 @@ InstallGlobalFunction(HolonomyDependencies,
 function(sk, t)
 local i,state,sets,actions,depfuncs,holdom,cst;
   #identity needs no further calculations
-  #if IsOne(t) then return [];fi;
+  if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..DegreeOfSkeleton(sk)],
