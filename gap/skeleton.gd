@@ -33,7 +33,7 @@ DeclareAttribute("DepthOfSkeleton",IsSkeleton);
 DeclareAttribute("Heights",IsSkeleton);
 DeclareAttribute("RepresentativeSets",IsSkeleton);
 PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
-#TODO make it readonly
+MakeReadOnlyGlobal("PartialOrbits");
 
 #functions
 DeclareGlobalFunction("TilesOf");
