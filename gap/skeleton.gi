@@ -179,17 +179,9 @@ function(sk)
 end);
 
 #just empty lists in the beginning, built on demand
+#contains the forward orbits of elements from the image set
 InstallMethod(PartialOrbits, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
-
-
-CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
-  if not IsBound(PartialOrbits(sk)[Qindx]) then
-    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSets,
-                                 rec(schreier:=true,orbitgraph:=true));
-    Enumerate(PartialOrbits(sk)[Qindx]);
-  fi;
-end;
 
 InstallGlobalFunction(IsSubductionEquivalent,
 function(sk, A, B)
@@ -198,6 +190,17 @@ function(sk, A, B)
   return OrbSCCLookup(o)[Position(o, A)]
          = OrbSCCLookup(o)[Position(o, B)];
 end);
+
+#just a util functions to check whether the required partial orbit is available
+#if not, then calculate it
+CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
+  if not IsBound(PartialOrbits(sk)[Qindx]) then
+    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSets,
+                                 rec(schreier:=true,orbitgraph:=true));
+    Enumerate(PartialOrbits(sk)[Qindx]);
+  fi;
+end;
+MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
 
 # true is P \subseteq Qs
 InstallGlobalFunction(IsSubductionLessOrEquivalent,
@@ -214,6 +217,7 @@ InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
   local Qorb,Qs;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
+  #we know that the partial orbit is already calculated by IsSubductionLessOr...
   Qorb := PartialOrbits(sk)[Position(ForwardOrbit(sk),Q)];
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
@@ -331,7 +335,6 @@ local chain, set;
   od;
   return Reversed(chain);
 end);
-
 
 InstallGlobalFunction(NumberOfTileChainsToSet,
 function(sk,set)
