@@ -1,3 +1,15 @@
+#############################################################################
+##
+## skeleton.gi           SgpDec package
+##
+## Copyright (C) 2010-2012
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Skeleton of the semigroup action on a set. Subduction relation,
+## equivalence classes, tilechains.
+##
+
 ################################################################################
 # CONSTRUCTOR ##################################################################
 # setting the basic attributes of the skeleton

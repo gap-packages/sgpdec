@@ -1,3 +1,15 @@
+#############################################################################
+##
+## skeleton.gd           SgpDec package
+##
+## Copyright (C) 2010-2013
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Skeleton of the semigroup action on a set. Subduction relation,
+## equivalence classes, tilechains.
+##
+
 DeclareCategory("IsSkeleton", IsObject and IsAttributeStoringRep);
 BindGlobal("SkeletonFamily",NewFamily("SkeletonFamily", IsSkeleton));
 BindGlobal("SkeletonType", NewType(SkeletonFamily,IsSkeleton));
