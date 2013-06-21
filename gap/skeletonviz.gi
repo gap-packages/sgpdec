@@ -13,6 +13,58 @@
 # VIZ ##########################################################################
 
 # creating graphviz file for drawing the
+InstallGlobalFunction(DotSkeletonForwardOrbit,
+function(arg)
+local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
+  #getting local variables for the arguments
+  sk := arg[1];
+  if IsBound(arg[2]) then
+    params := arg[2];
+  else
+    params := rec();
+  fi;
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"digraph skeleton_forward_orbit{\n");
+  #setting the state names
+  if "states" in RecNames(params) then
+    states := params.states;
+  else
+    states := [1..999];
+  fi;
+  #drawing equivalence classes
+  classes :=  SkeletonClasses(sk);
+  for i in [1..Length(classes)] do
+    AppendTo(out,"subgraph cluster",String(i),"{\n");
+    for node in classes[i] do
+      AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
+    od;
+    AppendTo(out,"}\n");
+  od;
+  #drawing the orbit
+  o := ForwardOrbit(sk);
+  og := OrbitGraph(o);
+  for i in [1..Size(og)] do # the ith element of the orbit
+    for j in [1..Size(og[i])] do # the jth generator
+      AppendTo(out,"\"",TrueValuePositionsBlistString(o[i]),
+              "\" -> \"",TrueValuePositionsBlistString(o[og[i][j]]),"\"",
+              " [label=",String(j), "];\n");
+    od;
+  od;
+  #drawing the representatives as rectangles and their covers
+  for class in Union(RepresentativeSets(sk)) do
+    AppendTo(out,"\"",TrueValuePositionsBlistString(class),
+            "\" [shape=box,color=black];\n");
+    for set in TilesOf(sk,class) do
+    od;
+  od;
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
+
+
+# creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(arg)
 local  str, i,label,node,out,class,classes,set,states,G,sk,params;
