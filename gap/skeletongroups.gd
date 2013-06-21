@@ -1,3 +1,14 @@
+#############################################################################
+##
+## skeletongroups.gd           SgpDec package
+##
+## Copyright (C) 2010-2013
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Groups acting on subsets of the state set.
+##
+
 InMaps := NewAttribute("InMaps",IsSkeleton,"mutable");
 InWords := NewAttribute("InWords",IsSkeleton,"mutable");
 OutMaps := NewAttribute("OutMaps",IsSkeleton,"mutable");
