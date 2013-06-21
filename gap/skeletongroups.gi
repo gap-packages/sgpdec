@@ -1,3 +1,14 @@
+#############################################################################
+##
+## skeletongroups.gi           SgpDec package
+##
+## Copyright (C) 2010-2013
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Groups acting on subsets of the state set.
+##
+
 ################################################################################
 ### INs and OUTs with a primitive caching method to avoid double calculation ###
 
