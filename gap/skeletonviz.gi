@@ -12,6 +12,21 @@
 ################################################################################
 # VIZ ##########################################################################
 
+# objects: a list of vertices, or a list of edges (their string representation)
+# labels: a record used as a lookup table
+# not used at the moment
+Dot := function(objects, labels)
+  local o,str;
+  str := "";
+  for o in objects do
+    if IsBound(labels.(o)) then
+      str := Concatenation(str, o," ",labels.(o),";\n");
+    else
+      str := Concatenation(str, o,";\n");
+    fi;
+  od;
+end;
+
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeletonForwardOrbit,
 function(arg)
