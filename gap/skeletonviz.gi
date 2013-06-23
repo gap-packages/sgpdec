@@ -27,6 +27,15 @@ Dot := function(objects, labels)
   od;
 end;
 
+List2Label := function(l)
+local str;
+  str := String(l);
+  str := ReplacedString(str,"[","");
+  str := ReplacedString(str,"]","");
+  str := ReplacedString(str," ","");
+  return str;
+end;
+
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeletonForwardOrbit,
 function(arg)
@@ -60,10 +69,13 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   o := ForwardOrbit(sk);
   og := OrbitGraph(o);
   for i in [1..Size(og)] do # the ith element of the orbit
-    for j in [1..Size(og[i])] do # the jth generator
+    for j in DuplicateFreeList(og[i]) do # the images of i
       AppendTo(out,"\"",TrueValuePositionsBlistString(o[i]),
-              "\" -> \"",TrueValuePositionsBlistString(o[og[i][j]]),"\"",
-              " [label=",String(j), "];\n");
+              "\" -> \"",TrueValuePositionsBlistString(o[j]),"\"",
+              " [label=\"",
+              List2Label(Positions(og[i],j)),
+              "\"];\n");
+      Display("");
     od;
   od;
   #drawing the representatives as rectangles and their covers
