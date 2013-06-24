@@ -1,3 +1,5 @@
+0.7.16
+	DotSkeletonForwardOrbit added. Skeleton code now separated into 3 different files: orbit and relations, permutator and holonomy, and visualisation files.
 0.7.15
 	Major rewrite of the holonomy data structure. HolonomyDecomposition disappeared, merged into the Skeleton.
 0.7.14
