@@ -27,6 +27,7 @@ Dot := function(objects, labels)
   od;
 end;
 
+#TODO VIZ has List2CommaSeparatedString
 List2Label := function(l)
 local str;
   str := String(l);
@@ -47,19 +48,20 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   else
     params := rec();
   fi;
-  str := "";
-  out := OutputTextString(str,true);
-  PrintTo(out,"digraph skeleton_forward_orbit{\n");
-  #setting the state names
+  #setting the state names TODO this is ignored at the moment
   if "states" in RecNames(params) then
     states := params.states;
   else
     states := [1..999];
   fi;
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"digraph skeleton_forward_orbit{\n");
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
   for i in [1..Length(classes)] do
-    AppendTo(out,"subgraph cluster",String(i),"{\n");
+    AppendTo(out,"subgraph cluster",String(i),
+            "{style=filled;color=lightgrey;\n");
     for node in classes[i] do
       AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
     od;
@@ -82,8 +84,6 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   for class in Union(RepresentativeSets(sk)) do
     AppendTo(out,"\"",TrueValuePositionsBlistString(class),
             "\" [shape=box,color=black];\n");
-    for set in TilesOf(sk,class) do
-    od;
   od;
   AppendTo(out,"}\n");
   CloseStream(out);
