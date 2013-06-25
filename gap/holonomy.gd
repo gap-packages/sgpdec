@@ -10,8 +10,6 @@
 
 DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
 
-DeclareGlobalFunction("PermutationResetSemigroup");
-
 DeclareGlobalFunction("Coordinates");
 DeclareGlobalFunction("TileChain");
 DeclareGlobalFunction("ChangeCoveredSet");

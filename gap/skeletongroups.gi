@@ -246,6 +246,29 @@ local tilecoords,d,l,s,shifts;
   return shifts;
 end);
 
+################################################################################
+# CONSTRUCTING HOLONOMY PERMUTATION RESET SEMIGROUPS ###########################
+
+#constructing a transformation semigroup out of a group + constant maps
+# 1st arg: group
+# 2nd arg: the number of points to act on (could be important for trivial group)
+InstallGlobalFunction(PermutationResetSemigroup,
+function(arg)
+  local G,n,gens;
+  G := arg[1];
+  if IsBound(arg[2]) then
+    n := arg[2];
+  else
+    n := LargestMovedPoint(G);
+  fi;
+  #group generators converted to transformations
+  gens := List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)) ;
+  #the resets (constant maps)
+  Perform([1..n], function(i)
+    Add(gens, Transformation(ListWithIdenticalEntries(n,i)));end);
+  return SemigroupByGenerators(gens);
+end);
+
 InstallMethod(HolonomyPermutationResetComponents,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
