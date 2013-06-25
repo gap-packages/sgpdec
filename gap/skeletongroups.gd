@@ -27,6 +27,7 @@ DeclareSynonym("HolonomyGroupGeneratorWords", NontrivialRoundTripWords);
 DeclareGlobalFunction("PermutatorSemigroupElts");
 DeclareGlobalFunction("PermutatorGroup");
 DeclareGlobalFunction("PermutatorHolonomyHomomorphism");
+DeclareGlobalFunction("PermutationResetSemigroup");
 DeclareGlobalFunction("HolonomyGroup@");
 DeclareGlobalFunction("EvalWordInSkeleton");
 
