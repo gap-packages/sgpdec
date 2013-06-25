@@ -12,35 +12,18 @@
 ################################################################################
 # CONSTRUCTING HOLONOMY PERMUTATION RESET SEMIGROUPS ###########################
 
-#constructing a transformation semigroup out of a list of groups + constant maps
-# 1st arg: list of permutation groups
-# 2nd arg: optional, vector of shifts, ith entry tells how much
-# the ith grouph is to be shifted, the last element tells the total
-# number of points to act on
-# if your shift vector contains overlaps, then you get something funny
-# if the shift vector is not given, then it is calculated by moved points
+#constructing a transformation semigroup out of a group + constant maps
 InstallGlobalFunction(PermutationResetSemigroup,
 function(arg)
-  local gens,shiftedgroups,groups,shifts,n;
-  groups := arg[1];
-  #get the shifts from the second argument
+  local G,n,gens;
+  G := arg[1];
   if IsBound(arg[2]) then
-    shifts := arg[2];
+    n := arg[2];
   else
-    shifts := [0];
-    Perform(groups,
-            function(G)
-              Add(shifts, shifts[Length(shifts)] + LargestMovedPoint(G));
-            end);
+    n := LargestMovedPoint(G);
   fi;
-  n := shifts[Length(shifts)];
-  #now shift the groups
-  shiftedgroups := List([1..Size(groups)],
-                        i->ShiftGroupAction(groups[i],shifts[i]));
-  #add the permutation generators
-  gens := [];
-  Perform(shiftedgroups, function(G)
-    Append(gens,List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)));end);
+  #group generators converted to transformations
+  gens := List(GeneratorsOfGroup(G),x -> AsTransformation(x,n)) ;
   #the resets (constant maps)
   Perform([1..n], function(i)
     Add(gens, Transformation(ListWithIdenticalEntries(n,i)));end);
@@ -296,6 +279,7 @@ local action,
   if SgpDecOptionsRec.PARANOID then
     for depth in [1..DepthOfSkeleton(sk)-1] do
       if not actions[depth] in  HolonomyPermutationResetComponents(sk)[depth] then
+        Print(actions[depth], " not in ", HolonomyPermutationResetComponents(sk)[depth],"\n");
         Error("Alien component action!");
       fi;
     od;

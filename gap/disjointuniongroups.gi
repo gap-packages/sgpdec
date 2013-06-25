@@ -26,7 +26,6 @@ local gens,origens,i,j,n;
   return Group(List(gens, x -> PermList(x)));
 end);
 
-#constructing a transformation semigroup out of a list of groups + constant maps
 # 1st arg: list of permutation groups
 # 2nd arg: optional, vector of shifts, ith entry tells how much
 # the ith grouph is to be shifted, the last element tells the total
