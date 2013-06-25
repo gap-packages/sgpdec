@@ -25,3 +25,34 @@ local gens,origens,i,j,n;
   od;
   return Group(List(gens, x -> PermList(x)));
 end);
+
+#constructing a transformation semigroup out of a list of groups + constant maps
+# 1st arg: list of permutation groups
+# 2nd arg: optional, vector of shifts, ith entry tells how much
+# the ith grouph is to be shifted, the last element tells the total
+# number of points to act on
+# if your shift vector contains overlaps, then you get something funny
+# if the shift vector is not given, then it is calculated by moved points
+InstallGlobalFunction(DisjointUnionGroup,
+function(arg)
+  local gens,shiftedgroups,groups,shifts,n;
+  groups := arg[1];
+  #get the shifts from the second argument
+  if IsBound(arg[2]) then
+    shifts := arg[2];
+  else
+    shifts := [0];
+    Perform(groups,
+            function(G)
+              Add(shifts, shifts[Length(shifts)] + LargestMovedPoint(G));
+            end);
+  fi;
+  n := shifts[Length(shifts)];
+  #now shift the groups
+  shiftedgroups := List([1..Size(groups)],
+                        i->ShiftGroupAction(groups[i],shifts[i]));
+  #add the permutation generators
+  gens := [];
+  Perform(shiftedgroups, function(G) Append(gens,GeneratorsOfGroup(G));end);
+  return Group(gens);
+end);
