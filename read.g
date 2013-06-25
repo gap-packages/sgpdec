@@ -2,6 +2,7 @@
 
 ReadPackage("SgpDec","/makedoc.g");
 
+ReadPackage("SgpDec","/gap/disjointuniongroups.gi");
 ReadPackage("SgpDec","/gap/finiteset.gi");
 ReadPackage("SgpDec","/gap/util.gi");
 ReadPackage("SgpDec","/gap/linearnotation.gi");

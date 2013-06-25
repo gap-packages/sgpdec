@@ -11,7 +11,6 @@
 DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
 
 DeclareGlobalFunction("PermutationResetSemigroup");
-DeclareGlobalFunction("ShiftGroupAction");
 
 DeclareGlobalFunction("Coordinates");
 DeclareGlobalFunction("TileChain");
