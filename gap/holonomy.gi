@@ -331,7 +331,8 @@ local l, i;
 end);
 
 # cascade to ts
-InstallOtherMethod(HomomorphismTransformationSemigroup, "for a cascade product",
+InstallOtherMethod(HomomorphismTransformationSemigroup,
+        "for a holonomy cascade semigroup",
 [IsHolonomyCascadeSemigroup],
 function(cS)
   local T,sk,f;
