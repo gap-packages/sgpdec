@@ -94,7 +94,7 @@ local chain,P,depth,skeleton;
 end);
 
 #the inverse of successive approximation
-InstallGlobalFunction(Coordinates,
+InstallGlobalFunction(SetCoordinates,
 function(sk, chain)
 local sets,i, P, skeleton;
   skeleton := sk;
@@ -113,7 +113,7 @@ end);
 InstallGlobalFunction(AllHolonomyLifts,
 function(sk, point)
   return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
-            c -> HolonomySets2Ints(sk,Coordinates(sk,c)));
+            c -> HolonomySets2Ints(sk,SetCoordinates(sk,c)));
 end);
 
 ################################################################################
@@ -141,7 +141,7 @@ AsHolonomyCoords :=
 #    [IsInt, IsRecord],
 function(k,sk)
   return HolonomySets2Ints(sk,
-                 Coordinates(sk,
+                 SetCoordinates(sk,
                          RandomTileChain(sk,k)));
 end;#);
 
