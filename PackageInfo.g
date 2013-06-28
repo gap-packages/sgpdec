@@ -1,3 +1,8 @@
+##  <#GAPDoc Label="PKGVERSIONDATA">
+##  <!ENTITY VERSION "0.7.17">
+##  <!ENTITY COPYRIGHTYEARS "2008-13">
+##  <#/GAPDoc>
+
 SetPackageInfo( rec(
 
 PackageName := "SgpDec",
