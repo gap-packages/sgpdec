@@ -5,7 +5,7 @@
 
 <TitlePage>
 <Title>The <Package>SgpDec</Package> Package</Title>
-<Version>Version 0.7 PREVIEW</Version>
+<Version>Version 0.7.x DEV</Version>
 <Author>Attila Egri-Nagy <Email>A.Egri-Nagy@herts.ac.uk</Email></Author>
 <Author>Chrystopher L. Nehaniv<Email>C.L.Nehaniv@herts.ac.uk</Email></Author>
 <Author>James Mitchell<Email>jdm3@st-and.ac.uk</Email></Author>
@@ -16,24 +16,22 @@ transformation semigroups.
 </TitleComment>
 
 <Abstract>
-This  <Package>GAP4.5</Package> package contains computational implementations
-of hierarchical decompositions of transformation semigroups
-(Krohn-Rhodes theory) and permutation groups. Cascade products (substructures
-of the wreath product) can be constructed by explicitly giving the dependency
- functions between the components or can be obtained by the decomposition
- algorithms (holonomy for semigroups, Lagrange decompositon for groups).
+This  <Package>GAP4.6</Package> package contains computational implementations
+of coordinatizations, i.e. hierarchical decompositions of transformation
+semigroups (Krohn-Rhodes theory) and permutation groups. Cascade products
+(substructures of the wreath product) can be constructed by explicitly giving
+the dependency functions between the components or can be obtained by the
+decomposition algorithms (holonomy for semigroups and Lagrange-Frobenius
+decomposition for groups).
 </Abstract>
 
 <Copyright>&copyright; Attila Egri-Nagy, Chrystopher L. Nehaniv, James Mitchell.
 </Copyright>
-
 </TitlePage>
-
 <TableOfContents/>
 
 
 <Body>
-
 <Chapter> <Heading>Introduction</Heading>
  <#Include SYSTEM "install.xml">
  <#Include SYSTEM "conf.xml">
