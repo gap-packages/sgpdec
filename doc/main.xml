@@ -36,9 +36,22 @@
 <TableOfContents/>
 
 <Body>
+
 <Chapter><Heading>The &SgpDec; package</Heading>
 <#Include SYSTEM="install.xml">
 </Chapter>
+
+<Chapter><Heading>Cascade Products</Heading>
+<#Include SYSTEM="cascade.xml">
+</Chapter>
+
+<Chapter><Heading>Frobenius-Lagrange Decomposition</Heading>
+</Chapter>
+
+<Chapter><Heading>Holonomy Decomposition</Heading>
+</Chapter>
+
+
 </Body>
 
 
