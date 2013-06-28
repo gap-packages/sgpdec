@@ -36,8 +36,9 @@
 <TableOfContents/>
 
 <Body>
-
-
+<Chapter><Heading>Installation and Testing</Heading>
+<#Include SYSTEM="install.xml">
+</Chapter>
 </Body>
 
 

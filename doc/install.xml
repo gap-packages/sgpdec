@@ -1,4 +1,4 @@
-<Section Label="install"><Heading>Installing <Package>SgpDec</Package></Heading>
+<Section Label="install"><Heading>Installing &SgpDec;</Heading>
 Released versions of <Package>SgpDec</Package> can be downloaded from
 <URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>.
 The most recent (possibly broken) version can be obtained from the project's
@@ -35,15 +35,7 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item>
-    <URL Text="GAPDoc">http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc
-    </URL></Item>
-    <Item>Generating documentation</Item>
-  </Row>
- <HorLine/>
- <HorLine/>
-  <Row>
-   <Item> <URL Text="Citrus">http://www-groups.mcs.st-and.ac.uk/~jamesm/citrus
+   <Item> <URL Text="Semigroups">http://www-groups.mcs.st-and.ac.uk/~jamesm/semigroups
    </URL></Item>
    <Item>Calculating with transformation semigroups</Item>
   </Row>
@@ -57,3 +49,14 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
  <HorLine/>
 </Table>
 </Section>
+
+<Section Label="testing"><Heading>Testing the installation</Heading>
+    
+    In this section we describe how to test that &SgpDec; is working as
+    intended.  To test that &Semigroups; is installed correctly use 
+    <Ref Func="SgpDecTestInstall"/>.
+
+    <#Include Label="SgpDecTestInstall">
+</Section>
+
+
