@@ -1,6 +1,7 @@
 SgpDecDocSourceFiles :=
   [
-   "../PackageInfo.g"
+   "../PackageInfo.g",
+   "mansections.xml"
    ];
 MakeReadOnlyGVar("SgpDecDocSourceFiles");
 
