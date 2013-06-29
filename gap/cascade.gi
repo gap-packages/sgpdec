@@ -214,6 +214,7 @@ function(f, compsordomsizes)
   #sanity check on the domain sizes
   if not ForAll(domsizes, IsPosInt)
      or DegreeOfTransformation(f)<>Product(domsizes) then
+    Print("#W number of points not equal to number of coordinate values\n");
     return fail;
   fi;
   depdoms:=DependencyDomains(domsizes);
