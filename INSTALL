@@ -1,0 +1,11 @@
+Just copy this sgpdec directory to the pkg directory of your GAP system. The package will be autoloaded next time you start GAP.
+
+Testing:
+
+The command
+
+Read("<full path to the test/test.g file>");
+
+Verifies the installation.
+
+Tutorial sessions can be found in doc/tutorial

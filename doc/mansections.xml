@@ -1,0 +1,24 @@
+# ALPHABETICAL ORDER
+
+<#GAPDoc Label="SgpDecMakeDoc">
+  <ManSection>
+    <Func Name="SgpDecMakeDoc" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function should be called with no argument to compile the
+      &SgpDec; documentation.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SgpDecTestInstall">
+  <ManSection>
+    <Func Name="SgpDecTestInstall" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function should be called with no argument to comprehensively
+      test that &SgpDec; is working correctly. These tests
+      should take no more than a few minutes to complete.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
