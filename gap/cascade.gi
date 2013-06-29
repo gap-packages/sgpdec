@@ -217,7 +217,7 @@ function(f, compsordomsizes)
     Print("#W number of points not equal to number of coordinate values\n");
     return fail;
   fi;
-  depdoms:=DependencyDomains(domsizes);
+  depdoms:=DependencyDomains(domsizes);#TODO separate the actual algorithm
   compdoms := List(domsizes,x -> [1..x]);
   dom:=EnumeratorOfCartesianProduct(compdoms);
   n:=Length(domsizes);
