@@ -6,14 +6,14 @@
 ##
 ## 2008-2012
 ##
-## Dependency function.
+## Dependency function. A lookup for [arg,val] pairs.
 ##
 
 ## NAMING CONVENTIONS
 ## depfunc - dependency function
 ## deparg - dependency argument, a tuple of states (formerly prefix)
-## dom - domain of dependency function
 ## deps - list of dependecies in the [arg, value] format
+## dom - domain of dependency function
 ## depdoms - dependency domains, i.e. domains of dependency functions
 
 ################################################################################
@@ -42,8 +42,8 @@ function(dom, list)
   else
     vals := list;
   fi;
-  MakeImmutable(vals); #just to be on the safe side
   ShrinkAllocationPlist(vals);
+  MakeImmutable(vals); #just to be on the safe side
   return Objectify(DependencyFunctionType,rec(dom:=dom,vals:=vals));
 end);
 
@@ -74,18 +74,20 @@ function(doms)
 end);
 
 # distributing dependencies into individual dependency functions
+# according to their level
 InstallGlobalFunction(Deps2DepFuncs,
 function(depdoms, deps)
 local dep, vals, level;
   vals := List([1..Size(depdoms)], x->[]);
   for dep in deps do
-    level := Size(dep[1])+1;
+    level := Size(dep[1])+1; #argument size gives depth
     vals[level][Position(depdoms[level],dep[1])] := dep[2];
   od;
   return List([1..Size(depdoms)],
               x -> DependencyFunction(depdoms[x],vals[x]));
 end);
 
+# extracting dependencies according in [arg, val] format
 InstallGlobalFunction(Dependencies,
 function(df)
   local deps,i,dom,vals;
@@ -134,6 +136,7 @@ end);
 # ACTION #######################################################################
 ################################################################################
 
+# applying to a tuple (deparg) gives the corresponding value
 InstallGlobalFunction(OnDepArg,
 function(deparg, depfunc)
   local vals, dom, i, pos;
@@ -150,7 +153,7 @@ function(deparg, depfunc)
   return vals[pos];
 end);
 
-# applying to a tuple (deparg) gives the corresponding value
+# jus registering the above action as a method for ^
 InstallOtherMethod(\^, "for dependency argument and dependency func",
 [IsList, IsDependencyFunction], OnDepArg);
 
