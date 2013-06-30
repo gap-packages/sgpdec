@@ -223,8 +223,9 @@ function(f, compsordomsizes)
   n:=Length(domsizes);
   #vals collecting the images of individual points
   vals:=List(depdoms, x-> List([1..Length(x)], x-> []));
-  #initially we assume that it is the identity everywhere
+  #initially we assume that it is the identity everywhere (array of flags)
   one:=List(depdoms, x-> BlistList([1..Length(x)], [1..Length(x)]));
+  #for all points of the transformations check how the corresponding path moves
   for i in [1..DegreeOfTransformation(f)] do
     coords := dom[i]; #the coordinatized original point i
     new := dom[i^f];
@@ -234,20 +235,18 @@ function(f, compsordomsizes)
     Remove(x, level);
     #the position in dependency domain on the level
     pos:=Position(depdoms[level], x);
-    repeat
-      #
+    while not IsBound(vals[level][pos][coords[level]]) do
       vals[level][pos][coords[level]] := new[level];
       #if we find a nontrivial map, then we flip the bit
-      if coords[level] <> vals[level][pos][coords[level]] then
+      if coords[level] <> new[level] then #vals[level][pos][coords[level]] then
         one[level][pos] := false;
       fi;
       level:=level-1;
-      if level=0 then
-        break;
-      fi;
+      if level=0 then break; fi;
       Remove(x, level);
+      #the position in dependency domain on the level
       pos:=Position(depdoms[level], x);
-    until IsBound(vals[level][pos][coords[level]]);
+    od;
     if level <> 0 and vals[level][pos][coords[level]] <> new[level] then
       return fail;
     fi;
