@@ -11,6 +11,18 @@
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="SgpDecRunManualExamples">
+  <ManSection>
+    <Func Name="SgpDecRunManualExamples" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function runs the examples from the manual to make
+      sure that the documentation is in line with the actual implementation.
+      This an alternative way to test the installation's correctness.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="SgpDecTestInstall">
   <ManSection>
     <Func Name="SgpDecTestInstall" Arg=""/>
