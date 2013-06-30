@@ -1,5 +1,29 @@
 # ALPHABETICAL ORDER
 
+<#GAPDoc Label="DependencyDomains">
+  <ManSection>
+    <Func Name="DependencyDomains" Arg="domainsizes"/>
+    <Returns>The domains of the dependency function in a list of
+    lazily evaluated list enumerators.
+    </Returns>
+    <Description>
+<Example>
+gap> depdoms := DependencyDomains([3,2,2]);
+[ [ [  ] ], &lt;enumerator&gt;, &lt;enumerator&gt; ]
+gap> AsList(depdoms[1]);
+[ [  ] ]
+gap> AsList(depdoms[2]);
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> AsList(depdoms[3]);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 3, 1 ], [ 3, 2 ] ]
+</Example>
+For flexibility instead of sizes of domains, the domains themselves can be
+given, or simply the permutation group/transformation group components.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="SgpDecMakeDoc">
   <ManSection>
     <Func Name="SgpDecMakeDoc" Arg=""/>

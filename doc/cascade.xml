@@ -1,5 +1,7 @@
 <Section Label="depfunc"><Heading>Dependency functions</Heading>
 
+    <#Include Label="DependencyDomains">
+
 </Section>
 
 <Section Label="transcascade"><Heading>Transformation and permutation cascades</Heading>
