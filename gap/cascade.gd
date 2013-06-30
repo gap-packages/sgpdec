@@ -9,8 +9,8 @@
 ## Cascade permutations and transformations.
 ##
 
-DeclareCategory("IsCascade", IsMultiplicativeElementWithOne 
-        and IsAssociativeElement and IsAttributeStoringRep 
+DeclareCategory("IsCascade", IsMultiplicativeElementWithOne
+        and IsAssociativeElement and IsAttributeStoringRep
         and IsMultiplicativeElementWithInverse);
 
 DeclareCategoryCollections("IsCascade");
@@ -32,7 +32,7 @@ BindGlobal("PermCascadeType", NewType(PermCascadeFamily, IsPermCascade));
 BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
 
 #constructors
-#DeclareGlobalFunction("CascadeNC"); # TODO checking and NC version later
+#DeclareGlobalFunction("CascadeNC"); # TODO doing an NC version later
 DeclareGlobalFunction("Cascade");
 DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("IdentityCascade");

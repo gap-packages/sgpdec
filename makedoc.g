@@ -26,7 +26,7 @@ SgpDecRunManualExamples := function()
           ExtractExamples(
                   Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
                           "/doc"),
-                  "SgpDec.xml",
+                  "main.xml",
                   SgpDecDocSourceFiles,
                   "Section"), rec(width:=80));
 end;
