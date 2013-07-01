@@ -231,25 +231,22 @@ function(f, compsordomsizes)
     new := dom[i^f];
     #we copy coords, as we will remove its elements one by one
     args:=ShallowCopy(coords);
-    level:=n;
-    Remove(args, level);
-    #the position in dependency domain on the level
-    pos:=Position(depdoms[level], args);
-    while not IsBound(vals[level][pos][coords[level]]) do
-      vals[level][pos][coords[level]] := new[level];
-      #if we find a nontrivial map, then we flip the bit
-      if coords[level] <> new[level] then #vals[level][pos][coords[level]] then
-        one[level][pos] := false;
-      fi;
-      level:=level-1;
-      if level=0 then break; fi;
+    for level in Reversed([1..n]) do
+      #while not IsBound(vals[level][pos][coords[level]]) do
       Remove(args, level);
       #the position in dependency domain on the level
       pos:=Position(depdoms[level], args);
+      if IsBound(vals[level][pos][coords[level]])
+         and vals[level][pos][coords[level]] <>  new[level] then
+        return fail;
+      else
+        vals[level][pos][coords[level]] := new[level];
+        #if we find a nontrivial map, then we flip the bit and unbind later
+        if coords[level] <> new[level] then
+          one[level][pos] := false;
+        fi;
+      fi;
     od;
-    if level <> 0 and vals[level][pos][coords[level]] <> new[level] then
-      return fail;
-    fi;
   od;
   #post process - turning the image lists into transformations
   for i in [1..Length(vals)] do
@@ -265,7 +262,6 @@ function(f, compsordomsizes)
       fi;
     od;
   od;
-
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(dom, compdoms, depfuncs, depdoms, TransCascadeType);
