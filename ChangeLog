@@ -1,3 +1,5 @@
+0.7.18
+	BugFix: AsCascade wrongly lifted some elements of T_8 into a [2,2,2] tree. The previous algorithm did not detect overwriting existing actions in some cases. Added test case for DisjointUnionGroup and documentation compilation framework is back again.
 0.7.17
 	Separating calculation for permutation reset semigroups. DisjointUnionGroup introduced.
 0.7.16
