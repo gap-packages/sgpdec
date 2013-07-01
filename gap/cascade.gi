@@ -200,7 +200,7 @@ InstallMethod(AsCascade,
         "for a transformation and list of domain sizes or components",
         [IsTransformation, IsDenseList],
 function(f, compsordomsizes)
-  local depdoms,dom,n,vals,one,x,level,pos,i,j,depfuncs,coords,new, compdoms,
+  local depdoms,dom,n,vals,one,args,level,pos,i,j,depfuncs,coords,new, compdoms,
         knowcomps, comps, domsizes;
   #deciding what input we got
   if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
@@ -230,11 +230,11 @@ function(f, compsordomsizes)
     coords := dom[i]; #the coordinatized original point i
     new := dom[i^f];
     #we copy coords, as we will remove its elements one by one
-    x:=ShallowCopy(coords);
+    args:=ShallowCopy(coords);
     level:=n;
-    Remove(x, level);
+    Remove(args, level);
     #the position in dependency domain on the level
-    pos:=Position(depdoms[level], x);
+    pos:=Position(depdoms[level], args);
     while not IsBound(vals[level][pos][coords[level]]) do
       vals[level][pos][coords[level]] := new[level];
       #if we find a nontrivial map, then we flip the bit
@@ -243,9 +243,9 @@ function(f, compsordomsizes)
       fi;
       level:=level-1;
       if level=0 then break; fi;
-      Remove(x, level);
+      Remove(args, level);
       #the position in dependency domain on the level
-      pos:=Position(depdoms[level], x);
+      pos:=Position(depdoms[level], args);
     od;
     if level <> 0 and vals[level][pos][coords[level]] <> new[level] then
       return fail;
