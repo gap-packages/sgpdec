@@ -202,7 +202,7 @@ InstallMethod(AsCascade,
 function(f, compsordomsizes)
   local depdoms,dom,n,vals,one,args,level,pos,i,j,depfuncs,coords,new, compdoms,
         knowcomps, comps, domsizes;
-  #deciding what input we got
+  #deciding what input we got###################################################
   if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
     comps := compsordomsizes;
     domsizes := List(ComponentDomains(comps), c -> Size(c));
@@ -217,7 +217,8 @@ function(f, compsordomsizes)
     Print("#W number of points not equal to number of coordinate values\n");
     return fail;
   fi;
-  depdoms:=DependencyDomains(domsizes);#TODO separate the actual algorithm
+  #the actual algorithm#########################################################
+  depdoms:=DependencyDomains(domsizes);
   compdoms := List(domsizes,x -> [1..x]);
   dom:=EnumeratorOfCartesianProduct(compdoms);
   n:=Length(domsizes);
@@ -240,6 +241,7 @@ function(f, compsordomsizes)
          and vals[level][pos][coords[level]] <>  new[level] then
         return fail;
       else
+        #registering even the trivial map is important as it may conflict
         vals[level][pos][coords[level]] := new[level];
         #if we find a nontrivial map, then we flip the bit and unbind later
         if coords[level] <> new[level] then
@@ -248,7 +250,7 @@ function(f, compsordomsizes)
       fi;
     od;
   od;
-  #post process - turning the image lists into transformations
+  #post process - turning the image lists into transformations##################
   for i in [1..Length(vals)] do
     for j in [1..Length(vals[i])] do
       if one[i][j] then
@@ -262,6 +264,7 @@ function(f, compsordomsizes)
       fi;
     od;
   od;
+  #creating the dependency function objects#####################################
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
   return CreateCascade(dom, compdoms, depfuncs, depdoms, TransCascadeType);
