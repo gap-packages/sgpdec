@@ -196,8 +196,12 @@ function(sk)
                  x->Union(InclusionSCCCovers(sk,x),DirectSCCImages(sk,x)));
 end);
 
+################################################################################
+# subduction based on orbits from sets (not so nicely called partial orbits)
+
 #just empty lists in the beginning, built on demand
 #contains the forward orbits of elements from the image set
+#indices coming from ExtendedImageSet
 InstallMethod(PartialOrbits, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
 
@@ -224,7 +228,7 @@ MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
 InstallGlobalFunction(IsSubductionLessOrEquivalent,
 function(sk, P, Q)
   local Qindx;
-  Qindx := Position(ForwardOrbit(sk),Q);
+  Qindx := Position(ExtendedImageSet(sk),Q);
   CalcPartialOrbitOnDemand(sk,Q, Qindx);
   return ForAny(PartialOrbits(sk)[Qindx],
                 Qs -> IsSubsetBlist(Qs,P));
@@ -236,7 +240,7 @@ function(sk, P, Q)
   local Qorb,Qs;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
   #we know that the partial orbit is already calculated by IsSubductionLessOr...
-  Qorb := PartialOrbits(sk)[Position(ForwardOrbit(sk),Q)];
+  Qorb := PartialOrbits(sk)[Position(ExtendedImageSet(sk),Q)];
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
@@ -245,7 +249,7 @@ end);
 InstallGlobalFunction(ImageWitness,
 function(sk, P, Q)
   local Qorb,Qs,Qindx;
-  Qindx := Position(ForwardOrbit(sk),Q);
+  Qindx := Position(ExtendedImageSet(sk),Q);
   CalcPartialOrbitOnDemand(sk,Q, Qindx);
   Qorb := PartialOrbits(sk)[Qindx];
   Qs := First(Qorb, Qs->Qs=P);
@@ -255,6 +259,30 @@ function(sk, P, Q)
     return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
   fi;
 end);
+
+#lots of muscle work for the nonimage singletons
+#calculating subduction equivalence
+InstallMethod(NonImageSingletonClasses,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  local l, cls, tmp,s,q;
+  l := ShallowCopy(NonImageSingletons(sk));
+  cls := [];
+  while not IsEmpty(l) do
+    q := Remove(l);
+    tmp := [q]; #starting new class with the last one
+    for s in ShallowCopy(l) do #to be on the safe side
+      if IsSubductionLessOrEquivalent(sk,s,q) and
+         IsSubductionLessOrEquivalent(sk,q,s) then
+        Add(tmp,s);
+        Remove(l,Position(l,s));
+      fi;
+    od;
+    Add(cls,tmp);
+  od;
+  return cls;
+end);
+
 
 InstallGlobalFunction(SkeletonClassOfSet,
 function(sk, set)
@@ -331,7 +359,11 @@ end);
 InstallMethod(DepthOfSkeleton,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return Maximum(Depths(sk));
+  if Size(Singletons(sk)) = Size(NonImageSingletons(sk)) then
+    return Maximum(Depths(sk))+1;
+  else
+    return Maximum(Depths(sk));
+  fi;
 end);
 
 
