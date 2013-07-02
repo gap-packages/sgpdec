@@ -52,6 +52,12 @@ function(sk)
               i -> FiniteSet([i], DegreeOfSkeleton(sk)));
 end);
 
+# those singletons that are not images
+InstallMethod(NonImageSingletons, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  return Filtered(Singletons(sk), x-> not x in ForwardOrbit(sk));
+end);
+
 #for sorting finitesets, first by size, then by content
 DescendingSizeSorter := function(v,w)
   if SizeBlist(v) <> SizeBlist(w) then
