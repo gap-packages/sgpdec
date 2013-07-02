@@ -149,10 +149,10 @@ end);
 
 #TODO this is brute force! any other idea?
 InstallGlobalFunction(PermutatorSemigroupElts,
-function(sk,set)
+function(ts,set)
 local permutators, transformation;
   permutators := [];
-  for transformation in TransSgp(sk) do
+  for transformation in ts do
     if OnFiniteSets(set,transformation) = set then
       Add(permutators, transformation);
     fi;
