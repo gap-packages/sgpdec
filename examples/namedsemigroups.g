@@ -151,3 +151,6 @@ ovlcovers := [Transformation([4,3,4,2]),
               ];
 OVLCOVERS := Semigroup(ovlcovers);
 SetName(OVLCOVERS,"OVLCOVERS");
+
+nosingleton := [Transformation([5,1,3,5,1]), Transformation([5,4,5,2,4])];
+NOSINGLETON := Monoid(nosingleton);
