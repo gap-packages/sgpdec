@@ -462,7 +462,8 @@ InstallGlobalFunction(SkeletonClasses,
 function(sk)
   local o;
   o := ForwardOrbit(sk);
-  return List(OrbSCC(o),x->List(x, y->o[y]));
+  return Concatenation(List(OrbSCC(o),x->List(x, y->o[y])),
+               NonImageSingletonClasses(sk));
 end);
 
 InstallGlobalFunction(SkeletonClassesOnDepth,
