@@ -2,12 +2,12 @@
 
 <#GAPDoc Label="DependencyDomains">
   <ManSection>
-    <Func Name="DependencyDomains" Arg="l"/>
+    <Func Name="DependencyDomains" Arg="list"/>
     <Returns>The domains of the dependency function in a list of
     lazily evaluated list enumerators.
     </Returns>
     <Description>
-The argument <A>l</A> can be a list of
+The argument <A>list</A> can be a list of
 <List>
 <Item> of positive integers, the cardinalities of the component's state sets,</Item>
 <Item> the state sets,</Item>
