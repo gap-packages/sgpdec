@@ -175,3 +175,53 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   CloseStream(out);
   return str;
 end);
+
+# creating graphviz file for drawing the
+InstallGlobalFunction(DotSubductionEquivalencePoset,
+function(arg)
+local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
+  #getting local variables for the arguments
+  sk := arg[1];
+  if IsBound(arg[2]) then
+    params := arg[2];
+  else
+    params := rec();
+  fi;
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"digraph skeleton{\n");
+  #setting the state names
+  if "states" in RecNames(params) then
+    states := params.states;
+  else
+    states := [1..999];
+  fi;
+  AppendTo(out, "node [shape=box ];\n");
+  AppendTo(out, "edge [arrowhead=none ];\n");
+  #drawing equivalence classes
+  classes :=  SkeletonClasses(sk);
+  subduction := HasseDiagramBinaryRelation(
+                        TransitiveClosureBinaryRelation(
+                                ReflexiveClosureBinaryRelation(
+                                        RepSubductionCoverBinaryRelation(sk))));
+  #nodes
+  for i in [1..Length(classes)] do
+    AppendTo(out, String(i));
+    AppendTo(out, " [label=\"");
+    for j in [1..Length(classes[i])] do
+      AppendTo(out,List2Label(
+              TrueValuePositionsBlistString(classes[i][j]))," ");
+    od;
+    AppendTo(out, "\"];\n");
+  od;
+  #edges
+  for i in [1..Length(classes)] do
+    for j in Images(subduction, i) do
+      AppendTo(out,Concatenation(String(i),"->",String(j),";\n"));
+    od;
+  od;
+
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
