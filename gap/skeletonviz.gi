@@ -200,27 +200,31 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   AppendTo(out, "edge [arrowhead=none ];\n");
   #drawing equivalence classes
   classes :=  SkeletonClasses(sk);
+  #making it really into a Hasse diagram
   subduction := HasseDiagramBinaryRelation(
                         TransitiveClosureBinaryRelation(
                                 ReflexiveClosureBinaryRelation(
                                         RepSubductionCoverBinaryRelation(sk))));
   #nodes
   for i in [1..Length(classes)] do
-    AppendTo(out, String(i));
-    AppendTo(out, " [label=\"");
-    for j in [1..Length(classes[i])] do
-      AppendTo(out,List2Label(
-              TrueValuePositionsBlistString(classes[i][j]))," ");
-    od;
-    AppendTo(out, "\"];\n");
+    if not classes[i][1] in NonImageSingletons(sk) then
+      AppendTo(out, String(i));
+      AppendTo(out, " [label=\"");
+      for j in [1..Length(classes[i])] do
+        AppendTo(out,List2Label(
+                TrueValuePositionsBlistString(classes[i][j]))," ");
+      od;
+      AppendTo(out, "\"];\n");
+    fi;
   od;
   #edges
   for i in [1..Length(classes)] do
-    for j in Images(subduction, i) do
-      AppendTo(out,Concatenation(String(i),"->",String(j),";\n"));
-    od;
+    if not classes[i][1] in NonImageSingletons(sk) then
+      for j in Images(subduction, i) do
+        AppendTo(out,Concatenation(String(i),"->",String(j),";\n"));
+      od;
+    fi;
   od;
-
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
