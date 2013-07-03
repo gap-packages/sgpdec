@@ -11,3 +11,4 @@
 
 DeclareGlobalFunction("DotSkeleton");
 DeclareGlobalFunction("DotSkeletonForwardOrbit");
+DeclareGlobalFunction("DotSubductionEquivalencePoset");
