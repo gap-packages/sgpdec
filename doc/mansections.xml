@@ -12,7 +12,7 @@ The argument <A>list</A> can be a list of
 <Item> of positive integers, the cardinalities of the component's state sets,</Item>
 <Item> the state sets,</Item>
 <Item> the components, domain sizes are inferred in this case by using  <Ref Attr="DegreeOfTransformationSemigroup" BookName="ref"/> and <Ref Attr="LargestMovedPoint" BookName="ref"/>.</Item>
-</List> 
+</List>
 
 <Example>
 gap> G := SymmetricGroup(IsPermGroup, 3);
@@ -39,6 +39,33 @@ gap> AsList(depdoms[2]);
 [ [ 1 ], [ 2 ], [ 3 ] ]
 gap> AsList(depdoms[3]);
 [ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 3, 1 ], [ 3, 2 ] ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DependencyFunction">
+  <ManSection>
+    <Func Name="DependencyFunction" Arg="depdom, deps"/>
+    <Returns>A dependency function on domain <A>depdom</A> with
+non-identity values defined in the list of dependencies <A>deps</A>.
+    </Returns>
+    <Description>
+      The dependencies are given in <C>[argument,value]</C> format.
+<Example>
+gap> depdoms := DependencyDomains([2,3]);
+[ [ [  ] ], &lt;enumerator&gt; ]
+gap> df := DependencyFunction(depdoms[1], [[[],(1,2)]] );
+&lt;depfunc of depth 1 with 1 deps&gt;
+gap> Display(df);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; (1,2)
+gap> df2 := DependencyFunction(depdoms[2], [[[1],(1,3)], [[2],(1,2)]] );
+&lt;depfunc of depth 2 with 2 deps&gt;
+gap> Display(df2);
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; (1,3)
+[ 2 ] -&gt; (1,2)
 </Example>
     </Description>
   </ManSection>
