@@ -1,4 +1,4 @@
-# ALPHABETICAL ORDER
+# ALPHABETICAL ORDER (by label)
 
 <#GAPDoc Label="DependencyDomains">
   <ManSection>
@@ -69,6 +69,16 @@ Dependency function of depth 2 with 2 dependencies.
 </Example>
     </Description>
   </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DependencyFunctionAttributes">
+  <ManSection> <Heading>Attributes of dependency functions</Heading>
+<Attr Name="DomainOf" Arg="depfunc"/>
+    <Returns>The dependency Domain</Returns>
+<Attr Name="NrDependencies" Arg="depfunc"/>
+    <Returns>The number of non-identity dependency values.</Returns>
+  </ManSection>
+
 <#/GAPDoc>
 
 
