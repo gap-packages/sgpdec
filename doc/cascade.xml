@@ -5,6 +5,7 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
     <#Include Label="DependencyDomains">
     <#Include Label="DependencyFunction">
     <#Include Label="DependencyFunctionAttributes">
+    <#Include Label="OnDepArg">
 
 </Section>
 

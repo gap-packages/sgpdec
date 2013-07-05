@@ -78,9 +78,14 @@ Dependency function of depth 2 with 2 dependencies.
 <Attr Name="NrDependencies" Arg="depfunc"/>
     <Returns>The number of non-identity dependency values.</Returns>
   </ManSection>
-
 <#/GAPDoc>
 
+<#GAPDoc Label="OnDepArg">
+  <ManSection> <Heading>Evaluating dependency functions</Heading>
+<Func Name="OnDepArg" Arg="depfunc"/>
+    <Returns>The value of the dependency function on the given argument.</Returns>
+  </ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="SgpDecMakeDoc">
   <ManSection>
