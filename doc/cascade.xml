@@ -1,3 +1,5 @@
+<E>Cascade products</E> are transformation semigroups and permutation groups built from smaller components using only unidirectional connections. Keeping the component actions separate, the elements of cascade products are <E>cascades</E>, that are tuples of <E>dependency functions</E>.
+
 <Section Label="depfunc"><Heading>Dependency functions</Heading>
 Given an ordered list of transformation semigroups and/or permutation groups <M>(X_1,S_1),\ldots,(X_n,S_n)</M>, the <M>i</M>th level <E>dependency function</E> is defined as <M>d_i:X_1\times\cdots\times X_{i-1}\rightarrow S_i</M>. We call <M>d_i:X_1\times\cdots\times X_{i-1}</M> the <M>i</M>th <E>dependency domain</E>.
     <#Include Label="DependencyDomains">
