@@ -85,7 +85,26 @@ Dependency function of depth 2 with 2 dependencies.
     <Func Name="EvalWordInSkeleton" Arg=""/>
     <Returns>The transformation represented by the given word.</Returns>
     <Description>
-
+In the skeleton transformation are often represented as lists of integers indexing the generators, the so called <E>words</E>.
+This function evaluates of a word in the skeleton. Added for convenience, no sanity check is done at the moment.
+<Example>
+gap> T := FullTransformationMonoid(4);
+&lt;full transformation semigroup on 4 pts&gt;
+gap> Generators(T);
+[ Transformation( [ 2, 3, 4, 1 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 1, 2, 3, 1 ] ) ]
+gap> sk := Skeleton(T);;
+gap> EvalWordInSkeleton(sk,[]);
+()
+gap> EvalWordInSkeleton(sk,[1]);
+Transformation( [ 2, 3, 4, 1 ] )
+gap> EvalWordInSkeleton(sk,[2]);
+Transformation( [ 2, 1 ] )
+gap> EvalWordInSkeleton(sk,[3]);
+Transformation( [ 1, 2, 3, 1 ] )
+gap> EvalWordInSkeleton(sk,[1,2,3]);
+Transformation( [ 1, 3, 1, 2 ] )
+</Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
