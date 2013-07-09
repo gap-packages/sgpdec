@@ -39,6 +39,7 @@
 </Chapter>
 
 <Chapter><Heading>Holonomy Decomposition</Heading>
+<#Include SYSTEM="holonomy.xml">
 </Chapter>
 
 

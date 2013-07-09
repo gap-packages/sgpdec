@@ -80,6 +80,17 @@ Dependency function of depth 2 with 2 dependencies.
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="EvalWordInSkeleton">
+  <ManSection>
+    <Func Name="EvalWordInSkeleton" Arg=""/>
+    <Returns>The transformation represented by the given word.</Returns>
+    <Description>
+
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="OnDepArg">
   <ManSection> <Heading>Evaluating dependency functions</Heading>
 <Func Name="OnDepArg" Arg="depfunc"/>
