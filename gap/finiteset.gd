@@ -21,7 +21,7 @@ SetUserPreference("DisplayTrueValuePositionsBlist",false);
 DeclareGlobalFunction("SgpDecFiniteSetDisplayOn");
 
 DeclareGlobalFunction("FiniteSet");
-DeclareGlobalFunction("OnFiniteSets");
+DeclareGlobalFunction("OnFiniteSet");
 DeclareGlobalFunction("IsIdentityOnFiniteSet");
 DeclareGlobalFunction("IsSingleton");
 DeclareGlobalFunction("IsProperFiniteSubset");

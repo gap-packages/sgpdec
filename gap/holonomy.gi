@@ -68,12 +68,12 @@ end);
 
 #we map  a representative cover set to a cover set of P
 RealTile := function(reptile, P, skeleton)
-  return OnFiniteSets(reptile , GetIN(skeleton, P));
+  return OnFiniteSet(reptile , GetIN(skeleton, P));
 end;
 
 #we map  a cover set of P to a cover set of Rep(P)
 RepTile := function(realcover, P, skeleton)
-  return OnFiniteSets(realcover , GetOUT(skeleton, P));
+  return OnFiniteSet(realcover , GetOUT(skeleton, P));
 end;
 
 # (successive approximation)
@@ -179,7 +179,7 @@ PermutationOfTiles := function(action, depth, slot, sk)
   tileaction := ImageListOfTransformation(
                         TransformationOp(action,
                                 TileCoords(sk)[depth][slot],
-                                OnFiniteSets));
+                                OnFiniteSet));
   #technical bit: shifting the action to the right slot
   shift := Shifts(sk)[depth][slot];
   width := Size(CoordVals(sk)[depth]);
@@ -226,14 +226,14 @@ local action,
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       slot := GetSlot(Q,sk);
-      Ps := OnFiniteSets(P,s);
+      Ps := OnFiniteSet(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
         # calculating the action on the covers
         actions[depth] := PermutationOfTiles(action, depth, slot, sk);
         # also, what happens to Q under s TODO is this really Qs???
-        ncoordval := OnFiniteSets(coords[depth], action);
+        ncoordval := OnFiniteSet(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
