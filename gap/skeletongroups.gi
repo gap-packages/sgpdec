@@ -111,7 +111,7 @@ local roundtrips,i,j,nset,scc,word,o;
     #for all generators #TODO do this with orbitgraph
     for j in [1..Length(Generators(sk))] do
       #we hit an element in the class by a generator
-      nset := OnFiniteSets(scc[i],Generators(sk)[j]);
+      nset := OnFiniteSet(scc[i],Generators(sk)[j]);
       #if it stays in the class then it will give rise to a permutator
       if nset in scc then
         word :=  Concatenation(GetINw(sk,scc[i]),[j],GetOUTw(sk,nset));
@@ -153,7 +153,7 @@ function(ts,set)
 local permutators, transformation;
   permutators := [];
   for transformation in ts do
-    if OnFiniteSets(set,transformation) = set then
+    if OnFiniteSet(set,transformation) = set then
       Add(permutators, transformation);
     fi;
   od;
@@ -190,7 +190,7 @@ function(sk,set)
                   g->AsPermutation(
                           TransformationOp(g,
                                   TilesOf(sk,set),
-                                  OnFiniteSets)));
+                                  OnFiniteSet)));
   homgens := DuplicateFreeList(imggens);
   return GroupHomomorphismByImages(permgroup,
                  Group(homgens),

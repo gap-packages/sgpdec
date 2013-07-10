@@ -31,7 +31,7 @@ function (A,B)
 end);
 
 # TODO: this should be called OnBlistList
-InstallGlobalFunction(OnFiniteSets,
+InstallGlobalFunction(OnFiniteSet,
 function(A, t)
   local n, result, blist, i;
   #an empty finite set

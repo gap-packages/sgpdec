@@ -30,7 +30,7 @@ end);
 InstallMethod(ForwardOrbit, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local o;
-  o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSets,
+  o := Orb(TransSgp(sk), BaseSet(sk), OnFiniteSet,
            rec(schreier:=true,orbitgraph:=true));
   Enumerate(o);
   return o;
@@ -217,7 +217,7 @@ end);
 #if not, then calculate it
 CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
   if not IsBound(PartialOrbits(sk)[Qindx]) then
-    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSets,
+    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSet,
                                  rec(schreier:=true,orbitgraph:=true));
     Enumerate(PartialOrbits(sk)[Qindx]);
   fi;

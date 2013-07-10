@@ -16,7 +16,7 @@ gap> gens := [
 gap> sk := Skeleton(Semigroup(gens));;
 gap> P := FiniteSet([4,5],6);;
 gap> Q := FiniteSet([3,4],6);;
-gap> IsSubsetBlist(OnFiniteSets(Q, EvalWordInSkeleton(sk,
+gap> IsSubsetBlist(OnFiniteSet(Q, EvalWordInSkeleton(sk,
 >        SubductionWitness(sk,P,Q))),P);
 true
 
