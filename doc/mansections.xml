@@ -109,6 +109,42 @@ Transformation( [ 1, 3, 1, 2 ] )
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="FiniteSet">
+  <ManSection> <Heading>Creating finite sets</Heading>
+<Func Name="FiniteSet" Arg="list, [n]"/>
+    <Returns>finite set.</Returns>
+<Description>
+The underlying boolean list defines the size of the universe of which the finite set is a subset.
+somewhat misleadingly <C>Size</C> returns the size of the universe, but the number of elements can be
+obtained by <Ref Func="SizeBlist" BookName="ref"/>, or using synonyms <C>Cardinality</C>,<C>FiniteSetSize</C>. 
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> P := FiniteSet([1,5]);
+{1,5}
+gap> Size(P);
+5
+gap> Cardinality(P);
+2
+gap> FiniteSetSize(P);
+2
+gap> SizeBlist(P);
+2
+gap> SgpDecFiniteSetDisplayOff();
+gap> P;
+[ true, false, false, false, true ]
+</Example>
+If the size of the universe is important, then it can be explicitly given.
+<Example>
+gap> P := FiniteSet([1,2],111);;
+gap> Cardinality(P);
+2
+gap> Size(P);
+111
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="OnDepArg">
   <ManSection> <Heading>Evaluating dependency functions</Heading>

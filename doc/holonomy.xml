@@ -4,6 +4,7 @@ These subsets can be numerous, therefore we would like to store them efficiently
 as lists of bits using <Ref Attr="BlistList" BookName="ref"/>.
 For readability we include a few functions to create an illusion that we have a dedicated data structure, thus we
 can create, display and act on finite sets.
+<#Include Label="FiniteSet">
 <#Include Label="OnFiniteSet">
 </Section>
 
