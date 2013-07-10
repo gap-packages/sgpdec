@@ -1,3 +1,5 @@
+0.7.20
+	More doc on demand. Streamlining functions for the finite set 'illusion' layer.
 0.7.19
 	BugFix: The lack of non image singletons led to loosing the last level of the decomposition. The fix also makes DotSkeleton consistent again.
 0.7.18
