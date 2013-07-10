@@ -112,10 +112,31 @@ Transformation( [ 1, 3, 1, 2 ] )
 
 <#GAPDoc Label="OnDepArg">
   <ManSection> <Heading>Evaluating dependency functions</Heading>
-<Func Name="OnDepArg" Arg="depfunc"/>
+<Func Name="OnDepArg" Arg="arg, depfunc"/>
     <Returns>The value of the dependency function on the given argument.</Returns>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="OnFiniteSet">
+  <ManSection> <Heading>Acting on finite sets</Heading>
+<Func Name="OnFiniteSet" Arg="finset, transformation"/>
+    <Returns>finite set.</Returns>
+<Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> P := FiniteSet([2,3]);
+{2,3}
+gap> t := Transformation([1,1,4,3]);;
+gap> OnFiniteSet(P,t);
+{1,4}
+gap> SgpDecFiniteSetDisplayOff();
+gap> OnFiniteSet(P,t*t);
+[ true, false, true ]
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="SgpDecMakeDoc">
   <ManSection>
