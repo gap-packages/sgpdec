@@ -30,6 +30,7 @@ function (A,B)
     return SizeBlist(A) > SizeBlist(B) and IsSubsetBlist(A,B);
 end);
 
+# TODO: this should be called OnBlistList
 InstallGlobalFunction(OnFiniteSets,
 function(A, t)
   local n, result, blist, i;
