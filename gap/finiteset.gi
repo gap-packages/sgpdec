@@ -39,7 +39,7 @@ function(A, t)
   result := BlistList([1..n],[]);
   for i in [1..n] do
     if A[i] then
-      result[i^t] := true;
+      result[OnPoints(i,t)] := true;
     fi;
   od;
   return result;
@@ -56,7 +56,7 @@ InstallGlobalFunction(IsIdentityOnFiniteSet,
 function(t, blist)
 local i;
   for i in [1..Size(blist)] do
-    if blist[i] and not i^t=i then
+    if blist[i] and not OnPoints(i,t)=i then
       return false;
     fi;
   od;
