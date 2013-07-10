@@ -45,6 +45,12 @@ function(A, t)
   return result;
 end);
 
+#TODO why this does not work?
+# just registering the above action as a method for ^
+InstallOtherMethod(\^, "for finite set (blist) and transformation (SgpDec)",
+[IsBlist, IsTransformation], OnFiniteSet);
+
+
 #this function tells quickly if it is not the identity
 InstallGlobalFunction(IsIdentityOnFiniteSet,
 function(t, blist)
@@ -62,6 +68,11 @@ end);
 InstallGlobalFunction(SgpDecFiniteSetDisplayOn,
 function()
   SetUserPreference("DisplayTrueValuePositionsBlist",true);
+end);
+
+InstallGlobalFunction(SgpDecFiniteSetDisplayOff,
+function()
+  SetUserPreference("DisplayTrueValuePositionsBlist",false);
 end);
 
 InstallGlobalFunction(TrueValuePositionsBlistString,
