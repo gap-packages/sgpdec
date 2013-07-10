@@ -19,6 +19,7 @@ DeclareUserPreference(rec(
 # TODO this is bad, but the default value does not set the value
 SetUserPreference("DisplayTrueValuePositionsBlist",false);
 DeclareGlobalFunction("SgpDecFiniteSetDisplayOn");
+DeclareGlobalFunction("SgpDecFiniteSetDisplayOff");
 
 DeclareGlobalFunction("FiniteSet");
 DeclareGlobalFunction("OnFiniteSet");
