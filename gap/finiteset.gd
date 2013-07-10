@@ -22,6 +22,8 @@ DeclareGlobalFunction("SgpDecFiniteSetDisplayOn");
 DeclareGlobalFunction("SgpDecFiniteSetDisplayOff");
 
 DeclareGlobalFunction("FiniteSet");
+DeclareSynonym("Cardinality",SizeBlist);
+DeclareSynonym("FiniteSetSize",SizeBlist);
 DeclareGlobalFunction("OnFiniteSet");
 DeclareGlobalFunction("IsIdentityOnFiniteSet");
 DeclareGlobalFunction("IsSingleton");
