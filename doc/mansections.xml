@@ -1,5 +1,32 @@
 # ALPHABETICAL ORDER (by label)
 
+<#GAPDoc Label="Cascade">
+  <ManSection>
+    <Func Name="Cascade" Arg="list, deps"/>
+    <Returns>The domains of the dependency function in a list of
+    lazily evaluated list enumerators.
+    </Returns>
+    <Description>
+<Example>
+gap> FF := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
+>              Transformation([1,2])]);;
+gap> T3 := FullTransformationSemigroup(3);;
+gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+>               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
+&lt;trans cascade with 2 levels with (2, 3) pts, 3 dependencies&gt;
+gap> Display(c);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 1, 1 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 3, 3, 2 ] )
+[ 2 ] -&gt; Transformation( [ 2, 3, 2 ] )
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+
 <#GAPDoc Label="DependencyDomains">
   <ManSection>
     <Func Name="DependencyDomains" Arg="list"/>
