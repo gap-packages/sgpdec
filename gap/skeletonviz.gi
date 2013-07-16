@@ -176,7 +176,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   return str;
 end);
 
-# creating graphviz file for drawing the
+# creating graphviz file for drawing the partial order of skeleton classes
 InstallGlobalFunction(DotSubductionEquivalencePoset,
 function(arg)
 local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
@@ -196,6 +196,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   else
     states := [1..999];
   fi;
+  #dot source production starts here
   AppendTo(out, "node [shape=box ];\n");
   AppendTo(out, "edge [arrowhead=none ];\n");
   #drawing equivalence classes
