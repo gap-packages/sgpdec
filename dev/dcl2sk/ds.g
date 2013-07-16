@@ -6,6 +6,11 @@ ImagesInDClass := function(dcl)
                          DegreeOfTransformation(Representative(dcl)))));
 end;
 
+RegRepSgp := function(ts)
+  return Semigroup(List(Generators(ts),
+                 x->TransformationOp(x,AsList(ts),\*)));
+end;
+
 DClasses2Skeleton := function(M)
   local sk,dcls;
   sk := Skeleton(M);
