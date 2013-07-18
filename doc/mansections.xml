@@ -39,6 +39,17 @@ Dependency function of depth 2 with 2 dependencies.
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CreateCascade">
+  <ManSection>
+    <Func Name="CreateCascade" Arg="dom, compdoms, depfuncs, depdom, type"/>
+    <Returns>A cascade.</Returns>
+    <Description>
+Low-level cascade creating function. Subject to change.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 ##D
 
 <#GAPDoc Label="DependencyDomains">
