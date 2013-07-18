@@ -199,6 +199,18 @@ gap> Size(P);
 
 ##I
 
+<#GAPDoc Label="IdentityCascade">
+  <ManSection>
+    <Func Name="IdentityCascade" Arg="comps"/>
+    <Returns>The identity cascade on the given components.</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsCascade">
   <ManSection>
     <Filt Name="IsCascade" Arg='obj' Type='Category'/>
@@ -211,6 +223,7 @@ Similarly to transformations and permutations we distinguish between transformat
   </ManSection>
 <#/GAPDoc>
 
+##O
 
 <#GAPDoc Label="OnDepArg">
   <ManSection> <Heading>Evaluating dependency functions</Heading>
@@ -239,6 +252,21 @@ gap> OnFiniteSet(P,t*t);
   </ManSection>
 <#/GAPDoc>
 
+##R
+
+<#GAPDoc Label="RandomCascade">
+  <ManSection>
+    <Func Name="RandomCascade" Arg="comps,numofdeps"/>
+    <Returns>A cascade with the given number of dependencies (or) less</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##S
 
 <#GAPDoc Label="SgpDecMakeDoc">
   <ManSection>
