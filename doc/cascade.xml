@@ -13,6 +13,7 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
 <E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups. 
     <#Include Label="IsCascade">
     <#Include Label="Cascade">
+    <#Include Label="CreateCascade">
 </Section>
 
 <Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
