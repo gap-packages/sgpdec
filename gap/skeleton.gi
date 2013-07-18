@@ -284,7 +284,7 @@ function(sk)
 end);
 
 
-InstallGlobalFunction(SkeletonClassOfSet,
+InstallGlobalFunction(SubductionClassOfSet,
 function(sk, set)
   local o;
   o := ForwardOrbit(sk);
@@ -297,7 +297,7 @@ function(sk, X, Y)
   if IsSubsetBlist(X,Y) then
     Xp := X;
   else
-    Xclass := SkeletonClassOfSet(sk,X);
+    Xclass := SubductionClassOfSet(sk,X);
     Xp := First(Xclass, XC->IsSubsetBlist(XC,Y));
   fi;
   if Xp = fail then return fail; fi;
@@ -458,20 +458,20 @@ function(sk)
   return reps;
 end);
 
-InstallGlobalFunction(RealImageSkeletonClasses,
+InstallGlobalFunction(RealImageSubductionClasses,
 function(sk)
   local o;
   o := ForwardOrbit(sk);
   return List(OrbSCC(o),x->List(x, y->o[y]));
 end);
 
-InstallGlobalFunction(SkeletonClasses,
+InstallGlobalFunction(SubductionClasses,
 function(sk)
-  return Concatenation(RealImageSkeletonClasses(sk),
+  return Concatenation(RealImageSubductionClasses(sk),
                NonImageSingletonClasses(sk));
 end);
 
-InstallGlobalFunction(SkeletonClassesOnDepth,
+InstallGlobalFunction(SubductionClassesOnDepth,
 function(sk, depth)
   local o;
   o := ForwardOrbit(sk);

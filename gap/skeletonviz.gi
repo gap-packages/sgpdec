@@ -58,7 +58,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   out := OutputTextString(str,true);
   PrintTo(out,"digraph skeleton_forward_orbit{\n");
   #drawing equivalence classes
-  classes :=  SkeletonClasses(sk);
+  classes :=  SubductionClasses(sk);
   for i in [1..Length(classes)] do
     AppendTo(out,"subgraph cluster",String(i),
             "{style=filled;color=lightgrey;\n");
@@ -122,7 +122,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   od;
   AppendTo(out,"}\n");
   #drawing equivalence classes
-  classes :=  SkeletonClasses(sk);
+  classes :=  SubductionClasses(sk);
   for i in [1..Length(classes)] do
     AppendTo(out,"subgraph cluster",String(i),"{\n");
     for node in classes[i] do
@@ -149,7 +149,7 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
   #drawing the the same level elements
   for i in [1..DepthOfSkeleton(sk)-1] do
     AppendTo(out, "{rank=same;",String(i),";");
-    for class in SkeletonClassesOnDepth(sk,i) do
+    for class in SubductionClassesOnDepth(sk,i) do
       for node in class do
         AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
       od;
@@ -200,7 +200,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   AppendTo(out, "node [shape=box ];\n");
   AppendTo(out, "edge [arrowhead=none ];\n");
   #drawing equivalence classes
-  classes :=  SkeletonClasses(sk);
+  classes :=  SubductionClasses(sk);
   #making it really into a Hasse diagram
   subduction := HasseDiagramBinaryRelation(
                         TransitiveClosureBinaryRelation(
