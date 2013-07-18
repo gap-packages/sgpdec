@@ -1,5 +1,19 @@
 # ALPHABETICAL ORDER (by label)
 
+#an empty one for template
+<#GAPDoc Label="a">
+  <ManSection>
+    <Func Name="a" Arg="a"/>
+    <Returns>a </Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##C
+
 <#GAPDoc Label="Cascade">
   <ManSection>
     <Func Name="Cascade" Arg="list, deps"/>
@@ -25,7 +39,7 @@ Dependency function of depth 2 with 2 dependencies.
   </ManSection>
 <#/GAPDoc>
 
-
+##D
 
 <#GAPDoc Label="DependencyDomains">
   <ManSection>
@@ -169,6 +183,20 @@ gap> Size(P);
 111
 </Example>
 </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##I
+
+<#GAPDoc Label="IsCascade">
+  <ManSection>
+    <Filt Name="IsCascade" Arg='obj' Type='Category'/>
+    <Filt Name="IsTransCascade" Arg='obj' Type='Category'/>
+    <Filt Name="IsPermCascade" Arg='obj' Type='Category'/>
+    <Description>
+Similarly to transformations and permutations we distinguish between transformation and permutation cascades.
+<C>IsCascade</C> is the abstract type.
+    </Description>
   </ManSection>
 <#/GAPDoc>
 
