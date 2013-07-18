@@ -11,6 +11,11 @@ RegRepSgp := function(ts)
                  x->TransformationOp(x,AsList(ts),\*)));
 end;
 
+RegRepMon := function(ts)
+  return Monoid(List(Generators(ts),
+                 x->TransformationOp(x,AsList(ts),\*)));
+end;
+
 DClasses2Skeleton := function(M)
   local sk,dcls;
   sk := Skeleton(M);
