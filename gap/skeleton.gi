@@ -458,11 +458,16 @@ function(sk)
   return reps;
 end);
 
-InstallGlobalFunction(SkeletonClasses,
+InstallGlobalFunction(RealImageSkeletonClasses,
 function(sk)
   local o;
   o := ForwardOrbit(sk);
-  return Concatenation(List(OrbSCC(o),x->List(x, y->o[y])),
+  return List(OrbSCC(o),x->List(x, y->o[y]));
+end);
+
+InstallGlobalFunction(SkeletonClasses,
+function(sk)
+  return Concatenation(RealImageSkeletonClasses(sk),
                NonImageSingletonClasses(sk));
 end);
 
