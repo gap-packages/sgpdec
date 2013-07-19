@@ -1,0 +1,4 @@
+<Section Label="FLdecomposition"><Heading>Frobenius-Lagrange Coordinates for Permutation Groups</Heading>
+<Cite Key="KrasnerKaloujnine"/>
+    <#Include Label="FLCascadeGroup">
+</Section>
