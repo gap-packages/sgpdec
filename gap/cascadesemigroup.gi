@@ -37,7 +37,7 @@ function(s)
     for j in [1..n] do
       if not IsEmpty(vals[i][j]) then
         if comp[j]=[] then
-          comp[j]:=Semigroup(vals[i][j], rec(small:=true));
+          comp[j]:=Semigroup(vals[i][j]);
         else
           comp[j]:=ClosureSemigroup(comp[j], vals[i][j]);
         fi;
