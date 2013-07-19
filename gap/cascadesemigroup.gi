@@ -24,23 +24,27 @@ end);
 
 InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
         [IsCascadeSemigroup],
-        function(s)
-  local func, n, out, i, j, x;
-  func:=List(GeneratorsOfSemigroup(s), x-> DependencyFunction(x)!.func);
+function(s)
+  local vals, n, comp, i, j;
+  vals:=List(GeneratorsOfSemigroup(s),
+             x-> List(DependencyFunctionsOf(x),
+                     y->DependencyValues(y)));
   n:=NrComponents(s);
-  out:=List([1..n], x->[]);
-  for i in [1..Length(GeneratorsOfSemigroup(s))] do
+  comp:=List([1..n], x->[]);
+  #ith generator
+  for i in [1..Length(vals)] do
+    #jth level
     for j in [1..n] do
-      if not IsEmpty(func[i][j]) then
-        if out[j]=[] then
-          out[j]:=Semigroup(Compacted(func[i][j]), rec(small:=true));
+      if not IsEmpty(vals[i][j]) then
+        if comp[j]=[] then
+          comp[j]:=Semigroup(vals[i][j], rec(small:=true));
         else
-          out[j]:=ClosureSemigroup(out[i], Compacted(func[i][j]));
+          comp[j]:=ClosureSemigroup(comp[j], vals[i][j]);
         fi;
       fi;
     od;
   od;
-  return out;
+  return comp;
 end);
 
 ################################################################################
