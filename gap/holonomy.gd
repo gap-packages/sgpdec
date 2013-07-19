@@ -17,7 +17,6 @@ DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");
 DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
-DeclareGlobalFunction("HolonomyDecomposition");
 DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
