@@ -22,6 +22,7 @@ function(s)
                  f -> AsCascade(f, ComponentDomains(s)));
 end);
 
+#this may produce something bigger than the actual component
 InstallMethod(ComponentsOfCascadeProduct, "for a semigroup cascade product",
         [IsCascadeSemigroup],
 function(s)
@@ -35,7 +36,7 @@ function(s)
   for i in [1..Length(vals)] do
     #jth level
     for j in [1..n] do
-      if not IsEmpty(vals[i][j]) then
+      if not IsEmpty(vals[i][j]) then #TODO removing the extra if
         if comp[j]=[] then
           comp[j]:=Semigroup(vals[i][j]);
         else
