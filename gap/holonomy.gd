@@ -21,6 +21,7 @@ DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
+DeclareGlobalFunction("HolonomyRelationalMorphism");
 #TODO, put these back as synonyms
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");

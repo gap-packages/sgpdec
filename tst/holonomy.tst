@@ -10,7 +10,7 @@ pts>, <transformation monoid on 3 pts with 3 generators>
  , function( c ) ... end )
 gap> Size(Range(hom));
 27
-gap> hl := HolonomyLifting(FullTransformationSemigroup(3));
+gap> hl := HolonomyRelationalMorphism(FullTransformationSemigroup(3));
 MappingByFunction( <full transformation semigroup on 3 pts>, <cascade semigrou\
 p with 4 generators, 2 levels with (3, 2) pts>, function( t ) ... end )
 gap> Size(Range(hl));

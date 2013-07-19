@@ -343,13 +343,14 @@ function(cS)
 end);
 
 # ts to cascade
-HolonomyLifting := function(S)
+InstallGlobalFunction(HolonomyRelationalMorphism,
+function(S)
   local cS,sk,f;
   cS := HolonomyCascadeSemigroup(S);
   sk := SkeletonOf(cS);
   f := t -> AsHolonomyCascade(t, sk);
   return MappingByFunction(S,cS,f);
-end;
+end);
 
 #TODO does this work?
 #changing the representative
