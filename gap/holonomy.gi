@@ -342,7 +342,7 @@ function(cS)
   return MappingByFunction(cS,T,f);
 end);
 
-# ts to cascade
+# ts to cascade, TODO this is not a set valued morphism yet!!
 InstallGlobalFunction(HolonomyRelationalMorphism,
 function(S)
   local cS,sk,f;
