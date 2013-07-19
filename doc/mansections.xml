@@ -279,6 +279,39 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
   </ManSection>
 <#/GAPDoc>
 
+##G
+
+##H
+
+<#GAPDoc Label="HolonomyCascadeSemigroup">
+  <ManSection>
+    <Func Name="HolonomyCascadeSemigroup" Arg="ts"/>
+    <Returns>Cascade semigroup that has a surjective homomorphism to <C>ts</C>.</Returns>
+    <Description>
+<Example>
+gap> T4 := FullTransformationSemigroup(4);;
+gap> hcs := HolonomyCascadeSemigroup(T4);
+&lt;cascade semigroup with 4 generators, 3 levels with (4, 3, 2) pts&gt;
+gap> gens := Generators(hcs);
+[ &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 8 dependencies&gt; ]
+gap> surhom := HomomorphismTransformationSemigroup(hcs);
+MappingByFunction( &lt;cascade semigroup with 4 generators, 3 levels with (4, 3, \
+2) pts&gt;, &lt;transformation monoid on 4 pts with 3 generators&gt;
+ , function( c ) ... end )
+gap> Image(surhom, gens[1]*gens[2]);
+Transformation( [ 1, 3, 4, 2 ] )
+gap> T := Range(surhom);
+&lt;transformation monoid on 4 pts with 3 generators&gt;
+gap> Size(T);
+256
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 ##I
 
 <#GAPDoc Label="IdentityCascade">
@@ -291,7 +324,6 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
     </Description>
   </ManSection>
 <#/GAPDoc>
-
 
 <#GAPDoc Label="IsCascade">
   <ManSection>
@@ -346,7 +378,6 @@ gap> OnFiniteSet(P,t*t);
     </Description>
   </ManSection>
 <#/GAPDoc>
-
 
 ##S
 
