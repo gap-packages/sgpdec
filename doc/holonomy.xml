@@ -14,7 +14,7 @@ can create, display and act on finite sets.
 
 </Section>
 
-<Section Label="skeleton"><Heading>Holonomy Decomposition</Heading>
+<Section Label="holonomy"><Heading>Holonomy Decomposition</Heading>
 
 <#Include Label="HolonomyCascadeSemigroup">
 
