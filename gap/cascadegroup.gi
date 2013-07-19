@@ -26,26 +26,25 @@ function(G)
                  f -> AsCascade(f, ComponentDomains(G)));
 end);
 
-InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
-[IsCascadeGroup],
+InstallMethod(ComponentsOfCascadeProduct, "for a group cascade product",
+        [IsCascadeGroup],
 function(s)
-  local func, n, out, i, j, x;
-
-  func:=List(GeneratorsOfGroup(s), x-> DependencyFunction(x)!.func);
+  local vals, n, comp, i, j;
+  vals:=List(GeneratorsOfGroup(s),
+             x-> List(DependencyFunctionsOf(x),
+                     y->DependencyValues(y)));
   n:=NrComponents(s);
-  out:=List([1..n], x->[]);
-  for i in [1..Length(GeneratorsOfGroup(s))] do
+  comp:=List([1..n], x->Group(()));
+  #ith generator
+  for i in [1..Length(vals)] do
+    #jth level
     for j in [1..n] do
-      if not IsEmpty(func[i][j]) then
-        if out[j]=[] then
-          out[j]:=Group(Compacted(func[i][j]), rec(small:=true));
-        else
-          out[j]:=ClosureGroup(out[i], Compacted(func[i][j]));
-        fi;
+      if not IsEmpty(vals[i][j]) then
+        comp[j]:=ClosureGroup(comp[j], vals[i][j]);
       fi;
     od;
   od;
-  return out;
+  return comp;
 end);
 
 ################################################################################
