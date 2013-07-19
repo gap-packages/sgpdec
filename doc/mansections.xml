@@ -198,7 +198,7 @@ gap> DependencyValues(df);
 
 <#GAPDoc Label="EvalWordInSkeleton">
   <ManSection>
-    <Func Name="EvalWordInSkeleton" Arg=""/>
+    <Func Name="EvalWordInSkeleton" Arg="skeleton, word"/>
     <Returns>The transformation represented by the given word.</Returns>
     <Description>
 In the skeleton transformation are often represented as lists of integers indexing the generators, the so called <E>words</E>.
@@ -220,6 +220,25 @@ gap> EvalWordInSkeleton(sk,[3]);
 Transformation( [ 1, 2, 3, 1 ] )
 gap> EvalWordInSkeleton(sk,[1,2,3]);
 Transformation( [ 1, 3, 1, 2 ] )
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ExtendedImageSet">
+  <ManSection>
+    <Attr Name="ExtendedImageSet" Arg="skeleton"/>
+    <Returns>The set of images of the semigroup action.</Returns>
+    <Description>
+The state set, the singletons and all image sets <M>X^s, s\in S</M>.
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup(Transformation([1,1,3,3]));
+&lt;commutative transformation semigroup on 4 pts with 1 generator&gt;
+gap> sk := Skeleton(S);;
+gap> ExtendedImageSet(sk);
+[ {1,2,3,4}, {1,3}, {1}, {2}, {3}, {4} ]
+gap> SgpDecFiniteSetDisplayOff();
 </Example>
     </Description>
   </ManSection>
@@ -412,6 +431,17 @@ gap> OnFiniteSet(P,t*t);
       This function should be called with no argument to comprehensively
       test that &SgpDec; is working correctly. These tests
       should take no more than a few minutes to complete.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="Skeleton">
+  <ManSection>
+    <Func Name="Skeleton" Arg="ts"/>
+    <Returns>Skeleton of a transformation semigroup.</Returns>
+    <Description>
+      <Example>
+      </Example>
     </Description>
   </ManSection>
 <#/GAPDoc>

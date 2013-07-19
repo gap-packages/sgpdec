@@ -9,7 +9,8 @@ can create, display and act on finite sets.
 </Section>
 
 <Section Label="skeleton"><Heading>Skeleton</Heading>
-
+<#Include Label="Skeleton">
+<#Include Label="ExtendedImageSet">
 <#Include Label="EvalWordInSkeleton">
 
 </Section>
