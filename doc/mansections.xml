@@ -49,8 +49,39 @@ Low-level cascade creating function. Subject to change.
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="ComponentsOfCascadeProduct">
+  <ManSection>
+    <Attr Name="ComponentsOfCascadeProduct" Arg="cascprod"/>
+    <Returns>The building components of the casacade product.</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 ##D
+
+<#GAPDoc Label="Dependencies">
+  <ManSection>
+    <Func Name="Dependencies" Arg="depfunc"/>
+    <Returns>All dependencies, argument value pairs.</Returns>
+    <Description>
+      <Example>
+gap> s1 := Transformation([1,1,2]);;
+gap> s2 := Transformation([2,3,2]);;
+gap> depdom := DependencyDomains([2,3])[2];;
+gap> df := DependencyFunction(depdom,[ [[1],s1], [[2],s1*s2]]);
+&lt;depfunc of depth 2 with 2 deps&gt;
+gap> Dependencies(df);
+[ [ [ 1 ], Transformation( [ 1, 1, 2 ] ) ], 
+  [ [ 2 ], Transformation( [ 2, 2 ] ) ] ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="DependencyDomains">
   <ManSection>
@@ -131,6 +162,27 @@ Dependency function of depth 2 with 2 dependencies.
     <Returns>The number of non-identity dependency values.</Returns>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DependencyValues">
+  <ManSection>
+    <Func Name="DependencyValues" Arg="depfunc"/>
+    <Returns>Compacted duplicate free list of values of the function.</Returns>
+    <Description>
+<Example>
+gap> t1 := Transformation([2,2,2,4]);;
+gap> t2 := Transformation([4,3,2,1]);;
+gap> depdom := DependencyDomains([2,3,4])[3];;
+gap> df := DependencyFunction(depdom,[ [[1,1],t1], [[2,3],t2*t1], [[2,1],t2^5]]);
+&lt;depfunc of depth 3 with 3 deps&gt;
+gap> DependencyValues(df);
+[ Transformation( [ 2, 2, 2 ] ), Transformation( [ 4, 3, 2, 1 ] ), 
+  Transformation( [ 4, 2, 2, 2 ] ) ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##E
 
 <#GAPDoc Label="EvalWordInSkeleton">
   <ManSection>
