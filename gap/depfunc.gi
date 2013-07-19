@@ -102,6 +102,12 @@ function(df)
   return deps;
 end);
 
+#just the compacted list of values of the depfunc
+InstallGlobalFunction(DependencyValues,
+function(df)
+  return DuplicateFreeList(Compacted(df!.vals));
+end);
+
 ################################################################################
 # ATTRIBUTES ###################################################################
 ################################################################################

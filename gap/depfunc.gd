@@ -21,6 +21,7 @@ BindGlobal("DependencyFunctionType",
 DeclareGlobalFunction("DependencyDomains");
 DeclareGlobalFunction("DependencyFunction");
 DeclareGlobalFunction("Dependencies");
+DeclareGlobalFunction("DependencyValues");
 DeclareGlobalFunction("OnDepArg");
 DeclareGlobalFunction("Deps2DepFuncs");
 DeclareAttribute("DomainOf", IsDependencyFunction);
