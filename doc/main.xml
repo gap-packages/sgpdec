@@ -36,6 +36,7 @@
 </Chapter>
 
 <Chapter><Heading>Frobenius-Lagrange Decomposition</Heading>
+<#Include SYSTEM="fl.xml">
 </Chapter>
 
 <Chapter><Heading>Holonomy Decomposition</Heading>
