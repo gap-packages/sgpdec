@@ -26,6 +26,7 @@ function(G)
                  f -> AsCascade(f, ComponentDomains(G)));
 end);
 
+#this may produce something bigger than the actual component
 InstallMethod(ComponentsOfCascadeProduct, "for a group cascade product",
         [IsCascadeGroup],
 function(s)
