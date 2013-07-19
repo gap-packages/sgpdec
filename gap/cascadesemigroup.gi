@@ -22,7 +22,7 @@ function(s)
                  f -> AsCascade(f, ComponentDomains(s)));
 end);
 
-InstallMethod(ComponentsOfCascadeProduct, "for a cascade product",
+InstallMethod(ComponentsOfCascadeProduct, "for a semigroup cascade product",
         [IsCascadeSemigroup],
 function(s)
   local vals, n, comp, i, j;
