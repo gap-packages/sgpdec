@@ -11,6 +11,7 @@ can create, display and act on finite sets.
 <Section Label="skeleton"><Heading>Skeleton</Heading>
 <#Include Label="Skeleton">
 <#Include Label="ExtendedImageSet">
+<#Include Label="Singletons">
 <#Include Label="EvalWordInSkeleton">
 
 </Section>

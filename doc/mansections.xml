@@ -1,10 +1,10 @@
 # ALPHABETICAL ORDER (by label)
 
 #an empty one for template
-<#GAPDoc Label="a">
+<#GAPDoc Label="">
   <ManSection>
-    <Func Name="a" Arg="a"/>
-    <Returns>a </Returns>
+    <Func Name="" Arg=""/>
+    <Returns></Returns>
     <Description>
       <Example>
       </Example>
@@ -434,6 +434,18 @@ gap> OnFiniteSet(P,t*t);
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="Singletons">
+  <ManSection>
+    <Attr Name="Singletons" Arg="skeleton"/>
+    <Returns>The states as singleton sets.</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 <#GAPDoc Label="Skeleton">
   <ManSection>
