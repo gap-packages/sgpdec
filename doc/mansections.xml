@@ -344,6 +344,23 @@ gap> Size(T);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="ImageWitness">
+  <ManSection>
+    <Func Name="ImageWitness" Arg="skeleton, P, Q"/>
+    <Returns>The factorization of <M>s\in S</M> such that <M>P^s=Q</M></Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup([Transformation([6,2,6,5,6,2])],Transformation([3,3,3,2,1,3]));;
+gap> sk := Skeleton(S);;
+gap> RepresentativeSets(sk);
+[ [ {1,2,3,4,5,6} ], [ {2,5,6}, {1,2,3} ], [ {2,6}, {1,3} ], [ {3} ] ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsCascade">
   <ManSection>
     <Filt Name="IsCascade" Arg='obj' Type='Category'/>
