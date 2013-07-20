@@ -12,6 +12,7 @@ can create, display and act on finite sets.
 <#Include Label="Skeleton">
 <#Include Label="ExtendedImageSet">
 <#Include Label="Singletons">
+<#Include Label="NonImageSingletons">
 <#Include Label="EvalWordInSkeleton">
 
 </Section>
