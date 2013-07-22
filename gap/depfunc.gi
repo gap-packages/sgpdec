@@ -47,6 +47,20 @@ function(dom, list)
   return Objectify(DependencyFunctionType,rec(dom:=dom,vals:=vals));
 end);
 
+# distributing dependencies into individual dependency functions
+# according to their level
+InstallGlobalFunction(DependencyFunctions,
+function(depdoms, deps)
+local dep, vals, level;
+  vals := List([1..Size(depdoms)], x->[]);
+  for dep in deps do
+    level := Size(dep[1])+1; #argument size gives depth
+    vals[level][Position(depdoms[level],dep[1])] := dep[2];
+  od;
+  return List([1..Size(depdoms)],
+              x -> DependencyFunction(depdoms[x],vals[x]));
+end);
+
 # Creates the list of all dependency domains of given sizes.
 # These are the arguments of the dependency functions on each level.
 # doms: list of pos ints or actual domains, integer x is converted to [1..x]
@@ -71,20 +85,6 @@ function(doms)
     Add(depdoms, EnumeratorOfCartesianProduct(tup));
   od;
   return depdoms;
-end);
-
-# distributing dependencies into individual dependency functions
-# according to their level
-InstallGlobalFunction(Deps2DepFuncs,
-function(depdoms, deps)
-local dep, vals, level;
-  vals := List([1..Size(depdoms)], x->[]);
-  for dep in deps do
-    level := Size(dep[1])+1; #argument size gives depth
-    vals[level][Position(depdoms[level],dep[1])] := dep[2];
-  od;
-  return List([1..Size(depdoms)],
-              x -> DependencyFunction(depdoms[x],vals[x]));
 end);
 
 # extracting dependencies according in [arg, val] format
