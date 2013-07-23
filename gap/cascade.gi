@@ -34,7 +34,7 @@ function(doms, deps)
   
   #maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
-  depfuncs:=Deps2DepFuncs(depdom, deps);
+  depfuncs:=DependencyFunctions(depdom, deps);
   
   SetDomainOf(f, EnumeratorOfCartesianProduct(compdoms));
   SetComponentDomains(f, compdoms);

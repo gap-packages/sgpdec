@@ -73,7 +73,7 @@ gap> deps :=
 >         [ [2,3] , (1,2) ],
 >         [ [] , (1,2,4,3) ]
 >         ];;
-gap> depfuncs := Deps2DepFuncs(depdoms, deps);
+gap> depfuncs := DependencyFunctions(depdoms, deps);
 [ <depfunc of depth 1 with 1 deps>, <depfunc of depth 2 with 0 deps>, 
   <depfunc of depth 3 with 2 deps>, <depfunc of depth 4 with 1 deps> ]
 
