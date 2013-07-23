@@ -52,7 +52,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   if "states" in RecNames(params) then
     states := params.states;
   else
-    states := [1..999];
+    states := [1..DegreeOfSkeleton(sk)];
   fi;
   str := "";
   out := OutputTextString(str,true);
@@ -63,7 +63,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
     AppendTo(out,"subgraph cluster",String(i),
             "{style=filled;color=lightgrey;\n");
     for node in classes[i] do
-      AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
+      AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
     od;
     AppendTo(out,"}\n");
   od;
@@ -72,17 +72,17 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   og := OrbitGraph(o);
   for i in [1..Size(og)] do # the ith element of the orbit
     for j in DuplicateFreeList(og[i]) do # the images of i
-      AppendTo(out,"\"",TrueValuePositionsBlistString(o[i]),
-              "\" -> \"",TrueValuePositionsBlistString(o[j]),"\"",
+      AppendTo(out,"\"",TrueValuePositionsBlistString(o[i],states),
+              "\" -> \"",TrueValuePositionsBlistString(o[j],states),"\"",
               " [label=\"",
-              List2Label(Positions(og[i],j)),
+              List2Label(Positions(og[i],j)),  # TODO : allow symbols as transition labels
               "\"];\n");
       Display("");
     od;
   od;
   #drawing the representatives as rectangles and their covers
   for class in Union(RepresentativeSets(sk)) do
-    AppendTo(out,"\"",TrueValuePositionsBlistString(class),
+    AppendTo(out,"\"",TrueValuePositionsBlistString(class,states),
             "\" [shape=box,color=black];\n");
   od;
   AppendTo(out,"}\n");
@@ -108,8 +108,8 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   #setting the state names
   if "states" in RecNames(params) then
     states := params.states;
-  else
-    states := [1..999];
+     else
+    states := [1..DegreeOfSkeleton(sk)];
   fi;
   if "symbols" in RecNames(params) then
     symbols := params.symbols;
@@ -131,7 +131,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   for i in [1..Length(classes)] do
     AppendTo(out,"subgraph cluster",String(i),"{\n");
     for node in classes[i] do
-      AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
+      AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
     od;
     AppendTo(out,"color=\"black\";");
     if DepthOfSet(sk, node) < DepthOfSkeleton(sk) then
@@ -156,7 +156,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     AppendTo(out, "{rank=same;",String(i),";");
     for class in SubductionClassesOnDepth(sk,i) do
       for node in class do
-        AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
+        AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
       od;
     od;
     AppendTo(out,"}\n");
@@ -164,16 +164,16 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   #singletons
   AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
   for node in Singletons(sk) do
-    AppendTo(out,"\"",TrueValuePositionsBlistString(node),"\";");
+    AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
   od;
   AppendTo(out,"}\n");
   #drawing the representatives as rectangles and their covers
   for class in Union(RepresentativeSets(sk)) do
-    AppendTo(out,"\"",TrueValuePositionsBlistString(class),
+    AppendTo(out,"\"",TrueValuePositionsBlistString(class,states),
             "\" [shape=box,color=black];\n");
     for set in TilesOf(sk,class) do
-      AppendTo(out,"\"",TrueValuePositionsBlistString(class),
-              "\" -> \"",TrueValuePositionsBlistString(set),"\"\n");
+      AppendTo(out,"\"",TrueValuePositionsBlistString(class,states),
+              "\" -> \"",TrueValuePositionsBlistString(set,states),"\"\n");
     witness := ImageWitness(sk,set,class); 
         if  Size(symbols) > 0 and not witness = fail then
          tmpstring := Concatenation(List(witness,x->String(symbols[x])));
@@ -204,9 +204,9 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   PrintTo(out,"digraph skeleton{\n");
   #setting the state names
   if "states" in RecNames(params) then
-    states := params.states;
+    states := params.states; 
   else
-    states := [1..999];
+    states := [1..DegreeOfSkeleton(sk)];
   fi;
   #dot source production starts here
   AppendTo(out, "node [shape=box ];\n");
@@ -225,7 +225,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
       AppendTo(out, " [label=\"");
       for j in [1..Length(classes[i])] do
         AppendTo(out,List2Label(
-                TrueValuePositionsBlistString(classes[i][j]))," ");
+                TrueValuePositionsBlistString(classes[i][j],states))," ");
       od;
       AppendTo(out, "\"];\n");
     fi;

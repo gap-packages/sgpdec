@@ -76,9 +76,16 @@ function()
 end);
 
 InstallGlobalFunction(TrueValuePositionsBlistString,
-function(bl)
-local i,n,size,str,states;
+function(arg)
+local bl,i,n,size,str,states;
+ bl := arg[1];
+ if IsBound(arg[2]) then
+ # 2nd argument if present contains the list of state names
+  states := arg[2];
+ else
+ # use state number for the name of the state
   states := [1..Size(bl)];
+ fi;
   n := 0;
   size := SizeBlist(bl);
   str:="{";

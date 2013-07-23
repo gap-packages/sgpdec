@@ -13,7 +13,7 @@ DeclareGlobalFunction("TrueValuePositionsBlistString");
 
 DeclareUserPreference(rec(
   name:="DisplayTrueValuePositionsBlist",
-  description:=["if true it enables alternate dispaly for blists"],
+  description:=["if true it enables alternate display for blists"],
   default:=false,
   check:=IsBool));
 # TODO this is bad, but the default value does not set the value
