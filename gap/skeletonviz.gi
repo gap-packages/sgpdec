@@ -94,7 +94,7 @@ end);
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(arg)
-local  str, i,label,node,out,class,classes,set,states,G,sk,params;
+local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstring,witness;
   #getting local variables for the arguments
   sk := arg[1];
   if IsBound(arg[2]) then
@@ -110,6 +110,11 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     states := params.states;
   else
     states := [1..999];
+  fi;
+  if "symbols" in RecNames(params) then
+    symbols := params.symbols;
+  else
+    symbols := [];
   fi;
   #defining the hierarchical levels - the nodes are named only by integers
   #these numbers appear on the side
@@ -169,6 +174,13 @@ local  str, i,label,node,out,class,classes,set,states,G,sk,params;
     for set in TilesOf(sk,class) do
       AppendTo(out,"\"",TrueValuePositionsBlistString(class),
               "\" -> \"",TrueValuePositionsBlistString(set),"\"\n");
+    witness := ImageWitness(sk,set,class); 
+        if  Size(symbols) > 0 and not witness = fail then
+         tmpstring := Concatenation(List(witness,x->String(symbols[x])));
+         AppendTo(out,"[label=\"", tmpstring, "\"]\n");
+        else
+         AppendTo(out,"[label=\"", String(witness), "\"]\n");
+        fi; 
     od;
   od;
   AppendTo(out,"}\n");
