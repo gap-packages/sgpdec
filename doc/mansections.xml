@@ -166,6 +166,31 @@ Dependency function of depth 2 with 2 dependencies.
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DependencyFunctions">
+  <ManSection>
+    <Func Name="DependencyFunctions" Arg="depdom, deps"/>
+    <Returns>A list of dependency functions containing the given dependencies
+    at their corresponding levels.
+    </Returns>
+    <Description>
+<Example>
+gap> depdoms := DependencyDomains([5,3,2,4]);;
+gap> deps :=
+>       [
+>         [ [1,2] , (2,4) ],
+>         [ [5,3,1] , (1,2)(4,3) ],
+>         [ [2,3] , (1,2) ],
+>         [ [] , (1,2,4,3) ]
+>         ];;
+gap>  depfuncs := DependencyFunctions(depdoms, deps);
+[ &lt;depfunc of depth 1 with 1 deps&gt;, &lt;depfunc of depth 2 with 0 deps&gt;, 
+  &lt;depfunc of depth 3 with 2 deps&gt;, &lt;depfunc of depth 4 with 1 deps&gt; ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="DependencyFunctionAttributes">
   <ManSection> <Heading>Attributes of dependency functions</Heading>
 <Attr Name="DomainOf" Arg="depfunc"/>
