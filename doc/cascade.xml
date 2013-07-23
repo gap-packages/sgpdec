@@ -1,0 +1,31 @@
+<E>Cascade products</E> are transformation semigroups and permutation groups built from smaller components of the same kind using only unidirectional connections.
+The connections are explicitly represented by functions, generalizing the usual products (semidirect, wreath).
+In other words, with cascade products one can build substructures of the iterated wreath product directly, without constructing the wreath product itself, which is usually prohibitively large.
+Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependency functions</E>.
+<Cite Key="cascprod_arxiv"/>
+
+<Section Label="depfunc"><Heading>Dependency functions</Heading>
+Given an ordered list of transformation semigroups and/or permutation groups <M>(X_1,S_1),\ldots,(X_n,S_n)</M>, the <M>i</M>th level <E>dependency function</E> is defined as <M>d_i:X_1\times\cdots\times X_{i-1}\rightarrow S_i</M>. We call <M>d_i:X_1\times\cdots\times X_{i-1}</M> the <M>i</M>th <E>dependency domain</E>.
+    <#Include Label="DependencyDomains">
+    <#Include Label="DependencyFunction">
+    <#Include Label="Dependencies">
+    <#Include Label="DependencyValues">
+    <#Include Label="DependencyFunctionAttributes">
+    <#Include Label="OnDepArg">
+</Section>
+
+<Section Label="transcascade"><Heading>Transformation and permutation cascades</Heading>
+<E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups. 
+    <#Include Label="IsCascade">
+</Section>
+
+<Section Label="createcascade"><Heading>Creating cascades</Heading>
+    <#Include Label="Cascade">
+    <#Include Label="CreateCascade">
+    <#Include Label="IdentityCascade">
+    <#Include Label="RandomCascade">
+</Section>
+
+<Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
+    <#Include Label="ComponentsOfCascadeProduct">
+</Section>

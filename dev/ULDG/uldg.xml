@@ -1,0 +1,9 @@
+
+<Chapter> <Heading>Applications</Heading>
+    <Section Label="sec:uldg"> <Heading>Uniquely Labelled Directed Graphs</Heading>
+Digraphs with edges uniquely labelled can be considered as automata models of chemical reaction networks when enzyme specificity is assumed. 
+<#Include Label="TransformationFromElementaryCollapsing">
+<#Include Label="GammaGraph">
+<#Include Label="DeltaGraph">
+    </Section>
+</Chapter>
