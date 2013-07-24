@@ -28,5 +28,9 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
 </Section>
 
 <Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
+Cascades can be multiplied together, there exists an identity element for each list of dependency domains and for a permutation cascade the inverse element is also defined. Therefore cascades can be used to form semigroups and groups.
+<Example>
+gap>
+</Example> 
     <#Include Label="ComponentsOfCascadeProduct">
 </Section>
