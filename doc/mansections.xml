@@ -21,6 +21,7 @@
     lazily evaluated list enumerators.
     </Returns>
     <Description>
+The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains" BookName="sgpdec"/>.
 <Example>
 gap> FF := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
 >              Transformation([1,2])]);;
