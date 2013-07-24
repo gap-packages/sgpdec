@@ -23,7 +23,9 @@ function(doms, deps)
   if IsListOfPermGroupsAndTransformationSemigroups(doms) then
     compdoms:=ComponentDomains(doms);
   else
-    compdoms:=doms;
+    compdoms:=List(doms,
+               function(x) if IsPosInt(x) then return [1..x];
+                           else return x; fi;end);
   fi;
 
   if ForAll(doms, IsGroup) then 
