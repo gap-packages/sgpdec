@@ -220,6 +220,16 @@ gap> DependencyValues(df);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DotCascade">
+  <ManSection>
+    <Func Name="DotCascade" Arg="cascade"/>
+    <Returns>String containing GraphViz source code for the tree diagram of the given cascade.</Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 ##E
 
 <#GAPDoc Label="EvalWordInSkeleton">
