@@ -29,9 +29,31 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
 
 <Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
 Cascades can be multiplied together, there exists an identity element for each list of dependency domains and for a permutation cascade the inverse element is also defined. Therefore cascades can be used to form semigroups and groups.
+Cascade semigroups can then be turned into transformation semigroups by using <Ref Func="IsomorphismTransformationSemigroup" BookName="semigroups"/>
 <Example>
-gap>
-</Example> 
+gap> c := Cascade([2,3], [ [[],Transformation([2,2])],
+>                          [[2],Transformation([3,2,3])] ]);;
+gap> Display(c*c);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 2, 2 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 3, 2, 3 ] )
+[ 2 ] -&gt; Transformation( [ 3, 2, 3 ] )
+gap> c2 := Cascade([2,3], [ [[],Transformation([2,1])],
+>                          [[1],Transformation([3,1,2])] ]);;
+gap> S := Semigroup([c,c2]);
+&lt;cascade semigroup with 2 generators, 2 levels with (2, 3) pts&gt;
+gap> Size(S);
+264
+gap> iso := IsomorphismTransformationSemigroup(S);
+MappingByFunction( &lt;cascade semigroup with 2 generators, 2 levels with (2, 3) \
+pts&gt;, &lt;transformation semigroup on 6 pts with 2 generators&gt;
+ , &lt;Attribute "AsTransformation"&gt;, function( f ) ... end )
+gap> tS := Range(iso);
+&lt;transformation semigroup on 6 pts with 2 generators&gt;
+gap> Size(tS);
+264
+</Example>
     <#Include Label="ComponentsOfCascadeProduct">
 </Section>
 
