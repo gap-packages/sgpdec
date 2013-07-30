@@ -306,6 +306,10 @@ function(coords, ct)
   return out;
 end);
 
+# jus registering the above action as a method for ^
+InstallOtherMethod(\^, "for coordinate list and cascade",
+[IsList, IsCascade], OnCoordinates);
+
 InstallMethod(\*, "for cascades",
 [IsCascade, IsCascade],
 function(f,g)
