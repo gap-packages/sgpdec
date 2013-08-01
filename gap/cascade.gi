@@ -306,12 +306,11 @@ function(coords, ct)
   return out;
 end);
 
-# jus registering the above action as a method for ^
+# registering the above action as a method for ^
 InstallOtherMethod(\^, "for coordinate list and cascade",
 [IsList, IsCascade], OnCoordinates);
 
-InstallMethod(\*, "for cascades",
-[IsCascade, IsCascade],
+InstallGlobalFunction(OnCascade,
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
 
@@ -341,6 +340,9 @@ function(f,g)
   return CreateCascade(DomainOf(f), ComponentDomains(f), depfuncs, depdoms,
   type);
 end);
+
+# registering the above action as a method for *
+InstallMethod(\*, "for cascades", [IsCascade, IsCascade], OnCascade);
 
 InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],

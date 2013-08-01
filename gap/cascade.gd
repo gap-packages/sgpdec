@@ -49,6 +49,9 @@ DeclareAttribute("DependencyDomainsOf",IsCascade);
 DeclareAttribute("NrDependencyFuncArgs", IsCascade);
 DeclareGlobalFunction("DependenciesOfCascade");
 
+#cascade multiplication
+DeclareGlobalFunction("OnCascade");
+
 #the action on coordinates
 DeclareGlobalFunction("OnCoordinates");
 
