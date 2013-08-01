@@ -27,11 +27,9 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
     <#Include Label="RandomCascade">
 </Section>
 
-<Section Label="cascadeaction"><Heading>Cascades acting on coordinates</Heading>
-A cascade product of <M>n</M> components acts on <M>n</M>-tuples of coordinates, where each coordinate is an element of the state set of the component on the corresponding level.
-Therefore, cascade products are transformation semigroups with their state set coordinatized.
-Since states are represented by integers, coordinates are lists of integers.
+<Section Label="cascadeaction"><Heading>Cascade operations</Heading>
     <#Include Label="OnCoordinates">
+    <#Include Label="OnCascade">
 </Section>
 
 
