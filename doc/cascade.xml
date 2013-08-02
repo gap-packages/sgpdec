@@ -18,6 +18,8 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
 <Section Label="transcascade"><Heading>Transformation and permutation cascades</Heading>
 <E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups. 
     <#Include Label="IsCascade">
+
+Attributes will come here.
 </Section>
 
 <Section Label="createcascade"><Heading>Creating cascades</Heading>
