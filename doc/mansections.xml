@@ -12,6 +12,19 @@
   </ManSection>
 <#/GAPDoc>
 
+##A
+
+<#GAPDoc Label="AsCascade">
+  <ManSection>
+    <Func Name="AsCascade" Arg="transformation"/>
+    <Returns>Coordinatized form of <Arg>transformation</Arg></Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 ##C
 
 <#GAPDoc Label="Cascade">

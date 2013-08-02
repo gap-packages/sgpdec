@@ -32,6 +32,11 @@ Given an ordered list of transformation semigroups and/or permutation groups <M>
     <#Include Label="OnCascade">
 </Section>
 
+<Section Label="cascadechangerepresentation"><Heading>Changing representation</Heading>
+<Ref Func="AsTransformation" BookName="ref"/>
+    <#Include Label="AsCascade">
+</Section>
+
 
 <Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
 Cascades can be multiplied together, there exists an identity element for each list of dependency domains and for a permutation cascade the inverse element is also defined. Therefore cascades can be used to form semigroups and groups.
