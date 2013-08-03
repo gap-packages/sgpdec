@@ -53,6 +53,16 @@ Dependency function of depth 2 with 2 dependencies.
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="CascadeAttributes">
+  <ManSection> <Heading>Attributes of cascades</Heading>
+<Attr Name="DomainOf" Arg="cascade" Label="CascadeDomainOf"/>
+    <Returns>The dependency domain</Returns>
+<Attr Name="NrDependencies" Arg="cascade" Label="CascadeNrDependencies"/>
+    <Returns>The number of non-identity dependency values.</Returns>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="CreateCascade">
   <ManSection>
     <Func Name="CreateCascade" Arg="dom, compdoms, depfuncs, depdom, type"/>
