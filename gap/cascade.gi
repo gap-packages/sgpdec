@@ -358,7 +358,7 @@ end);
 
 # attributes
 # the number of nontrivial dependency function values
-InstallMethod(NrDependenciesOfCascade, "for a cascade",
+InstallOtherMethod(NrDependencies, "for a cascade",
 [IsCascade],
 function(f)
   return Sum(DependencyFunctionsOf(f),
@@ -402,9 +402,9 @@ function(f)
     Append(str, ") pts");
   fi;
   if Length(str)<SizeScreen()[1]-
-   Length(String(NrDependenciesOfCascade(f)))-8 then
+   Length(String(NrDependencies(f)))-8 then
     Append(str, ", ");
-    Append(str, String(NrDependenciesOfCascade(f)));
+    Append(str, String(NrDependencies(f)));
     Append(str, " dependencies");
   fi;
 
