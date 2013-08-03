@@ -25,9 +25,9 @@
   </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="AsCascade">
+<#GAPDoc Label="AsCoords">
   <ManSection>
-    <Func Name="AsCascade" Arg="transformation"/>
+    <Func Name="AsCoords" Arg="transformation"/>
     <Returns>Coordinatized form of <Arg>transformation</Arg></Returns>
     <Description>
       <Example>
@@ -38,8 +38,9 @@
 
 <#GAPDoc Label="AsPoint">
   <ManSection>
-    <Func Name="AsCascade" Arg="transformation"/>
-    <Returns>Coordinatized form of <Arg>transformation</Arg></Returns>
+    <Oper Name="AsPoint" Arg="coords, compdoms, dom"/>
+    <Oper Name="AsPoint" Arg="coords, cascadesemigroup" Label="AsPointForCascadeProds"/>
+    <Returns></Returns>
     <Description>
       <Example>
       </Example>
