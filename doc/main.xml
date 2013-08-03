@@ -31,6 +31,10 @@
 <#Include SYSTEM="install.xml">
 </Chapter>
 
+<Chapter><Heading>Coordinates and Dependency Functions</Heading>
+<#Include SYSTEM="depfunc.xml">
+</Chapter>
+
 <Chapter><Heading>Cascade Products of Permutation Groups and Transformation Semigroups</Heading>
 <#Include SYSTEM="cascade.xml">
 </Chapter>
