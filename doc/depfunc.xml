@@ -4,6 +4,8 @@ Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependen
 <Section Label="coords"><Heading>Coordinates</Heading>
 Since states are represented by integers, coordinates are lists of integers.
     <#Include Label="ConcreteCoords">
+    <#Include Label="AsCoordinates">
+    <#Include Label="AsPoint">
 </Section>
 
 

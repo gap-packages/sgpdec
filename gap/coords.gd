@@ -11,5 +11,5 @@
 
 DeclareGlobalFunction("Concretize");
 DeclareGlobalFunction("AllConcreteCoords");
-DeclareOperation("AsPoint",[IsDenseList,IsCascadeSemigroup]);
-DeclareOperation("AsCoords",[IsInt,IsCascadeSemigroup]);
+DeclareOperation("AsPoint",[IsList,IsList,IsList]);
+DeclareOperation("AsCoords",[IsPosInt,IsList]);
