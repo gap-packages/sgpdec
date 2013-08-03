@@ -43,7 +43,7 @@ DeclareOperation("AsCascade", [IsTransformation, IsDenseList]);
 DeclareAttribute("DomainOf", IsCascade);
 DeclareAttribute("DependencyFunctionsOf", IsCascade);
 DeclareAttribute("NrComponents",IsCascade);
-DeclareAttribute("NrDependenciesOfCascade",IsCascade);
+DeclareAttribute("NrDependencies",IsCascade);
 DeclareAttribute("ComponentDomains",IsCascade);
 DeclareAttribute("DependencyDomainsOf",IsCascade);
 DeclareAttribute("NrDependencyFuncArgs", IsCascade);
