@@ -57,8 +57,24 @@ Dependency function of depth 2 with 2 dependencies.
   <ManSection> <Heading>Attributes of cascades</Heading>
 <Attr Name="DomainOf" Arg="cascade" Label="CascadeDomainOf"/>
     <Returns>The dependency domain</Returns>
+<Attr Name="ComponentDomains" Arg="cascade" Label="CascadeComponentDomains"/>
+    <Returns>The dependency domain</Returns>
+<Attr Name="DependencyDomainsOf" Arg="cascade" Label="CascadeDependencyDomainsOf"/>
+    <Returns>The dependency domain</Returns>
 <Attr Name="NrDependencies" Arg="cascade" Label="CascadeNrDependencies"/>
     <Returns>The number of non-identity dependency values.</Returns>
+<Attr Name="NrComponents" Arg="cascade" Label="CascadeNrComponents"/>
+    <Returns>The number of building blocks.</Returns>
+<Attr Name="NrDependencyFuncArgs" Arg="cascade" Label="CascadeNrDependencyFuncArgs"/>
+    <Returns>The number of possible coordinate prefixes.</Returns>
+<Attr Name="DependencyFunctionsOf" Arg="cascade" Label="DependencyFunctionsOf"/>
+    <Returns>The dependency functions ordered in a list according to their depth.</Returns>
+<Description>
+Some of the attributes are aggregates of the contained dependency functions' attributes.
+<Example>
+gap>
+</Example>
+</Description>
   </ManSection>
 <#/GAPDoc>
 
