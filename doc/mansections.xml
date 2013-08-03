@@ -78,7 +78,6 @@ gap>
   </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="CreateCascade">
   <ManSection>
     <Func Name="CreateCascade" Arg="dom, compdoms, depfuncs, depdom, type"/>
@@ -108,6 +107,20 @@ gap> ComponentsOfCascadeProduct(Semigroup(c));
 Warning! This may return something bigger as the actual component.
 The current algorithm takes the union of values as the generating set,
 though they may not be multiplied in the cascade product.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ConcreteCoords">
+  <ManSection>
+    <Func Name="Concretize" Arg="domains, abstract_state"/>
+    <Returns>Returns a concrete state matching the abstract state.</Returns>
+    <Func Name="AllConcreteCoords" Arg="domains, abstract_state"/>
+    <Returns>Returns all concrete states matching the abstract state.</Returns>
+    <Description>
+<Example>
+
+</Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
