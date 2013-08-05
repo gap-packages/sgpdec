@@ -18,9 +18,10 @@
 InstallGlobalFunction(Concretize,
 function(domains, abstract_state)
 local l;
-  #first filling up with 0
+  #first filling up with 0 if there are not enough coordinates
   l := ShallowCopy(abstract_state);
   Append(l, ListWithIdenticalEntries(Length(domains) - Size(abstract_state),0));
+  #then replacing all zeroes with a valid coordinate
   l := List([1..Length(l)],
           function(i)
             if l[i]>0 then
@@ -28,16 +29,14 @@ local l;
             else
               return Representative(domains[i]);
             fi;end);
-  #then append the list with some elements
-
   return l;
 end);
 
 InstallGlobalFunction(AllConcreteCoords,
 function(domains, abstract_state)
-local concretestates;
-  concretestates := EnumeratorOfCartesianProduct(
-                            List([1..Size(abstract_state)],
+  #the trick is to return an enumerator domains for 0, singletons for a value
+  return EnumeratorOfCartesianProduct(
+                 List([1..Size(abstract_state)],
     function(x)
       if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
@@ -45,7 +44,6 @@ local concretestates;
         return domains[x];
       fi;
     end));
-  return concretestates;
 end);
 
 ################################################################################
