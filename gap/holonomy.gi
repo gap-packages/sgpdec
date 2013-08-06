@@ -411,3 +411,16 @@ function(HCS)
   od;
   return str;
 end);
+
+# a straightforward implementation for multiplication for sets
+InstallGlobalFunction(SetwiseProduct,
+function(S,T)
+  local ST,s,t;
+  ST := [];
+  for s in S do
+    for t in T do
+      AddSet(ST,s*t);
+    od;
+  od;
+  return ST;
+end);
