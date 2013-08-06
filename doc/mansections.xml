@@ -27,8 +27,8 @@
 
 <#GAPDoc Label="AsCoords">
   <ManSection>
-    <Func Name="AsCoords" Arg="point, domain"/>
-   <Func Name="AsCoords" Arg="point, cascadesemigroup" Label="CascSgpAsCoords"/>
+    <Oper Name="AsCoords" Arg="point, domain"/>
+   <Oper Name="AsCoords" Arg="point, cascadesemigroup" Label="CascSgpAsCoords"/>
     <Returns>Coordinatized form of a <Arg>point</Arg>.</Returns>
     <Description>
 The <Arg>domain</Arg> is the set of coordinate tuples.
@@ -66,6 +66,7 @@ gap> AsCoords(79,hcs);
     <Oper Name="AsPoint" Arg="coords, cascadesemigroup" Label="AsPointForCascadeProds"/>
     <Returns></Returns>
     <Description>
+The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
       <Example>
       </Example>
     </Description>
@@ -166,6 +167,7 @@ though they may not be multiplied in the cascade product.
     <Func Name="AllConcreteCoords" Arg="domains, abstract_state"/>
     <Returns>Returns all concrete states matching the abstract state.</Returns>
     <Description>
+Abstract coordinate tuples  contain unspecified levels, either denoted by a 0 value or simply omitting deeper levels.
 <Example>
 
 </Example>
