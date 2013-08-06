@@ -66,21 +66,23 @@ function(coords, compdoms, dom)
   fi;
 end);
 
-# maps (abstract) coordinates to points
+# maps (abstract) coordinates to points, required info from a cascade sgp
 InstallOtherMethod(AsPoint, "for coordinates in a cascade product",
 [IsList,IsCascadeSemigroup],
-function(coords,cascprod)
-  return AsPoint(coords, ComponentDomains(cascprod), DomainOf(cascprod));
+function(coords,cascsgp)
+  return AsPoint(coords, ComponentDomains(cascsgp), DomainOf(cascsgp));
 end);
 
+# maps points to coordinates
 InstallMethod(AsCoords, "for a point and domain",
 [IsPosInt,IsList],
 function(state,dom)
   return dom[state];
 end);
 
-InstallOtherMethod(AsCoords, "for lifting a point into a cascade shell",
+# maps points to coordinates, required info from a cascade sgp
+InstallOtherMethod(AsCoords, "for a point and cascade semigroup",
 [IsPosInt,IsCascadeSemigroup],
-function(state,cascprod)
-  return DomainOf(cascprod)[state];
+function(state,cascsgp)
+  return DomainOf(cascsgp)[state];
 end);
