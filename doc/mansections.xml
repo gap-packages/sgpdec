@@ -707,3 +707,22 @@ gap> SgpDecFiniteSetDisplayOff();
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+##T
+
+<#GAPDoc Label="TilesOf">
+  <ManSection>
+    <Func Name="TilesOf" Arg="skeleton, finiteset"/>
+    <Returns>The set of tiles of <Arg>finiteset</Arg>.</Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> sk := Skeleton(T5);;
+gap> TilesOf(sk, FiniteSet([1,2,4],5));
+[ {1,2}, {1,4}, {2,4} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+

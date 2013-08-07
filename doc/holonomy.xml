@@ -16,6 +16,8 @@ can create, display and act on finite sets.
 <#Include Label="ImageWitness">
 <#Include Label="EvalWordInSkeleton">
 
+<#Include Label="TilesOf">
+
 </Section>
 
 <Section Label="holonomy"><Heading>Holonomy Decomposition</Heading>
