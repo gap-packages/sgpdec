@@ -66,3 +66,7 @@ NonLinearNonIsomorphicSkeleton :=
   Monoid([ Transformation( [ 1, 3, 1 ] ),
           Transformation( [ 2, 1, 2, 3 ] ),
           Transformation( [ 3, 2, 1, 1 ] ) ]);
+NonLinearNonIsomorphicSkeleton_24 :=
+  Monoid([ Transformation( [ 1, 3, 4, 4 ] ),Transformation( [ 3, 4, 3, 2 ] ) ]);
+NonLinearNonIsomorphicSkeleton_10 :=
+  Monoid([Transformation([1,5,1,2,1]),Transformation([3,1,1,2,3])]);
