@@ -1,12 +1,15 @@
-# true if a if is X-below or X-equivalent, X is L,R or D
-# this is the generic function, see concrete ones below
+# The idea here is to define generic functions, i.e.
+# functions creating functions 
+
+# GREEN'S PREORDERS
+#true if a if is X-below or X-equivalent, X is L,R or D
 IsGreensBelowOrEquiv := function(S,a,b, GreensClassFunc)
   return IsGreensLessThanOrEqual(
                  GreensClassFunc(S,a),
-                 GreensClassFunc(S,b)
-                 );
+                 GreensClassFunc(S,b));
 end;
 
+# concrete preorder functions
 IsGreensDBelowOrEquiv := function(S,a,b)
   return IsGreensBelowOrEquiv(S,a,b,GreensDClassOfElement);
 end;
@@ -45,6 +48,7 @@ CheckGreenstoSubdImplication := function(S,GreensBelowOrEquivFunc)
   return true;
 end;
 
+#concrete
 CheckDtoSubdImplication := function(S)
   return CheckGreenstoSubdImplication(S,IsGreensDBelowOrEquiv);
 end;
@@ -56,3 +60,9 @@ end;
 CheckLtoSubdImplication := function(S)
   return CheckGreenstoSubdImplication(S,IsGreensLBelowOrEquiv);
 end;
+
+#examples
+NonLinearNonIsomorphicSkeleton :=
+  Monoid([ Transformation( [ 1, 3, 1 ] ),
+          Transformation( [ 2, 1, 2, 3 ] ),
+          Transformation( [ 3, 2, 1, 1 ] ) ]);
