@@ -20,7 +20,7 @@ DClasses2Skeleton := function(M)
   local sk,dcls;
   sk := Skeleton(M);
   dcls := List(DClasses(M),ImagesInDClass);
-  Perform(AsSortedList(Difference(SkeletonClasses(sk),
+  Perform(AsSortedList(Difference(SubductionClasses(sk),
           NonImageSingletonClasses(sk))), ViewObj);
   Print("\n\n");
   Perform(AsSortedList(dcls),ViewObj);
