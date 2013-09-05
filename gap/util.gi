@@ -71,3 +71,17 @@ function(numofbytes)
     return Concatenation(FormattedFloat(Float(numofbytes/(1024^3))),"GB");
   fi;
 end);
+
+#returns the readable string representation of the number of bytes
+InstallGlobalFunction(FormattedBigNumberString,
+function(num)
+  if num < 1000 then
+    return String(num);
+  elif num >= 1000 and num < 1000^2 then
+    return Concatenation(String(Int(Round(Float(num/1000)))),"K");
+  elif num >= 1000^2 and num < 1000^3 then
+    return Concatenation(String(Int(Round(Float(num/(1000^2))))),"M");
+  elif num >= 1000^3 then
+    return Concatenation(String(Int(Round(Float(num/(1000^3))))),"B");
+  fi;
+end);

@@ -10,4 +10,5 @@
 DeclareGlobalFunction("FormattedFloat");
 DeclareGlobalFunction("FormattedPercentageString");
 DeclareGlobalFunction("FormattedMemoryString");
+DeclareGlobalFunction("FormattedBigNumberString");
 DeclareGlobalFunction("FormattedTimeString");
