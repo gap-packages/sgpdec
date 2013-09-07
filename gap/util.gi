@@ -85,7 +85,7 @@ function(num)
     str := String(num);
   else    
     for i in [1..Size(codes)] do
-      n := Int(Round(Float(num/(1000^i)))) mod 1000 ;
+      n := Int(Float(num/(1000^i))) mod 1000 ;
       if n <> 0 then
         str := Concatenation(String(n), codes[i]," ",str);
       fi;
