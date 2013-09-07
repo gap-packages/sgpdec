@@ -72,16 +72,25 @@ function(numofbytes)
   fi;
 end);
 
-#returns the readable string representation of the number of bytes
+# more readable format for big numbers
+# when bigger then a thousand only thousands are displayed
+# beyond 1000 septillions it gives up pretty printing
 InstallGlobalFunction(FormattedBigNumberString,
 function(num)
-  if num < 1000 then
-    return String(num);
-  elif num >= 1000 and num < 1000^2 then
-    return Concatenation(String(Int(Round(Float(num/1000)))),"K");
-  elif num >= 1000^2 and num < 1000^3 then
-    return Concatenation(String(Int(Round(Float(num/(1000^2))))),"M");
-  elif num >= 1000^3 then
-    return Concatenation(String(Int(Round(Float(num/(1000^3))))),"B");
+  local str,codes,i,n;  
+  str := "";
+  codes := ["K","M","B","T","Q","QUI","SEX","SEP"];
+  #K, million, billion, trillion, quadrillion, quantillion, sextillion,septillion
+  if num < 1000 or num > 1000^(Size(codes)+1) then
+    str := String(num);
+  else    
+    for i in [1..Size(codes)] do
+      n := Int(Round(Float(num/(1000^i)))) mod 1000 ;
+      if n <> 0 then
+        str := Concatenation(String(n), codes[i]," ",str);
+      fi;
+    od;
   fi;
+  NormalizeWhitespace(str);
+  return str;
 end);
