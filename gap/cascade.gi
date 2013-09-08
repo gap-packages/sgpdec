@@ -510,7 +510,7 @@ function(ct)
     #coordsnames are created like n_#1_#2_...._#n
     #putting the proper label there as we are at the end of the coordinates
     vertexlabels.(coordsname):=Concatenation(livelabelprefix,
-                                       CompactNotation(val),"\"]");
+                                       SimplerCompactNotation(val),"\"]");
   od;
   #now putting the gray edges for the remaining vertices
   dom := DomainOf(ct);
