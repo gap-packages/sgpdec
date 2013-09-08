@@ -448,15 +448,15 @@ end);
 # drawing #####################################################################
 ################################################################################
 InstallGlobalFunction(DotCascade,
-function(ct)
-  local str, out,
+function(arg)
+  local ct,str, out,
         vertices, vertexlabels,
         edges,
         dom,
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
         emptyvlabel,greyedgelabelprefix,
-        livevlabelprefix,livelabelprefix, edgeDB,arg, val;
+        livevlabelprefix,livelabelprefix, edgeDB,depargs, val;
   #-----------------------------------------------------------------------------
   # printing the graph data to the stream
   DotPrintGraph := function(outstream, vs, vlabels,es)
@@ -474,6 +474,7 @@ function(ct)
     od;
   end;
   #-----------------------------------------------------------------------------
+  ct := arg[1];
   str := "";
   edgeDB := []; # to keep track of the already drawn black edges
   #no label vertex
@@ -483,6 +484,9 @@ function(ct)
   livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
+  if IsBound(arg[2]) then
+    PrintTo(out,"orig [label=\"", arg[2] ,"\",color=\"black\"]\n");        
+  fi;
   PrintTo(out," node", emptyvlabel, ";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
   vertices := []; #as strings
@@ -491,12 +495,12 @@ function(ct)
   #first we draw the intereseting paths, the ones that are in a nontrivial dep
   deps := DependenciesOfCascade(ct);
   for dep in deps do
-    arg := dep[1];
+    depargs := dep[1];
     val := dep[2];
     coordsname := "n";
     AddSet(vertices, coordsname);
-    for level in [1..Size(arg)] do
-      coord := arg[level];
+    for level in [1..Size(depargs)] do
+      coord := depargs[level];
       newcoordsname := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
                       String(coord),
