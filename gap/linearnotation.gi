@@ -147,6 +147,16 @@ function(t)
   return str;
 end);
 
+#constant maps are further simplified
+InstallGlobalFunction(SimplerCompactNotation,
+ function(t)
+ if RankOfTransformation(t) = 1 then
+  return String(1^t);
+ else
+  return LinearNotation(t);
+ fi;
+end);
+
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(LinearNotation,
 function(t)
