@@ -484,10 +484,6 @@ function(arg)
   livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
-  if IsBound(arg[2]) then
-    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
-    PrintTo(out,"orig->n [style=invis]\n");
-  fi;
   PrintTo(out," node", emptyvlabel, ";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
   vertices := []; #as strings
@@ -539,8 +535,13 @@ function(arg)
       fi;
     until level > Size(dep);
   od;
-  #finally printing the graph data
+  #printing the graph data
   DotPrintGraph(out, vertices, vertexlabels, edges);
+  #finally printing the top label if needed
+  if IsBound(arg[2]) then
+    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
+    PrintTo(out,"orig->n [style=invis]\n");
+  fi;
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
