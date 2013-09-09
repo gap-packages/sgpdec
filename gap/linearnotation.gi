@@ -150,7 +150,7 @@ end);
 #constant maps are further simplified
 InstallGlobalFunction(SimplerCompactNotation,
  function(t)
- if RankOfTransformation(t) = 1 then
+ if IsTransformation(t) and RankOfTransformation(t) = 1 then
   return String(1^t);
  else
   return CompactNotation(t);
