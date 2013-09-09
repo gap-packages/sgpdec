@@ -485,7 +485,8 @@ function(arg)
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
   if IsBound(arg[2]) then
-    PrintTo(out,"orig [label=\"", arg[2] ,"\",color=\"black\"]\n");        
+    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
+    PrintTo(out,"orig->n [style=invis]\n");
   fi;
   PrintTo(out," node", emptyvlabel, ";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
