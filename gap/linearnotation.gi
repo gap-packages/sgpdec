@@ -153,7 +153,7 @@ InstallGlobalFunction(SimplerCompactNotation,
  if RankOfTransformation(t) = 1 then
   return String(1^t);
  else
-  return LinearNotation(t);
+  return CompactNotation(t);
  fi;
 end);
 
