@@ -1,6 +1,7 @@
 # read Implementation files
 
 ReadPackage("SgpDec","/makedoc.g");
+ReadPackage("SgpDec","/gap/viz.gi");
 
 ReadPackage("SgpDec","/gap/disjointuniongroups.gi");
 ReadPackage("SgpDec","/gap/finiteset.gi");
