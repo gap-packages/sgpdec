@@ -444,7 +444,6 @@ function(c)
   return;
 end);
 
-
 ################################################################################
 # drawing #####################################################################
 ################################################################################
@@ -458,19 +457,13 @@ function(arg)
         dom,
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord,
-        emptyvlabel,greyedgelabelprefix,
-        livevlabelprefix,livelabelprefix, edgeDB,depargs, val;
+        edgeDB,depargs, val;
   ct := arg[1];
   str := "";
   edgeDB := []; # to keep track of the already drawn black edges
-  #no label vertex
-  emptyvlabel :=
-    " [color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
-  greyedgelabelprefix := " [color=grey,label=\"";
-  livelabelprefix := " [color=black,label=\"";
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
-  PrintTo(out," node", emptyvlabel, ";\n");
+  PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
   vertices := []; #as strings
   vertexlabels := rec();#using the record as a lookup table
@@ -487,7 +480,7 @@ function(arg)
       coord := depargs[level];
       newcoordsname := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newcoordsname);
-      edgelabels.(edge) := Concatenation(livelabelprefix,
+      edgelabels.(edge) := Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,
                                    String(coord),
                                    "\",fontcolor=black]");
       AddSet(edgeDB, [coordsname,newcoordsname]);
@@ -498,7 +491,7 @@ function(arg)
     od;
     #coordsnames are created like n_#1_#2_...._#n
     #putting the proper label there as we are at the end of the coordinates
-    vertexlabels.(coordsname):=Concatenation(livelabelprefix,
+    vertexlabels.(coordsname):=Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,
                                        SimplerCompactNotation(val),"\"]");
   od;
   #now putting the gray edges for the remaining vertices
@@ -514,7 +507,7 @@ function(arg)
         newcoordsname := Concatenation(coordsname,"_",String(coord));
         if not ([coordsname, newcoordsname] in edgeDB) then
           edge := Concatenation(coordsname ," -> ", newcoordsname);
-          edgelabels.(edge) := Concatenation(greyedgelabelprefix,
+          edgelabels.(edge) := Concatenation(SGPDEC_DOT_GREYLABELPREFIX,
                                        String(coord),
                                        "\"]");
           AddSet(edges, edge);
