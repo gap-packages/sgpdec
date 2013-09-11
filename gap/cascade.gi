@@ -467,7 +467,7 @@ InstallGlobalFunction(DotCascade,
 function(arg)
   local ct,str, out,
         vertices, vertexlabels,
-        edges,
+        edges, edgelabels,
         dom,
         deps, coordsname,
         level, newcoordsname, edge, i, dep, coord,
@@ -488,6 +488,7 @@ function(arg)
   vertices := []; #as strings
   vertexlabels := rec();#using the record as a lookup table
   edges := []; #as strings
+  edgelabels := rec();#using the record as a lookup table
   #first we draw the intereseting paths, the ones that are in a nontrivial dep
   deps := DependenciesOfCascade(ct);
   for dep in deps do
@@ -498,9 +499,10 @@ function(arg)
     for level in [1..Size(depargs)] do #going through one branch
       coord := depargs[level];
       newcoordsname := Concatenation(coordsname,"_",String(coord));
-      edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
-                      String(coord),
-                      "\",fontcolor=black]");
+      edge := Concatenation(coordsname ," -> ", newcoordsname);
+      edgelabels.(edge) := Concatenation(livelabelprefix,
+                                   String(coord),
+                                   "\",fontcolor=black]");
       AddSet(edgeDB, [coordsname,newcoordsname]);
       AddSet(edges, edge);
       #we can now forget about the
@@ -524,10 +526,10 @@ function(arg)
         coord := dep[level];
         newcoordsname := Concatenation(coordsname,"_",String(coord));
         if not ([coordsname, newcoordsname] in edgeDB) then
-          edge := Concatenation(coordsname ," -> ", newcoordsname,
-                          greyedgelabelprefix,
-                          String(coord),
-                          "\"]");
+          edge := Concatenation(coordsname ," -> ", newcoordsname);
+          edgelabels.(edge) := Concatenation(greyedgelabelprefix,
+                                       String(coord),
+                                       "\"]");
           AddSet(edges, edge);
         fi;
         coordsname := newcoordsname;
@@ -536,7 +538,7 @@ function(arg)
   od;
   #printing the graph data
   DotLabelledGraphParts(out, vertices, vertexlabels);
-  DotLabelledGraphParts(out, edges, rec());
+  DotLabelledGraphParts(out, edges, edgelabels);
   #finally printing the top label if needed
   if IsBound(arg[2]) then
     PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
