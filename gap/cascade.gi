@@ -444,9 +444,25 @@ function(c)
   return;
 end);
 
+  #-----------------------------------------------------------------------------
+  # printing the graph data to the stream
+DotLabelledGraphParts := function(outstream, objects, labels)
+local i;
+  for i in [1..Size(objects)] do
+    if IsBound(labels.(objects[i])) then
+      AppendTo(outstream, objects[i]," ",labels.(objects[i]),";\n");
+    else
+      AppendTo(outstream, objects[i],"\n");
+    fi;
+  od;
+end;
+  #-----------------------------------------------------------------------------
+
 ################################################################################
 # drawing #####################################################################
 ################################################################################
+# 1: a cascade
+# 2(opt): some extra info string, that will be  printed in a box
 InstallGlobalFunction(DotCascade,
 function(arg)
   local ct,str, out,
@@ -454,26 +470,9 @@ function(arg)
         edges,
         dom,
         deps, coordsname,
-        level, newcoordsname, edge, i, dep, coord, DotPrintGraph,
+        level, newcoordsname, edge, i, dep, coord,
         emptyvlabel,greyedgelabelprefix,
         livevlabelprefix,livelabelprefix, edgeDB,depargs, val;
-  #-----------------------------------------------------------------------------
-  # printing the graph data to the stream
-  DotPrintGraph := function(outstream, vs, vlabels,es)
-    local i;
-    #Print(vlabels);
-    for i in [1..Size(vs)] do
-      if IsBound(vlabels.(vs[i])) then
-        AppendTo(outstream, vs[i]," ",vlabels.(vs[i]),";\n");
-      else
-        AppendTo(outstream, vs[i],"\n");
-      fi;
-    od;
-    for i in [1..Size(es)] do
-      AppendTo(outstream, es[i],";\n");
-    od;
-  end;
-  #-----------------------------------------------------------------------------
   ct := arg[1];
   str := "";
   edgeDB := []; # to keep track of the already drawn black edges
@@ -496,7 +495,7 @@ function(arg)
     val := dep[2];
     coordsname := "n";
     AddSet(vertices, coordsname);
-    for level in [1..Size(depargs)] do
+    for level in [1..Size(depargs)] do #going through one branch
       coord := depargs[level];
       newcoordsname := Concatenation(coordsname,"_",String(coord));
       edge := Concatenation(coordsname ," -> ", newcoordsname,livelabelprefix,
@@ -536,7 +535,8 @@ function(arg)
     until level > Size(dep);
   od;
   #printing the graph data
-  DotPrintGraph(out, vertices, vertexlabels, edges);
+  DotLabelledGraphParts(out, vertices, vertexlabels);
+  DotLabelledGraphParts(out, edges, rec());
   #finally printing the top label if needed
   if IsBound(arg[2]) then
     PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
