@@ -444,19 +444,6 @@ function(c)
   return;
 end);
 
-  #-----------------------------------------------------------------------------
-  # printing the graph data to the stream
-DotLabelledGraphParts := function(outstream, objects, labels)
-local i;
-  for i in [1..Size(objects)] do
-    if IsBound(labels.(objects[i])) then
-      AppendTo(outstream, objects[i]," ",labels.(objects[i]),";\n");
-    else
-      AppendTo(outstream, objects[i],"\n");
-    fi;
-  od;
-end;
-  #-----------------------------------------------------------------------------
 
 ################################################################################
 # drawing #####################################################################
@@ -537,8 +524,8 @@ function(arg)
     until level > Size(dep);
   od;
   #printing the graph data
-  DotLabelledGraphParts(out, vertices, vertexlabels);
-  DotLabelledGraphParts(out, edges, edgelabels);
+  SGPDEC_DotLabelledGraphParts(out, vertices, vertexlabels);
+  SGPDEC_DotLabelledGraphParts(out, edges, edgelabels);
   #finally printing the top label if needed
   if IsBound(arg[2]) then
     PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
