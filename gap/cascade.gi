@@ -527,3 +527,65 @@ function(arg)
   CloseStream(out);
   return str;
 end);
+
+# 1: a cascade
+# 2(opt): some extra info string, that will be  printed in a box
+InstallGlobalFunction(DotCascade2,
+function(arg)
+  local str, out,
+        vertices, vertexlabels,
+        edges, edgelabels,
+        dep, coordsname,
+        level, newcoordsname, edge, coord,
+        edgeDB,depargs, recdraw, depfuncs, n, compdoms;
+  #-----------------------------------------------------------------------------
+  recdraw := function(coordprefix, nodename,inscope)
+    local l,i,nontrivial,childname,val;
+    nontrivial := false;
+    l := Length(coordprefix);
+    val := coordprefix^depfuncs[l+1];
+    if IsOne(val) then
+      if inscope then
+      PrintTo(out,Concatenation(nodename,
+              SGPDEC_DOT_BLACKLABELPREFIX,"\"];\n"));
+      fi;
+      #otherwise do nothing, empty gray label is default
+    else
+      PrintTo(out,Concatenation(nodename,
+              SGPDEC_DOT_BLACKLABELPREFIX,
+              SimplerCompactNotation(val),"\"];\n"));
+      nontrivial := true;
+    fi;
+    if l+1 = n then return; fi;
+    for i in compdoms[l+1] do
+      #drawing
+      childname := Concatenation(nodename,"_", String(i));
+      if (inscope or nontrivial) then
+        PrintTo(out,Concatenation(nodename ," -- ", childname,
+                SGPDEC_DOT_BLACKLABELPREFIX, String(i),"\"];\n"));
+      else
+        PrintTo(out,Concatenation(nodename ," -- ", childname,
+                SGPDEC_DOT_GREYLABELPREFIX, String(i),"\",fontcolor=grey];\n"));
+      fi;
+      recdraw(Concatenation(coordprefix, [i]), childname,nontrivial or inscope);
+    od;
+  end;
+  #-----------------------------------------------------------------------------
+  depfuncs := DependencyFunctionsOf(arg[1]);
+  compdoms := ComponentDomains(arg[1]);
+  n := Size(depfuncs);
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"graph ct{\n");
+  PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
+  PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=black]", ";\n");
+  recdraw([],"n",false);
+  #finally printing the top label if needed
+  if IsBound(arg[2]) then
+    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
+    PrintTo(out,"orig->n [style=invis]\n");
+  fi;
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
