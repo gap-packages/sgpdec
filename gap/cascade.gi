@@ -512,3 +512,51 @@ function(arg)
   CloseStream(out);
   return str;
 end);
+
+# 1: a cascade
+# 2(opt): some extra info string, that will be  printed in a box
+InstallGlobalFunction(DotCascadeAction,
+function(arg)
+  local str, out,
+        vertices, vertexlabels,
+        edges, edgelabels,
+        dep, coordsname,
+        level, newcoordsname, edge, coord,
+        edgeDB,depargs, recdraw, depfuncs, n, compdoms,
+        EMPTYVERTEXLABEL,GREYLABELPREFIX,BLACKLABELPREFIX;
+  EMPTYVERTEXLABEL:="[color=black,width=0.1,height=0.1,label=\"\"]";
+  BLACKLABELPREFIX := " [color=black,label=\"";
+  #-----------------------------------------------------------------------------
+  recdraw := function(coordprefix, nodename)
+    local l,i,childname,val;
+    l := Length(coordprefix);
+    val := coordprefix^depfuncs[l+1];
+    PrintTo(out,Concatenation(nodename,EMPTYVERTEXLABEL,";\n"));
+    if l+1 = n then return; fi;
+    for i in compdoms[l+1] do
+      #drawing
+      childname := Concatenation(nodename,"_", String(i));
+      PrintTo(out,Concatenation(nodename ," -- ", childname,
+              BLACKLABELPREFIX, String(i^val),"\"];\n"));
+      recdraw(Concatenation(coordprefix, [i]), childname);
+    od;
+  end;
+  #-----------------------------------------------------------------------------
+  depfuncs := DependencyFunctionsOf(arg[1]);
+  compdoms := ComponentDomains(arg[1]);
+  n := Size(depfuncs);
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"graph ct{\n");
+  PrintTo(out," node",EMPTYVERTEXLABEL,";\n");
+  PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=black]", ";\n");
+  recdraw([],"n");
+  #finally printing the top label if needed
+  if IsBound(arg[2]) then
+    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"];\n");
+    PrintTo(out,"orig--n [style=invis];\n");
+  fi;
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
