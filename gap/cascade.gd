@@ -57,4 +57,3 @@ DeclareGlobalFunction("OnCoordinates");
 
 #drawing
 DeclareGlobalFunction("DotCascade");
-DeclareGlobalFunction("DotCascade2");
