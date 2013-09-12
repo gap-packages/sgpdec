@@ -460,7 +460,7 @@ function(arg)
   ct := arg[1];
   str := "";
   out := OutputTextString(str,true);
-  PrintTo(out,"digraph ct{\n");
+  PrintTo(out,"graph ct{\n");
   PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
   vertices := []; #as strings
@@ -477,13 +477,15 @@ function(arg)
     for level in [1..Size(depargs)] do #going through one branch
       coord := depargs[level];
       newcoordsname := Concatenation(coordsname,"_",String(coord));
-      edge := Concatenation(coordsname ," -> ", newcoordsname);
+      edge := Concatenation(coordsname ," -- ", newcoordsname);
       edgelabels.(edge) := Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,
                                    String(coord),
                                    "\",fontcolor=black]");
       AddSet(edgeDB, [coordsname,newcoordsname]);
       AddSet(edges, edge);
-      #we can now forget about the
+      vertexlabels.(coordsname):=
+        Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,"\"]");
+      #we can now forget about the old name
       coordsname := newcoordsname;
       AddSet(vertices, coordsname);
     od;
@@ -503,7 +505,7 @@ function(arg)
         coord := dep[level];
         newcoordsname := Concatenation(coordsname,"_",String(coord));
         if not ([coordsname, newcoordsname] in edgeDB) then
-          edge := Concatenation(coordsname ," -> ", newcoordsname);
+          edge := Concatenation(coordsname ," -- ", newcoordsname);
           edgelabels.(edge) := Concatenation(SGPDEC_DOT_GREYLABELPREFIX,
                                        String(coord),
                                        "\"]");
