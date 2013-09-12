@@ -1,5 +1,5 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.7.23">
+##  <!ENTITY VERSION "0.7.24">
 ##  <!ENTITY COPYRIGHTYEARS "2008-13">
 ##  <#/GAPDoc>
 
@@ -9,7 +9,7 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.7.23",
+Version := "0.7.24",
 
 Date := "12/09/2013",
 
