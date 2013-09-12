@@ -445,99 +445,22 @@ function(c)
 end);
 
 ################################################################################
-# drawing #####################################################################
+## drawing #####################################################################
 ################################################################################
 # 1: a cascade
 # 2(opt): some extra info string, that will be  printed in a box
 InstallGlobalFunction(DotCascade,
-function(arg)
-  local ct,str, out,
-        vertices, vertexlabels,
-        edges, edgelabels,
-        dep, coordsname,
-        level, newcoordsname, edge, coord,
-        edgeDB,depargs, val;
-  ct := arg[1];
-  str := "";
-  out := OutputTextString(str,true);
-  PrintTo(out,"graph ct{\n");
-  PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
-  PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=grey]", ";\n");
-  vertices := []; #as strings
-  vertexlabels := rec();#using the record as a lookup table
-  edges := []; #as strings
-  edgelabels := rec();#using the record as a lookup table
-  edgeDB := []; # to keep track of the already drawn black edges
-  #first we draw the intereseting paths, the ones that are in a nontrivial dep
-  for dep in DependenciesOfCascade(ct) do
-    depargs := dep[1];
-    val := dep[2];
-    coordsname := "n";
-    AddSet(vertices, coordsname);
-    for level in [1..Size(depargs)] do #going through one branch
-      coord := depargs[level];
-      newcoordsname := Concatenation(coordsname,"_",String(coord));
-      edge := Concatenation(coordsname ," -- ", newcoordsname);
-      edgelabels.(edge) := Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,
-                                   String(coord),
-                                   "\",fontcolor=black]");
-      AddSet(edgeDB, [coordsname,newcoordsname]);
-      AddSet(edges, edge);
-      vertexlabels.(coordsname):=
-        Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,"\"]");
-      #we can now forget about the old name
-      coordsname := newcoordsname;
-      AddSet(vertices, coordsname);
-    od;
-    #coordsnames are created like n_#1_#2_...._#n
-    #putting the proper label there as we are at the end of the coordinates
-    vertexlabels.(coordsname):=Concatenation(SGPDEC_DOT_BLACKLABELPREFIX,
-                                       SimplerCompactNotation(val),"\"]");
-  od;
-  #now putting the gray edges for the remaining vertices
-  for dep in DomainOf(ct) do
-    level := 0;
-    coordsname := "n";
-    repeat
-      AddSet(vertices, coordsname);
-      level := level + 1;
-      if level < Size(dep) then
-        coord := dep[level];
-        newcoordsname := Concatenation(coordsname,"_",String(coord));
-        if not ([coordsname, newcoordsname] in edgeDB) then
-          edge := Concatenation(coordsname ," -- ", newcoordsname);
-          edgelabels.(edge) := Concatenation(SGPDEC_DOT_GREYLABELPREFIX,
-                                       String(coord),
-                                       "\"]");
-          AddSet(edges, edge);
-        fi;
-        coordsname := newcoordsname;
-      fi;
-    until level > Size(dep);
-  od;
-  #printing the graph data
-  SGPDEC_DotLabelledGraphParts(out, vertices, vertexlabels);
-  SGPDEC_DotLabelledGraphParts(out, edges, edgelabels);
-  #finally printing the top label if needed
-  if IsBound(arg[2]) then
-    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
-    PrintTo(out,"orig->n [style=invis]\n");
-  fi;
-  AppendTo(out,"}\n");
-  CloseStream(out);
-  return str;
-end);
-
-# 1: a cascade
-# 2(opt): some extra info string, that will be  printed in a box
-InstallGlobalFunction(DotCascade2,
 function(arg)
   local str, out,
         vertices, vertexlabels,
         edges, edgelabels,
         dep, coordsname,
         level, newcoordsname, edge, coord,
-        edgeDB,depargs, recdraw, depfuncs, n, compdoms;
+        edgeDB,depargs, recdraw, depfuncs, n, compdoms,
+        EMPTYVERTEXLABEL,GREYLABELPREFIX,BLACKLABELPREFIX;
+  EMPTYVERTEXLABEL:="[color=grey,width=0.1,height=0.1,fontsize=11,label=\"\"]";
+  GREYLABELPREFIX := " [color=grey,label=\"";
+  BLACKLABELPREFIX := " [color=black,label=\"";
   #-----------------------------------------------------------------------------
   recdraw := function(coordprefix, nodename,inscope)
     local l,i,nontrivial,childname,val;
@@ -547,12 +470,12 @@ function(arg)
     if IsOne(val) then
       if inscope then
       PrintTo(out,Concatenation(nodename,
-              SGPDEC_DOT_BLACKLABELPREFIX,"\"];\n"));
+              BLACKLABELPREFIX,"\"];\n"));
       fi;
       #otherwise do nothing, empty gray label is default
     else
       PrintTo(out,Concatenation(nodename,
-              SGPDEC_DOT_BLACKLABELPREFIX,
+              BLACKLABELPREFIX,
               SimplerCompactNotation(val),"\"];\n"));
       nontrivial := true;
     fi;
@@ -562,10 +485,10 @@ function(arg)
       childname := Concatenation(nodename,"_", String(i));
       if (inscope or nontrivial) then
         PrintTo(out,Concatenation(nodename ," -- ", childname,
-                SGPDEC_DOT_BLACKLABELPREFIX, String(i),"\"];\n"));
+                BLACKLABELPREFIX, String(i),"\"];\n"));
       else
         PrintTo(out,Concatenation(nodename ," -- ", childname,
-                SGPDEC_DOT_GREYLABELPREFIX, String(i),"\",fontcolor=grey];\n"));
+                GREYLABELPREFIX, String(i),"\",fontcolor=grey];\n"));
       fi;
       recdraw(Concatenation(coordprefix, [i]), childname,nontrivial or inscope);
     od;
@@ -577,7 +500,7 @@ function(arg)
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"graph ct{\n");
-  PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
+  PrintTo(out," node",EMPTYVERTEXLABEL,";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=black]", ";\n");
   recdraw([],"n",false);
   #finally printing the top label if needed
