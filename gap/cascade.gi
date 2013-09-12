@@ -530,9 +530,9 @@ function(arg)
   recdraw := function(coordprefix, nodename)
     local l,i,childname,val;
     l := Length(coordprefix);
+    if l = n then return; fi;
     val := coordprefix^depfuncs[l+1];
     PrintTo(out,Concatenation(nodename,EMPTYVERTEXLABEL,";\n"));
-    if l+1 = n then return; fi;
     for i in compdoms[l+1] do
       #drawing
       childname := Concatenation(nodename,"_", String(i));
