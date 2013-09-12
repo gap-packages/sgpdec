@@ -1,4 +1,4 @@
-hcs := HolonomyCascadeSemigroup(SingularTransformationSemigroup(3));
+hcs := HolonomyCascadeSemigroup(SingularSemigroup(3));
 isom := IsomorphismTransformationSemigroup(hcs);
 fhcs := Range(isom);
 surhom := HomomorphismTransformationSemigroup(hcs);
