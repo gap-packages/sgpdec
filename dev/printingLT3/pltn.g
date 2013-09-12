@@ -1,4 +1,4 @@
-hcs := HolonomyCascadeSemigroup(T3);
+hcs := HolonomyCascadeSemigroup(SingularTransformationSemigroup(3));
 isom := IsomorphismTransformationSemigroup(hcs);
 fhcs := Range(isom);
 surhom := HomomorphismTransformationSemigroup(hcs);
@@ -19,5 +19,5 @@ for c in hcs do
   #Splash(DotCascade(c,s));
   filename := Concatenation(ilf,"casc");
   RemoveCharacters(filename,"[],");
-  PrintTo(filename,DotCascade(c,s));
+  PrintTo(filename,DotCascade2(c,s));
 od;

@@ -582,8 +582,8 @@ function(arg)
   recdraw([],"n",false);
   #finally printing the top label if needed
   if IsBound(arg[2]) then
-    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"]\n");
-    PrintTo(out,"orig->n [style=invis]\n");
+    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"];\n");
+    PrintTo(out,"orig->n [style=invis];\n");
   fi;
   AppendTo(out,"}\n");
   CloseStream(out);
