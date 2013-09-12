@@ -454,13 +454,11 @@ function(arg)
   local ct,str, out,
         vertices, vertexlabels,
         edges, edgelabels,
-        dom,
-        deps, coordsname,
-        level, newcoordsname, edge, i, dep, coord,
+        dep, coordsname,
+        level, newcoordsname, edge, coord,
         edgeDB,depargs, val;
   ct := arg[1];
   str := "";
-  edgeDB := []; # to keep track of the already drawn black edges
   out := OutputTextString(str,true);
   PrintTo(out,"digraph ct{\n");
   PrintTo(out," node",SGPDEC_DOT_EMPTYVERTEXLABEL,";\n");
@@ -469,9 +467,9 @@ function(arg)
   vertexlabels := rec();#using the record as a lookup table
   edges := []; #as strings
   edgelabels := rec();#using the record as a lookup table
+  edgeDB := []; # to keep track of the already drawn black edges
   #first we draw the intereseting paths, the ones that are in a nontrivial dep
-  deps := DependenciesOfCascade(ct);
-  for dep in deps do
+  for dep in DependenciesOfCascade(ct) do
     depargs := dep[1];
     val := dep[2];
     coordsname := "n";
@@ -495,8 +493,7 @@ function(arg)
                                        SimplerCompactNotation(val),"\"]");
   od;
   #now putting the gray edges for the remaining vertices
-  dom := DomainOf(ct);
-  for dep in dom do
+  for dep in DomainOf(ct) do
     level := 0;
     coordsname := "n";
     repeat
