@@ -1,3 +1,5 @@
+0.7.23
+	DotCascade revised, highlighting moved branches properly. Added FormattedBigNumberString, SimplerCompactNotation. Working on the documentation.
 0.7.22
 	Improved DotSkeleton. Cascade constructor now accepts list of domain sizes. Dep2DepFuncs renamed to DependencyFunctions. Coordinate action and cascade multiplication now have global functions and installed methods.
 0.7.21
