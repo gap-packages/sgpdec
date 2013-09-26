@@ -215,8 +215,8 @@ function(f, compsordomsizes)
   fi;
   #sanity check on the domain sizes
   if not ForAll(domsizes, IsPosInt)
-     or DegreeOfTransformation(f)<>Product(domsizes) then
-    Print("#W number of points not equal to number of coordinate values\n");
+     or DegreeOfTransformation(f)>Product(domsizes) then
+    Print("#W number of points bigger than the number of coordinate values\n");
     return fail;
   fi;
   #the actual algorithm#########################################################
