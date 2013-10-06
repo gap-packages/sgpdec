@@ -174,13 +174,17 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     for set in TilesOf(sk,class) do
       AppendTo(out,"\"",TrueValuePositionsBlistString(class,states),
               "\" -> \"",TrueValuePositionsBlistString(set,states),"\"\n");
-    witness := ImageWitness(sk,set,class); 
-        if  Size(symbols) > 0 and not witness = fail then
-         tmpstring := Concatenation(List(witness,x->String(symbols[x])));
-         AppendTo(out,"[label=\"", tmpstring, "\"]\n");
+      witness := ImageWitness(sk,set,class);
+      if witness = fail then
+        AppendTo(out,"[style=\"dotted\"]\n");
+      else
+        if  Size(symbols) > 0 then
+          tmpstring := Concatenation(List(witness,x->String(symbols[x])));
+          AppendTo(out,"[label=\"", tmpstring, "\"]\n");
         else
-         AppendTo(out,"[label=\"", String(witness), "\"]\n");
+          AppendTo(out,"[label=\"", String(witness), "\"]\n");
         fi; 
+      fi;
     od;
   od;
   AppendTo(out,"}\n");
