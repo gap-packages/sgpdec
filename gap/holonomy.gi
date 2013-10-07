@@ -26,14 +26,12 @@ end;
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-  sets := EmptyPlist(Length(ints)); #to allocate the right size
+  sets := ListWithIdenticalEntries(Length(ints),0); #default: 0 (jumped over)
   for level in [1..Length(ints)] do
-      if ints[level] = 0 then
-          Add(sets,0); #zero if the level is jumped over
-        else
-          # the set at the position coded by the integer
-          Add(sets,CoordVals(sk)[level][ints[level]]);
-      fi;
+    if ints[level] > 0 then
+      # the set at the position coded by the integer
+      sets[level] := CoordVals(sk)[level][ints[level]];
+    fi;
   od;
   return sets;
 end);
@@ -43,15 +41,13 @@ InstallGlobalFunction(HolonomySets2Ints,
 function(sk, sets)
 local set,level,ints,slot;
   set := BaseSet(sk);
-  ints := EmptyPlist(Length(sets)); #to allocate the right size
+  ints := ListWithIdenticalEntries(Length(sets),0); #default: 0 (jumped over)
   for level in [1..Length(sets)] do
-    if sets[level] = 0 then
-      Add(ints,0);
-    else
+    if sets[level] <> 0 then
       slot := GetSlot(set, sk); #TODO how can we make sure about the right slot?
-      Add(ints,Position(CoordVals(sk)[level],
-              sets[level],
-              Shifts(sk)[level][slot]));
+      ints[level] := Position(CoordVals(sk)[level],
+                             sets[level],
+                             Shifts(sk)[level][slot]);
       set := sets[level];
     fi;
   od;
