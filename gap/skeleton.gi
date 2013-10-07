@@ -68,7 +68,7 @@ DescendingSizeSorter := function(v,w)
 end;
 MakeReadOnlyGlobal("DescendingSizeSorter");
 
-# the image set extended with singletons and ordered
+# the image set extended with singletons and ordered by descending size
 InstallMethod(ExtendedImageSet, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local imageset;
@@ -78,13 +78,12 @@ function(sk)
   if not (BaseSet(sk) in ForwardOrbit(sk)) then
     Add(imageset,BaseSet(sk),1); #adding it as first
   fi;
-    #...and the singletons
-  Perform(Singletons(sk),
-          function(x)
-    if not(x in ForwardOrbit(sk)) then
-      Add(imageset,x);
-    fi;
-  end);
+  #...and the singletons
+  Perform(Singletons(sk),function(x)
+                           if not(x in ForwardOrbit(sk)) then
+                             Add(imageset,x);
+                           fi;
+                         end);
   #now sorting descending by size
   Sort(imageset,DescendingSizeSorter);
   return imageset;
@@ -97,7 +96,6 @@ end);
 # returns the maximal subsets of the given set found in the given ordered set
 # of sets, for the skeleton the extended set of images
 #TODO can this be further improved by recursion
-#TODO this is TilesOf, but not stored
 MaximalSubsets := function(set, orderedsubsets)
 local covers, pos, flag,s;
   #singletons have no covers
@@ -395,6 +393,7 @@ local sizes, preimgs;
   return Length(sizes)*Product(sizes); #TODO is this correct?
 end);
 
+# recursively extending chains bottom-up, once there, then copy
 RecAllTileChainsToSet := function(sk,chain ,coll)
 local set,preimg, l;
   set := chain[Length(chain)];

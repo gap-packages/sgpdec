@@ -226,7 +226,7 @@ local action,
       if Ps = Q then #PERMUTATION###############################################
         # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
         action := GetIN(sk,P) * s * GetOUT(sk,Q);
-        # calculating the action on the covers
+        # calculating the action on the tiles
         actions[depth] := PermutationOfTiles(action, depth, slot, sk);
         # also, what happens to Q under s TODO is this really Qs???
         ncoordval := OnFiniteSet(coords[depth], action);
