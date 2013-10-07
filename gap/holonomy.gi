@@ -26,7 +26,7 @@ end;
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-  sets := [];
+  sets := EmptyPlist(Length(ints)); #to allocate the right size
   for level in [1..Length(ints)] do
       if ints[level] = 0 then
           Add(sets,0); #zero if the level is jumped over
@@ -43,7 +43,7 @@ InstallGlobalFunction(HolonomySets2Ints,
 function(sk, sets)
 local set,level,ints,slot;
   set := BaseSet(sk);
-  ints := [];
+  ints := EmptyPlist(Length(sets)); #to allocate the right size
   for level in [1..Length(sets)] do
     if sets[level] = 0 then
       Add(ints,0);
