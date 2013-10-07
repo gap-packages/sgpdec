@@ -95,7 +95,7 @@ function(sk, chain)
 local sets,i, P, skeleton;
   skeleton := sk;
   #filling up with zeros - jumped over levels are abstract
-  sets := List([1..DepthOfSkeleton(skeleton)-1], x->  0);
+  sets := ListWithIdenticalEntries(DepthOfSkeleton(skeleton)-1, 0);
   P := BaseSet(skeleton);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
