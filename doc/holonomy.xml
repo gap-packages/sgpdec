@@ -18,10 +18,12 @@ can create, display and act on finite sets.
 
 <#Include Label="TilesOf">
 
+<#Include Label="DisplayHolonomyComponents">
+
 </Section>
 
 <Section Label="holonomy"><Heading>Holonomy Decomposition</Heading>
-
+The <Ref Func="Skeleton" BookName="sgpdec"/> already contains lots of information on the components of the decomposition but we still need to put them together in a form of a cascade semigroup.  
 <#Include Label="HolonomyCascadeSemigroup">
 
 </Section>
