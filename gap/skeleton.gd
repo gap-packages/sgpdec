@@ -44,6 +44,7 @@ DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");
+DeclareGlobalFunction("OnTileChain");
 DeclareGlobalFunction("NumberOfTileChainsToSet");
 DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionLessOrEquivalent");

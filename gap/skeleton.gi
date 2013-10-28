@@ -430,8 +430,17 @@ local coll,s;
   od;
   return coll;
 end);
-################################################################################
 
+InstallGlobalFunction(OnTileChain,
+function(tc, s)
+local l,baseset;
+  baseset := tc[1];
+  l :=  List(tc,tile -> OnFiniteSet(tile,s));
+  Add(l,baseset,1);
+  return DuplicateFreeList(l);
+end);
+
+################################################################################
 InstallGlobalFunction(DepthOfSet,
 function(sk,A)
   if IsSingleton(A) then return DepthOfSkeleton(sk); fi;
