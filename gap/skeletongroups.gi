@@ -287,3 +287,30 @@ InstallGlobalFunction(EvalWordInSkeleton,
 function(sk, w)
   return BuildByWord(w, Generators(sk), (), OnRight);
 end);
+
+################################################################################
+# DISPLAY
+
+InstallGlobalFunction(DisplayHolonomyComponents,
+function(skeleton)
+  local depth,rep,H,reps;
+  reps := RepresentativeSets(skeleton);
+  for depth in [1..Size(reps)] do
+    Print(depth,": ");
+    for rep in reps[depth] do
+      H := HolonomyGroup@SgpDec(skeleton, rep);
+      if Size(H) = 1 then
+        Print(SizeBlist(rep)," ");
+      else
+        Print("(",SizeBlist(rep),",");
+        if SgpDecOptionsRec.SMALL_GROUPS then
+          Print(StructureDescription(H));
+        else
+          Print(Size(H));
+        fi;
+        Print(") ");
+      fi;
+    od;
+    Print("\n");
+  od;
+end);
