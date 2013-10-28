@@ -37,3 +37,5 @@ DeclareAttribute("TileCoords", IsSkeleton);
 DeclareAttribute("CoordVals", IsSkeleton);
 DeclareAttribute("Shifts", IsSkeleton);
 DeclareAttribute("HolonomyPermutationResetComponents", IsSkeleton);
+
+DeclareGlobalFunction("DisplayHolonomyComponents");
