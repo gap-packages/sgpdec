@@ -322,6 +322,27 @@ gap> DependencyValues(df);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DisplayHolonomyComponents">
+  <ManSection>
+    <Func Name="DisplayHolonomyComponents" Arg="skeleton"/>
+    <Description>
+Display a concise textual summary of the holonomy decomposition components.
+<Example>
+gap> DisplayHolonomyComponents(Skeleton(Semigroup(
+>                 [Transformation([1,1,2,3,5,4]),
+>                  Transformation([3,4,1,6,1,5])])));
+1: 6 
+2: 5 
+3: 5 
+4: 4 (4,A4) 
+5: (3,S3) 
+6: (2,C2) 
+7: 1 
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DotCascade">
   <ManSection>
     <Func Name="DotCascade" Arg="cascade"/>
