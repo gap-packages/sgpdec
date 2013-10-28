@@ -1,3 +1,5 @@
+0.7.26
+	DisplayHolonomyComponents and OnTileChain added.
 0.7.25
 	Subgroup chains methods readded, defending against upstream change (dynamic degree for transformations), nonimage tiles by dotted arrows in DotSkeleton.
 0.7.24
