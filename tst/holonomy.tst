@@ -30,6 +30,13 @@ MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (2, 4, \
  , function( c ) ... end )
 gap> AsSortedList(S) = AsSortedList(Range(hom));
 true
+gap> DisplayHolonomyComponents(Skeleton(S));
+1: 6 
+2: (4,C3) 
+3: (3,S3) (2,C2) 
+4: (3,C3) (2,C2) 
+5: 2 
+6: 1 
 
 #
 gap> SemigroupsStopTest();
