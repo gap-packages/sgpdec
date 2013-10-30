@@ -1,3 +1,5 @@
+0.7.27
+	Fixing DisplayHolonomyComponents: no need to display singletons and size of the set was wrongly displayed instead of number of tiles.
 0.7.26
 	DisplayHolonomyComponents and OnTileChain added.
 0.7.25
