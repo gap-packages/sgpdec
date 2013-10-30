@@ -295,12 +295,12 @@ InstallGlobalFunction(DisplayHolonomyComponents,
 function(skeleton)
   local depth,rep,H,reps;
   reps := RepresentativeSets(skeleton);
-  for depth in [1..Size(reps)] do
+  for depth in [1..Size(reps)-1] do
     Print(depth,": ");
     for rep in reps[depth] do
       H := HolonomyGroup@SgpDec(skeleton, rep);
       if Size(H) = 1 then
-        Print(SizeBlist(rep)," ");
+        Print(Size(TilesOf(skeleton,rep))," ");
       else
         Print("(",SizeBlist(rep),",");
         if SgpDecOptionsRec.SMALL_GROUPS then

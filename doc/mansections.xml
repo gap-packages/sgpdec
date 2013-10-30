@@ -331,13 +331,12 @@ Display a concise textual summary of the holonomy decomposition components.
 gap> DisplayHolonomyComponents(Skeleton(Semigroup(
 >                 [Transformation([1,1,2,3,5,4]),
 >                  Transformation([3,4,1,6,1,5])])));
-1: 6 
-2: 5 
-3: 5 
-4: 4 (4,A4) 
+1: 2 
+2: 3 
+3: 3 
+4: 3 (4,A4) 
 5: (3,S3) 
 6: (2,C2) 
-7: 1 
 </Example>
     </Description>
   </ManSection>

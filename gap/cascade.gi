@@ -15,7 +15,6 @@
 #  ways to create cascades
 # 1. Cascade, giving components/component domains and a list of dependencies
 # 2. by giving dependency functions
-
 InstallGlobalFunction(Cascade,
 function(doms, deps)
   local isgroup, type, compdoms, depdom, depfuncs, f, x;
