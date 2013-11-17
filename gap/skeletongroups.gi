@@ -302,7 +302,7 @@ function(skeleton)
       if Size(H) = 1 then
         Print(Size(TilesOf(skeleton,rep))," ");
       else
-        Print("(",SizeBlist(rep),",");
+        Print("(",Size(TilesOf(skeleton,rep)),",");
         if SgpDecOptionsRec.SMALL_GROUPS then
           Print(StructureDescription(H));
         else
