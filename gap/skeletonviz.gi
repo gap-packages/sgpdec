@@ -104,7 +104,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   fi;
   str := "";
   out := OutputTextString(str,true);
-  PrintTo(out,"digraph skeleton{\n");
+  PrintTo(out,"digraph skeleton{ newrank=true;\n");
   #setting the state names
   if "states" in RecNames(params) then
     states := params.states;
@@ -129,7 +129,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
   for i in [1..Length(classes)] do
-    AppendTo(out,"subgraph cluster",String(i),"{rank=same;\n");
+    AppendTo(out,"subgraph cluster",String(i),"{\n");
     for node in classes[i] do
       AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
     od;
@@ -150,6 +150,16 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     else
       AppendTo(out,"  }\n");
     fi;
+  od;
+  #drawing the the same level elements
+  for i in [1..DepthOfSkeleton(sk)-1] do
+    AppendTo(out, "{rank=same;",String(i),";");
+    for class in SubductionClassesOnDepth(sk,i) do
+      for node in class do
+        AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
+      od;
+    od;
+    AppendTo(out,"}\n");
   od;
   #singletons
   AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
