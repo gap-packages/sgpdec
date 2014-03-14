@@ -129,7 +129,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
   for i in [1..Length(classes)] do
-    AppendTo(out,"subgraph cluster",String(i),"{\n");
+    AppendTo(out,"subgraph cluster",String(i),"{rank=same;\n");
     for node in classes[i] do
       AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
     od;
@@ -150,16 +150,6 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     else
       AppendTo(out,"  }\n");
     fi;
-  od;
-  #drawing the the same level elements
-  for i in [1..DepthOfSkeleton(sk)-1] do
-    AppendTo(out, "{rank=same;",String(i),";");
-    for class in SubductionClassesOnDepth(sk,i) do
-      for node in class do
-        AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
-      od;
-    od;
-    AppendTo(out,"}\n");
   od;
   #singletons
   AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
