@@ -91,10 +91,10 @@ PackageDoc := rec(
 
 
 Dependencies := rec(
- GAP := ">= 4.6",
+ GAP := ">= 4.7",
  NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
-                   ["orb", ">=4.5"], #hashtable functionalities
-                   ["semigroups", ">=1.0"] 
+                   ["orb", ">=4.6"], #hashtable functionalities
+                   ["semigroups", ">=1.4"] 
                    ],
  SuggestedOtherPackages := [],#["viz", ">=0.2"]], #Draw, Splash]
  ExternalConditions := [ ]
