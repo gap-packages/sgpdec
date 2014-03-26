@@ -86,6 +86,14 @@ function(sk)
   return imageset;
 end);
 
+InstallGlobalFunction(ContainsSet,
+function(sk, set)
+  #checking whether we have the set somewhere
+  return set in ForwardOrbit(sk)
+         or set = BaseSet(sk)
+         or set in NonImageSingletons(sk);
+end);
+
 ################################################################################
 # INCLUSION RELATION ###########################################################
 ################################################################################
@@ -359,10 +367,7 @@ end);
 
 InstallGlobalFunction(TilesOf,
 function(sk,set)
-  #checking whether we have the set somewhere
-  if set in ForwardOrbit(sk)
-     or set = BaseSet(sk)
-     or set in NonImageSingletons(sk) then
+  if ContainsSet(sk,set) then  
     return Images(InclusionCoverBinaryRelation(sk),set);
   else
     return fail;

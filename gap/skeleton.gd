@@ -38,6 +38,7 @@ PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
 MakeReadOnlyGlobal("PartialOrbits");
 
 #functions
+DeclareGlobalFunction("ContainsSet");
 DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
