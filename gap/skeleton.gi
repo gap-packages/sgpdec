@@ -358,7 +358,16 @@ end);
 ################################################################################
 
 InstallGlobalFunction(TilesOf,
-function(sk,set) return Images(InclusionCoverBinaryRelation(sk),set); end);
+function(sk,set)
+  #checking whether we have the set somewhere
+  if set in ForwardOrbit(sk)
+     or set = BaseSet(sk)
+     or set in NonImageSingletons(sk) then
+    return Images(InclusionCoverBinaryRelation(sk),set);
+  else
+    return fail;
+  fi;
+end);
 
 InstallGlobalFunction(RandomTileChainToSet,
 function(sk,set)
@@ -372,6 +381,7 @@ local chain;
   return Reversed(chain);
 end);
 
+# used by holonomy
 InstallGlobalFunction(RandomTileChain,
 function(sk,k)
   return RandomTileChainToSet(sk, FiniteSet([k], DegreeOfSkeleton(sk)));
