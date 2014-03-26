@@ -42,6 +42,7 @@ DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");
+DeclareGlobalFunction("RandomTileChainToSet");
 DeclareGlobalFunction("AllTileChainsToSet");
 DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("OnTileChain");
