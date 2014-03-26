@@ -354,22 +354,27 @@ function(sk)
 end);
 
 ################################################################################
-InstallGlobalFunction(TilesOf,
-function(sk,set)
-  return Images(InclusionCoverBinaryRelation(sk),set);
-end);
+# TILES, TILECHAINS ############################################################
+################################################################################
 
-InstallGlobalFunction(RandomTileChain,
-function(sk,k)
-local chain, set;
+InstallGlobalFunction(TilesOf,
+function(sk,set) return Images(InclusionCoverBinaryRelation(sk),set); end);
+
+InstallGlobalFunction(RandomTileChainToSet,
+function(sk,set)
+local chain;
   chain := [];
-  set := FiniteSet([k], DegreeOfSkeleton(sk));
   Add(chain,set);
   while set <> BaseSet(sk) do
     set := Random(PreImages(InclusionCoverBinaryRelation(sk), set));
     Add(chain,set);
   od;
   return Reversed(chain);
+end);
+
+InstallGlobalFunction(RandomTileChain,
+function(sk,k)
+  return RandomTileChainToSet(sk, FiniteSet([k], DegreeOfSkeleton(sk)));
 end);
 
 InstallGlobalFunction(NumberOfTileChainsToSet,
