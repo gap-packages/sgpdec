@@ -271,7 +271,6 @@ function(sk)
   return cls;
 end);
 
-
 InstallGlobalFunction(SubductionClassOfSet,
 function(sk, set)
   local o;
@@ -279,6 +278,7 @@ function(sk, set)
   return List(OrbSCC(o)[OrbSCCLookup(o)[Position(o, set)]],x-> o[x]);
 end);
 
+#TODO document this!
 InstallGlobalFunction(WeakControlWords,
 function(sk, X, Y)
   local Xp,Xclass;
@@ -296,8 +296,7 @@ end);
 ################################################################################
 # HEIGHT, DEPTH ################################################################
 
-InstallMethod(Heights,
-        "for a skeleton (SgpDec)", [IsSkeleton],
+InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local leaves, leaf, correction,o,reps,heights,depths,RecHeight;
   o := ForwardOrbit(sk);
@@ -353,7 +352,6 @@ function(sk)
     return Maximum(Depths(sk));
   fi;
 end);
-
 
 ################################################################################
 InstallGlobalFunction(TilesOf,
