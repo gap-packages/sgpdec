@@ -114,16 +114,15 @@ MakeReadOnlyGlobal("MaximalSubsets");
 
 # binary relation defined by covering elements (sort of HasseDiagram)
 BinaryRelationByCoverFuncNC := function(set, coverfunc)
-local i,j,dom,tups,h;
+local x,y,dom,tups;
   dom := Domain(set);
   tups := [];
-  for i in dom do
-    for j in coverfunc(i) do
-      Add(tups, Tuple([i, j]));
+  for x in dom do
+    for y in coverfunc(x) do
+      Add(tups, Tuple([x, y]));
     od;
   od;
-  h := BinaryRelationByElements(dom, tups);
-  return h;
+  return BinaryRelationByElements(dom, tups);
 end;
 MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
 
