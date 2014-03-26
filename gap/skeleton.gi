@@ -79,11 +79,8 @@ function(sk)
     Add(imageset,BaseSet(sk),1); #adding it as first
   fi;
   #...and the singletons
-  Perform(Singletons(sk),function(x)
-                           if not(x in ForwardOrbit(sk)) then
-                             Add(imageset,x);
-                           fi;
-                         end);
+  Perform(NonImageSingletons(sk),
+          function(x) Add(imageset,x);end);
   #now sorting descending by size
   Sort(imageset,DescendingSizeSorter);
   return imageset;
