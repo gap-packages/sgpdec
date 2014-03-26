@@ -1,3 +1,5 @@
+0.7.28
+	Updating the skeleton diagram to work with GraphViz 2.36. Added ContainsSet function for the skeleton and use it for checks to avoid error messages. Added RandomTileChainToSet.
 0.7.27
 	Fixing DisplayHolonomyComponents: no need to display singletons and size of the set was wrongly displayed instead of number of tiles.
 0.7.26
