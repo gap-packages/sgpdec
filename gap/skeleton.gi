@@ -98,19 +98,22 @@ local covers, pos, flag,s;
   #singletons have no covers
   if SizeBlist(set) = 1 then return []; fi;
   covers := [];
-  #we search only from this position
+  #we search only from this position in the descending order
   pos := Position(orderedsubsets, set) + 1;
   while pos <= Size(orderedsubsets) do
-    if IsProperFiniteSubset(set, orderedsubsets[pos]) then
-      flag := true;
+    if IsProperFiniteSubset(set, orderedsubsets[pos]) 
+       and
+       not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
+      #flag := true;
       # we check whether the newly found subset is a subset of a cover
-      for s in covers do
-        if IsProperFiniteSubset(s,orderedsubsets[pos]) then
-          flag := false;
-          break;
-        fi;
-      od;
-      if flag then Add(covers,orderedsubsets[pos]);fi;
+      #for s in covers do
+      #  if IsProperFiniteSubset(s,orderedsubsets[pos]) then
+      #    flag := false;
+      #    break;
+      #  fi;
+      #od;
+      #if flag then 
+      Add(covers,orderedsubsets[pos]);#fi;
     fi;
     pos := pos + 1;
   od;
