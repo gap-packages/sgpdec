@@ -94,7 +94,7 @@ end);
 # of sets, for the skeleton the extended set of images
 #TODO can this be further improved by recursion
 MaximalSubsets := function(set, orderedsubsets)
-local covers, pos, flag,s;
+local covers, pos;
   #singletons have no covers
   if SizeBlist(set) = 1 then return []; fi;
   covers := [];
@@ -104,16 +104,7 @@ local covers, pos, flag,s;
     if IsProperFiniteSubset(set, orderedsubsets[pos]) 
        and
        not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
-      #flag := true;
-      # we check whether the newly found subset is a subset of a cover
-      #for s in covers do
-      #  if IsProperFiniteSubset(s,orderedsubsets[pos]) then
-      #    flag := false;
-      #    break;
-      #  fi;
-      #od;
-      #if flag then 
-      Add(covers,orderedsubsets[pos]);#fi;
+      Add(covers,orderedsubsets[pos]);
     fi;
     pos := pos + 1;
   od;
