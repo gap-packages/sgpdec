@@ -104,6 +104,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   fi;
   str := "";
   out := OutputTextString(str,true);
+  SetPrintFormattingStatus(out,false); #no formatting, line breaks
   PrintTo(out,"digraph skeleton{ newrank=true;\n");
   #setting the state names
   if "states" in RecNames(params) then
