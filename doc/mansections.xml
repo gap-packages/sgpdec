@@ -672,7 +672,7 @@ gap> SgpDecFiniteSetDisplayOff();
     <Returns>Nothing.</Returns>
     <Description>
       This function should be called with no argument to compile the
-      &SgpDec; documentation.
+      &SgpDec; documentation. The manuals can be found in the <C>doc</C> folder.
     </Description>
   </ManSection>
 <#/GAPDoc>
