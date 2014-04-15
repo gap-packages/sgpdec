@@ -58,7 +58,7 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
 
 <Section Label="testing"><Heading>Testing the installation</Heading>
     In this section we describe how to test that &SgpDec; is working as
-    intended.  To test that &SgpDec; is installed correctly use
+    intended and produces correct results.  To test that &SgpDec; is installed correctly use
     <Ref Func="SgpDecTestInstall"/> or <Ref Func="SgpDecRunManualExamples"/>.
 
     <#Include Label="SgpDecTestInstall">
