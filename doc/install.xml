@@ -42,7 +42,7 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item> <URL Text="Viz">https://bitbucket.org/zen154115/viz
+   <Item> <URL Text="Viz">https://bitbucket.org/james-d-mitchell/viz
    </URL></Item>
    <Item>Visualising by GrapViz and LaTeX (optional)</Item>
   </Row>
