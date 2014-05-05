@@ -33,9 +33,8 @@ end);
 # TODO: this should be called OnBlistList
 InstallGlobalFunction(OnFiniteSet,
 function(A, t)
-  local n, result, blist, i;
-  #an empty finite set
-  n:=Size(A);
+  local result,i,n;
+  n := Size(A);
   result := BlistList([1..n],[]);
   for i in [1..n] do
     if A[i] then
