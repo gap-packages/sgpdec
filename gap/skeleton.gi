@@ -474,6 +474,11 @@ function(sk)
   return reps;
 end);
 
+InstallGlobalFunction(RepresentativeSetsOnDepth,
+function(sk, depth)
+  return RepresentativeSets(sk)[depth];
+end);
+
 InstallGlobalFunction(RealImageSubductionClasses,
 function(sk)
   local o;
