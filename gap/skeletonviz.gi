@@ -57,7 +57,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
   str := "";
   out := OutputTextString(str,true);
   SetPrintFormattingStatus(out,false); #no formatting, line breaks
-  PrintTo(out,"digraph skeleton_forward_orbit{\n");
+  PrintTo(out,"//dot\ndigraph skeleton_forward_orbit{\n");
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
   for i in [1..Length(classes)] do
@@ -106,7 +106,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   str := "";
   out := OutputTextString(str,true);
   SetPrintFormattingStatus(out,false); #no formatting, line breaks
-  PrintTo(out,"digraph skeleton{ newrank=true;\n");
+  PrintTo(out,"//dot\ndigraph skeleton{ newrank=true;\n");
   #setting the state names
   if "states" in RecNames(params) then
     states := params.states;
@@ -208,7 +208,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   str := "";
   out := OutputTextString(str,true);
   SetPrintFormattingStatus(out,false); #no formatting, line breaks
-  PrintTo(out,"digraph skeleton{\n");
+  PrintTo(out,"//dot\ndigraph skeleton{\n");
   #setting the state names
   if "states" in RecNames(params) then
     states := params.states; 
