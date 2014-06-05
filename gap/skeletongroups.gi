@@ -10,7 +10,8 @@
 ##
 
 ################################################################################
-### INs and OUTs with a primitive caching method to avoid double calculation ###
+### words and transformation for moving between sets and representatives
+###  with a primitive caching method to avoid double calculation
 
 #just empty lists in the beginning, built on demand
 InstallMethod(FromRepMaps, "for a skeleton (SgpDec)", [IsSkeleton],
@@ -26,8 +27,7 @@ InstallMethod(ToRepWords, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
 
 
-#returns a word  that takes the representative
-#to the set A - so a path that goes INto A
+#returns a word  that takes the representative to the set A 
 InstallGlobalFunction(FromRepw,
 function(sk, A)
 local pos, scc,o;
@@ -54,7 +54,6 @@ local pos;
 end);
 
 #returns a word  that takes A to its representative
-# i.e. the route OUT from A
 InstallGlobalFunction(ToRepw,
 function(sk, A)
 local pos, scc, n, outw, fg, inw, out,l,o;
