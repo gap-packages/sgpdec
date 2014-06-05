@@ -92,14 +92,13 @@ end);
 #the inverse of successive approximation
 InstallGlobalFunction(SetCoordinates,
 function(sk, chain)
-local sets,i, P, skeleton;
-  skeleton := sk;
+local sets,i, P;
   #filling up with zeros - jumped over levels are abstract
-  sets := ListWithIdenticalEntries(DepthOfSkeleton(skeleton)-1, 0);
-  P := BaseSet(skeleton);
+  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 0);
+  P := BaseSet(sk);
   #the chain can be shorter (already jumped over), so it is OK go strictly by i
   for i in [1..Length(chain)] do
-    sets[DepthOfSet(skeleton, P)] := RepTile(chain[i], P, skeleton);
+    sets[DepthOfSet(sk, P)] := RepTile(chain[i], P, sk);
     P := chain[i];
   od;
   return sets;
