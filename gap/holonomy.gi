@@ -62,12 +62,12 @@ end);
 # basically the following 2 functions are iterated to choose a set from the
 # cover of a representative or another equivalent set
 
-#we map  a representative cover set to a cover set of P
+#we map  a representative tile to a tile of P
 RealTile := function(reptile, P, skeleton)
   return OnFiniteSet(reptile , GetIN(skeleton, P));
 end;
 
-#we map  a cover set of P to a cover set of Rep(P)
+#we map  a tile of P to a tile of Rep(P)
 RepTile := function(realcover, P, skeleton)
   return OnFiniteSet(realcover , GetOUT(skeleton, P));
 end;
