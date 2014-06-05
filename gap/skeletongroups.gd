@@ -9,16 +9,16 @@
 ## Groups acting on subsets of the state set.
 ##
 
-InMaps := NewAttribute("InMaps",IsSkeleton,"mutable");
-InWords := NewAttribute("InWords",IsSkeleton,"mutable");
-OutMaps := NewAttribute("OutMaps",IsSkeleton,"mutable");
-OutWords := NewAttribute("OutWords",IsSkeleton,"mutable");
+FromRepMaps := NewAttribute("FromRepMaps",IsSkeleton,"mutable");
+FromRepWords := NewAttribute("FromRepWords",IsSkeleton,"mutable");
+ToRepMaps := NewAttribute("ToRepMaps",IsSkeleton,"mutable");
+ToRepWords := NewAttribute("ToRepWords",IsSkeleton,"mutable");
 #TODO make them readonly
 
-DeclareGlobalFunction("GetIN");
-DeclareGlobalFunction("GetINw");
-DeclareGlobalFunction("GetOUT");
-DeclareGlobalFunction("GetOUTw");
+DeclareGlobalFunction("FromRep");
+DeclareGlobalFunction("FromRepw");
+DeclareGlobalFunction("ToRep");
+DeclareGlobalFunction("ToRepw");
 
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");

@@ -56,20 +56,20 @@ end);
 
 #####
 # CHAIN <-> COORDINATES
-# sets (elements of representative covers) -> elements of a cover chain
+# sets (tiles of representative sets) -> elements of a tile chain
 # moving between the encoded set and the representative
 
 # basically the following 2 functions are iterated to choose a set from the
-# cover of a representative or another equivalent set
+# tiles of a representative set or another equivalent set
 
 #we map  a representative tile to a tile of P
 RealTile := function(reptile, P, skeleton)
-  return OnFiniteSet(reptile , GetIN(skeleton, P));
+  return OnFiniteSet(reptile , FromRep(skeleton, P));
 end;
 
 #we map  a tile of P to a tile of Rep(P)
 RepTile := function(realcover, P, skeleton)
-  return OnFiniteSet(realcover , GetOUT(skeleton, P));
+  return OnFiniteSet(realcover , ToRep(skeleton, P));
 end;
 
 # (successive approximation)
@@ -223,7 +223,7 @@ local action,
       Ps := OnFiniteSet(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
-        action := GetIN(sk,P) * s * GetOUT(sk,Q);
+        action := FromRep(sk,P) * s * ToRep(sk,Q);
         # calculating the action on the tiles
         actions[depth] := PermutationOfTiles(action, depth, slot, sk);
         # also, what happens to Q under s TODO is this really Qs???
