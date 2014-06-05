@@ -75,16 +75,15 @@ end;
 # (successive approximation)
 InstallGlobalFunction(TileChain,
 function(sk, coordinates)
-local chain,P,depth,skeleton;
-  skeleton := sk;
+local chain,P,depth;
   chain := [];
   depth := 1;
-  P := BaseSet(skeleton); #we start to approximate from the top set
-  while depth < DepthOfSkeleton(skeleton) do
+  P := BaseSet(sk); #we start to approximate from the top set
+  while depth < DepthOfSkeleton(sk) do
     #we go from the cover of the rep to the cover of the chain element
-    P := RealTile(coordinates[depth],P,skeleton);
+    P := RealTile(coordinates[depth],P,sk);
     Add(chain,P);
-    depth :=  DepthOfSet(skeleton,P);
+    depth :=  DepthOfSet(sk,P);
   od;
   return chain;
 end);
