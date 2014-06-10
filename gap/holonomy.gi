@@ -220,29 +220,20 @@ local action,
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       Ps := OnFiniteSet(P,s);
       if Ps = Q then #PERMUTATION###############################################
-        # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
-        action := FromRep(sk,P) * s * ToRep(sk,Q);
-        # calculating the action on the tiles
+        action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
         actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
         ncoordval := OnFiniteSet(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
-        #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
         actions[depth] := ConstantMapToATile(set, depth,GetSlot(Q,sk), sk);
         ncoordval:=CoordVals(sk)[depth][1^actions[depth]];# applying the constant
       else
-        #this not supposed to happen, but still here until further testing
-        Print(depth," HEY!!! ",TrueValuePositionsBlistString(P),"*",s,"=",
-              TrueValuePositionsBlistString(Ps),"but Q=",
-              TrueValuePositionsBlistString(Q),"\n");
+        Error("HEY!!!");
       fi;
-      # ncoordval is a tile of rep Q and we send it to a tile of Q
-      Q := RealTile(ncoordval, Q, sk);
+      Q := RealTile(ncoordval, Q, sk); #decoding
     fi;
-    #if we are on the right level for P
     if DepthOfSet(sk,P) = depth then
-      # P is replaced by a cover set of itself
-      P:= RealTile(coords[depth],P,sk);
+      P := RealTile(coords[depth],P,sk); #decoding
     fi;
   od;
   # paranoid check whether the action is in the component
