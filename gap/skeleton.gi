@@ -306,7 +306,7 @@ end);
 
 InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  local leaves, leaf, o,reps,heights,depths,RecHeight;
+  local leaves, leaf, o,reps,heights,RecHeight;
   o := ForwardOrbit(sk);
   reps := SkeletonTransversal(sk);
   heights := ListWithIdenticalEntries(Size(reps),0);
