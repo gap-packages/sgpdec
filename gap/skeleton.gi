@@ -109,7 +109,7 @@ local covers, pos;
   #we search only from this position in the descending order
   pos := Position(orderedsubsets, set) + 1;
   while pos <= Size(orderedsubsets) do
-    if IsProperFiniteSubset(set, orderedsubsets[pos]) 
+    if IsProperFiniteSubset(set, orderedsubsets[pos])
        and
        not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
       Add(covers,orderedsubsets[pos]);
@@ -304,8 +304,8 @@ end);
 ################################################################################
 # HEIGHT, DEPTH ################################################################
 
-InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
+#height functions
+MinimalHeightValues := function(sk)
   local leaves, leaf, o,reps,heights,RecHeight;
   o := ForwardOrbit(sk);
   reps := SkeletonTransversal(sk);
@@ -338,7 +338,24 @@ function(sk)
     fi;
   od;
   return heights;
-end);
+end;
+MakeReadOnlyGlobal("MinimalHeightValues");
+
+#one equivalence class per level
+MaximalHeightValues := function(sk)
+local heights, i, l;
+  #now do topological sorting
+  heights := MinimalHeightValues(sk);
+  l := Flat(List([Minimum(heights)..Maximum(heights)],
+                x -> Positions(heights,x)));
+  heights := [];
+  Perform([1..Size(l)], function(x) heights[l[x]] := x-1;end);
+  return heights;
+end;
+MakeReadOnlyGlobal("MaximalHeightValues");
+
+InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
+        MinimalHeightValues);
 
 #calculating depth based on upside down height
 InstallMethod(Depths,
@@ -363,7 +380,7 @@ end);
 
 InstallGlobalFunction(TilesOf,
 function(sk,set)
-  if ContainsSet(sk,set) then  
+  if ContainsSet(sk,set) then
     return Images(InclusionCoverBinaryRelation(sk),set);
   else
     return fail;
