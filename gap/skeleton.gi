@@ -341,7 +341,7 @@ MinimalHeightValues := function(sk)
 end;
 MakeReadOnlyGlobal("MinimalHeightValues");
 
-#one equivalence class per level
+#one equivalence class per level #TODO singletons may not be done properly
 MaximalHeightValues := function(sk)
 local heights, i, l;
   #now do topological sorting
