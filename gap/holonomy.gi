@@ -72,7 +72,7 @@ RepTile := function(realcover, P, skeleton)
   return OnFiniteSet(realcover , ToRep(skeleton, P));
 end;
 
-# (successive approximation)
+# decoding: set coordinate values -> tile chain 
 InstallGlobalFunction(TileChain,
 function(sk, coordinates)
 local chain,P,depth;
@@ -88,7 +88,7 @@ local chain,P,depth;
   return chain;
 end);
 
-#the inverse of successive approximation
+# encoding: tile chain -> set coordinate values
 InstallGlobalFunction(SetCoordinates,
 function(sk, chain)
 local sets,i, P;
@@ -226,7 +226,6 @@ local action,
         action := FromRep(sk,P) * s * ToRep(sk,Q);
         # calculating the action on the tiles
         actions[depth] := PermutationOfTiles(action, depth, slot, sk);
-        # also, what happens to Q under s TODO is this really Qs???
         ncoordval := OnFiniteSet(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a tile of Q that contains Ps
