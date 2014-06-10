@@ -346,9 +346,11 @@ MaximalHeightValues := function(sk)
 local heights, i, l;
   #now do topological sorting
   heights := MinimalHeightValues(sk);
+  #we collect the positions of same height values, flattened & ordered
   l := Flat(List([Minimum(heights)..Maximum(heights)],
-                x -> Positions(heights,x)));
+                x -> Positions(heights,x))); #positions can be permuted
   heights := [];
+  #then just assign its index to it
   Perform([1..Size(l)], function(x) heights[l[x]] := x-1;end);
   return heights;
 end;
