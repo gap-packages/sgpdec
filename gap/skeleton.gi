@@ -325,7 +325,6 @@ function(sk)
     od;
   end;
   #-----------------------------------------------------------------------------
-
   #we start chains from the elements with no children
   leaves := Filtered([1..Length(reps)],
                     x->IsEmpty(Images(RepSubductionCoverBinaryRelation(sk),x)));
@@ -338,10 +337,10 @@ function(sk)
       RecHeight(sk,leaf,1);
     fi;
   od;
-  #calculating depth based on upside down height
   return heights;
 end);
 
+#calculating depth based on upside down height
 InstallMethod(Depths,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
