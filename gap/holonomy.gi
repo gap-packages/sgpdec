@@ -209,28 +209,26 @@ local action,
       Ps,
       ncoordval,
       j,
-      slot,
       set;
   #initializing actions to identity
   actions := List([1..DepthOfSkeleton(sk)-1],
                   x -> One( HolonomyPermutationResetComponents(sk)[x]));
   #initial successive approximation are the same for both
   P := BaseSet(sk);
-  Q := P;
+  Q := BaseSet(sk);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if DepthOfSet(sk, Q) = depth then # we are on the right level
-      slot := GetSlot(Q,sk);
       Ps := OnFiniteSet(P,s);
       if Ps = Q then #PERMUTATION###############################################
         # roundtrip: from the rep to P, then to Ps=Q, then back to Q's rep
         action := FromRep(sk,P) * s * ToRep(sk,Q);
         # calculating the action on the tiles
-        actions[depth] := PermutationOfTiles(action, depth, slot, sk);
+        actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
         ncoordval := OnFiniteSet(coords[depth], action);
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         #look for a tile of Q that contains Ps
         set := RepTile(Ps,Q,sk);
-        actions[depth] := ConstantMapToATile(set, depth,slot, sk);
+        actions[depth] := ConstantMapToATile(set, depth,GetSlot(Q,sk), sk);
         ncoordval:=CoordVals(sk)[depth][1^actions[depth]];# applying the constant
       else
         #this not supposed to happen, but still here until further testing
