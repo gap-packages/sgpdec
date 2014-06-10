@@ -418,3 +418,12 @@ function(S,T)
   od;
   return ST;
 end);
+
+################################################################################
+# test functions
+TestHolonomyEmulation := function(S)
+  local hom,hcs;
+  hcs := HolonomyCascadeSemigroup(S);
+  hom := HomomorphismTransformationSemigroup(hcs);
+  return AsSet(S) = AsSet(Range(hom));
+end;
