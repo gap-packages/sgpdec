@@ -306,7 +306,7 @@ end);
 
 InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  local leaves, leaf, correction,o,reps,heights,depths,RecHeight;
+  local leaves, leaf, o,reps,heights,depths,RecHeight;
   o := ForwardOrbit(sk);
   reps := SkeletonTransversal(sk);
   heights := ListWithIdenticalEntries(Size(reps),0);
@@ -326,14 +326,11 @@ function(sk)
   end;
   #-----------------------------------------------------------------------------
 
-  #If there is no singleton image, then we need to add one to the depth
-  correction := 1;
   #we start chains from the elements with no children
   leaves := Filtered([1..Length(reps)],
                     x->IsEmpty(Images(RepSubductionCoverBinaryRelation(sk),x)));
   for leaf in leaves do
     if IsSingleton(o[reps[leaf]]) then
-      correction:=0;#there is a singleton image, so no correction needed
       heights[leaf] := 0;
       RecHeight(sk,leaf,0);
     else
