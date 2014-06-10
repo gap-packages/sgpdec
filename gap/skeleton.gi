@@ -465,7 +465,7 @@ local l,baseset;
 end);
 
 #extends to a dominating tilechain
-DominatingTileChain := function(sk,chain)
+DominateChain := function(sk,chain)
   local pos;
   pos := 1;
   while not IsSingleton(chain[pos]) do
