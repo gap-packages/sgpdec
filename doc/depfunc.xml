@@ -1,0 +1,21 @@
+Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependency functions</E>.
+<Cite Key="cascprod_arxiv"/>
+
+<Section Label="coords"><Heading>Coordinates</Heading>
+Since states are represented by integers, coordinates are lists of integers.
+    <#Include Label="ConcreteCoords">
+    <#Include Label="AsCoords">
+    <#Include Label="AsPoint">
+</Section>
+
+
+<Section Label="depfunc"><Heading>Dependency functions</Heading>
+Given an ordered list of transformation semigroups and/or permutation groups <M>(X_1,S_1),\ldots,(X_n,S_n)</M>, the <M>i</M>th level <E>dependency function</E> is defined as <M>d_i:X_1\times\cdots\times X_{i-1}\rightarrow S_i</M>. We call <M>d_i:X_1\times\cdots\times X_{i-1}</M> the <M>i</M>th <E>dependency domain</E>.
+    <#Include Label="DependencyDomains">
+    <#Include Label="DependencyFunction">
+    <#Include Label="DependencyFunctions">
+    <#Include Label="Dependencies">
+    <#Include Label="DependencyValues">
+    <#Include Label="DependencyFunctionAttributes">
+    <#Include Label="OnDepArg">
+</Section>

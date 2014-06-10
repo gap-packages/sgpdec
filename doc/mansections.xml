@@ -1,0 +1,748 @@
+# ALPHABETICAL ORDER (by label)
+
+#an empty one for template
+<#GAPDoc Label="">
+  <ManSection>
+    <Func Name="" Arg=""/>
+    <Returns></Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##A
+
+<#GAPDoc Label="AsCascade">
+  <ManSection>
+    <Func Name="AsCascade" Arg="transformation"/>
+    <Returns>Coordinatized form of <Arg>transformation</Arg></Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsCoords">
+  <ManSection>
+    <Oper Name="AsCoords" Arg="point, domain"/>
+   <Oper Name="AsCoords" Arg="point, cascadesemigroup" Label="CascSgpAsCoords"/>
+    <Returns>Coordinatized form of a <Arg>point</Arg>.</Returns>
+    <Description>
+The <Arg>domain</Arg> is the set of coordinate tuples.
+<Example>
+gap> dom := EnumeratorOfCartesianProduct([1..3],[1..2]);
+&lt;enumerator&gt;
+gap> AsList(dom);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 3, 1 ], [ 3, 2 ] ]
+gap> AsCoords(1,dom);
+[ 1, 1 ]
+gap> AsCoords(5,dom);
+[ 3, 1 ]
+</Example>
+Alternatively, when working with a cascade semigroup, the semigroup
+itself can be given as an argument.
+<Example>
+gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(5));
+&lt;cascade semigroup with 4 generators, 4 levels with (5, 4, 3, 2) pts&gt;
+gap> Size(DomainOf(hcs));
+120
+gap> AsCoords(1,hcs);
+[ 1, 1, 1, 1 ]
+gap> AsCoords(120,hcs);
+[ 5, 4, 3, 2 ]
+gap> AsCoords(79,hcs);
+[ 4, 2, 1, 1 ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsPoint">
+  <ManSection>
+    <Oper Name="AsPoint" Arg="coords, compdoms, dom"/>
+    <Oper Name="AsPoint" Arg="coords, cascadesemigroup" Label="AsPointForCascadeProds"/>
+    <Returns></Returns>
+    <Description>
+The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##C
+
+<#GAPDoc Label="Cascade">
+  <ManSection>
+    <Func Name="Cascade" Arg="list, deps"/>
+    <Returns>The domains of the dependency function in a list of
+    lazily evaluated list enumerators.
+    </Returns>
+    <Description>
+The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains" BookName="sgpdec"/>.
+<Example>
+gap> FF := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
+>              Transformation([1,2])]);;
+gap> T3 := FullTransformationSemigroup(3);;
+gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+>               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
+&lt;trans cascade with 2 levels with (2, 3) pts, 3 dependencies&gt;
+gap> Display(c);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 1, 1 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 3, 3, 2 ] )
+[ 2 ] -&gt; Transformation( [ 2, 3, 2 ] )
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CascadeAttributes">
+  <ManSection> <Heading>Attributes of cascades</Heading>
+<Attr Name="DomainOf" Arg="cascade" Label="CascadeDomainOf"/>
+    <Returns>The dependency domain</Returns>
+<Attr Name="ComponentDomains" Arg="cascade" Label="CascadeComponentDomains"/>
+    <Returns>The dependency domain</Returns>
+<Attr Name="DependencyDomainsOf" Arg="cascade" Label="CascadeDependencyDomainsOf"/>
+    <Returns>The dependency domain</Returns>
+<Attr Name="NrDependencies" Arg="cascade" Label="CascadeNrDependencies"/>
+    <Returns>The number of non-identity dependency values.</Returns>
+<Attr Name="NrComponents" Arg="cascade" Label="CascadeNrComponents"/>
+    <Returns>The number of building blocks.</Returns>
+<Attr Name="NrDependencyFuncArgs" Arg="cascade" Label="CascadeNrDependencyFuncArgs"/>
+    <Returns>The number of possible coordinate prefixes.</Returns>
+<Attr Name="DependencyFunctionsOf" Arg="cascade" Label="DependencyFunctionsOf"/>
+    <Returns>The dependency functions ordered in a list according to their depth.</Returns>
+<Description>
+Some of the attributes are aggregates of the contained dependency functions' attributes.
+<Example>
+gap>
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CreateCascade">
+  <ManSection>
+    <Func Name="CreateCascade" Arg="dom, compdoms, depfuncs, depdom, type"/>
+    <Returns>A cascade.</Returns>
+    <Description>
+Low-level cascade creating function. Subject to change.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ComponentsOfCascadeProduct">
+  <ManSection>
+    <Attr Name="ComponentsOfCascadeProduct" Arg="cascprod"/>
+    <Returns>The building components of the casacade product.</Returns>
+    <Description>
+<Example>
+gap> s1 := Transformation([1,1,2]);;
+gap> s2 := Transformation([2,3,2]);;
+gap> t1 := Transformation([2,2,2,4]);;
+gap> t2 := Transformation([4,3,2,1]);;
+gap> c := Cascade([[1..3],[1..4]],[ [[],s1*s2], [[1],t1*t2], [[2],t2*t1] ]);
+&lt;trans cascade with 2 levels with (3, 4) pts, 3 dependencies&gt;
+gap> ComponentsOfCascadeProduct(Semigroup(c));
+[ &lt;commutative transformation semigroup on 2 pts with 1 generator&gt;, 
+  &lt;transformation semigroup on 4 pts with 2 generators&gt; ]
+</Example>
+Warning! This may return something bigger as the actual component.
+The current algorithm takes the union of values as the generating set,
+though they may not be multiplied in the cascade product.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ConcreteCoords">
+  <ManSection>
+    <Func Name="Concretize" Arg="domains, abstract_state"/>
+    <Returns>Returns a concrete state matching the abstract state.</Returns>
+    <Func Name="AllConcreteCoords" Arg="domains, abstract_state"/>
+    <Returns>Returns all concrete states matching the abstract state.</Returns>
+    <Description>
+Abstract coordinate tuples  contain unspecified levels, either denoted by a 0 value or simply omitting deeper levels.
+<Example>
+
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##D
+
+<#GAPDoc Label="Dependencies">
+  <ManSection>
+    <Func Name="Dependencies" Arg="depfunc"/>
+    <Returns>All dependencies, argument value pairs.</Returns>
+    <Description>
+      <Example>
+gap> s1 := Transformation([1,1,2]);;
+gap> s2 := Transformation([2,3,2]);;
+gap> depdom := DependencyDomains([2,3])[2];;
+gap> df := DependencyFunction(depdom,[ [[1],s1], [[2],s1*s2]]);
+&lt;depfunc of depth 2 with 2 deps&gt;
+gap> Dependencies(df);
+[ [ [ 1 ], Transformation( [ 1, 1, 2 ] ) ], 
+  [ [ 2 ], Transformation( [ 2, 2 ] ) ] ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="DependencyDomains">
+  <ManSection>
+    <Func Name="DependencyDomains" Arg="list"/>
+    <Returns>The domains of the dependency function in a list of
+    lazily evaluated list enumerators.
+    </Returns>
+    <Description>
+The argument <A>list</A> can be a list of
+<List>
+<Item> of positive integers, the cardinalities of the component's state sets,</Item>
+<Item> the state sets,</Item>
+<Item> the components, domain sizes are inferred in this case by using  <Ref Attr="DegreeOfTransformationSemigroup" BookName="ref"/> and <Ref Attr="LargestMovedPoint" BookName="ref"/>.</Item>
+</List>
+
+<Example>
+gap> G := SymmetricGroup(IsPermGroup, 3);
+Sym( [ 1 .. 3 ] )
+gap> S := Semigroup([Transformation([2,2,4,4]),Transformation([3,2,3,2])]);
+&lt;transformation semigroup on 4 pts with 2 generators&gt;
+gap> dd1 := DependencyDomains([G,S]);
+[ [ [  ] ], &lt;enumerator&gt; ]
+gap> dd2 := DependencyDomains([3,4]);
+[ [ [  ] ], &lt;enumerator&gt; ]
+gap> dd3 := DependencyDomains([[1..3],[1..4]]);
+[ [ [  ] ], &lt;enumerator&gt; ]
+gap> dd1 = dd2 and dd2  = dd3;
+true
+</Example>
+
+The <M>n</M>th dependency domain is the direct product of the state sets of the first <M>n-1</M> components.
+<Example>
+gap> depdoms := DependencyDomains([3,2,2]);
+[ [ [  ] ], &lt;enumerator&gt;, &lt;enumerator&gt; ]
+gap> AsList(depdoms[1]);
+[ [  ] ]
+gap> AsList(depdoms[2]);
+[ [ 1 ], [ 2 ], [ 3 ] ]
+gap> AsList(depdoms[3]);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 3, 1 ], [ 3, 2 ] ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DependencyFunction">
+  <ManSection>
+    <Func Name="DependencyFunction" Arg="depdom, deps"/>
+    <Returns>A dependency function on domain <A>depdom</A> with
+non-identity values defined in the list of dependencies <A>deps</A>.
+    </Returns>
+    <Description>
+      The dependencies are given in <C>[argument,value]</C> format.
+<Example>
+gap> depdoms := DependencyDomains([2,3]);
+[ [ [  ] ], &lt;enumerator&gt; ]
+gap> df := DependencyFunction(depdoms[1], [[[],(1,2)]] );
+&lt;depfunc of depth 1 with 1 deps&gt;
+gap> Display(df);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; (1,2)
+gap> df2 := DependencyFunction(depdoms[2], [[[1],(1,3)], [[2],(1,2)]] );
+&lt;depfunc of depth 2 with 2 deps&gt;
+gap> Display(df2);
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; (1,3)
+[ 2 ] -&gt; (1,2)
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DependencyFunctions">
+  <ManSection>
+    <Func Name="DependencyFunctions" Arg="depdom, deps"/>
+    <Returns>A list of dependency functions containing the given dependencies
+    at their corresponding levels.
+    </Returns>
+    <Description>
+<Example>
+gap> depdoms := DependencyDomains([5,3,2,4]);;
+gap> deps :=
+>       [
+>         [ [1,2] , (2,4) ],
+>         [ [5,3,1] , (1,2)(4,3) ],
+>         [ [2,3] , (1,2) ],
+>         [ [] , (1,2,4,3) ]
+>         ];;
+gap>  depfuncs := DependencyFunctions(depdoms, deps);
+[ &lt;depfunc of depth 1 with 1 deps&gt;, &lt;depfunc of depth 2 with 0 deps&gt;, 
+  &lt;depfunc of depth 3 with 2 deps&gt;, &lt;depfunc of depth 4 with 1 deps&gt; ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="DependencyFunctionAttributes">
+  <ManSection> <Heading>Attributes of dependency functions</Heading>
+<Attr Name="DomainOf" Arg="depfunc"/>
+    <Returns>The dependency Domain</Returns>
+<Attr Name="NrDependencies" Arg="depfunc"/>
+    <Returns>The number of non-identity dependency values.</Returns>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DependencyValues">
+  <ManSection>
+    <Func Name="DependencyValues" Arg="depfunc"/>
+    <Returns>Compacted duplicate free list of values of the function.</Returns>
+    <Description>
+<Example>
+gap> t1 := Transformation([2,2,2,4]);;
+gap> t2 := Transformation([4,3,2,1]);;
+gap> depdom := DependencyDomains([2,3,4])[3];;
+gap> df := DependencyFunction(depdom,[ [[1,1],t1], [[2,3],t2*t1], [[2,1],t2^5]]);
+&lt;depfunc of depth 3 with 3 deps&gt;
+gap> DependencyValues(df);
+[ Transformation( [ 2, 2, 2 ] ), Transformation( [ 4, 3, 2, 1 ] ), 
+  Transformation( [ 4, 2, 2, 2 ] ) ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DisplayHolonomyComponents">
+  <ManSection>
+    <Func Name="DisplayHolonomyComponents" Arg="skeleton"/>
+    <Description>
+Display a concise textual summary of the holonomy decomposition components.
+<Example>
+gap> DisplayHolonomyComponents(Skeleton(Semigroup(
+>                 [Transformation([1,1,2,3,5,4]),
+>                  Transformation([3,4,1,6,1,5])])));
+1: 2 
+2: 3 
+3: 3 
+4: 3 (4,A4) 
+5: (3,S3) 
+6: (2,C2) 
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotCascade">
+  <ManSection>
+    <Func Name="DotCascade" Arg="cascade"/>
+    <Returns>String containing GraphViz source code for the tree diagram of the given cascade.</Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##E
+
+<#GAPDoc Label="EvalWordInSkeleton">
+  <ManSection>
+    <Func Name="EvalWordInSkeleton" Arg="skeleton, word"/>
+    <Returns>The transformation represented by the given word.</Returns>
+    <Description>
+In the skeleton transformation are often represented as lists of integers indexing the generators, the so called <E>words</E>.
+This function evaluates of a word in the skeleton. Added for convenience, no sanity check is done at the moment.
+<Example>
+gap> T := FullTransformationMonoid(4);
+&lt;full transformation semigroup on 4 pts&gt;
+gap> Generators(T);
+[ Transformation( [ 2, 3, 4, 1 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 1, 2, 3, 1 ] ) ]
+gap> sk := Skeleton(T);;
+gap> EvalWordInSkeleton(sk,[]);
+()
+gap> EvalWordInSkeleton(sk,[1]);
+Transformation( [ 2, 3, 4, 1 ] )
+gap> EvalWordInSkeleton(sk,[2]);
+Transformation( [ 2, 1 ] )
+gap> EvalWordInSkeleton(sk,[3]);
+Transformation( [ 1, 2, 3, 1 ] )
+gap> EvalWordInSkeleton(sk,[1,2,3]);
+Transformation( [ 1, 3, 1, 2 ] )
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ExtendedImageSet">
+  <ManSection>
+    <Attr Name="ExtendedImageSet" Arg="skeleton"/>
+    <Returns>The set of images of the semigroup action.</Returns>
+    <Description>
+The state set, the singletons and all image sets <M>X^s, s\in S</M>.
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup(Transformation([1,1,3,3]));
+&lt;commutative transformation semigroup on 4 pts with 1 generator&gt;
+gap> sk := Skeleton(S);;
+gap> ExtendedImageSet(sk);
+[ {1,2,3,4}, {1,3}, {1}, {2}, {3}, {4} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##F
+
+<#GAPDoc Label="FiniteSet">
+  <ManSection> <Heading>Creating finite sets</Heading>
+<Func Name="FiniteSet" Arg="list, [n]"/>
+    <Returns>finite set.</Returns>
+<Description>
+The underlying boolean list defines the size of the universe of which the finite set is a subset.
+somewhat misleadingly <C>Size</C> returns the size of the universe, but the number of elements can be
+obtained by <Ref Func="SizeBlist" BookName="ref"/>, or using synonyms <C>Cardinality</C>,<C>FiniteSetSize</C>. 
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> P := FiniteSet([1,5]);
+{1,5}
+gap> Size(P);
+5
+gap> Cardinality(P);
+2
+gap> FiniteSetSize(P);
+2
+gap> SizeBlist(P);
+2
+gap> SgpDecFiniteSetDisplayOff();
+gap> P;
+[ true, false, false, false, true ]
+</Example>
+If the size of the universe is important, then it can be explicitly given.
+<Example>
+gap> P := FiniteSet([1,2],111);;
+gap> Cardinality(P);
+2
+gap> Size(P);
+111
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="FLCascadeGroup">
+  <ManSection>
+    <Func Name="FLCascadeGroup" Arg="G"/>
+    <Returns>Cascade group isomorphic to <C>G</C>.</Returns>
+    <Description>
+<Example>
+gap> S4 := SymmetricGroup(IsPermGroup,4);;
+gap> flS4 := FLCascadeGroup(S4);
+&lt;cascade group with 2 generators, 3 levels with (2, 3, 4) pts&gt;
+gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
+[ "C2", "C3", "C2 x C2" ]
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##G
+
+##H
+
+<#GAPDoc Label="HolonomyCascadeSemigroup">
+  <ManSection>
+    <Func Name="HolonomyCascadeSemigroup" Arg="ts"/>
+    <Returns>Cascade semigroup that has a surjective homomorphism to <C>ts</C>.</Returns>
+    <Description>
+<Example>
+gap> T4 := FullTransformationSemigroup(4);;
+gap> hcs := HolonomyCascadeSemigroup(T4);
+&lt;cascade semigroup with 4 generators, 3 levels with (4, 3, 2) pts&gt;
+gap> gens := Generators(hcs);
+[ &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 8 dependencies&gt; ]
+gap> surhom := HomomorphismTransformationSemigroup(hcs);
+MappingByFunction( &lt;cascade semigroup with 4 generators, 3 levels with (4, 3, \
+2) pts&gt;, &lt;transformation monoid on 4 pts with 3 generators&gt;
+ , function( c ) ... end )
+gap> Image(surhom, gens[1]*gens[2]);
+Transformation( [ 1, 3, 4, 2 ] )
+gap> T := Range(surhom);
+&lt;transformation monoid on 4 pts with 3 generators&gt;
+gap> Size(T);
+256
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##I
+
+<#GAPDoc Label="IdentityCascade">
+  <ManSection>
+    <Func Name="IdentityCascade" Arg="comps"/>
+    <Returns>The identity cascade on the given components.</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ImageWitness">
+  <ManSection>
+    <Func Name="ImageWitness" Arg="skeleton, P, Q"/>
+    <Returns>The factorization of <M>s\in S</M> such that <M>P^s=Q</M></Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup([Transformation([6,2,6,5,6,2])],Transformation([3,3,3,2,1,3]));;
+gap> sk := Skeleton(S);;
+gap> RepresentativeSets(sk);
+[ [ {1,2,3,4,5,6} ], [ {2,5,6}, {1,2,3} ], [ {2,6}, {1,3} ], [ {3} ] ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsCascade">
+  <ManSection>
+    <Filt Name="IsCascade" Arg='obj' Type='Category'/>
+    <Filt Name="IsTransCascade" Arg='obj' Type='Category'/>
+    <Filt Name="IsPermCascade" Arg='obj' Type='Category'/>
+    <Description>
+Similarly to transformations and permutations we distinguish between transformation and permutation cascades.
+<C>IsCascade</C> is the abstract type.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##M
+
+##N
+
+<#GAPDoc Label="NonImageSingletons">
+  <ManSection>
+    <Attr Name="NonImageSingletons" Arg="skeleton"/>
+    <Returns>Th singleton sets that are not images of the state set.</Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> sk := Skeleton(Semigroup(Transformation([6,2,6,6,6,2])));;
+gap> NonImageSingletons(sk);
+[ {1}, {3}, {4}, {5}, {6} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+##O
+
+<#GAPDoc Label="OnCascade">
+  <ManSection> <Heading>Multiplying cascades</Heading>
+<Func Name="OnCascade" Arg="cascade1, cascade2"/>
+    <Returns><Arg>cascade1</Arg>*<Arg>cascade2</Arg>.</Returns>
+<Description>
+<Example>
+gap> c1 := Cascade([2,3], [ [[],Transformation([2,1])],
+>                          [[2],Transformation([3,1,3])],
+>                          [[1],Transformation([2,1,2])] ]);;
+gap> c2 := Cascade([2,3], [ [[],Transformation([2,2])],
+>                          [[1],Transformation([1,1,3])],
+>                          [[2],Transformation([3,1,2])] ]);;
+gap> Display(OnCascade(c1,c2));
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 2, 2 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 1, 3, 1 ] )
+[ 2 ] -&gt; Transformation( [ 3, 1, 3 ] )
+gap> Display(c2*c1);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 1, 1 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 3, 3, 3 ] )
+[ 2 ] -&gt; Transformation( [ 3, 3, 1 ] )
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OnCoordinates">
+  <ManSection> <Heading>Acting on coordinates by cascades</Heading>
+<Func Name="OnCoordinates" Arg="coords, cascade"/>
+    <Returns>The coordinates transformed by the cascade.</Returns>
+<Description>
+A cascade product of <M>n</M> components acts on <M>n</M>-tuples of coordinates, where each coordinate is an element of the state set of the component on the corresponding level.
+Therefore, cascade products are transformation semigroups with their state set coordinatized.
+Since states are represented by integers, coordinates are lists of integers.
+<Example>
+gap> c := Cascade([2,3], [ [[],Transformation([2,1])],
+>                          [[2],Transformation([3,2,3])],
+>                          [[1],Transformation([1,1,2])] ]);;
+gap> OnCoordinates([2,1],c);
+[ 1, 3 ]
+gap> [2,1]^c;
+[ 1, 3 ]
+gap> [1,3]^c;
+[ 2, 2 ]
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="OnDepArg">
+  <ManSection> <Heading>Evaluating dependency functions</Heading>
+<Func Name="OnDepArg" Arg="arg, depfunc"/>
+    <Returns>The value of the dependency function on the given argument.</Returns>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OnFiniteSet">
+  <ManSection> <Heading>Acting on finite sets</Heading>
+<Func Name="OnFiniteSet" Arg="finset, transformation"/>
+    <Returns>finite set.</Returns>
+<Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> P := FiniteSet([2,3]);
+{2,3}
+gap> t := Transformation([1,1,4,3]);;
+gap> OnFiniteSet(P,t);
+{1,4}
+gap> SgpDecFiniteSetDisplayOff();
+gap> OnFiniteSet(P,t*t);
+[ true, false, true ]
+</Example>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+##R
+
+<#GAPDoc Label="RandomCascade">
+  <ManSection>
+    <Func Name="RandomCascade" Arg="comps,numofdeps"/>
+    <Returns>A cascade with the given number of dependencies (or) less</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RepresentativeSets">
+  <ManSection>
+    <Func Name="RepresentativeSets" Arg="skeleton"/>
+    <Returns>Chosen representative sets for each subduction class grouped according to their depths.</Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup([Transformation([6,2,6,5,6,2])],Transformation([3,3,3,2,1,3]));;
+gap> sk := Skeleton(S);;
+gap> RepresentativeSets(sk);
+[ [ {1,2,3,4,5,6} ], [ {2,5,6}, {1,2,3} ], [ {2,6}, {1,3} ], [ {3} ] ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##S
+
+<#GAPDoc Label="SgpDecMakeDoc">
+  <ManSection>
+    <Func Name="SgpDecMakeDoc" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function should be called with no argument to compile the
+      &SgpDec; documentation. The manuals can be found in the <C>doc</C> folder.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SgpDecRunManualExamples">
+  <ManSection>
+    <Func Name="SgpDecRunManualExamples" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function runs the examples from the manual to make
+      sure that the documentation is in line with the actual implementation.
+      This an alternative way to test the installation's correctness.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SgpDecTestInstall">
+  <ManSection>
+    <Func Name="SgpDecTestInstall" Arg=""/>
+    <Returns>Nothing.</Returns>
+    <Description>
+      This function should be called with no argument to comprehensively
+      test that &SgpDec; is working correctly. These tests
+      should take no more than a few minutes to complete.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="Singletons">
+  <ManSection>
+    <Attr Name="Singletons" Arg="skeleton"/>
+    <Returns>The states as singleton sets.</Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> sk := Skeleton(Semigroup(Transformation([1,1,1])));;
+gap> Singletons(sk);
+[ {1}, {2}, {3} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="Skeleton">
+  <ManSection>
+    <Func Name="Skeleton" Arg="ts"/>
+    <Returns>Skeleton of a transformation semigroup.</Returns>
+    <Description>
+      <Example>
+      </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+##T
+
+<#GAPDoc Label="TilesOf">
+  <ManSection>
+    <Func Name="TilesOf" Arg="skeleton, finiteset"/>
+    <Returns>The set of tiles of <Arg>finiteset</Arg>.</Returns>
+    <Description>
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> sk := Skeleton(T5);;
+gap> TilesOf(sk, FiniteSet([1,2,4],5));
+[ {1,2}, {1,4}, {2,4} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+

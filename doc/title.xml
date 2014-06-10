@@ -1,0 +1,32 @@
+<TitlePage>
+<Title>&SgpDec;</Title>
+<Version>Version &VERSION;</Version>
+<Author>Attila Egri-Nagy <Email>A.Egri-Nagy@herts.ac.uk</Email></Author>
+<Author>Chrystopher L. Nehaniv<Email>C.L.Nehaniv@herts.ac.uk</Email></Author>
+<Author>James Mitchell<Email>jdm3@st-and.ac.uk</Email></Author>
+
+<TitleComment>
+Hierarchical composition and decomposition of finite permutation groups and
+transformation semigroups.
+</TitleComment>
+
+<Abstract>
+This  &GAP; <Package>4.7</Package> package contains computational implementations
+of coordinatizations, i.e. hierarchical decompositions of transformation
+semigroups (Krohn-Rhodes theory) and permutation groups. Cascade products
+(substructures of the wreath product) can be constructed by explicitly giving
+the dependency functions between the components or can be obtained by the
+decomposition algorithms (holonomy for semigroups and Lagrange-Frobenius
+decomposition for groups).
+</Abstract>
+
+<Copyright>&copyright; &COPYRIGHTYEARS; Attila Egri-Nagy, Chrystopher L. Nehaniv, James Mitchell.<P/>
+
+    &SgpDec; is free software; you can redistribute it and/or modify it
+    under the terms of the <URL Text="GNU General Public License">
+    http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
+    Foundation; either version 2 of the License, or (at your option) any later
+    version.
+
+</Copyright>
+</TitlePage>

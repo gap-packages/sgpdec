@@ -1,0 +1,68 @@
+<E>Cascade products</E> are transformation semigroups and permutation groups built from smaller components of the same kind using only unidirectional connections.
+The connections are explicitly represented by functions, generalizing the usual products (semidirect, wreath).
+In other words, with cascade products one can build substructures of the iterated wreath product directly, without constructing the wreath product itself, which is usually prohibitively large.
+Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependency functions</E>.
+<Cite Key="cascprod_arxiv"/>
+
+<Section Label="transcascade"><Heading>Transformation and permutation cascades</Heading>
+<E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups. 
+    <#Include Label="IsCascade">
+    <#Include Label="CascadeAttributes">
+</Section>
+
+<Section Label="createcascade"><Heading>Creating cascades</Heading>
+    <#Include Label="Cascade">
+    <#Include Label="CreateCascade">
+    <#Include Label="IdentityCascade">
+    <#Include Label="RandomCascade">
+</Section>
+
+<Section Label="cascadeaction"><Heading>Cascade operations</Heading>
+    <#Include Label="OnCoordinates">
+    <#Include Label="OnCascade">
+</Section>
+
+<Section Label="cascadechangerepresentation"><Heading>Changing representation</Heading>
+<Ref Func="AsTransformation" BookName="ref"/>
+    <#Include Label="AsCascade">
+</Section>
+
+
+<Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
+Cascades can be multiplied together, there exists an identity element for each list of dependency domains and for a permutation cascade the inverse element is also defined. Therefore cascades can be used to form semigroups and groups.
+Cascade semigroups can then be turned into transformation semigroups by using <Ref Func="IsomorphismTransformationSemigroup" BookName="semigroups"/>
+<Example>
+gap> c := Cascade([2,3], [ [[],Transformation([2,2])],
+>                          [[2],Transformation([3,2,3])] ]);;
+gap> Display(c*c);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -&gt; Transformation( [ 2, 2 ] )
+Dependency function of depth 2 with 2 dependencies.
+[ 1 ] -&gt; Transformation( [ 3, 2, 3 ] )
+[ 2 ] -&gt; Transformation( [ 3, 2, 3 ] )
+gap> c2 := Cascade([2,3], [ [[],Transformation([2,1])],
+>                          [[1],Transformation([3,1,2])] ]);;
+gap> S := Semigroup([c,c2]);
+&lt;cascade semigroup with 2 generators, 2 levels with (2, 3) pts&gt;
+gap> Size(S);
+264
+gap> iso := IsomorphismTransformationSemigroup(S);
+MappingByFunction( &lt;cascade semigroup with 2 generators, 2 levels with (2, 3) \
+pts&gt;, &lt;transformation semigroup on 6 pts with 2 generators&gt;
+ , &lt;Attribute "AsTransformation"&gt;, function( f ) ... end )
+gap> tS := Range(iso);
+&lt;transformation semigroup on 6 pts with 2 generators&gt;
+gap> Size(tS);
+264
+</Example>
+    <#Include Label="ComponentsOfCascadeProduct">
+</Section>
+
+<Section Label="cascadeviz"><Heading>Displaying and drawing cascades</Heading>
+For displaying the details (the dependency) maps <Ref Func="Display" BookName="ref"/> can be used.
+<Example>
+gap>
+</Example> 
+
+    <#Include Label="DotCascade">
+</Section>
