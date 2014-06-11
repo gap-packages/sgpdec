@@ -185,14 +185,12 @@ end;
 
 #looking for a tile that contain the given set on a given level in a given slot
 #then creating a constant map resetting to that tile
-ConstantMapToATile := function(set, depth, slot, sk)
-  local pos, width;
-  pos := Shifts(sk)[depth][slot]+1;
-  while not (IsSubsetBlist(CoordVals(sk)[depth][pos],set)) do
-    pos := pos + 1;
-  od;
-  width := Size(CoordVals(sk)[depth]);
-  return Transformation(List([1..width],x->pos));
+ConstantMapToATile := function(subtile, depth, slot, sk)
+  local pos; # the position of the tile that contains set
+  pos := First([Shifts(sk)[depth][slot]+1..Shifts(sk)[depth][slot+1]],
+                x->IsSubsetBlist(CoordVals(sk)[depth][x],subtile));
+  #just a constant transformation pointing to this tile (encoded as an integer)
+  return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
 end;
 
 # investigate how s acts on the given states
