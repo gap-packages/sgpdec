@@ -265,15 +265,16 @@ end);
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(HolonomyDependencies,
 function(sk, t)
-local i,state,sets,actions,depfuncs,holdom,cst;
+local i,state,sets,actions,depfuncs,holdom,cst, tilechain;
   #identity needs no further calculations
   if IsOne(t) then return [];fi;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..DegreeOfSkeleton(sk)],
                     i -> AllHolonomyLifts(sk,i)));
-  for state in holdom do
-    sets := HolonomyInts2Sets(sk,state);
+  for tilechain in AllTileChains(sk) do
+    sets := SetCoordinates(sk,tilechain);
+    state := HolonomySets2Ints(sk,sets);
     #get the component actions on a state
     actions := HolonomyComponentActions(sk, t, sets);
     #examine whether there is a nontrivial action, then add
