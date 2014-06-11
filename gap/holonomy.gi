@@ -68,8 +68,8 @@ RealTile := function(reptile, P, skeleton)
 end;
 
 #we map  a tile of P to a tile of Rep(P)
-RepTile := function(realcover, P, skeleton)
-  return OnFiniteSet(realcover , ToRep(skeleton, P));
+RepTile := function(realtile, P, skeleton)
+  return OnFiniteSet(realtile , ToRep(skeleton, P));
 end;
 
 # decoding: set coordinate values -> tile chain 
