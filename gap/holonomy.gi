@@ -74,8 +74,8 @@ end;
 
 # decoding: set coordinate values -> tile chain 
 InstallGlobalFunction(TileChain,
-function(sk, coordinates)
-local chain,P,depth;
+        function(sk, coordinates)
+  local chain,P,depth;
   chain := [];
   depth := 1;
   P := BaseSet(sk); #we start to approximate from the top set
@@ -90,8 +90,8 @@ end);
 
 # encoding: tile chain -> set coordinate values
 InstallGlobalFunction(SetCoordinates,
-function(sk, chain)
-local sets,i, P;
+        function(sk, chain)
+  local sets,i, P;
   #filling up with zeros - jumped over levels are abstract
   sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 0);
   P := BaseSet(sk);
@@ -105,23 +105,23 @@ end);
 
 #all coordinate lifts of a point
 InstallGlobalFunction(AllHolonomyLifts,
-function(sk, point)
+        function(sk, point)
   return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
-            c -> HolonomySets2Ints(sk,SetCoordinates(sk,c)));
+              c -> HolonomySets2Ints(sk,SetCoordinates(sk,c)));
 end);
 
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
-function(sk,level,state)
+        function(sk,level,state)
   return CoordVals(sk)[level][state];
 end);
 #AsPoint
 AsHolonomyPoint :=
-#    "flatten a cascaded state",
-#    true,
-#    [IsDenseList,IsRecord],
-function(cs,sk)
+  #    "flatten a cascaded state",
+  #    true,
+  #    [IsDenseList,IsRecord],
+  function(cs,sk)
   local coverchain;
   coverchain := TileChain(sk, HolonomyInts2Sets(sk,cs));
   # extracting the singleton element from the cover chains
@@ -130,10 +130,10 @@ function(cs,sk)
 end;#);
 
 AsHolonomyCoords :=
-#    "raise a flat state into holonomy decomposition",
-#    true,
-#    [IsInt, IsRecord],
-function(k,sk)
+  #    "raise a flat state into holonomy decomposition",
+  #    true,
+  #    [IsInt, IsRecord],
+  function(k,sk)
   return HolonomySets2Ints(sk,
                  SetCoordinates(sk,
                          RandomTileChain(sk,k)));
@@ -145,7 +145,7 @@ end;
 
 # special action for holonomy int coordinates dealing with 0s and constant maps
 OnHolonomyCoordinates:= function(coords, ct)
-local dfs, copy, out, len, i, action;
+  local dfs, copy, out, len, i, action;
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
   copy:=EmptyPlist(len);
@@ -200,16 +200,15 @@ end;
 # P represents a tilechain and we hit it by s so we get a subset chain
 # and Q approximates the subset chain with a non-unique tile chain
 InstallGlobalFunction(HolonomyComponentActions,
-function(sk,s,coords)
-local action,
-      actions,
-      depth,
-      P,
-      Q,
-      Ps,
-      ncoordval,
-      j,
-      set;
+        function(sk,s,coords)
+  local action,
+        actions,
+        depth,
+        P,
+        Q,
+        Ps,
+        ncoordval,
+        subtile;
   #initializing actions to identity
   actions := List([1..DepthOfSkeleton(sk)-1],
                   x -> One( HolonomyPermutationResetComponents(sk)[x]));
@@ -223,12 +222,11 @@ local action,
         action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
         actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
         ncoordval := OnFiniteSet(coords[depth], action);
-        #if not IsSubsetBlist(Ps,ncoordval) then  Print(DisplayString(Ps), " <> ", DisplayString(ncoordval),"\n");fi;
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
-        set := RepTile(Ps,Q,sk);
-        actions[depth] := ConstantMapToATile(set, depth,GetSlot(Q,sk), sk);
+        subtile := RepTile(Ps,Q,sk); #a subset of the new coord value tile
+        actions[depth] := ConstantMapToATile(subtile, depth,GetSlot(Q,sk), sk);
         ncoordval:=CoordVals(sk)[depth][1^actions[depth]];#applying the constant
-        if not IsSubsetBlist(ncoordval,set) then Error();fi;
+        if not IsSubsetBlist(ncoordval,subtile) then Error();fi;
       else
         Error("HEY!!!");
       fi;
