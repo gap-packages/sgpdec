@@ -223,10 +223,12 @@ local action,
         action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
         actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
         ncoordval := OnFiniteSet(coords[depth], action);
+        #if not IsSubsetBlist(Ps,ncoordval) then  Print(DisplayString(Ps), " <> ", DisplayString(ncoordval),"\n");fi;
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         set := RepTile(Ps,Q,sk);
         actions[depth] := ConstantMapToATile(set, depth,GetSlot(Q,sk), sk);
-        ncoordval:=CoordVals(sk)[depth][1^actions[depth]];# applying the constant
+        ncoordval:=CoordVals(sk)[depth][1^actions[depth]];#applying the constant
+        if not IsSubsetBlist(ncoordval,set) then Error();fi;
       else
         Error("HEY!!!");
       fi;
