@@ -356,6 +356,16 @@ local heights, i, l;
 end;
 MakeReadOnlyGlobal("MaximalHeightValues");
 
+CardinalityHeightValues := function(sk)
+local heights,o,posl;
+  o := ForwardOrbit(sk);
+  heights := List(SkeletonTransversal(sk), x->SizeBlist(o[x])-1);
+  posl := List([Minimum(heights)..Maximum(heights)], x-> Positions(heights,x));
+  while Position(posl, []) <> fail do Remove(posl, Position(posl,[]));od;
+  Perform([1..Size(posl)], function(x) Perform(posl[x], function(y)heights[y]:= x;end) ;end);
+  return heights;
+end;
+
 InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
         MinimalHeightValues);
 
