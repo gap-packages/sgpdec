@@ -253,9 +253,7 @@ InstallGlobalFunction(HolonomyCascadeSemigroup,
 function(ts)
   local sk, S;
   sk := Skeleton(ts);
-  S := Semigroup(List(GeneratorsOfSemigroup(ts),
-               t->Cascade( HolonomyPermutationResetComponents(sk),
-                       HolonomyDependencies(sk,t))));
+  S := Semigroup(List(GeneratorsOfSemigroup(ts), t->AsHolonomyCascade(t,sk)));
   SetSkeletonOf(S,sk);
   SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(sk));
   SetIsHolonomyCascadeSemigroup(S,true);
@@ -264,11 +262,11 @@ end);
 
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
-InstallGlobalFunction(HolonomyDependencies,
-function(sk, t)
+InstallGlobalFunction(AsHolonomyCascade,
+function(t,sk)
 local i,state,sets,actions,depfuncs,holdom,cst, tilechain;
   #identity needs no further calculations
-  if IsOne(t) then return [];fi;
+  if IsOne(t) then return Cascade(HolonomyPermutationResetComponents(sk),[]);fi;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..DegreeOfSkeleton(sk)],
@@ -294,13 +292,7 @@ local i,state,sets,actions,depfuncs,holdom,cst, tilechain;
       fi;
     od;
   od;
-  return depfuncs; #TODO maybe sort them into a graded list
-end);
-
-InstallGlobalFunction(AsHolonomyCascade,
-function(t,sk)
-  return Cascade( HolonomyPermutationResetComponents(sk),
-                 HolonomyDependencies(sk,t));
+  return Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
 end);
 
 InstallGlobalFunction(AsHolonomyTransformation,
