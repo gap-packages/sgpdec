@@ -73,7 +73,7 @@ RepTile := function(realtile, P, skeleton)
 end;
 
 # decoding: set coordinate values -> tile chain 
-InstallGlobalFunction(TileChain,
+InstallGlobalFunction(DecodeCoords,
         function(sk, coordinates)
   local chain,P,depth;
   chain := [];
@@ -89,7 +89,7 @@ InstallGlobalFunction(TileChain,
 end);
 
 # encoding: tile chain -> set coordinate values
-InstallGlobalFunction(SetCoordinates,
+InstallGlobalFunction(EncodeTileChain,
         function(sk, chain)
   local sets,i, P;
   #filling up with zeros - jumped over levels are abstract
@@ -107,7 +107,7 @@ end);
 InstallGlobalFunction(AllHolonomyLifts,
         function(sk, point)
   return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
-              c -> HolonomySets2Ints(sk,SetCoordinates(sk,c)));
+              c -> HolonomySets2Ints(sk,EncodeTileChain(sk,c)));
 end);
 
 ################################################################################
@@ -123,7 +123,7 @@ AsHolonomyPoint :=
   #    [IsDenseList,IsRecord],
   function(cs,sk)
   local coverchain;
-  coverchain := TileChain(sk, HolonomyInts2Sets(sk,cs));
+  coverchain := DecodeCoords(sk, HolonomyInts2Sets(sk,cs));
   # extracting the singleton element from the cover chains
   return ListBlist([1..DegreeOfSkeleton(sk)],
                  coverchain[Length(coverchain)])[1];
@@ -135,7 +135,7 @@ AsHolonomyCoords :=
   #    [IsInt, IsRecord],
   function(k,sk)
   return HolonomySets2Ints(sk,
-                 SetCoordinates(sk,
+                 EncodeTileChain(sk,
                          RandomTileChain(sk,k)));
 end;#);
 
@@ -216,17 +216,21 @@ InstallGlobalFunction(HolonomyComponentActions,
   P := BaseSet(sk);
   Q := BaseSet(sk);
   for depth in [1..DepthOfSkeleton(sk)-1] do
+#    Print("Depth: ", depth, " P: ", DisplayString(P),DepthOfSet(sk,P)," Q: ", DisplayString(Q),DepthOfSet(sk,Q),"\n");
     if DepthOfSet(sk, Q) = depth then # we are on the right level
       Ps := OnFiniteSet(P,s);
-      if Ps = Q then #PERMUTATION###############################################
+#      Print(DisplayString(Ps));
+      if Ps = Q and IsSubductionEquivalent(sk,P,Q) then #PERMUTATION###############################################
         action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
         actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
         ncoordval := OnFiniteSet(coords[depth], action);
+#        Print("P\n");
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         subtile := RepTile(Ps,Q,sk); #a subset of the new coord value tile
         actions[depth] := ConstantMapToATile(subtile, depth,GetSlot(Q,sk), sk);
         ncoordval:=CoordVals(sk)[depth][1^actions[depth]];#applying the constant
         if not IsSubsetBlist(ncoordval,subtile) then Error();fi;
+ #               Print("C\n");
       else
         Error("HEY!!!");
       fi;
@@ -235,6 +239,7 @@ InstallGlobalFunction(HolonomyComponentActions,
     if DepthOfSet(sk,P) = depth then
       P := RealTile(coords[depth],P,sk); #decoding
     fi;
+ 
   od;
   # paranoid check whether the action is in the component
   if SgpDecOptionsRec.PARANOID then
@@ -273,7 +278,7 @@ local i,state,sets,actions,depfuncs,holdom,cst, tilechain;
   holdom := Union(List([1..DegreeOfSkeleton(sk)],
                     i -> AllHolonomyLifts(sk,i)));
   for tilechain in AllTileChains(sk) do
-    sets := SetCoordinates(sk,tilechain);
+    sets := EncodeTileChain(sk,tilechain);
     state := HolonomySets2Ints(sk,sets);
     #get the component actions on a state
     actions := HolonomyComponentActions(sk, t, sets);

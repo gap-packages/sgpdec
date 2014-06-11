@@ -10,8 +10,8 @@
 
 DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
 
-DeclareGlobalFunction("SetCoordinates");
-DeclareGlobalFunction("TileChain");
+DeclareGlobalFunction("EncodeTileChain");
+DeclareGlobalFunction("DecodeCoords");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");
