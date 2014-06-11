@@ -19,7 +19,6 @@ DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
-DeclareGlobalFunction("HolonomyDependencies");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
 DeclareGlobalFunction("HolonomyRelationalMorphism");
 DeclareGlobalFunction("SetwiseProduct");
