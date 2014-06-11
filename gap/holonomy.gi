@@ -264,35 +264,36 @@ end);
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(AsHolonomyCascade,
 function(t,sk)
-local i,state,sets,actions,depfuncs,holdom,cst, tilechain;
-  #identity needs no further calculations
-  if IsOne(t) then return Cascade(HolonomyPermutationResetComponents(sk),[]);fi;
+local i,state,sets,actions,depfuncs,holdom,cst, cascade;
   depfuncs := [];
   #we go through all states
   holdom := Union(List([1..DegreeOfSkeleton(sk)],
                     i -> AllHolonomyLifts(sk,i)));
-  for tilechain in AllTileChains(sk) do
-    sets := EncodeTileChain(sk,tilechain);
-    state := HolonomySets2Ints(sk,sets);
-    #get the component actions on a state
-    actions := HolonomyComponentActions(sk, t, sets);
-    #examine whether there is a nontrivial action, then add
-    for i in [1..Length(actions)] do
-      if not IsOne(actions[i]) then
-        if i = 1 then
-          AddSet(depfuncs,[[],actions[1]]);
-        else
-          for cst in
-            AllConcreteCoords(ComponentDomains(
-                    HolonomyPermutationResetComponents(sk)),
-                  state{[1..(i-1)]}) do
-            AddSet(depfuncs,[cst,actions[i]]);
-          od;
+  if not IsOne(t) then
+    for state in holdom do
+      sets := HolonomyInts2Sets(sk,state);
+        #get the component actions on a state
+      actions := HolonomyComponentActions(sk, t, sets);
+        #examine whether there is a nontrivial action, then add
+      for i in [1..Length(actions)] do
+        if not IsOne(actions[i]) then
+          if i = 1 then
+            AddSet(depfuncs,[[],actions[1]]);
+          else
+            for cst in
+              AllConcreteCoords(ComponentDomains(
+                      HolonomyPermutationResetComponents(sk)),
+                      state{[1..(i-1)]}) do
+              AddSet(depfuncs,[cst,actions[i]]);
+            od;
+          fi;
         fi;
-      fi;
+      od;
     od;
-  od;
-  return Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
+  fi;
+  cascade := Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
+  SetRestrictedDomain(cascade, holdom);
+  return cascade;
 end);
 
 InstallGlobalFunction(AsHolonomyTransformation,

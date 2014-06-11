@@ -47,6 +47,7 @@ DeclareAttribute("NrDependencies",IsCascade);
 DeclareAttribute("ComponentDomains",IsCascade);
 DeclareAttribute("DependencyDomainsOf",IsCascade);
 DeclareAttribute("NrDependencyFuncArgs", IsCascade);
+DeclareAttribute("RestrictedDomain", IsCascade);
 DeclareGlobalFunction("DependenciesOfCascade");
 
 #cascade multiplication
