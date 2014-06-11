@@ -198,7 +198,7 @@ end;
 InstallGlobalFunction(HolonomyComponentActions,
         function(sk,s,coords)
   local action,
-        actions,
+        encdactions,
         depth,
         P,
         Q,
@@ -206,7 +206,7 @@ InstallGlobalFunction(HolonomyComponentActions,
         ncoordval,
         subtile;
   #initializing actions to identity
-  actions := List([1..DepthOfSkeleton(sk)-1],
+  encdactions := List([1..DepthOfSkeleton(sk)-1],
                   x -> One( HolonomyPermutationResetComponents(sk)[x]));
   #initial successive approximation are the same for both
   P := BaseSet(sk);
@@ -218,13 +218,13 @@ InstallGlobalFunction(HolonomyComponentActions,
 #      Print(DisplayString(Ps));
       if Ps = Q and IsSubductionEquivalent(sk,P,Q) then #PERMUTATION###############################################
         action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
-        actions[depth] := PermutationOfTiles(action, depth, GetSlot(Q,sk), sk);
+        encdactions[depth] := PermutationOfTiles(action,depth,GetSlot(Q,sk),sk);
         ncoordval := OnFiniteSet(coords[depth], action);
 #        Print("P\n");
       elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
         subtile := RepTile(Ps,Q,sk); #a subset of the new coord value tile
-        actions[depth] := ConstantMapToATile(subtile, depth,GetSlot(Q,sk), sk);
-        ncoordval:=CoordVals(sk)[depth][1^actions[depth]];#applying the constant
+        encdactions[depth]:=ConstantMapToATile(subtile,depth,GetSlot(Q,sk),sk);
+        ncoordval:=CoordVals(sk)[depth][1^encdactions[depth]];#applying the constant
         if not IsSubsetBlist(ncoordval,subtile) then Error();fi;
  #               Print("C\n");
       else
@@ -240,13 +240,13 @@ InstallGlobalFunction(HolonomyComponentActions,
   # paranoid check whether the action is in the component
   if SgpDecOptionsRec.PARANOID then
     for depth in [1..DepthOfSkeleton(sk)-1] do
-      if not actions[depth] in  HolonomyPermutationResetComponents(sk)[depth] then
-        Print(actions[depth], " not in ", HolonomyPermutationResetComponents(sk)[depth],"\n");
+      if not encdactions[depth] in  HolonomyPermutationResetComponents(sk)[depth] then
+        Print(encdactions[depth], " not in ", HolonomyPermutationResetComponents(sk)[depth],"\n");
         Error("Alien component action!");
       fi;
     od;
   fi;
-  return actions;
+  return encdactions;
 end);
 
 InstallGlobalFunction(HolonomyCascadeSemigroup,
