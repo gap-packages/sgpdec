@@ -169,18 +169,16 @@ end;
 
 # creating the permutation action on the tiles, shifted properly to the slot
 PermutationOfTiles := function(action, depth, slot, sk)
-  local tileaction, shift, width;
+  local tileaction, shift;
   tileaction := ImageListOfTransformation(
                         TransformationOp(action,
                                 TileCoords(sk)[depth][slot],
                                 OnFiniteSet));
   #technical bit: shifting the action to the right slot
   shift := Shifts(sk)[depth][slot];
-  width := Size(CoordVals(sk)[depth]);
   return Transformation(Concatenation(
                  [1..shift],
-                 tileaction + shift,
-                 [shift+Size(tileaction)+1..width]));
+                 tileaction + shift));
 end;
 
 #looking for a tile that contain the given set on a given level in a given slot
