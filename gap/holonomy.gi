@@ -72,7 +72,7 @@ RepTile := function(realtile, P, skeleton)
   return OnFiniteSet(realtile , ToRep(skeleton, P));
 end;
 
-# decoding: set coordinate values -> tile chain 
+# decoding: set coordinate values -> tile chain
 InstallGlobalFunction(DecodeCoords,
         function(sk, coordinates)
   local chain,P,depth;
@@ -396,7 +396,7 @@ function(HCS)
   return str;
 end);
 
-# a straightforward implementation for multiplication for sets
+# straightforward implementation for multiplication for sets TODO what is this?
 InstallGlobalFunction(SetwiseProduct,
 function(S,T)
   local ST,s,t;
