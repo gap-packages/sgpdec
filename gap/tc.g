@@ -68,7 +68,7 @@ HolonomyCore := function(sk, s, coords)
       else
         #constant
         if not IsSubsetBlist(positionedQ[depth],  OnFiniteSet(paddedP[depth],s)) then Error();fi;;
-        cas[depth]:=ConstantMapToATile(positionedQ[depth],
+        cas[depth]:=ConstantMapToATile(RepTile(positionedQ[depth],Qparent,sk),
                             depth,
                             GetSlot(Qparent,sk),
                             sk);
