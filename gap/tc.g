@@ -67,6 +67,7 @@ HolonomyCore := function(sk, s, coords)
         cas[depth] := PermutationOfTiles(action,depth,GetSlot(Qparent,sk),sk);
       else
         #constant
+        if not IsSubsetBlist(positionedQ[depth],  OnFiniteSet(paddedP[depth],s)) then Error();fi;;
         cas[depth]:=ConstantMapToATile(positionedQ[depth],
                             depth,
                             GetSlot(Qparent,sk),
