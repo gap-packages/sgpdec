@@ -1,7 +1,14 @@
+OnSequenceOfSets := function(tc, s)
+  return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
+end;
+
+# no choice here yet
 DominatingTileChain := function(sk,chain)
   local pos, dtc;
+  if IsEmpty(chain) then Error();fi;
   pos := 1;
   dtc := ShallowCopy(chain);
+  if dtc[1] <> BaseSet(sk) then Add(dtc, BaseSet(sk),1);fi;
   while not IsSingleton(dtc[pos]) do
     if not dtc[pos+1] in TilesOf(sk, dtc[pos]) then
       Add(dtc,
@@ -16,7 +23,7 @@ end;
 
 PositionedTileChain := function(sk, chain)
   local positioned,i;
-  positioned := [];
+  positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
   i := 1;
   while i < Length(chain) do
     positioned[DepthOfSet(sk,chain[i])] := chain[i+1];
@@ -30,31 +37,43 @@ local padded,i,positionedchain;
   positionedchain := PositionedTileChain(sk,tilechain);
   padded := EmptyPlist(DepthOfSkeleton(sk)-1);
   for i in [1..DepthOfSkeleton(sk)-1] do
-    if IsBound(positionedchain[i]) then
+    if positionedchain[i] <> 0 then
       padded[i] := positionedchain[i];
     else
-      padded[i] := padded[i-1];
+      if i = 1 then
+        padded[i] := BaseSet(sk);
+      else
+        padded[i] := padded[i-1];
+      fi;
     fi;
   od;
   return padded;
 end;
 
 # P is a tile chain
-HolonomyCore := function(sk, P, s)
-  local pP, pPs, Q, pQ, depth, Qparent;
-#  Pparent := BaseSet(sk);
+HolonomyCore := function(sk, s, coords)
+  local pP, pPs, Q, pQ, depth, Qparent,action, cas,P, positionedQ,paddedP;
+  cas := List([1..DepthOfSkeleton(sk)-1],
+                  x -> One( HolonomyPermutationResetComponents(sk)[x]));
+  P := DecodeCoords(sk,coords);
   Qparent := BaseSet(sk);
-  Q := DominatingTileChain(sk,Ps);
-  pQ := PositionedTileChain(sk,Q);
-  pP := PositionedTileChain(sk,P);
-  pPs := OnTileChain(pP,s);
+  Q := DominatingTileChain(sk,OnSequenceOfSets(P,s));
+  positionedQ := PositionedTileChain(sk,Q);
+  paddedP := PaddedTileChain(sk,P);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-    if IsBound(pQ[depth]) then
-      if P = Qparent then #PERMUTATION
-        # action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
-        # cas[depth] := PermutationOfTiles(action,depth,GetSlot(Q,sk),sk);
-        # ncoordval := OnFiniteSet(coords[depth], action);
+    if positionedQ[depth] <> 0 then
+      if OnFiniteSet(paddedP[depth],s) = Qparent then #PERMUTATION
+        action := FromRep(sk,paddedP[depth]) * s * ToRep(sk,Qparent); #roundtrip
+        cas[depth] := PermutationOfTiles(action,depth,GetSlot(Qparent,sk),sk);
+      else
+        #constant
+        cas[depth]:=ConstantMapToATile(positionedQ[depth],
+                            depth,
+                            GetSlot(Qparent,sk),
+                            sk);
       fi;
+      Qparent := positionedQ[depth];
     fi;
   od;
+  return cas;
 end;
