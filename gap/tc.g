@@ -52,37 +52,37 @@ end;
 
 # P is a tile chain
 HolonomyCore := function(sk, s, coords)
-  local pP, pPs, Q, pQ, depth, Qparent,action, cas,P, positionedQ,paddedP,Ps,Pparent;
+  local CP, CQ, # tile chains 
+        pP, pPs, Q, pQ, depth,action, cas,P, positionedQ,paddedP,Ps,positionedP;
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One( HolonomyPermutationResetComponents(sk)[x]));
-  P := DecodeCoords(sk,coords);
-  Qparent := BaseSet(sk);
-  Pparent := BaseSet(sk);
-  Q := DominatingTileChain(sk,OnSequenceOfSets(P,s));
-  positionedQ := PositionedTileChain(sk,Q);
-  Add(P,BaseSet(sk),1);
-  positionedP := PositionedTileChain(sk,P);
+  CP := DecodeCoords(sk,coords);
+  Q := BaseSet(sk);
+  P := BaseSet(sk);
+  Add(CP,BaseSet(sk),1);
+  CQ := DominatingTileChain(sk,OnSequenceOfSets(CP,s));
+  positionedQ := PositionedTileChain(sk,CQ);
+  positionedP := PositionedTileChain(sk,CP);
 
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if positionedQ[depth] <> 0 then
-      Ps := OnFiniteSet(Pparent,s); 
-      if Ps  = Qparent then #PERMUTATION
-        action := FromRep(sk,Pparent) * s * ToRep(sk,Qparent); #roundtrip
-        cas[depth] := PermutationOfTiles(action,depth,GetSlot(Qparent,sk),sk);
-        #Print("#\c");
+      Ps := OnFiniteSet(P,s); 
+      if Ps  = Q then #PERMUTATION
+        action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
+        cas[depth] := PermutationOfTiles(action,depth,GetSlot(Q,sk),sk);
       else
         #constant
-        if not IsSubsetBlist(Qparent,  Ps) then Error("newHEY");fi;;
+        if not IsSubsetBlist(Q,  Ps) then Error("newHEY");fi;;
         cas[depth]:=ConstantMapToATile(
-                            RepTile(positionedQ[depth],Qparent,sk),
+                            RepTile(positionedQ[depth],Q,sk),
                             depth,
-                            GetSlot(Qparent,sk),
+                            GetSlot(Q,sk),
                             sk);
       fi;
-      Qparent := positionedQ[depth];
+      Q := positionedQ[depth];
     fi;
     if positionedP[depth] <> 0 then
-      Pparent := positionedP[depth];
+      P := positionedP[depth];
     fi;
   od;
   return cas;
