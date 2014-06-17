@@ -52,28 +52,37 @@ end;
 
 # P is a tile chain
 HolonomyCore := function(sk, s, coords)
-  local pP, pPs, Q, pQ, depth, Qparent,action, cas,P, positionedQ,paddedP;
+  local pP, pPs, Q, pQ, depth, Qparent,action, cas,P, positionedQ,paddedP,Ps,Pparent;
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One( HolonomyPermutationResetComponents(sk)[x]));
   P := DecodeCoords(sk,coords);
   Qparent := BaseSet(sk);
+  Pparent := BaseSet(sk);
   Q := DominatingTileChain(sk,OnSequenceOfSets(P,s));
   positionedQ := PositionedTileChain(sk,Q);
-  paddedP := PaddedTileChain(sk,P);
+  Add(P,BaseSet(sk),1);
+  positionedP := PositionedTileChain(sk,P);
+
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if positionedQ[depth] <> 0 then
-      if OnFiniteSet(paddedP[depth],s) = Qparent then #PERMUTATION
-        action := FromRep(sk,paddedP[depth]) * s * ToRep(sk,Qparent); #roundtrip
+      Ps := OnFiniteSet(Pparent,s); 
+      if Ps  = Qparent then #PERMUTATION
+        action := FromRep(sk,Pparent) * s * ToRep(sk,Qparent); #roundtrip
         cas[depth] := PermutationOfTiles(action,depth,GetSlot(Qparent,sk),sk);
+        #Print("#\c");
       else
         #constant
-        if not IsSubsetBlist(positionedQ[depth],  OnFiniteSet(paddedP[depth],s)) then Error();fi;;
-        cas[depth]:=ConstantMapToATile(RepTile(positionedQ[depth],Qparent,sk),
+        if not IsSubsetBlist(Qparent,  Ps) then Error("newHEY");fi;;
+        cas[depth]:=ConstantMapToATile(
+                            RepTile(positionedQ[depth],Qparent,sk),
                             depth,
                             GetSlot(Qparent,sk),
                             sk);
       fi;
       Qparent := positionedQ[depth];
+    fi;
+    if positionedP[depth] <> 0 then
+      Pparent := positionedP[depth];
     fi;
   od;
   return cas;
