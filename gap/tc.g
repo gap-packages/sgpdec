@@ -20,7 +20,7 @@ DominatingTileChain := function(sk,chain)
   return dtc;
 end;
 
-
+# this cuts off the baseset
 PositionedTileChain := function(sk, chain)
   local positioned,i;
   positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
@@ -32,56 +32,49 @@ PositionedTileChain := function(sk, chain)
   return positioned;
 end;
 
-PaddedTileChain := function(sk, tilechain)
-local padded,i,positionedchain;
-  positionedchain := PositionedTileChain(sk,tilechain);
-  padded := EmptyPlist(DepthOfSkeleton(sk)-1);
-  for i in [1..DepthOfSkeleton(sk)-1] do
-    if positionedchain[i] <> 0 then
-      padded[i] := positionedchain[i];
-    else
-      if i = 1 then
-        padded[i] := BaseSet(sk);
-      else
-        padded[i] := padded[i-1];
-      fi;
-    fi;
-  od;
-  return padded;
+ConstantMapToATile2 := function(subtile, depth, slot, sk)
+  local pos; # the position of the tile that contains set
+  pos := First([Shifts(sk)[depth][slot]+1..Shifts(sk)[depth][slot+1]],
+                x-> CoordVals(sk)[depth][x] = subtile);
+  #just a constant transformation pointing to this tile (encoded as an integer)
+  if pos = fail then Error();fi;
+  return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
 end;
 
-# P is a tile chain
+
 HolonomyCore := function(sk, s, coords)
   local CP, CQ, # tile chains 
-        pP, pPs, Q, pQ, depth,action, cas,P, positionedQ,paddedP,Ps,positionedP;
+        Q, P, # the current set in the chains
+        CPs,Ps, # P hit by s
+        depth, 
+        cas, # encoded component actions
+        positionedQ,positionedP; # positioned tiles
   cas := List([1..DepthOfSkeleton(sk)-1],
-                  x -> One( HolonomyPermutationResetComponents(sk)[x]));
+                  x -> One(HolonomyPermutationResetComponents(sk)[x]));
   CP := DecodeCoords(sk,coords);
-  Q := BaseSet(sk);
-  P := BaseSet(sk);
   Add(CP,BaseSet(sk),1);
-  CQ := DominatingTileChain(sk,OnSequenceOfSets(CP,s));
+  CPs := OnSequenceOfSets(CP,s);
+  CQ := DominatingTileChain(sk,CPs);
   positionedQ := PositionedTileChain(sk,CQ);
   positionedP := PositionedTileChain(sk,CP);
-
+  Q := BaseSet(sk);
+  P := BaseSet(sk);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-    if positionedQ[depth] <> 0 then
-      Ps := OnFiniteSet(P,s); 
+    if depth = DepthOfSet(sk,Q) then #TODO positionedQ[depth] <> 0 is faster
+      Ps := OnFiniteSet(P,s); #TODO this is already in CPs
       if Ps  = Q then #PERMUTATION
-        action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
-        cas[depth] := PermutationOfTiles(action,depth,GetSlot(Q,sk),sk);
-      else
-        #constant
-        if not IsSubsetBlist(Q,  Ps) then Error("newHEY");fi;;
-        cas[depth]:=ConstantMapToATile(
+        cas[depth] := PermutationOfTiles(
+                              FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
+                              depth,GetSlot(Q,sk),sk);
+      else #CONSTANT
+        if not IsSubsetBlist(Q,  Ps) then Error("newHEY");fi;
+        cas[depth]:=ConstantMapToATile2(
                             RepTile(positionedQ[depth],Q,sk),
-                            depth,
-                            GetSlot(Q,sk),
-                            sk);
+                            depth,GetSlot(Q,sk),sk);
       fi;
       Q := positionedQ[depth];
     fi;
-    if positionedP[depth] <> 0 then
+    if depth = DepthOfSet(sk,P) then
       P := positionedP[depth];
     fi;
   od;
