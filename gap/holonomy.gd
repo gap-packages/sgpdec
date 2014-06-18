@@ -10,6 +10,8 @@
 
 DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
 
+DeclareGlobalFunction("RepTile");
+DeclareGlobalFunction("RealTile");
 DeclareGlobalFunction("EncodeTileChain");
 DeclareGlobalFunction("DecodeCoords");
 DeclareGlobalFunction("ChangeCoveredSet");
