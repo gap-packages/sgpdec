@@ -178,11 +178,9 @@ end;
 #then creating a constant map resetting to that tile
 ConstantMapToATile := function(subtile, depth, slot, sk)
   local pos; # the position of the tile that contains set
-  pos := First([Shifts(sk)[depth][slot]+1..Shifts(sk)[depth][slot+1]],
-                x-> CoordVals(sk)[depth][x] = subtile);
+  pos := Position(CoordVals(sk)[depth],subtile,Shifts(sk)[depth][slot]);#..Shifts(sk)[depth][slot+1]],
   #just a constant transformation pointing to this tile (encoded as an integer)
-  if pos = fail then Error();fi;
-  return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
+   return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
 end;
 
 # investigate how s acts on the given states
