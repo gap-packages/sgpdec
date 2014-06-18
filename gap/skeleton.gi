@@ -464,36 +464,14 @@ local coll,s;
   return coll;
 end);
 
-# this already does something extra by deduplicating and putting back the top
-InstallGlobalFunction(OnTileChain,
+InstallGlobalFunction(OnSequenceOfSets,
 function(tc, s)
-local l,baseset;
-  baseset := tc[1];
-  l :=  List(tc,tile -> OnFiniteSet(tile,s));
-  Add(l,baseset,1);
-  return DuplicateFreeList(l);
+  return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
 end);
 
-#extends to a dominating tilechain
-# DominateChain := function(sk,chain)
-#   local pos;
-#   pos := 1;
-#   while not IsSingleton(chain[pos]) do
-#     if not chain[pos+1] in TilesOf(sk, chain[pos]) then
-#       Add(chain,
-#           First(TilesOf(sk,chain[pos]), x->IsSubsetBlist(x,chain[pos+1])),
-#           pos+1);
-#     fi;
-#     pos := pos + 1;
-#   od;
-# end;
-
-OnSequenceOfSets := function(tc, s)
-  return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
-end;
-
 # no choice here yet
-DominatingTileChain := function(sk,chain)
+InstallGlobalFunction(DominatingTileChain,
+function(sk,chain)
   local pos, dtc;
   if IsEmpty(chain) then Error();fi;
   pos := 1;
@@ -508,10 +486,11 @@ DominatingTileChain := function(sk,chain)
     pos := pos + 1;
   od;
   return dtc;
-end;
+end);
 
 # this cuts off the baseset
-PositionedTileChain := function(sk, chain)
+InstallGlobalFunction(PositionedTileChain,
+function(sk, chain)
   local positioned,i;
   positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
   i := 1;
@@ -520,8 +499,7 @@ PositionedTileChain := function(sk, chain)
     i := i +1;
   od;
   return positioned;
-end;
-
+end);
 
 ################################################################################
 InstallGlobalFunction(DepthOfSet,
