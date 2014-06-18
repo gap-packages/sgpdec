@@ -195,8 +195,6 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
         positionedQ,positionedP; # positioned tiles
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
-  #CP := DecodeCoords(sk,coords);
-  #Add(CP,BaseSet(sk),1);
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingTileChain(sk,CPs);
   positionedQ := PositionedTileChain(sk,CQ);
@@ -383,6 +381,14 @@ end);
 TestHolonomyEmulation := function(S)
   local hom,hcs;
   hcs := HolonomyCascadeSemigroup(S);
-  hom := HomomorphismTransformationSemigroup(hcs);
+  hom := HomomorphismTransformationSemigroup(hcs);  
   return AsSet(S) = AsSet(Range(hom));
+end;
+
+TestHolonomyRelationalMorphism := function(S)
+  local sk;
+  sk := Skeleton(S);
+  return ForAll(Tuples(AsList(S),2),
+                x -> x[1]*x[2] = AsHolonomyTransformation(
+                        AsHolonomyCascade(x[1],sk) * AsHolonomyCascade(x[2],sk),sk));
 end;
