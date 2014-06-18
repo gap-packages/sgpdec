@@ -104,11 +104,11 @@ InstallGlobalFunction(EncodeTileChain,
 end);
 
 #all coordinate lifts of a point
-InstallGlobalFunction(AllHolonomyLifts,
-        function(sk, point)
-  return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
-              c -> HolonomySets2Ints(sk,EncodeTileChain(sk,c)));
-end);
+# InstallGlobalFunction(AllHolonomyLifts,
+#         function(sk, point)
+#   return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
+#               c -> HolonomySets2Ints(sk,EncodeTileChain(sk,c)));
+# end);
 
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
@@ -195,8 +195,8 @@ end;
 # investigate how s acts on the given states
 # returns a list of component actions, one for each level
 
-InstallGlobalFunction(HolonomyComponentActions,function(sk, s, coords)
-  local CP, CQ, # tile chains 
+InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
+  local CQ, # tile chains 
         Q, P, # the current set in the chains
         CPs,Ps, # P hit by s
         depth, 
@@ -204,8 +204,8 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, coords)
         positionedQ,positionedP; # positioned tiles
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
-  CP := DecodeCoords(sk,coords);
-  Add(CP,BaseSet(sk),1);
+  #CP := DecodeCoords(sk,coords);
+  #Add(CP,BaseSet(sk),1);
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingTileChain(sk,CPs);
   positionedQ := PositionedTileChain(sk,CQ);
@@ -249,16 +249,15 @@ end);
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(AsHolonomyCascade,
 function(t,sk)
-local i,state,sets,actions,depfuncs,holdom,cst, cascade;
+local i,state,actions,depfuncs,cst, cascade,tilechain;
   depfuncs := [];
-  #we go through all states
-  holdom := Union(List([1..DegreeOfSkeleton(sk)],
-                    i -> AllHolonomyLifts(sk,i)));
+  #we go through all tile chains
   if not IsOne(t) then
-    for state in holdom do
-      sets := HolonomyInts2Sets(sk,state);
+    for tilechain in AllTileChains(sk) do
+      state := HolonomySets2Ints(sk, EncodeTileChain(sk,tilechain));
+      #sets := HolonomyInts2Sets(sk,state);
         #get the component actions on a state
-      actions := HolonomyComponentActions(sk, t, sets);#HolonomyComponentActions(sk, t, sets);
+      actions := HolonomyComponentActions(sk, t, tilechain);
         #examine whether there is a nontrivial action, then add
       for i in [1..Length(actions)] do
         if not IsOne(actions[i]) then
@@ -277,7 +276,7 @@ local i,state,sets,actions,depfuncs,holdom,cst, cascade;
     od;
   fi;
   cascade := Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
-  SetRestrictedDomain(cascade, holdom);
+  #SetRestrictedDomain(cascade, holdom); #TODO
   return cascade;
 end);
 
