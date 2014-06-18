@@ -1,3 +1,5 @@
+0.7.29
+	Holonomy core rewritten with dominating tile chains. Alternative height functions. RestrictedDomain added for future optimization. Code cleaning, commenting. Regression fixes fo Splash.
 0.7.28
 	Updating the skeleton diagram to work with GraphViz 2.36. Added ContainsSet function for the skeleton and use it for checks to avoid error messages. Added RandomTileChainToSet.
 0.7.27
