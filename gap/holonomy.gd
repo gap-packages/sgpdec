@@ -15,7 +15,6 @@ DeclareGlobalFunction("DecodeCoords");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");
-DeclareGlobalFunction("AllHolonomyLifts");
 DeclareGlobalFunction("Interpret");
 DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");

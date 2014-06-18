@@ -103,13 +103,6 @@ InstallGlobalFunction(EncodeTileChain,
   return sets;
 end);
 
-#all coordinate lifts of a point
-# InstallGlobalFunction(AllHolonomyLifts,
-#         function(sk, point)
-#   return List(AllTileChainsToSet(sk, FiniteSet([point],DegreeOfSkeleton(sk))),
-#               c -> HolonomySets2Ints(sk,EncodeTileChain(sk,c)));
-# end);
-
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
