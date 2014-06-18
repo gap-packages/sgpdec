@@ -186,66 +186,51 @@ end;
 ConstantMapToATile := function(subtile, depth, slot, sk)
   local pos; # the position of the tile that contains set
   pos := First([Shifts(sk)[depth][slot]+1..Shifts(sk)[depth][slot+1]],
-                x->IsSubsetBlist(CoordVals(sk)[depth][x],subtile));
+                x-> CoordVals(sk)[depth][x] = subtile);
   #just a constant transformation pointing to this tile (encoded as an integer)
+  if pos = fail then Error();fi;
   return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
 end;
 
 # investigate how s acts on the given states
 # returns a list of component actions, one for each level
-# P represents a tilechain and we hit it by s so we get a subset chain
-# and Q approximates the subset chain with a non-unique tile chain
-InstallGlobalFunction(HolonomyComponentActions,
-        function(sk,s,coords)
-  local action,
-        cas, #component actions
-        depth,
-        P,
-        Q,
-        Ps,
-        ncoordval,
-        subtile;
-  #initializing actions to identity
+
+InstallGlobalFunction(HolonomyComponentActions,function(sk, s, coords)
+  local CP, CQ, # tile chains 
+        Q, P, # the current set in the chains
+        CPs,Ps, # P hit by s
+        depth, 
+        cas, # encoded component actions
+        positionedQ,positionedP; # positioned tiles
   cas := List([1..DepthOfSkeleton(sk)-1],
-                  x -> One( HolonomyPermutationResetComponents(sk)[x]));
-  #initial successive approximation are the same for both
-  P := BaseSet(sk);
+                  x -> One(HolonomyPermutationResetComponents(sk)[x]));
+  CP := DecodeCoords(sk,coords);
+  Add(CP,BaseSet(sk),1);
+  CPs := OnSequenceOfSets(CP,s);
+  CQ := DominatingTileChain(sk,CPs);
+  positionedQ := PositionedTileChain(sk,CQ);
+  positionedP := PositionedTileChain(sk,CP);
   Q := BaseSet(sk);
+  P := BaseSet(sk);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-#    Print("Depth: ", depth, " P: ", DisplayString(P),DepthOfSet(sk,P)," Q: ", DisplayString(Q),DepthOfSet(sk,Q),"\n");
-    if DepthOfSet(sk, Q) = depth then # we are on the right level
-      Ps := OnFiniteSet(P,s);
-#      Print(DisplayString(Ps));
-      if Ps = Q and IsSubductionEquivalent(sk,P,Q) then #PERMUTATION#TODO no need to check Equivalence
-        action := FromRep(sk,P) * s * ToRep(sk,Q); #roundtrip
-        cas[depth] := PermutationOfTiles(action,depth,GetSlot(Q,sk),sk);
-        ncoordval := OnFiniteSet(coords[depth], action);
-#        Print("P\n");
-      elif IsSubsetBlist(Q,Ps)  then #CONSTANT MAP##############################
-        subtile := RepTile(Ps,Q,sk); #a subset of the new coord value tile
-        cas[depth]:=ConstantMapToATile(subtile,depth,GetSlot(Q,sk),sk);
-        ncoordval:=CoordVals(sk)[depth][1^cas[depth]];#applying the constant
-        if not IsSubsetBlist(ncoordval,subtile) then Error();fi;
- #               Print("C\n");
-      else
-        Error("HEY!!!");
+    if depth = DepthOfSet(sk,Q) then #TODO positionedQ[depth] <> 0 is faster
+      Ps := OnFiniteSet(P,s); #TODO this is already in CPs
+      if Ps  = Q then #PERMUTATION
+        cas[depth] := PermutationOfTiles(
+                              FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
+                              depth,GetSlot(Q,sk),sk);
+      else #CONSTANT
+        if not IsSubsetBlist(Q,  Ps) then Error("newHEY");fi;
+        cas[depth]:=ConstantMapToATile(
+                            RepTile(positionedQ[depth],Q,sk),
+                            depth,GetSlot(Q,sk),sk);
       fi;
-      Q := RealTile(ncoordval, Q, sk); #decoding
+      Q := positionedQ[depth];
     fi;
-    if DepthOfSet(sk,P) = depth then
-      P := RealTile(coords[depth],P,sk); #decoding
+    if depth = DepthOfSet(sk,P) then
+      P := positionedP[depth];
     fi;
- 
   od;
-  # paranoid check whether the action is in the component
-  if SgpDecOptionsRec.PARANOID then
-    for depth in [1..DepthOfSkeleton(sk)-1] do
-      if not cas[depth] in  HolonomyPermutationResetComponents(sk)[depth] then
-        Print(cas[depth], " not in ", HolonomyPermutationResetComponents(sk)[depth],"\n");
-        Error("Alien component action!");
-      fi;
-    od;
-  fi;
   return cas;
 end);
 
@@ -273,7 +258,7 @@ local i,state,sets,actions,depfuncs,holdom,cst, cascade;
     for state in holdom do
       sets := HolonomyInts2Sets(sk,state);
         #get the component actions on a state
-      actions := HolonomyComponentActions(sk, t, sets);
+      actions := HolonomyComponentActions(sk, t, sets);#HolonomyComponentActions(sk, t, sets);
         #examine whether there is a nontrivial action, then add
       for i in [1..Length(actions)] do
         if not IsOne(actions[i]) then
