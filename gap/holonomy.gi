@@ -242,16 +242,17 @@ end);
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(AsHolonomyCascade,
 function(t,sk)
-local i,state,actions,depfuncs,cst, cascade,tilechain;
+local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
   depfuncs := [];
+  holdom := [];
   #we go through all tile chains
   if not IsOne(t) then
     for tilechain in AllTileChains(sk) do
       state := HolonomySets2Ints(sk, EncodeTileChain(sk,tilechain));
-      #sets := HolonomyInts2Sets(sk,state);
-        #get the component actions on a state
+      Add(holdom, state);
+      #get the component actions on the tile chain
       actions := HolonomyComponentActions(sk, t, tilechain);
-        #examine whether there is a nontrivial action, then add
+      #examine whether there is a nontrivial action, then add
       for i in [1..Length(actions)] do
         if not IsOne(actions[i]) then
           if i = 1 then
@@ -269,7 +270,7 @@ local i,state,actions,depfuncs,cst, cascade,tilechain;
     od;
   fi;
   cascade := Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
-  #SetRestrictedDomain(cascade, holdom); #TODO
+  SetRestrictedDomain(cascade, holdom);
   return cascade;
 end);
 
