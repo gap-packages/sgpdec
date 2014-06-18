@@ -21,6 +21,7 @@ GetSlot := function(set,sk)
   return Position(RepresentativeSets(sk)[DepthOfSet(sk,set)],
                  RepresentativeSet(sk,set));
 end;
+MakeReadOnlyGlobal("GetSlot");
 
 # decoding: integers -> sets, integers simply code the positions sk.coordvals
 InstallGlobalFunction(HolonomyInts2Sets,
@@ -63,14 +64,16 @@ end);
 # tiles of a representative set or another equivalent set
 
 #we map  a representative tile to a tile of P
-RealTile := function(reptile, P, skeleton)
+InstallGlobalFunction(RealTile,
+function(reptile, P, skeleton)
   return OnFiniteSet(reptile , FromRep(skeleton, P));
-end;
+end);
 
 #we map  a tile of P to a tile of Rep(P)
-RepTile := function(realtile, P, skeleton)
+InstallGlobalFunction(RepTile,
+function(realtile, P, skeleton)
   return OnFiniteSet(realtile , ToRep(skeleton, P));
-end;
+end);
 
 # decoding: set coordinate values -> tile chain
 InstallGlobalFunction(DecodeCoords,
@@ -132,10 +135,6 @@ AsHolonomyCoords :=
                          RandomTileChain(sk,k)));
 end;#);
 
-IsConstantMap := function(t)
-  return RankOfTransformation(t)=1;
-end;
-
 # special action for holonomy int coordinates dealing with 0s and constant maps
 OnHolonomyCoordinates:= function(coords, ct)
   local dfs, copy, out, len, i, action;
@@ -146,7 +145,7 @@ OnHolonomyCoordinates:= function(coords, ct)
   for i in [1..len] do
     action := copy^dfs[i];
     if coords[i]=0 then
-      if IsTransformation(action) and IsConstantMap(action) then
+      if IsTransformation(action) and RankOfTransformation(action)=1 then
         out[i] := 1^action;
       else
         out[i] := 0;
@@ -159,6 +158,7 @@ OnHolonomyCoordinates:= function(coords, ct)
   od;
   return out;
 end;
+MakeReadOnlyGlobal("OnHolonomyCoordinates");
 
 # creating the permutation action on the tiles, shifted properly to the slot
 PermutationOfTiles := function(action, depth, slot, sk)
@@ -173,15 +173,17 @@ PermutationOfTiles := function(action, depth, slot, sk)
                  [1..shift],
                  tileaction + shift));
 end;
+MakeReadOnlyGlobal("PermutationOfTiles");
 
 #looking for a tile that contain the given set on a given level in a given slot
 #then creating a constant map resetting to that tile
 ConstantMapToATile := function(subtile, depth, slot, sk)
   local pos; # the position of the tile that contains set
-  pos := Position(CoordVals(sk)[depth],subtile,Shifts(sk)[depth][slot]);#..Shifts(sk)[depth][slot+1]],
+  pos := Position(CoordVals(sk)[depth],subtile,Shifts(sk)[depth][slot]);
   #just a constant transformation pointing to this tile (encoded as an integer)
    return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
 end;
+MakeReadOnlyGlobal("ConstantMapToATile");
 
 # investigate how s acts on the given states
 # returns a list of component actions, one for each level
