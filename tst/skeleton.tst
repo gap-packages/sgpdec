@@ -20,6 +20,11 @@ gap> IsSubsetBlist(OnFiniteSet(Q, EvalWordInSkeleton(sk,
 >        SubductionWitness(sk,P,Q))),P);
 true
 
+#number of tile chains
+gap> d := DegreeOfSkeleton(sk);;
+gap> ForAll([1..d], x -> NrTileChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(AllTileChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
+true
+
 #
 gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: skeleton.tst", 10000);
