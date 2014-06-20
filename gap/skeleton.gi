@@ -399,22 +399,21 @@ function(sk,set)
   fi;
 end);
 
-InstallGlobalFunction(RandomTileChainToSet,
-function(sk,set)
-local chain;
-  chain := [];
-  Add(chain,set);
-  while set <> BaseSet(sk) do
-    set := Random(PreImages(InclusionCoverBinaryRelation(sk), set));
-    Add(chain,set);
-  od;
-  return Reversed(chain);
-end);
-
 # used by holonomy
 InstallGlobalFunction(RandomTileChain,
 function(sk,k)
-  return RandomTileChainToSet(sk, FiniteSet([k], DegreeOfSkeleton(sk)));
+local chain,singleton, set;
+  chain := [];
+  singleton := FiniteSet([k], DegreeOfSkeleton(sk));
+  Add(chain,BaseSet(sk));
+  set := chain[Length(chain)]; 
+  while set <> singleton do
+    Add(chain,Random(
+            Filtered(Images(InclusionCoverBinaryRelation(sk),set),
+                    x->IsSubsetBlist(x,singleton))));
+    set := chain[Length(chain)];   
+  od;
+  return chain;
 end);
 
 InstallGlobalFunction(NumberOfTileChainsToSet,
@@ -426,40 +425,48 @@ local sizes, preimgs;
   return Length(sizes)*Product(sizes); #TODO is this correct?
 end);
 
-# recursively extending chains bottom-up, once there, then copy
-RecAllTileChainsToSet := function(sk,chain ,coll)
-local set,preimg, l;
+
+# recursively extending chain top-down from its last element to targer 
+RecAllTileChainsBetween := function(sk,chain,target,coll)
+local set,cover;
   set := chain[Length(chain)];
-  if set = BaseSet(sk) then
-    l :=  ShallowCopy(chain);
-    Add(coll, Reversed(l));
+  if set = target then #we have a complete chain now, copy and return
+    Add(coll, ShallowCopy(chain));
     return;
   fi;
-  for preimg in  PreImages(InclusionCoverBinaryRelation(sk), set) do
-    if preimg <> chain[Length(chain)] then
-      Add(chain, preimg);
-      RecAllTileChainsToSet(sk, chain, coll);
+  for cover in  Images(InclusionCoverBinaryRelation(sk),set) do
+    if IsSubsetBlist(cover,target) then # the cover is a tile indeed
+      Add(chain, cover);
+      RecAllTileChainsBetween(sk, chain, target, coll);
       Remove(chain);
     fi;
   od;
   return;
 end;
-MakeReadOnlyGlobal("RecAllTileChainsToSet");
+MakeReadOnlyGlobal("RecAllTileChainsBetween");
 
-InstallGlobalFunction(AllTileChainsToSet,
-function(sk, set)
+InstallGlobalFunction(AllTileChainsBetween,
+function(sk, A,B) # A \subset B
 local coll;
-  coll := [];
-  RecAllTileChainsToSet(sk, [set], coll);
+  coll := []; # collecting the tilechains in here
+  RecAllTileChainsBetween(sk, [A], B, coll);
   return coll;
 end);
+
+# InstallGlobalFunction(AllTileChainsToSet,
+# function(sk, set)
+# local coll;
+#   coll := [];
+#   RecAllTileChainsBetween(sk, [BaseSet(sk)], set, coll);
+#   return coll;
+# end);
 
 InstallGlobalFunction(AllTileChains,
 function(sk)
 local coll,s;
   coll := [];
   for s in Singletons(sk) do
-    Append(coll, AllTileChainsToSet(sk,s));
+    Append(coll, AllTileChainsBetween(sk,BaseSet(sk),s));
   od;
   return coll;
 end);
