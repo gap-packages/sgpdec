@@ -19,14 +19,15 @@ end;
 CollapseTileGraph := function(tg)
   local f;
   f := function(r)
-    r.t := Set(r.t);
-    while Size(r.t)=1 and r.s = r.t[1].s do
-      r.s := r.t[1].s;
-      r.t := r.t[1].t;
-      r.t := Set(r.t);  
-    od;
-    Perform(r.t,f);
+    local pos;
+    if IsEmpty(r.t) then return r; fi;
+    r.t := Set(r.t,f);
+    pos := First([1..Size(r.t)], x->r.t[x].s=r.s);
+    if pos <> fail then 
+      return r.t[pos];
+    fi;
+    return r;
   end;
 
-  f(tg);
+  return f(tg);
 end;
