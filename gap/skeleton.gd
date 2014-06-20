@@ -47,7 +47,7 @@ DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("AllTileChainsBetween");
 DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("OnSequenceOfSets");
-DeclareGlobalFunction("NumberOfTileChainsToSet");
+DeclareGlobalFunction("NrTileChainsBetween");
 DeclareGlobalFunction("DominatingTileChain");
 DeclareGlobalFunction("PositionedTileChain");
 DeclareGlobalFunction("IsSubductionEquivalent");

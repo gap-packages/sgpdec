@@ -416,13 +416,14 @@ local chain,singleton, set;
   return chain;
 end);
 
-InstallGlobalFunction(NumberOfTileChainsToSet,
-function(sk,set)
-local sizes, preimgs;
-  if set = BaseSet(sk) then return 1; fi;
-  preimgs := PreImages(InclusionCoverBinaryRelation(sk), set);
-  sizes := List(preimgs, x -> NumberOfTileChainsToSet(sk,x));
-  return Length(sizes)*Product(sizes); #TODO is this correct?
+InstallGlobalFunction(NrTileChainsBetween,
+function(sk,A,B)
+local sizes, tiles;
+  if A = B then return 1; fi;
+  tiles := Filtered(Images(InclusionCoverBinaryRelation(sk),A),
+                   x->IsSubsetBlist(x,B));
+  sizes := List(tiles, x -> NrTileChainsBetween(sk,x,B));
+  return Sum(sizes);
 end);
 
 
