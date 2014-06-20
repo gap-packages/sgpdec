@@ -481,7 +481,7 @@ end);
 InstallGlobalFunction(DominatingTileChain,
 function(sk,chain)
   local pos, dtc;
-  if IsEmpty(chain) then Error();fi;
+  if IsEmpty(chain) then return fail;fi;
   pos := 1;
   dtc := ShallowCopy(chain);
   if dtc[1] <> BaseSet(sk) then Add(dtc, BaseSet(sk),1);fi;
