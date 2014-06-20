@@ -49,6 +49,7 @@ DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("OnSequenceOfSets");
 DeclareGlobalFunction("NrTileChainsBetween");
 DeclareGlobalFunction("DominatingTileChain");
+DeclareGlobalFunction("AllDominatingTileChains");
 DeclareGlobalFunction("PositionedTileChain");
 DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionLessOrEquivalent");
