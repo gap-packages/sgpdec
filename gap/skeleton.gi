@@ -454,14 +454,6 @@ local coll;
   return coll;
 end);
 
-# InstallGlobalFunction(AllTileChainsToSet,
-# function(sk, set)
-# local coll;
-#   coll := [];
-#   RecAllTileChainsBetween(sk, [BaseSet(sk)], set, coll);
-#   return coll;
-# end);
-
 InstallGlobalFunction(AllTileChains,
 function(sk)
 local coll,s;
@@ -477,7 +469,7 @@ function(tc, s)
   return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
 end);
 
-# no choice here yet
+# just giving a dominating tilechain
 InstallGlobalFunction(DominatingTileChain,
 function(sk,chain)
   local pos, dtc;
