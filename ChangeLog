@@ -1,0 +1,60 @@
+0.7.29
+	The release of finally understanding holonomy decomposition! :) Holonomy core rewritten with dominating tile chains. Alternative height functions. RestrictedDomain added for future optimization. Code cleaning, commenting. Regression fixes fo Splash.
+0.7.28
+	Updating the skeleton diagram to work with GraphViz 2.36. Added ContainsSet function for the skeleton and use it for checks to avoid error messages. Added RandomTileChainToSet.
+0.7.27
+	Fixing DisplayHolonomyComponents: no need to display singletons and size of the set was wrongly displayed instead of number of tiles.
+0.7.26
+	DisplayHolonomyComponents and OnTileChain added.
+0.7.25
+	Subgroup chains methods readded, defending against upstream change (dynamic degree for transformations), nonimage tiles by dotted arrows in DotSkeleton.
+0.7.24
+	DotCascadeAction added.
+0.7.23
+	DotCascade revised, highlighting moved branches properly. Added FormattedBigNumberString, SimplerCompactNotation. Working on the documentation.
+0.7.22
+	Improved DotSkeleton. Cascade constructor now accepts list of domain sizes. Dep2DepFuncs renamed to DependencyFunctions. Coordinate action and cascade multiplication now have global functions and installed methods.
+0.7.21
+	RealImageSkeletonClasses added. DependencyValues added. Documenting some functionality.
+0.7.20
+	More doc on demand. Streamlining functions for the finite set 'illusion' layer.
+0.7.19
+	BugFix: The lack of non image singletons led to loosing the last level of the decomposition. The fix also makes DotSkeleton consistent again.
+0.7.18
+	BugFix: AsCascade wrongly lifted some elements of T_8 into a [2,2,2] tree. The previous algorithm did not detect overwriting existing actions in some cases. Added test case for DisjointUnionGroup and documentation compilation framework is back again.
+0.7.17
+	Separating calculation for permutation reset semigroups. DisjointUnionGroup introduced.
+0.7.16
+	DotSkeletonForwardOrbit added. Skeleton code now separated into 3 different files: orbit and relations, permutator and holonomy, and visualisation files.
+0.7.15
+	Major rewrite of the holonomy data structure. HolonomyDecomposition disappeared, merged into the Skeleton.
+0.7.14
+	2nd gen Skeleton replaced by 3rd gen Skeleton. Skeleton is not a big record, but an object with attributes. Permutator part of the code is separated to avoid huge source files. Proper binary relations for inclusion and subduction added. Subduction relation functions added.
+0.7.13
+	SgpDecTestInstall added. Fixing broken WreathProductGroup.
+0.7.12
+	Test cases added. Print methods for cascades. Bugfix: holonomy components are now set.
+0.7.11
+	Updated to the upcoming GAP 4.7. TransCascades and PermCascades properly separated. Bugfix in =,< for cascades. Holonomy lifting added. Finite set display for blists properly done.
+0.7.10
+	Clean up in FL decomposition and further simplification in the holonomy decomposition code. Tile-terminology is back.
+0.7.9
+	Holonomy decomposition is back but only in pieces.
+0.7.8
+	Lagrange decomposition and  Skeleton is back. Thin layer for boolean lists to behave as finite set added.
+0.7.7
+	CascadeGroup added and code shared with CascadeSemigroup now lifted to CascadeProduct. New codebase is ready to reintegrate Lagrange Decomposition.
+0.7.6
+	AsTransformation method for string (containing linear notation) and int (size of domain) added.
+0.7.5
+	Mixed components are allowed again, with minimal code changes. Further cleanups following the DependencyFunction separation. New test case for checking lifting as well.
+0.7.4.
+	Dependency functions are now separated for each level, thus cascades become tuples of dependency functions. Exactly as described mathematically.
+0.7.3
+	Numerous renamings, unified DomainOf and DependencyDomainsOf for cascades and cascade semigroups. IdentityCascade added. Test scripts updated.
+0.7.2
+	DotCascade reimplemented with better drawing style. The whole domain tree is drawn and nontrivial dependenices are highlighted.
+0.7.1
+	Unified ComponentDomains instead of the confusing and long ComponentDomainsOfCascade and ComponentDomainsOfCascadeSemigroup.
+0.7
+	Restarting the development with a new and clean implementation of cascade products. Better integration with existing semigroup functions, for instance added IsomorphismTransformationSemigroup. SemigroupWreathProduct working.
