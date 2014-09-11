@@ -40,6 +40,11 @@ local pos, scc,o;
               TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
               TraceSchreierTreeOfSCCForward(o, scc, pos));
   fi;
+  if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
+    FromRepWords(sk)[pos] := Reduce2StraightWord(FromRepWords(sk)[pos],
+                                     Generators(sk),
+                                     IdentityTransformation, OnRight);
+  fi;
   return FromRepWords(sk)[pos];
 end);
 
@@ -76,7 +81,13 @@ local pos, scc, n, outw, fg, inw, out,l,o;
     Add(l, outw);
     fg := Flat([inw,outw]);
     Add(l, ListWithIdenticalEntries(n,fg));
-    ToRepWords(sk)[pos] := Flat(l);
+    if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
+      ToRepWords(sk)[pos] := Reduce2StraightWord(Flat(l),
+                                     Generators(sk),
+                                     IdentityTransformation, OnRight);
+    else
+      ToRepWords(sk)[pos] := Flat(l);  
+    fi;
   fi;
   return ToRepWords(sk)[pos];
 end);
