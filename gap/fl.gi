@@ -180,3 +180,27 @@ local i,state,actions,depfuncs;
   od;
   return depfuncs; #TODO maybe sort them into a graded list
 end);
+
+#given a cascaded state it returns an array of flat cascops that -
+#applied in order - kills of levels top-down.
+InstallGlobalFunction(LevelKillers,
+function(cs, transversals)
+local decoded, cosetrepr, killers;
+  decoded := Coords2CosetReps(cs, transversals);
+  killers := [];
+  for cosetrepr in decoded do
+    Add(killers,Inverse(cosetrepr));
+  od;
+  return killers;
+end);
+
+InstallGlobalFunction(LevelBuilders,
+function(cs, transversals)
+local decoded, cosetrepr, builders;
+  decoded := Coords2CosetReps(cs, transversals);
+  builders := [];
+  for cosetrepr in decoded do
+    Add(builders,cosetrepr);
+  od;
+  return builders;
+end);
