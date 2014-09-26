@@ -20,6 +20,8 @@ DeclareGlobalFunction("AsFLPoint");
 DeclareGlobalFunction("AsFLCoords");
 DeclareGlobalFunction("Perm2Coords");
 DeclareGlobalFunction("Coords2Perm");
+DeclareGlobalFunction("LevelKillers");
+DeclareGlobalFunction("LevelBuilders");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
 DeclareAttribute("OriginalCosetActionRepsOf", IsFLCascadeGroup);
