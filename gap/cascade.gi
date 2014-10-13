@@ -498,7 +498,7 @@ function(arg)
   n := Size(depfuncs);
   str := "";
   out := OutputTextString(str,true);
-  PrintTo(out,"graph ct{\n");
+  PrintTo(out,"//dot\ngraph ct{\n");
   PrintTo(out," node",EMPTYVERTEXLABEL,";\n");
   PrintTo(out," edge ", "[color=grey,fontsize=11,fontcolor=black]", ";\n");
   recdraw([],"n",false);
