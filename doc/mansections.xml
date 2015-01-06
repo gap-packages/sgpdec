@@ -722,8 +722,11 @@ gap> SgpDecFiniteSetDisplayOff();
     <Func Name="Skeleton" Arg="ts"/>
     <Returns>Skeleton of a transformation semigroup.</Returns>
     <Description>
-      <Example>
-      </Example>
+<Example>
+gap> Skeleton(FullTransformationSemigroup(4));
+&lt;skeleton of Monoid( [ Transformation( [ 2, 3, 4, 1 ] ), Transformation( [ 2, \
+1 ] ), Transformation( [ 1, 2, 3, 1 ] ) ] )&gt;
+</Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
