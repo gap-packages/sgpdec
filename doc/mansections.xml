@@ -737,7 +737,7 @@ gap> SgpDecFiniteSetDisplayOff();
     <Description>
 <Example>
 gap> SgpDecFiniteSetDisplayOn();
-gap> sk := Skeleton(T5);;
+gap> sk := Skeleton(FullTransformationSemigroup(5));;
 gap> TilesOf(sk, FiniteSet([1,2,4],5));
 [ {1,2}, {1,4}, {2,4} ]
 gap> SgpDecFiniteSetDisplayOff();
