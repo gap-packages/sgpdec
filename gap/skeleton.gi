@@ -567,3 +567,11 @@ function(sk, depth)
   return List(OrbSCC(o){Positions(Depths(sk), depth)},
               x->List(x, y->o[y]));
 end);
+
+InstallMethod( ViewObj,"for a skeleton",[IsSkeleton],
+function(sk)
+  Print("<skeleton of ", String(TransSgp(sk)), ">");
+end);
+
+InstallMethod(Display,"for a skeleton",[IsSkeleton],
+function(sk) ViewObj(sk); Print("\n"); end);
