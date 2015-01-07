@@ -3,7 +3,7 @@ Released versions of <Package>SgpDec</Package> can be downloaded from
 <URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>.
 The most recent (possibly broken) version can be obtained from the project's
  <URL Text="Mercurial Repository">
-   https://bitbucket.org/dersu/sgpdec </URL>
+   https://bitbucket.org/egri-nagy/sgpdec </URL>
 (see instructions there).
 
 Given that you have a working copy of the latest complete &GAP; system on a UNIX
@@ -48,6 +48,11 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
   </Row>
  <HorLine/>
 </Table>
+If package loading is unsuccessful, Debug information can be obtained by the following command.
+<Log>
+DisplayPackageLoadingLog(PACKAGE_DEBUG);
+</Log>
+
 </Section>
 
 <Section Label="doc"><Heading>Compiling the documentation</Heading>
