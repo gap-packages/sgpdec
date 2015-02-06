@@ -144,45 +144,32 @@ end);
 
 ################################################################################
 # SUBDUCTION ###################################################################
+################################################################################
 
 #the subduction Hasse diagram of representatives
 
 # returns the indices of the direct images of the scc indexed by indx
-# indx - the index of an orbit element
-DirectSCCImages := function(sk,sccindx)
-local rep,o,indx,og,covers,ol;
+# and the maximal subsets
+# sccindx - the index of an orbit SCC 
+SubductionCovers := function(sk,sccindx)
+local rep,o,indx,og,covers,ol,l;
   o := ForwardOrbit(sk);
   og := OrbitGraph(o);
   ol := OrbSCCLookup(o);
   covers := [];
   #for all elements in the SCC
   for indx in OrbSCC(o)[sccindx] do
+    #direct images
     Perform(og[indx], function(x) AddSet(covers, ol[x]);end);
+    #tiles, checking for fail for nonimage singletons
+    Perform(Filtered(List(TilesOf(sk,o[indx]),x->Position(o,x)),y -> y<>fail),
+            function(z) AddSet(covers, ol[z]);end);
   od;
   #removing self-image
   if sccindx in covers then Remove(covers, Position(covers,sccindx));fi;
   return covers;
 end;
-MakeReadOnlyGlobal("DirectSCCImages");
-
-# indx - the index of an orbit element
-InclusionSCCCovers := function(sk,sccindx)
-local covers, rep, l,i,o,ol,indx;
-  o := ForwardOrbit(sk);
-  ol := OrbSCCLookup(o);
-  covers := [];
-  for indx in OrbSCC(o)[sccindx] do
-    #convert the tiles into their indices
-    l := List(TilesOf(sk,o[indx]),x->Position(o,x));
-    for i in l do
-      if i <> fail then # some singletons may not be in the orbit
-        AddSet(covers, ol[i]);
-      fi;
-    od;
-  od;
-  return covers;
-end;
-MakeReadOnlyGlobal("InclusionSCCCovers");
+MakeReadOnlyGlobal("SubductionCovers");
 
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
@@ -190,7 +177,7 @@ InstallMethod(RepSubductionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
-                 x->Union(InclusionSCCCovers(sk,x),DirectSCCImages(sk,x)));
+                 x->SubductionCovers(sk,x));
 end);
 
 ################################################################################
