@@ -2,7 +2,7 @@
 ##
 ## skeleton.gd           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -44,10 +44,10 @@ DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");
-DeclareGlobalFunction("MaximalChainsBetween");
+DeclareGlobalFunction("TileChainFragments");
 DeclareGlobalFunction("TileChains");
 DeclareGlobalFunction("OnSequenceOfSets");
-DeclareGlobalFunction("NrMaximalChainsBetween");
+DeclareGlobalFunction("NrTileChainFragments");
 DeclareGlobalFunction("DominatingTileChain");
 DeclareGlobalFunction("DominatingTileChains");
 DeclareGlobalFunction("PositionedTileChain");

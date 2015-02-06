@@ -2,7 +2,7 @@
 ##
 ## skeleton.gi           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -101,12 +101,13 @@ end);
 # returns the maximal subsets of the given set found in the given ordered set
 # of sets, for the skeleton the extended set of images
 #TODO can this be further improved by recursion
-MaximalSubsets := function(set, orderedsubsets)
-local covers, pos;
+MaximalSubsets := function(sk, set)
+local covers, pos, orderedsubsets;
   #singletons have no covers
   if SizeBlist(set) = 1 then return []; fi;
   covers := [];
   #we search only from this position in the descending order
+  orderedsubsets := ExtendedImageSet(sk);
   pos := Position(orderedsubsets, set) + 1;
   while pos <= Size(orderedsubsets) do
     if IsProperFiniteSubset(set, orderedsubsets[pos])
@@ -138,7 +139,7 @@ InstallMethod(InclusionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
-                 set->MaximalSubsets(set, ExtendedImageSet(sk)));
+                 set->MaximalSubsets(sk,set));
 end);
 
 ################################################################################
@@ -416,19 +417,19 @@ local chain,singleton, set;
   return chain;
 end);
 
-InstallGlobalFunction(NrMaximalChainsBetween,
+InstallGlobalFunction(NrTileChainFragments,
 function(sk,A,B)
 local sizes, tiles;
   if A = B then return 1; fi;
   tiles := Filtered(Images(InclusionCoverBinaryRelation(sk),A),
                    x->IsSubsetBlist(x,B));
-  sizes := List(tiles, x -> NrMaximalChainsBetween(sk,x,B));
+  sizes := List(tiles, x -> NrTileChainFragments(sk,x,B));
   return Sum(sizes);
 end);
 
 
 # recursively extending chain top-down from its last element to targer 
-RecMaximalChainsBetween := function(sk,chain,target,coll)
+RecTileChainFragments := function(sk,chain,target,coll)
 local set,cover;
   set := chain[Length(chain)];
   if set = target then #we have a complete chain now, copy and return
@@ -438,19 +439,19 @@ local set,cover;
   for cover in  Images(InclusionCoverBinaryRelation(sk),set) do
     if IsSubsetBlist(cover,target) then # the cover is a tile indeed
       Add(chain, cover);
-      RecMaximalChainsBetween(sk, chain, target, coll);
+      RecTileChainFragments(sk, chain, target, coll);
       Remove(chain);
     fi;
   od;
   return;
 end;
-MakeReadOnlyGlobal("RecMaximalChainsBetween");
+MakeReadOnlyGlobal("RecTileChainFragments");
 
-InstallGlobalFunction(MaximalChainsBetween,
+InstallGlobalFunction(TileChainFragments,
 function(sk, A,B) # A \subset B
 local coll;
   coll := []; # collecting the tilechains in here
-  RecMaximalChainsBetween(sk, [A], B, coll);
+  RecTileChainFragments(sk, [A], B, coll);
   return coll;
 end);
 
@@ -459,7 +460,7 @@ function(sk)
 local coll,s;
   coll := [];
   for s in Singletons(sk) do
-    Append(coll, MaximalChainsBetween(sk,BaseSet(sk),s));
+    Append(coll, TileChainFragments(sk,BaseSet(sk),s));
   od;
   return coll;
 end);
@@ -493,7 +494,7 @@ function(sk,chain)
   local chains, fragments;
   if IsEmpty(chain) then return fail;fi;
   if chain[1] <> BaseSet(sk) then Add(chain, BaseSet(sk),1);fi;
-  fragments := List([1..Size(chain)-1], x->MaximalChainsBetween(sk,chain[x],chain[x+1]));
+  fragments := List([1..Size(chain)-1], x->TileChainFragments(sk,chain[x],chain[x+1]));
   #removing duplicates, the in-between ones
   Perform([1..Size(fragments)-1],
           function(x)
