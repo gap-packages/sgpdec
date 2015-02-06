@@ -1,7 +1,6 @@
 # testing the Frobenius-Lagrange decomposition
 gap> START_TEST("Sgpdec package: fl.tst");
 gap> LoadPackage("sgpdec", false);;
-gap> SemigroupsStartTest();
 gap> flG := FLCascadeGroup(SymmetricGroup(IsPermGroup,3));
 <cascade group with 2 generators, 2 levels with (2, 3) pts>
 gap> Range(IsomorphismPermGroup(flG));
@@ -16,5 +15,4 @@ gap> IsomorphismGroups(G, FLCascadeGroup(G));
   <perm cascade with 4 levels with (2, 2, 2, 3) pts, 1 dependencies> ]
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);

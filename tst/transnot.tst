@@ -3,7 +3,6 @@
 # the string representation
 gap> START_TEST("Sgpdec package: transnot.tst");
 gap> LoadPackage("sgpdec", false);;
-gap> SemigroupsStartTest();
 gap> ForAll([1..314],function(i)
 >  local rnd;
 >  rnd := RandomTransformation(163);
@@ -12,5 +11,4 @@ gap> ForAll([1..314],function(i)
 true
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: transnot.tst", 10000);

@@ -1,8 +1,7 @@
 gap> START_TEST("Sgpdec package: depfunc.tst");
-gap> LoadPackage("sgpdec", false);;
+gap> LoadPackage("sgpdec");;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
-gap> SemigroupsStartTest();
 
 # creating domains for dependency functions can be done in 3 ways
 # 1. by a list of perm groups/transformation semigroups
@@ -84,5 +83,4 @@ Dependency function of depth 3 with 2 dependencies.
 [ 2, 3 ] -> (1,2)
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: depfunc.tst", 10000);

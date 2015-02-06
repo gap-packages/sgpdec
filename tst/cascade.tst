@@ -4,7 +4,6 @@ gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
 
 # cascade - previously cascade(d) transformation, cascade transform
-gap> SemigroupsStartTest();
 
 # Two ways to construct:
 # 1. high level, dependency domains + individual dependencise
@@ -196,5 +195,4 @@ gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
 true
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
