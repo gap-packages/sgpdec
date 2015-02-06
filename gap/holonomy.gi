@@ -245,7 +245,7 @@ local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
   holdom := [];
   #we go through all tile chains
   if not IsOne(t) then
-    for tilechain in AllTileChains(sk) do
+    for tilechain in TileChains(sk) do
       state := HolonomySets2Ints(sk, EncodeTileChain(sk,tilechain));
       Add(holdom, state);
       #get the component actions on the tile chain

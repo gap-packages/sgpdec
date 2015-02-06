@@ -454,7 +454,7 @@ local coll;
   return coll;
 end);
 
-InstallGlobalFunction(AllTileChains,
+InstallGlobalFunction(TileChains,
 function(sk)
 local coll,s;
   coll := [];
@@ -488,7 +488,7 @@ function(sk,chain)
   return dtc;
 end);
 
-InstallGlobalFunction(AllDominatingTileChains,
+InstallGlobalFunction(DominatingTileChains,
 function(sk,chain)
   local chains, fragments;
   if IsEmpty(chain) then return fail;fi;
