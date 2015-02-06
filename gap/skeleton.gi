@@ -416,13 +416,13 @@ local chain,singleton, set;
   return chain;
 end);
 
-InstallGlobalFunction(NrTileChainsBetween,
+InstallGlobalFunction(NrMaximalChainsBetween,
 function(sk,A,B)
 local sizes, tiles;
   if A = B then return 1; fi;
   tiles := Filtered(Images(InclusionCoverBinaryRelation(sk),A),
                    x->IsSubsetBlist(x,B));
-  sizes := List(tiles, x -> NrTileChainsBetween(sk,x,B));
+  sizes := List(tiles, x -> NrMaximalChainsBetween(sk,x,B));
   return Sum(sizes);
 end);
 
