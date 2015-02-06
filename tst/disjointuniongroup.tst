@@ -1,7 +1,6 @@
 # testing shifting group action and disjoint union of groups
 gap> START_TEST("Sgpdec package: disjointuniongroup.tst");
-gap> LoadPackage("sgpdec", false);;
-gap> SemigroupsStartTest();
+gap> LoadPackage("sgpdec");;
 
 # shifting the action of S5 and checking isomorphism
 gap> G := SymmetricGroup(IsPermGroup,5);;
@@ -26,5 +25,4 @@ gap> Size(dug) = Size(dug2);
 true
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: disjointuniongroup.tst", 10000);

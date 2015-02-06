@@ -44,7 +44,7 @@ DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");
-DeclareGlobalFunction("AllTileChainsBetween");
+DeclareGlobalFunction("MaximalChainsBetween");
 DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("OnSequenceOfSets");
 DeclareGlobalFunction("NrTileChainsBetween");

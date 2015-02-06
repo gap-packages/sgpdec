@@ -1,7 +1,6 @@
 # testing holonomy  decomposition
 gap> START_TEST("Sgpdec package: skeleton.tst");
 gap> LoadPackage("sgpdec", false);;
-gap> SemigroupsStartTest();
 gap> sk := Skeleton(FullTransformationSemigroup(5));;
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1,3,5],5), FiniteSet([2],5));
 false
@@ -22,9 +21,8 @@ true
 
 #number of tile chains
 gap> d := DegreeOfSkeleton(sk);;
-gap> ForAll([1..d], x -> NrTileChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(AllTileChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
+gap> ForAll([1..d], x -> NrTileChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(MaximalChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
 true
 
 #
-gap> SemigroupsStopTest();
 gap> STOP_TEST( "Sgpdec package: skeleton.tst", 10000);
