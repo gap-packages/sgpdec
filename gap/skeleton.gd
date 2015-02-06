@@ -47,7 +47,7 @@ DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("MaximalChainsBetween");
 DeclareGlobalFunction("AllTileChains");
 DeclareGlobalFunction("OnSequenceOfSets");
-DeclareGlobalFunction("NrTileChainsBetween");
+DeclareGlobalFunction("NrMaximalChainsBetween");
 DeclareGlobalFunction("DominatingTileChain");
 DeclareGlobalFunction("AllDominatingTileChains");
 DeclareGlobalFunction("PositionedTileChain");
