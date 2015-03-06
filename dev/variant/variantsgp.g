@@ -17,5 +17,24 @@ local n, rows,i,j,L, res, f, V;
 end;
 
 VariantSemigroup := function(S,a)
-  return Semigroup(Range(Sgp2VariantMapping(S,a)));  
+  return Semigroup(Range(Sgp2VariantMapping(S,a)));
 end;
+
+#Building the 3x2 matrices on F2
+# m - num of rows
+# n - num of columns
+# p - prime power for the field
+# A - an nxm matrix
+LinearVariantSemigroup := function(m,n,p,A)
+    local tuples, allvecs, all,a;
+
+    tuples := Tuples([0..p-1],n);
+    allvecs := List(tuples,x-> Z(p)*x);
+    all := Tuples(allvecs,m);
+    List(all, x-> ConvertToMatrixRep(x,p));
+    a := Z(p)*A;
+    ConvertToMatrixRep(a,p);
+    return VariantSemigroup(all,a);
+end;
+
+V := LinearVariantSemigroup(3,2,2,[[1,0,0],[0,0,0]]);
