@@ -150,7 +150,7 @@ end);
 
 # returns the indices of the direct images of the scc indexed by indx
 # and the maximal subsets
-# sccindx - the index of an orbit SCC 
+# sccindx - the index of an orbit SCC
 SubductionCovers := function(sk,sccindx)
 local rep,o,indx,og,covers,ol,l;
   o := ForwardOrbit(sk);
@@ -375,7 +375,7 @@ function(sk)
 end);
 
 ################################################################################
-# TILES, TILECHAINS ############################################################
+# TILES, TILEC HAINS ###########################################################
 ################################################################################
 
 InstallGlobalFunction(TilesOf,
@@ -394,12 +394,12 @@ local chain,singleton, set;
   chain := [];
   singleton := FiniteSet([k], DegreeOfSkeleton(sk));
   Add(chain,BaseSet(sk));
-  set := chain[Length(chain)]; 
+  set := chain[Length(chain)];
   while set <> singleton do
     Add(chain,Random(
             Filtered(Images(InclusionCoverBinaryRelation(sk),set),
                     x->IsSubsetBlist(x,singleton))));
-    set := chain[Length(chain)];   
+    set := chain[Length(chain)];
   od;
   return chain;
 end);
@@ -415,7 +415,7 @@ local sizes, tiles;
 end);
 
 
-# recursively extending chain top-down from its last element to targer 
+# recursively extending chain top-down from its last element to target
 RecTileChainFragments := function(sk,chain,target,coll)
 local set,cover;
   set := chain[Length(chain)];
@@ -452,12 +452,13 @@ local coll,s;
   return coll;
 end);
 
+#for acting on tile chains
 InstallGlobalFunction(OnSequenceOfSets,
 function(tc, s)
   return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
 end);
 
-# just giving a dominating tilechain
+# just giving a dominating tile chain
 InstallGlobalFunction(DominatingTileChain,
 function(sk,chain)
   local pos, dtc;
@@ -491,7 +492,7 @@ function(sk,chain)
   return List(EnumeratorOfCartesianProduct(fragments), Concatenation);;
 end);
 
-# this cuts off the baseset
+# this cuts off the base set
 InstallGlobalFunction(PositionedTileChain,
 function(sk, chain)
   local positioned,i;
