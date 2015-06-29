@@ -117,12 +117,8 @@ AsHolonomyPoint :=
   #    "flatten a cascaded state",
   #    true,
   #    [IsDenseList,IsRecord],
-  function(cs,sk)
-  local coverchain;
-  coverchain := DecodeCoords(sk, HolonomyInts2Sets(sk,cs));
-  # extracting the singleton element from the cover chains
-  return ListBlist([1..DegreeOfSkeleton(sk)],
-                 coverchain[Length(coverchain)])[1];
+function(cs,sk)
+  return TileChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
 end;#);
 
 AsHolonomyCoords :=

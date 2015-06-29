@@ -452,6 +452,16 @@ local coll,s;
   return coll;
 end);
 
+# extracts the point in the singleton element
+# when called with a tile chain fragment the result is meaningless
+InstallGlobalFunction(TileChainRoot,
+function(tc)
+  local singleton;
+  singleton := tc[Size(tc)]; #the last element     
+  return First([1..Size(singleton)], x->singleton[x]);    
+end);
+
+
 #for acting on tile chains
 InstallGlobalFunction(OnSequenceOfSets,
 function(tc, s)

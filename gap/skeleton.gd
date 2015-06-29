@@ -46,6 +46,7 @@ DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");
 DeclareGlobalFunction("TileChainFragments");
 DeclareGlobalFunction("TileChains");
+DeclareGlobalFunction("TileChainRoot");
 DeclareGlobalFunction("OnSequenceOfSets");
 DeclareGlobalFunction("NrTileChainFragments");
 DeclareGlobalFunction("DominatingTileChain");
