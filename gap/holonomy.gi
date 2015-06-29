@@ -112,24 +112,19 @@ InstallGlobalFunction(Interpret,
         function(sk,level,state)
   return CoordVals(sk)[level][state];
 end);
-#AsPoint
+
+# TODO implementing as AsPoint?
 AsHolonomyPoint :=
-  #    "flatten a cascaded state",
-  #    true,
-  #    [IsDenseList,IsRecord],
 function(cs,sk)
   return TileChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
-end;#);
+end;
 
 AsHolonomyCoords :=
-  #    "raise a flat state into holonomy decomposition",
-  #    true,
-  #    [IsInt, IsRecord],
-  function(k,sk)
+function(k,sk)
   return HolonomySets2Ints(sk,
                  EncodeTileChain(sk,
                          RandomTileChain(sk,k)));
-end;#);
+end;
 
 # special action for holonomy int coordinates dealing with 0s and constant maps
 OnHolonomyCoordinates:= function(coords, ct)
