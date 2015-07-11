@@ -490,16 +490,18 @@ end);
 InstallGlobalFunction(DominatingTileChains,
 function(sk,chain)
   local chains, fragments;
-  if IsEmpty(chain) then return fail;fi;
+  if IsEmpty(chain) then return fail;fi; #TODO why do we give up here?
   if chain[1] <> BaseSet(sk) then Add(chain, BaseSet(sk),1);fi;
-  fragments := List([1..Size(chain)-1], x->TileChainFragments(sk,chain[x],chain[x+1]));
+  fragments := List([1..Size(chain)-1],
+                    x->TileChainFragments(sk,chain[x],chain[x+1]));
   #removing duplicates, the in-between ones
   Perform([1..Size(fragments)-1],
           function(x)
-            Perform(fragments[x],function(y)Remove(y,Length(y));end);
+            Perform(fragments[x],
+                    function(y)Remove(y,Length(y));end);
           end);
   #now combining all together (there seems to be no sublist sharing)
-  return List(EnumeratorOfCartesianProduct(fragments), Concatenation);;
+  return List(EnumeratorOfCartesianProduct(fragments), Concatenation);
 end);
 
 # this cuts off the base set
