@@ -21,7 +21,7 @@ true
 
 #number of tile chains
 gap> d := DegreeOfSkeleton(sk);;
-gap> ForAll([1..d], x -> NrTileChainFragments(sk,BaseSet(sk),FiniteSet([x],d)) = Size(TileChainFragments(sk, BaseSet(sk),FiniteSet([x],d))));
+gap> ForAll([1..d], x -> NrTileChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(TileChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
 true
 
 #

@@ -404,19 +404,19 @@ local chain,singleton, set;
   return chain;
 end);
 
-InstallGlobalFunction(NrTileChainFragments,
+InstallGlobalFunction(NrTileChainsBetween,
 function(sk,A,B)
 local sizes, tiles;
   if A = B then return 1; fi;
   tiles := Filtered(Images(InclusionCoverBinaryRelation(sk),A),
                    x->IsSubsetBlist(x,B));
-  sizes := List(tiles, x -> NrTileChainFragments(sk,x,B));
+  sizes := List(tiles, x -> NrTileChainsBetween(sk,x,B));
   return Sum(sizes);
 end);
 
 
 # recursively extending chain top-down from its last element to target
-RecTileChainFragments := function(sk,chain,target,coll)
+RecTileChainsBetween := function(sk,chain,target,coll)
 local set,cover;
   set := chain[Length(chain)];
   if set = target then #we have a complete chain now, copy and return
@@ -428,17 +428,17 @@ local set,cover;
                   cover -> IsSubsetBlist(cover,target)),
           function(s)
             Add(chain, s);
-            RecTileChainFragments(sk, chain, target, coll);
+            RecTileChainsBetween(sk, chain, target, coll);
             Remove(chain);
           end);
 end;
-MakeReadOnlyGlobal("RecTileChainFragments");
+MakeReadOnlyGlobal("RecTileChainsBetween");
 
-InstallGlobalFunction(TileChainFragments,
+InstallGlobalFunction(TileChainsBetween,
 function(sk, A,B) # A \subset B
 local coll;
   coll := []; # collecting the tilechains in here
-  RecTileChainFragments(sk, [A], B, coll);
+  RecTileChainsBetween(sk, [A], B, coll);
   return coll;
 end);
 
@@ -447,7 +447,7 @@ function(sk)
 local coll,s;
   coll := [];
   for s in Singletons(sk) do
-    Append(coll, TileChainFragments(sk,BaseSet(sk),s));
+    Append(coll, TileChainsBetween(sk,BaseSet(sk),s));
   od;
   return coll;
 end);
@@ -493,7 +493,7 @@ function(sk,chain)
   if IsEmpty(chain) then return fail;fi; #TODO why do we give up here?
   if chain[1] <> BaseSet(sk) then Add(chain, BaseSet(sk),1);fi;
   fragments := List([1..Size(chain)-1],
-                    x->TileChainFragments(sk,chain[x],chain[x+1]));
+                    x->TileChainsBetween(sk,chain[x],chain[x+1]));
   #removing duplicates, the in-between ones
   Perform([1..Size(fragments)-1],
           function(x)
