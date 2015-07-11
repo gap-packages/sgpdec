@@ -423,14 +423,14 @@ local set,cover;
     Add(coll, ShallowCopy(chain));
     return;
   fi;
-  for cover in  Images(InclusionCoverBinaryRelation(sk),set) do
-    if IsSubsetBlist(cover,target) then # the cover is a tile indeed
-      Add(chain, cover);
-      RecTileChainFragments(sk, chain, target, coll);
-      Remove(chain);
-    fi;
-  od;
-  return;
+  # recur on all covers that contain the target
+  Perform(Filtered(Images(InclusionCoverBinaryRelation(sk),set),
+                  cover -> IsSubsetBlist(cover,target)),
+          function(s)
+            Add(chain, s);
+            RecTileChainFragments(sk, chain, target, coll);
+            Remove(chain);
+          end);
 end;
 MakeReadOnlyGlobal("RecTileChainFragments");
 
