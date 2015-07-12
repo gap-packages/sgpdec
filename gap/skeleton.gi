@@ -421,7 +421,7 @@ local set,cover;
   set := chain[Length(chain)];
   if set = target then #we have a complete chain now, copy and return
     Add(coll, ShallowCopy(chain));
-    return;
+    return; #this copying a bit clumsy, but what can we do?
   fi;
   # recur on all covers that contain the target
   Perform(Filtered(Images(InclusionCoverBinaryRelation(sk),set),
