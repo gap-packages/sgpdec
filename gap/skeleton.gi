@@ -472,7 +472,7 @@ function(tc, s)
   return Set(tc,tile -> OnFiniteSet(tile,s)); #hoping for the order
 end);
 
-# just giving a dominating tile chain
+# just giving a dominating tile chain #TODO abstract and combine this and the next function
 InstallGlobalFunction(DominatingTileChain,
 function(sk,chain)
   local pos, dtc;
