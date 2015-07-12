@@ -41,6 +41,7 @@ MakeReadOnlyGlobal("PartialOrbits");
 #functions
 DeclareGlobalFunction("ContainsSet");
 DeclareGlobalFunction("TilesOf");
+DeclareGlobalFunction("TilesContaining");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("RandomTileChain");

@@ -388,10 +388,11 @@ function(sk,set)
 end);
 
 #all tiles of A containing B
-TilesContaining := function(sk, A,B)
+InstallGlobalFunction(TilesContaining,
+function(sk, A,B)
     return Filtered(Images(InclusionCoverBinaryRelation(sk),A),
                    x->IsSubsetBlist(x,B));
-end;
+end);
 
 # used by holonomy
 InstallGlobalFunction(RandomTileChain,
