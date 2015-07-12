@@ -387,6 +387,12 @@ function(sk,set)
   fi;
 end);
 
+#all tiles of A containing B
+TilesContaining := function(sk, A,B)
+    return Filtered(Images(InclusionCoverBinaryRelation(sk),A),
+                   x->IsSubsetBlist(x,B));
+end;
+
 # used by holonomy
 InstallGlobalFunction(RandomTileChain,
 function(sk,k)
@@ -396,20 +402,18 @@ local chain,singleton, set;
   Add(chain,BaseSet(sk));
   set := chain[Length(chain)];
   while set <> singleton do
-    Add(chain,Random(
-            Filtered(Images(InclusionCoverBinaryRelation(sk),set),
-                    x->IsSubsetBlist(x,singleton))));
+    Add(chain, Random(TilesContaining(sk, set, singleton)));
     set := chain[Length(chain)];
   od;
   return chain;
 end);
 
+#just counting, not constructing them
 InstallGlobalFunction(NrTileChainsBetween,
 function(sk,A,B)
 local sizes, tiles;
   if A = B then return 1; fi;
-  tiles := Filtered(Images(InclusionCoverBinaryRelation(sk),A),
-                   x->IsSubsetBlist(x,B));
+  tiles := TilesContaining(sk,A,B);
   sizes := List(tiles, x -> NrTileChainsBetween(sk,x,B));
   return Sum(sizes);
 end);
@@ -424,8 +428,7 @@ local set,cover;
     return; #this copying a bit clumsy, but what can we do?
   fi;
   # recur on all covers that contain the target
-  Perform(Filtered(Images(InclusionCoverBinaryRelation(sk),set),
-                  cover -> IsSubsetBlist(cover,target)),
+  Perform(TilesContaining(sk, set, target),
           function(s)
             Add(chain, s);
             RecTileChainsBetween(sk, chain, target, coll);
