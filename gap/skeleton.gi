@@ -329,21 +329,6 @@ MinimalHeightValues := function(sk)
 end;
 MakeReadOnlyGlobal("MinimalHeightValues");
 
-#one equivalence class per level #TODO singletons may not be done properly
-MaximalHeightValues := function(sk)
-local heights, i, l;
-  #now do topological sorting
-  heights := MinimalHeightValues(sk);
-  #we collect the positions of same height values, flattened & ordered
-  l := Flat(List([Minimum(heights)..Maximum(heights)],
-                x -> Positions(heights,x))); #positions can be permuted
-  heights := [];
-  #then just assign its index to it
-  Perform([1..Size(l)], function(x) heights[l[x]] := x-1;end);
-  return heights;
-end;
-MakeReadOnlyGlobal("MaximalHeightValues");
-
 InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
         MinimalHeightValues);
 
