@@ -167,6 +167,7 @@ end;
 MakeReadOnlyGlobal("PermutationOfTiles");
 
 #looking for a tile that contain the given set on a given level in a given slot
+#the above is not true any more since we do a dominating tile chain first TODO
 #then creating a constant map resetting to that tile
 ConstantMapToATile := function(subtile, depth, slot, sk)
   local pos; # the position of the tile that contains set
