@@ -431,6 +431,19 @@ local coll,s;
   return coll;
 end);
 
+frags := function(sk)
+  local f, tile, s;
+  f := function(prefix)
+    Display(prefix);
+    for tile in TilesOf(sk, prefix[Size(prefix)]) do
+      Add(prefix,tile);
+      f(prefix);
+      Remove(prefix);
+    od;
+  end;
+  f([BaseSet(sk)]);
+end;
+
 # extracts the point in the singleton element
 # when called with a tile chain fragment the result is meaningless
 InstallGlobalFunction(TileChainRoot,
