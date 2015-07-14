@@ -190,6 +190,19 @@ sofar := function(sk, ptc)
   return result;
 end;
 
+holonomy_core := function(sk, P,Q, Qtile,s, depth)
+  local Ps;
+  Ps := OnFiniteSet(P,s); #TODO this is already in CPs
+  if Ps  = Q then #PERMUTATION
+    return PermutationOfTiles(FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
+                              depth,GetSlot(Q,sk),sk);
+  else #CONSTANT
+    if not IsSubsetBlist(Q, Ps) then Error("newHEY");fi;
+    return ConstantMapToATile(RepTile(Qtile,Q,sk),
+                              depth,GetSlot(Q,sk),sk);
+  fi;  
+end;
+
 # investigate how s acts on the given states
 # returns a list of component actions, one for each level
 InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
@@ -208,17 +221,7 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
   sofarQ := sofar(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if positionedQ[depth] <> 0 then
-      Ps := OnFiniteSet(sofarP[depth],s); #TODO this is already in CPs
-      if Ps  = sofarQ[depth] then #PERMUTATION
-        cas[depth] := PermutationOfTiles(
-                              FromRep(sk,sofarP[depth]) * s * ToRep(sk,sofarQ[depth]),#roundtrip
-                              depth,GetSlot(sofarQ[depth],sk),sk);
-      else #CONSTANT
-        if not IsSubsetBlist(sofarQ[depth], Ps) then Error("newHEY");fi;
-        cas[depth]:=ConstantMapToATile(
-                            RepTile(positionedQ[depth],sofarQ[depth],sk),
-                            depth,GetSlot(sofarQ[depth],sk),sk);
-      fi;
+      cas[depth] := holonomy_core(sk, sofarP[depth], sofarQ[depth], positionedQ[depth], s, depth);
     fi;
   od;
   return cas;
