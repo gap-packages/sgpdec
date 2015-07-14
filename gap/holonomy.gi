@@ -196,8 +196,7 @@ holonomy_core := function(sk, P,Q, Qtile,s, depth)
   if Ps  = Q then #PERMUTATION
     return PermutationOfTiles(FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
                               depth,GetSlot(Q,sk),sk);
-  else #CONSTANT
-    if not IsSubsetBlist(Q, Ps) then Error("newHEY");fi;
+  elif IsSubsetBlist(Q, Ps) then #CONSTANT
     return ConstantMapToATile(RepTile(Qtile,Q,sk),
                               depth,GetSlot(Q,sk),sk);
   fi;  
