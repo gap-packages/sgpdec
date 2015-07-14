@@ -458,7 +458,7 @@ function(sk,chain)
   while not IsSingleton(dtc[pos]) do
     if not dtc[pos+1] in TilesOf(sk, dtc[pos]) then
       Add(dtc,
-          First(TilesOf(sk,dtc[pos]), x->IsSubsetBlist(x,dtc[pos+1])),
+          Random(Filtered(TilesOf(sk,dtc[pos]), x->IsSubsetBlist(x,dtc[pos+1]))),
           pos+1);
     fi;
     pos := pos + 1;

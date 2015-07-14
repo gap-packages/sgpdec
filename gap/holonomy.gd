@@ -20,6 +20,7 @@ DeclareGlobalFunction("HolonomySets2Ints");
 DeclareGlobalFunction("Interpret");
 DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
+DeclareGlobalFunction("OldHolonomyComponentActions");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
 DeclareGlobalFunction("HolonomyRelationalMorphism");
 DeclareGlobalFunction("SetwiseProduct");
