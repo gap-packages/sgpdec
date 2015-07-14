@@ -93,15 +93,12 @@ end);
 
 # encoding: tile chain -> set coordinate values
 InstallGlobalFunction(EncodeTileChain,
-        function(sk, chain)
-  local sets,i, P;
+function(sk, chain)
+  local sets,i;
   #filling up with zeros - jumped over levels are abstract
   sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 0);
-  P := BaseSet(sk);
-  #the chain can be shorter (already jumped over), so it is OK go strictly by i
-  for i in [1..Length(chain)] do
-    sets[DepthOfSet(sk, P)] := RepTile(chain[i], P, sk);
-    P := chain[i];
+  for i in [2..Length(chain)] do
+    sets[DepthOfSet(sk, chain[i-1])] := RepTile(chain[i], chain[i-1], sk);
   od;
   return sets;
 end);
