@@ -177,60 +177,6 @@ ConstantMapToATile := function(subtile, depth, slot, sk)
 end;
 MakeReadOnlyGlobal("ConstantMapToATile");
 
-# investigate how s acts on the given states
-# returns a list of component actions, one for each level
-
-InstallGlobalFunction(OldHolonomyComponentActions,function(sk, s, CP)
-  local CQ, # tile chains
-        Q, P, # the current set in the chains
-        CPs,Ps, # P hit by s
-        depth,
-        cas, # encoded component actions
-        positionedQ,positionedP; # positioned tiles
-  cas := List([1..DepthOfSkeleton(sk)-1],
-                  x -> One(HolonomyPermutationResetComponents(sk)[x]));
-  CPs := OnSequenceOfSets(CP,s);
-  CQ := DominatingTileChain(sk,CPs);
-  positionedQ := PositionedTileChain(sk,CQ);
-  positionedP := PositionedTileChain(sk,CP);
-  Q := BaseSet(sk);
-  P := BaseSet(sk);
-  for depth in [1..DepthOfSkeleton(sk)-1] do
-    if depth = DepthOfSet(sk,Q) then #TODO positionedQ[depth] <> 0 is faster
-      Ps := OnFiniteSet(P,s); #TODO this is already in CPs
-      if Ps  = Q then #PERMUTATION
-        cas[depth] := PermutationOfTiles(
-                              FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
-                              depth,GetSlot(Q,sk),sk);
-      else #CONSTANT
-        if not IsSubsetBlist(Q,  Ps) then Error("newHEY");fi;
-        cas[depth]:=ConstantMapToATile(
-                            RepTile(positionedQ[depth],Q,sk),
-                            depth,GetSlot(Q,sk),sk);
-      fi;
-      Q := positionedQ[depth];
-    fi;
-    if depth = DepthOfSet(sk,P) then
-      P := positionedP[depth];
-    fi;
-  od;
-  return cas;
-end);
-
-stutter := function(sk, tc)
-local current;
-  current := BaseSet(sk);
-  return List(tc,
-       function(x)
-         if (x=0) then
-           return current;
-         else
-           current:=x; # side-effect
-           return x;
-         fi;
-       end);
-end;
-
 sofar := function(sk, ptc)
   local P,result,depth;
   P := BaseSet(sk);
@@ -244,22 +190,21 @@ sofar := function(sk, ptc)
   return result;
 end;
 
-
+# investigate how s acts on the given states
+# returns a list of component actions, one for each level
 InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
   local CQ, # tile chains
         Q, P, # the current set in the chains
         CPs,Ps, # P hit by s
         depth,
         cas, # encoded component actions
-        positionedQ,positionedP, # positioned tiles
-        sofarP, sofarQ;
+        positionedQ, sofarP, sofarQ;
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingTileChain(sk,CPs);
+  sofarP := sofar(sk,PositionedTileChain(sk,CP));
   positionedQ := PositionedTileChain(sk,CQ);
-  positionedP := PositionedTileChain(sk,CP);
-  sofarP := sofar(sk,positionedP);
   sofarQ := sofar(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if positionedQ[depth] <> 0 then
