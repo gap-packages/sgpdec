@@ -496,15 +496,13 @@ function(sk,chain)
   return List(EnumeratorOfCartesianProduct(fragments), Concatenation);
 end);
 
-# this cuts off the base set
+# this cuts off the base set TODO almost like EncodeTileChain
 InstallGlobalFunction(PositionedTileChain,
 function(sk, chain)
   local positioned,i;
   positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
-  i := 1;
-  while i < Length(chain) do
-    positioned[DepthOfSet(sk,chain[i])] := chain[i+1];
-    i := i +1;
+  for i in [2..Length(chain)] do
+    positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
   od;
   return positioned;
 end);
