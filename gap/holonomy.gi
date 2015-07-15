@@ -211,7 +211,7 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
   CPs := OnSequenceOfSets(CP,s);
-  CQ := DominatingTileChain(sk,CPs);
+  CQ := DominatingChain(sk,CPs);
   sofarP := sofar(sk,PositionedTileChain(sk,CP));
   positionedQ := PositionedTileChain(sk,CQ);
   sofarQ := sofar(sk,positionedQ);

@@ -461,7 +461,7 @@ function(tc, s)
 end);
 
 # just giving a dominating tile chain #TODO abstract and combine this and the next function
-InstallGlobalFunction(DominatingTileChain,
+InstallGlobalFunction(DominatingChain,
 function(sk,chain)
   local pos, dtc;
   if IsEmpty(chain) then return fail;fi;
@@ -479,7 +479,7 @@ function(sk,chain)
   return dtc;
 end);
 
-InstallGlobalFunction(DominatingTileChains,
+InstallGlobalFunction(DominatingChains,
 function(sk,chain)
   local chains, fragments;
   if IsEmpty(chain) then return fail;fi; #TODO why do we give up here?
