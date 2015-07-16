@@ -216,7 +216,7 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
   positionedQ := PositionedTileChain(sk,CQ);
   sofarQ := sofar(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-    if positionedQ[depth] <> 0 then
+    if depth = DepthOfSet(sk,sofarQ[depth]) then #positionedQ[depth] <> 0 then
       cas[depth] := holonomy_core(sk, sofarP[depth], sofarQ[depth], positionedQ[depth], s, depth);
     fi;
   od;
