@@ -18,7 +18,7 @@ The skeleton of a transformation semigroup is a data structure containing inform
 <#Include Label="EvalWordInSkeleton">
 
 <#Include Label="TilesOf">
-<#Include Label="TileChains">
+<#Include Label="Chains">
 
 <#Include Label="DisplayHolonomyComponents">
 
