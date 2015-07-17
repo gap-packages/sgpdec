@@ -287,7 +287,7 @@ local grpcomps;
   grpcomps := GroupComponents(sk);
   return List([1..Length(grpcomps)],
               x -> PermutationResetSemigroup(
-                      DisjointUnionGroup(grpcomps[x],Shifts(sk)[x]),
+                      DisjointUnionPermGroup(grpcomps[x],Shifts(sk)[x]),
                       Size(CoordVals(sk)[x])));
 end);
 

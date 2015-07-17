@@ -13,13 +13,13 @@ true
 gap> l := List([1..15],x->G);;
 gap> shifts := List([1..16], x->5*Primes[x]);
 [ 10, 15, 25, 35, 55, 65, 85, 95, 115, 145, 155, 185, 205, 215, 235, 265 ]
-gap> dug := DisjointUnionGroup(l,shifts);
+gap> dug := DisjointUnionPermGroup(l,shifts);
 <permutation group with 30 generators>
 gap> Size(dug)=Factorial(5)^15;
 true
 
 # testing isomorphism with nonspecified shifts
-gap> dug2 := DisjointUnionGroup(l);
+gap> dug2 := DisjointUnionPermGroup(l);
 <permutation group with 30 generators>
 gap> Size(dug) = Size(dug2);
 true

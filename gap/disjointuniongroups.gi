@@ -2,11 +2,11 @@
 ##
 ## disjointunion.gi           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Disjoint union of groups (by shifted actions).
+## Disjoint union of permutation groups (by shifted actions).
 ##
 
 #shifts the points of the action
@@ -32,7 +32,7 @@ end);
 # number of points to act on
 # if your shift vector contains overlaps, then you get something funny
 # if the shift vector is not given, then it is calculated by moved points
-InstallGlobalFunction(DisjointUnionGroup,
+InstallGlobalFunction(DisjointUnionPermGroup,
 function(arg)
   local gens,shiftedgroups,groups,shifts,n;
   groups := arg[1];

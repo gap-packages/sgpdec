@@ -2,12 +2,12 @@
 ##
 ## disjointunion.gd           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Disjoint union of groups (by shifted actions).
+## Disjoint union of permutation groups (by shifted actions).
 ##
 
 DeclareGlobalFunction("ShiftGroupAction");
-DeclareGlobalFunction("DisjointUnionGroup");
+DeclareGlobalFunction("DisjointUnionPermGroup");
