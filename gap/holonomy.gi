@@ -92,7 +92,7 @@ InstallGlobalFunction(DecodeCoords,
 end);
 
 # encoding: tile chain -> set coordinate values
-InstallGlobalFunction(EncodeTileChain,
+InstallGlobalFunction(EncodeChain,
 function(sk, chain)
   local sets,i;
   #filling up with zeros - jumped over levels are abstract
@@ -113,14 +113,14 @@ end);
 # TODO implementing as AsPoint?
 AsHolonomyPoint :=
 function(cs,sk)
-  return TileChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
+  return ChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
 end;
 
 AsHolonomyCoords :=
 function(k,sk)
   return HolonomySets2Ints(sk,
-                 EncodeTileChain(sk,
-                         RandomTileChain(sk,k)));
+                 EncodeChain(sk,
+                         RandomChain(sk,k)));
 end;
 
 # special action for holonomy int coordinates dealing with 0s and constant maps
@@ -212,8 +212,8 @@ InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingChain(sk,CPs);
-  sofarP := sofar(sk,PositionedTileChain(sk,CP));
-  positionedQ := PositionedTileChain(sk,CQ);
+  sofarP := sofar(sk,PositionedChain(sk,CP));
+  positionedQ := PositionedChain(sk,CQ);
   sofarQ := sofar(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if depth = DepthOfSet(sk,sofarQ[depth]) then #positionedQ[depth] <> 0 then
@@ -244,8 +244,8 @@ local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
   holdom := [];
   #we go through all tile chains
   if not IsOne(t) then
-    for tilechain in TileChains(sk) do
-      state := HolonomySets2Ints(sk, EncodeTileChain(sk,tilechain));
+    for tilechain in Chains(sk) do
+      state := HolonomySets2Ints(sk, EncodeChain(sk,tilechain));
       Add(holdom, state);
       #get the component actions on the tile chain
       actions := HolonomyComponentActions(sk, t, tilechain);

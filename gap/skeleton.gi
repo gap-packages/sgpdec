@@ -370,7 +370,7 @@ function(sk, A,B)
 end);
 
 # used by holonomy
-InstallGlobalFunction(RandomTileChain,
+InstallGlobalFunction(RandomChain,
 function(sk,k)
 local chain,singleton, set;
   chain := [];
@@ -385,18 +385,18 @@ local chain,singleton, set;
 end);
 
 #just counting, not constructing them
-InstallGlobalFunction(NrTileChainsBetween,
+InstallGlobalFunction(NrChainsBetween,
 function(sk,A,B)
 local sizes, tiles;
   if A = B then return 1; fi;
   tiles := TilesContaining(sk,A,B);
-  sizes := List(tiles, x -> NrTileChainsBetween(sk,x,B));
+  sizes := List(tiles, x -> NrChainsBetween(sk,x,B));
   return Sum(sizes);
 end);
 
 
 # recursively extending chain top-down from its last element to target
-RecTileChainsBetween := function(sk,chain,target,coll)
+RecChainsBetween := function(sk,chain,target,coll)
 local set,cover;
   set := chain[Length(chain)];
   if set = target then #we have a complete chain now, copy and return
@@ -407,26 +407,26 @@ local set,cover;
   Perform(TilesContaining(sk, set, target),
           function(s)
             Add(chain, s);
-            RecTileChainsBetween(sk, chain, target, coll);
+            RecChainsBetween(sk, chain, target, coll);
             Remove(chain);
           end);
 end;
-MakeReadOnlyGlobal("RecTileChainsBetween");
+MakeReadOnlyGlobal("RecChainsBetween");
 
-InstallGlobalFunction(TileChainsBetween,
+InstallGlobalFunction(ChainsBetween,
 function(sk, A,B) # A \subset B
 local coll;
   coll := []; # collecting the tilechains in here
-  RecTileChainsBetween(sk, [A], B, coll);
+  RecChainsBetween(sk, [A], B, coll);
   return coll;
 end);
 
-InstallGlobalFunction(TileChains,
+InstallGlobalFunction(Chains,
 function(sk)
 local coll,s;
   coll := [];
   for s in Singletons(sk) do
-    Append(coll, TileChainsBetween(sk,BaseSet(sk),s));
+    Append(coll, ChainsBetween(sk,BaseSet(sk),s));
   od;
   return coll;
 end);
@@ -446,7 +446,7 @@ end;
 
 # extracts the point in the singleton element
 # when called with a tile chain fragment the result is meaningless
-InstallGlobalFunction(TileChainRoot,
+InstallGlobalFunction(ChainRoot,
 function(tc)
   local singleton;
   singleton := tc[Size(tc)]; #the last element     
@@ -485,7 +485,7 @@ function(sk,chain)
   if IsEmpty(chain) then return fail;fi; #TODO why do we give up here?
   if chain[1] <> BaseSet(sk) then Add(chain, BaseSet(sk),1);fi;
   fragments := List([1..Size(chain)-1],
-                    x->TileChainsBetween(sk,chain[x],chain[x+1]));
+                    x->ChainsBetween(sk,chain[x],chain[x+1]));
   #removing duplicates, the in-between ones
   Perform([1..Size(fragments)-1],
           function(x)
@@ -496,8 +496,8 @@ function(sk,chain)
   return List(EnumeratorOfCartesianProduct(fragments), Concatenation);
 end);
 
-# this cuts off the base set TODO almost like EncodeTileChain
-InstallGlobalFunction(PositionedTileChain,
+# this cuts off the base set TODO almost like EncodeChain
+InstallGlobalFunction(PositionedChain,
 function(sk, chain)
   local positioned,i;
   positioned := List([1..DepthOfSkeleton(sk)-1],x->0);

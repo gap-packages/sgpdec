@@ -12,7 +12,7 @@ DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);
 
 DeclareGlobalFunction("RepTile");
 DeclareGlobalFunction("RealTile");
-DeclareGlobalFunction("EncodeTileChain");
+DeclareGlobalFunction("EncodeChain");
 DeclareGlobalFunction("DecodeCoords");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
