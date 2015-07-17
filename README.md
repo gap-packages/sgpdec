@@ -18,8 +18,8 @@ Please report any problem or request features by creating on issue on the projec
 
 ## Who are you?
 
-Attila Egri-Nagy www.egri-nagy.hu
+Attila Egri-Nagy www.egri-nagy.hu @EgriNagy
 
-James D. Mitchell http://www-groups.mcs.st-andrews.ac.uk/~jamesm/
+James D. Mitchell http://www-groups.mcs.st-andrews.ac.uk/~jamesm/ @jdmjdmjdmjdm 
 
 Chrystopher L. Nehaniv http://homepages.herts.ac.uk/~comqcln/
