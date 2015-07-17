@@ -190,7 +190,12 @@ ApproximationStages := function(sk, ptc)
 end;
 MakeReadOnlyGlobal("ApproximationStages");
 
-holonomy_core := function(sk, P,Q, Qtile,s, depth)
+# implementing the core idea of holonomy: if we stay in an equivalence class
+# then we permute, otherwise choose a tile (which is already chosen by the
+# dominating chain)
+# P,Q - the current stage of approximations for source and target chains
+# Qtile - the chosen tile (for constants), s - the transformation
+HolonomyCore := function(sk, P,Q, Qtile,s, depth)
   local Ps;
   Ps := OnFiniteSet(P,s); #TODO this is already in CPs
   if Ps  = Q then #PERMUTATION
@@ -199,8 +204,10 @@ holonomy_core := function(sk, P,Q, Qtile,s, depth)
   elif IsSubsetBlist(Q, Ps) then #CONSTANT
     return ConstantMapToATile(RepTile(Qtile,Q,sk),
                               depth,GetSlot(Q,sk),sk);
-  fi;  
+  fi;
+  #no else branch, testing for sub is not needed but left there as a safety belt
 end;
+MakeReadOnlyGlobal("HolonomyCore");
 
 # investigate how s acts on the given chain CP
 # returns a list of encoded component actions, one for each level
@@ -221,7 +228,7 @@ function(sk, s, CP)
   stagesQ := ApproximationStages(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if depth = DepthOfSet(sk,stagesQ[depth]) then #positionedQ[depth] <> 0 then
-      cas[depth] := holonomy_core(sk, stagesP[depth], stagesQ[depth], 
+      cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth], 
                                   positionedQ[depth], s, depth);
     fi;
   od;
