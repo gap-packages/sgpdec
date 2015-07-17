@@ -174,7 +174,9 @@ ConstantMapToATile := function(subtile, depth, slot, sk)
 end;
 MakeReadOnlyGlobal("ConstantMapToATile");
 
-sofar := function(sk, ptc)
+# returns the current state of approximations for each level given
+# a positioned chain
+ApproximationStages := function(sk, ptc)
   local P,result,depth;
   P := BaseSet(sk);
   result := [];
@@ -186,6 +188,7 @@ sofar := function(sk, ptc)
   od;
   return result;
 end;
+MakeReadOnlyGlobal("ApproximationStages");
 
 holonomy_core := function(sk, P,Q, Qtile,s, depth)
   local Ps;
@@ -199,25 +202,27 @@ holonomy_core := function(sk, P,Q, Qtile,s, depth)
   fi;  
 end;
 
-# investigate how s acts on the given states
-# returns a list of component actions, one for each level
-InstallGlobalFunction(HolonomyComponentActions,function(sk, s, CP)
-  local CQ, # tile chains
-        Q, P, # the current set in the chains
-        CPs,Ps, # P hit by s
-        depth,
+# investigate how s acts on the given chain CP
+# returns a list of encoded component actions, one for each level
+InstallGlobalFunction(HolonomyComponentActions,
+function(sk, s, CP)
+  local CPs, # chain CP hit by s 
+        CQ, # the chain dominating CPs
+        depth, # the current depth
         cas, # encoded component actions
-        positionedQ, sofarP, sofarQ;
+        positionedQ, # positioned CQ the get tile of choice 
+        stagesP, stagesQ; #the current state of approximations in chains CP, CQ
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingChain(sk,CPs);
-  sofarP := sofar(sk,PositionedChain(sk,CP));
+  stagesP := ApproximationStages(sk,PositionedChain(sk,CP));
   positionedQ := PositionedChain(sk,CQ);
-  sofarQ := sofar(sk,positionedQ);
+  stagesQ := ApproximationStages(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-    if depth = DepthOfSet(sk,sofarQ[depth]) then #positionedQ[depth] <> 0 then
-      cas[depth] := holonomy_core(sk, sofarP[depth], sofarQ[depth], positionedQ[depth], s, depth);
+    if depth = DepthOfSet(sk,stagesQ[depth]) then #positionedQ[depth] <> 0 then
+      cas[depth] := holonomy_core(sk, stagesP[depth], stagesQ[depth], 
+                                  positionedQ[depth], s, depth);
     fi;
   od;
   return cas;
