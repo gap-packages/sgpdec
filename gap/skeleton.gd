@@ -52,7 +52,6 @@ DeclareGlobalFunction("OnSequenceOfSets");
 DeclareGlobalFunction("NrChainsBetween");
 DeclareGlobalFunction("DominatingChain");
 DeclareGlobalFunction("DominatingChains");
-DeclareGlobalFunction("PositionedChain");
 DeclareGlobalFunction("IsSubductionEquivalent");
 DeclareGlobalFunction("IsSubductionLessOrEquivalent");
 DeclareGlobalFunction("SubductionWitness");

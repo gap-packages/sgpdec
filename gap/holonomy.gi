@@ -103,6 +103,17 @@ function(sk, chain)
   return sets;
 end);
 
+# this cuts off the base set TODO almost like EncodeChain
+InstallGlobalFunction(PositionedChain,
+        function(sk, chain)
+  local positioned,i;
+  positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
+  for i in [2..Length(chain)] do
+    positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
+  od;
+  return positioned;
+end);
+
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
