@@ -2,7 +2,7 @@
 ##
 ## holonomy.gd           SgpDec package
 ##
-## Copyright (C) 2008-2012
+## Copyright (C) 2008-2015
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.

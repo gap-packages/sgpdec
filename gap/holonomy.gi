@@ -2,7 +2,7 @@
 ##
 ## holonomy.gi           SgpDec package
 ##
-## Copyright (C) 2010-2012
+## Copyright (C) 2008-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -257,6 +257,20 @@ function(ts)
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
 end);
+
+# skeleton for recursive code to replace AsHolonomyCascade
+frags := function(sk)
+  local f, tile, s;
+  f := function(prefix)
+    Display(prefix);
+    for tile in TilesOf(sk, prefix[Size(prefix)]) do
+      Add(prefix,tile);
+      f(prefix);
+      Remove(prefix);
+    od;
+  end;
+  f([BaseSet(sk)]);
+end;
 
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
