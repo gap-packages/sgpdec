@@ -82,8 +82,8 @@ InstallGlobalFunction(DecodeCoords,
   chain := [];
   depth := 1;
   P := BaseSet(sk); #we start to approximate from the top set
-  while depth < DepthOfSkeleton(sk) do
-    #we go from the cover of the rep to the cover of the chain element
+  while IsBound(coordinates[depth]) #so it works for prefixes 
+        and depth < DepthOfSkeleton(sk) do
     P := RealTile(coordinates[depth],P,sk);
     Add(chain,P);
     depth :=  DepthOfSet(sk,P);
