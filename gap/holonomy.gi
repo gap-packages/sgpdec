@@ -259,16 +259,20 @@ function(ts)
 end);
 
 # skeleton for recursive code to replace AsHolonomyCascade
-frags := function(sk)
-  local f, tile, s;
+frags := function(sk,t)
+  local f, tile,Qtile, P, Q, action;
+  #-----------------------------------------------------------------------------
   f := function(prefix)
-    Display(prefix);
+    # here is the payload calculations
+    action := HolonomyCore(sk, P,Q, Qtile,t,depth);
+    # and the recursion
     for tile in TilesOf(sk, prefix[Size(prefix)]) do
       Add(prefix,tile);
       f(prefix);
       Remove(prefix);
     od;
   end;
+  #-----------------------------------------------------------------------------
   f([BaseSet(sk)]);
 end;
 
