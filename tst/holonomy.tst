@@ -2,16 +2,16 @@
 gap> START_TEST("Sgpdec package: holonomy.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(3));
-<cascade semigroup with 4 generators, 2 levels with (3, 2) pts>
+<cascade semigroup with 4 generators, 2 levels with (4, 3) pts>
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 4 generators, 2 levels with (3, 2) \
+MappingByFunction( <cascade semigroup with 4 generators, 2 levels with (4, 3) \
 pts>, <transformation monoid on 3 pts with 3 generators>
  , function( c ) ... end )
 gap> Size(Range(hom));
 27
 gap> hl := HolonomyRelationalMorphism(FullTransformationSemigroup(3));
 MappingByFunction( <full transformation semigroup on 3 pts>, <cascade semigrou\
-p with 4 generators, 2 levels with (3, 2) pts>, function( t ) ... end )
+p with 4 generators, 2 levels with (4, 3) pts>, function( t ) ... end )
 gap> Size(Range(hl));
 30
 gap> S := Semigroup([
@@ -25,10 +25,10 @@ gap> S := Semigroup([
 gap> ForAll([1..6], x -> x=AsHolonomyPoint(AsHolonomyCoords(x,sk),sk));
 true
 gap> hcs := HolonomyCascadeSemigroup(S);
-<cascade semigroup with 6 generators, 5 levels with (2, 4, 5, 5, 2) pts>
+<cascade semigroup with 6 generators, 5 levels with (3, 5, 6, 6, 3) pts>
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (2, 4, \
-5, 5, 2) pts>, <transformation semigroup on 6 pts with 6 generators>
+MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (3, 5, \
+6, 6, 3) pts>, <transformation semigroup on 6 pts with 6 generators>
  , function( c ) ... end )
 gap> AsSortedList(S) = AsSortedList(Range(hom));
 true
