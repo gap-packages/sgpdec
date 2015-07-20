@@ -291,7 +291,7 @@ local grpcomps;
   return List([1..Length(grpcomps)],
               x -> PermutationResetSemigroup(
                       DisjointUnionPermGroup(grpcomps[x],Shifts(sk)[x]),
-                      Size(CoordVals(sk)[x])));
+                      Size(CoordVals(sk)[x])+1));
 end);
 
 ################################################################################
