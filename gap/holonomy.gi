@@ -260,7 +260,7 @@ end);
 
 # skeleton for recursive code to replace AsHolonomyCascade
 frags := function(sk,t)
-  local f, tile,Qtile, P, Q, action;
+  local f, tile,Qtile, P, Q, action, depth;
   #-----------------------------------------------------------------------------
   f := function(prefix)
     # here is the payload calculations
@@ -274,7 +274,7 @@ frags := function(sk,t)
   end;
   #-----------------------------------------------------------------------------
   P := BaseSet(sk);
-  Q := BasesSet(sk);
+  Q := BaseSet(sk);
   f([BaseSet(sk)]);
 end;
 
