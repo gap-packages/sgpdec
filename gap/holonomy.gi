@@ -34,7 +34,7 @@ sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));   #ListWithIdentic
     if ints[level] < GetStar(sk, level) then
       # the set at the position coded by the integer
       sets[level] := CoordVals(sk)[level][ints[level]];
-      
+
     fi;
   od;
   return sets;
@@ -139,7 +139,7 @@ function(k,sk)
                          RandomChain(sk,k)));
 end;
 
-# special action for holonomy int coordinates dealing with 0s and constant maps
+# special doubly encoded, the real cascade action on integer tuples
 OnHolonomyCoordinates:= function(coords, ct)
   local dfs, copy, out, len, i, action;
   dfs:=DependencyFunctionsOf(ct);
@@ -148,17 +148,8 @@ OnHolonomyCoordinates:= function(coords, ct)
   out:=EmptyPlist(len);
   for i in [1..len] do
     action := copy^dfs[i];
-    #if coords[i] = GetStar(sk,i) then
-    #  if IsTransformation(action) and RankOfTransformation(action)=1 then
-    #    out[i] := 1^action;
-    #  else
-    #    out[i] := GetStar(sk,i);
-    #  fi;
-    #  copy[i]:=1; #padding with 1: it is precarious but works
-    #else
     out[i]:=coords[i]^action;
     copy[i]:=coords[i];
-    #fi;
   od;
   return out;
 end;
@@ -229,11 +220,11 @@ MakeReadOnlyGlobal("HolonomyCore");
 # returns a list of encoded component actions, one for each level
 InstallGlobalFunction(HolonomyComponentActions,
 function(sk, s, CP)
-  local star, CPs, # chain CP hit by s 
+  local star, CPs, # chain CP hit by s
         CQ, # the chain dominating CPs
         depth, # the current depth
         cas, # encoded component actions
-        positionedQ, # positioned CQ the get tile of choice 
+        positionedQ, # positioned CQ the get tile of choice
         stagesP, stagesQ; #the current state of approximations in chains CP, CQ
   cas := List([1..DepthOfSkeleton(sk)-1],
                   x -> One(HolonomyPermutationResetComponents(sk)[x]));
@@ -243,7 +234,7 @@ function(sk, s, CP)
   positionedQ := PositionedChain(sk,CQ);
   stagesQ := ApproximationStages(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
-    if depth = DepthOfSet(sk,stagesQ[depth]) then #positionedQ[depth] <> 0 then
+    if depth = DepthOfSet(sk,stagesQ[depth]) then
       cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth],
                             positionedQ[depth], s, depth);
     else
@@ -308,12 +299,6 @@ local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
             AddSet(depfuncs,[[],actions[1]]);
           else
             AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
-            # for cst in
-            #   AllConcreteCoords(ComponentDomains(
-            #           HolonomyPermutationResetComponents(sk)),
-            #           state{[1..(i-1)]}) do
-            #   AddSet(depfuncs,[cst,actions[i]]);
-            # od;
           fi;
         fi;
       od;
