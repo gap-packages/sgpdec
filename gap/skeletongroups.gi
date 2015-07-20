@@ -15,6 +15,7 @@
 
 #just empty lists in the beginning, built on demand, very scary mutable list!!
 #indexed by the set's position in the orbit
+#this is memoization
 InstallMethod(FromRepMaps, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
 
@@ -49,6 +50,7 @@ local pos, scc,o;
   return FromRepWords(sk)[pos];
 end);
 
+#evaluates the word as transformation and stores it
 InstallGlobalFunction(FromRep,
 function(sk, A)
 local pos;
@@ -92,6 +94,7 @@ local pos, scc, n, outw, fg, inw, out,l,o;
   return ToRepWords(sk)[pos];
 end);
 
+#evaluates the word as transformation and stores it
 InstallGlobalFunction(ToRep,
 function(sk, A)
 local pos;
