@@ -13,7 +13,8 @@
 ### words and transformation for moving between sets and representatives
 ###  with a primitive caching method to avoid double calculation
 
-#just empty lists in the beginning, built on demand
+#just empty lists in the beginning, built on demand, very scary mutable list!!
+#indexed by the set's position in the orbit
 InstallMethod(FromRepMaps, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
 
@@ -44,7 +45,7 @@ local pos, scc,o;
     FromRepWords(sk)[pos] := Reduce2StraightWord(FromRepWords(sk)[pos],
                                      Generators(sk),
                                      IdentityTransformation, OnRight);
-  fi; #TODO why can we skip finding the proper exponent?
+  fi;
   return FromRepWords(sk)[pos];
 end);
 
@@ -81,12 +82,11 @@ local pos, scc, n, outw, fg, inw, out,l,o;
     Add(l, outw);
     fg := Flat([inw,outw]);
     Add(l, ListWithIdenticalEntries(n,fg));
+    ToRepWords(sk)[pos] := Flat(l);  
     if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
-      ToRepWords(sk)[pos] := Reduce2StraightWord(Flat(l),
+      ToRepWords(sk)[pos] := Reduce2StraightWord(ToRepWords(sk)[pos],
                                      Generators(sk),
                                      IdentityTransformation, OnRight);
-    else
-      ToRepWords(sk)[pos] := Flat(l);  
     fi;
   fi;
   return ToRepWords(sk)[pos];
