@@ -2,7 +2,7 @@
 ##
 ## skeletongroups.gi           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2015
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -44,7 +44,7 @@ local pos, scc,o;
     FromRepWords(sk)[pos] := Reduce2StraightWord(FromRepWords(sk)[pos],
                                      Generators(sk),
                                      IdentityTransformation, OnRight);
-  fi;
+  fi; #TODO why can we skip finding the proper exponent?
   return FromRepWords(sk)[pos];
 end);
 

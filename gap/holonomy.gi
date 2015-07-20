@@ -273,6 +273,8 @@ frags := function(sk,t)
     od;
   end;
   #-----------------------------------------------------------------------------
+  P := BaseSet(sk);
+  Q := BasesSet(sk);
   f([BaseSet(sk)]);
 end;
 
