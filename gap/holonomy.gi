@@ -295,11 +295,7 @@ local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
       #examine whether there is a nontrivial action, then add
       for i in [1..Length(actions)] do
         if not IsOne(actions[i]) then
-          if i = 1 then
-            AddSet(depfuncs,[[],actions[1]]);
-          else
-            AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
-          fi;
+          AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
         fi;
       od;
     od;
