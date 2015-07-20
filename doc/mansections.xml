@@ -46,15 +46,15 @@ Alternatively, when working with a cascade semigroup, the semigroup
 itself can be given as an argument.
 <Example>
 gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(5));
-&lt;cascade semigroup with 4 generators, 4 levels with (5, 4, 3, 2) pts&gt;
+&lt;cascade semigroup with 4 generators, 4 levels with (6, 5, 4, 3) pts&gt;
 gap> Size(DomainOf(hcs));
-120
+360
 gap> AsCoords(1,hcs);
 [ 1, 1, 1, 1 ]
-gap> AsCoords(120,hcs);
-[ 5, 4, 3, 2 ]
+gap> AsCoords(360,hcs);
+[ 6, 5, 4, 3 ]
 gap> AsCoords(79,hcs);
-[ 4, 2, 1, 1 ]
+[ 2, 2, 3, 1 ]
 </Example>
     </Description>
   </ManSection>
@@ -468,14 +468,14 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 <Example>
 gap> T4 := FullTransformationSemigroup(4);;
 gap> hcs := HolonomyCascadeSemigroup(T4);
-&lt;cascade semigroup with 4 generators, 3 levels with (4, 3, 2) pts&gt;
+&lt;cascade semigroup with 4 generators, 3 levels with (5, 4, 3) pts&gt;
 gap> gens := Generators(hcs);
-[ &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
-  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 7 dependencies&gt;, 
-  &lt;trans cascade with 3 levels with (4, 3, 2) pts, 8 dependencies&gt; ]
+[ &lt;trans cascade with 3 levels with (5, 4, 3) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (5, 4, 3) pts, 7 dependencies&gt;, 
+  &lt;trans cascade with 3 levels with (5, 4, 3) pts, 8 dependencies&gt; ]
 gap> surhom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( &lt;cascade semigroup with 4 generators, 3 levels with (4, 3, \
-2) pts&gt;, &lt;transformation monoid on 4 pts with 3 generators&gt;
+MappingByFunction( &lt;cascade semigroup with 4 generators, 3 levels with (5, 4, \
+3) pts&gt;, &lt;transformation monoid on 4 pts with 3 generators&gt;
  , function( c ) ... end )
 gap> Image(surhom, gens[1]*gens[2]);
 Transformation( [ 1, 3, 4, 2 ] )
