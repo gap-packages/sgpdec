@@ -23,15 +23,18 @@ GetSlot := function(set,sk)
 end;
 MakeReadOnlyGlobal("GetSlot");
 
+GetStar := function(sk, depth) return Size(CoordVals(sk)[depth])+1; end;
+
 # decoding: integers -> sets, integers simply code the positions sk.coordvals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-  sets := ListWithIdenticalEntries(Length(ints),0); #default: 0 (jumped over)
+sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));   #ListWithIdenticalEntries(Length(ints),0); #now this is invalid
   for level in [1..Length(ints)] do
-    if ints[level] > 0 then
+    if ints[level] < GetStar(sk, level) then
       # the set at the position coded by the integer
       sets[level] := CoordVals(sk)[level][ints[level]];
+      
     fi;
   od;
   return sets;
@@ -44,12 +47,14 @@ local set,level,ints,slot;
   set := BaseSet(sk);
   ints := ListWithIdenticalEntries(Length(sets),0); #default: 0 (jumped over)
   for level in [1..Length(sets)] do
-    if sets[level] <> 0 then
+    if IsBlist(sets[level]) then
       slot := GetSlot(set, sk); #TODO how can we make sure about the right slot?
       ints[level] := Position(CoordVals(sk)[level],
                              sets[level],
                              Shifts(sk)[level][slot]);
       set := sets[level];
+    else
+      ints[level] := GetStar(sk, level);
     fi;
   od;
   return ints;
@@ -82,7 +87,7 @@ InstallGlobalFunction(DecodeCoords,
   chain := [];
   depth := 1;
   P := BaseSet(sk); #we start to approximate from the top set
-  while IsBound(coordinates[depth]) #so it works for prefixes 
+  while IsBound(coordinates[depth]) #so it works for prefixes
         and depth < DepthOfSkeleton(sk) do
     P := RealTile(coordinates[depth],P,sk);
     Add(chain,P);
@@ -96,7 +101,7 @@ InstallGlobalFunction(EncodeChain,
 function(sk, chain)
   local sets,i;
   #filling up with zeros - jumped over levels are abstract
-  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 0);
+  sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));
   for i in [2..Length(chain)] do
     sets[DepthOfSet(sk, chain[i-1])] := RepTile(chain[i], chain[i-1], sk);
   od;
@@ -107,7 +112,7 @@ end);
 InstallGlobalFunction(PositionedChain,
         function(sk, chain)
   local positioned,i;
-  positioned := List([1..DepthOfSkeleton(sk)-1],x->0);
+  positioned := List([1..DepthOfSkeleton(sk)-1],x-> GetStar(sk,x));
   for i in [2..Length(chain)] do
     positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
   od;
@@ -143,17 +148,17 @@ OnHolonomyCoordinates:= function(coords, ct)
   out:=EmptyPlist(len);
   for i in [1..len] do
     action := copy^dfs[i];
-    if coords[i]=0 then
-      if IsTransformation(action) and RankOfTransformation(action)=1 then
-        out[i] := 1^action;
-      else
-        out[i] := 0;
-      fi;
-      copy[i]:=1; #padding with 1: it is precarious but works
-    else
-      out[i]:=coords[i]^action;
-      copy[i]:=coords[i];
-    fi;
+    #if coords[i] = GetStar(sk,i) then
+    #  if IsTransformation(action) and RankOfTransformation(action)=1 then
+    #    out[i] := 1^action;
+    #  else
+    #    out[i] := GetStar(sk,i);
+    #  fi;
+    #  copy[i]:=1; #padding with 1: it is precarious but works
+    #else
+    out[i]:=coords[i]^action;
+    copy[i]:=coords[i];
+    #fi;
   od;
   return out;
 end;
@@ -181,7 +186,7 @@ ConstantMapToATile := function(subtile, depth, slot, sk)
   local pos; # the position of the tile that contains set
   pos := Position(CoordVals(sk)[depth],subtile,Shifts(sk)[depth][slot]);
   #just a constant transformation pointing to this tile (encoded as an integer)
-   return Transformation(List([1..Size(CoordVals(sk)[depth])],x->pos));
+   return Transformation(List([1..Size(CoordVals(sk)[depth])+1],x->pos));
 end;
 MakeReadOnlyGlobal("ConstantMapToATile");
 
@@ -224,7 +229,7 @@ MakeReadOnlyGlobal("HolonomyCore");
 # returns a list of encoded component actions, one for each level
 InstallGlobalFunction(HolonomyComponentActions,
 function(sk, s, CP)
-  local CPs, # chain CP hit by s 
+  local star, CPs, # chain CP hit by s 
         CQ, # the chain dominating CPs
         depth, # the current depth
         cas, # encoded component actions
@@ -239,8 +244,12 @@ function(sk, s, CP)
   stagesQ := ApproximationStages(sk,positionedQ);
   for depth in [1..DepthOfSkeleton(sk)-1] do
     if depth = DepthOfSet(sk,stagesQ[depth]) then #positionedQ[depth] <> 0 then
-      cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth], 
-                                  positionedQ[depth], s, depth);
+      cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth],
+                            positionedQ[depth], s, depth);
+    else
+      #constant *
+      star := GetStar(sk, depth);
+      cas[depth] := Transformation(List([1..star], x->star));
     fi;
   od;
   return cas;
@@ -284,12 +293,12 @@ InstallGlobalFunction(AsHolonomyCascade,
 function(t,sk)
 local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
   depfuncs := [];
-  holdom := [];
+  #holdom := [];
   #we go through all tile chains
   if not IsOne(t) then
     for tilechain in Chains(sk) do
       state := HolonomySets2Ints(sk, EncodeChain(sk,tilechain));
-      Add(holdom, state);
+      #Add(holdom, state);
       #get the component actions on the tile chain
       actions := HolonomyComponentActions(sk, t, tilechain);
       #examine whether there is a nontrivial action, then add
@@ -298,19 +307,20 @@ local i,state,actions,depfuncs,cst, cascade,tilechain,holdom;
           if i = 1 then
             AddSet(depfuncs,[[],actions[1]]);
           else
-            for cst in
-              AllConcreteCoords(ComponentDomains(
-                      HolonomyPermutationResetComponents(sk)),
-                      state{[1..(i-1)]}) do
-              AddSet(depfuncs,[cst,actions[i]]);
-            od;
+            AddSet(depfuncs,[state{[1..(i-1)]},actions[i]]);
+            # for cst in
+            #   AllConcreteCoords(ComponentDomains(
+            #           HolonomyPermutationResetComponents(sk)),
+            #           state{[1..(i-1)]}) do
+            #   AddSet(depfuncs,[cst,actions[i]]);
+            # od;
           fi;
         fi;
       od;
     od;
   fi;
   cascade := Cascade(HolonomyPermutationResetComponents(sk),depfuncs);
-  SetRestrictedDomain(cascade, holdom);
+  #SetRestrictedDomain(cascade, holdom);
   return cascade;
 end);
 
