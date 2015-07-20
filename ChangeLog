@@ -1,3 +1,5 @@
+0.7.30
+	Bringing the code in sync with the paper: now we have an extra state on each level to act on representing jumped over levels. Numerous little fixes code improvements in the last year.
 0.7.29
 	The release of finally understanding holonomy decomposition! :) Holonomy core rewritten with dominating tile chains. Alternative height functions. RestrictedDomain added for future optimization. Code cleaning, commenting. Regression fixes fo Splash.
 0.7.28
