@@ -23,18 +23,21 @@ GetSlot := function(set,sk)
 end;
 MakeReadOnlyGlobal("GetSlot");
 
+# at each level we add an extra state 'star' representing the don't care state
+# since we act on it, it cannot be 0 (the cascade abstract state)
+# so we take it to be #states +1
 GetStar := function(sk, depth) return Size(CoordVals(sk)[depth])+1; end;
+MakeReadOnlyGlobal("GetStar");
 
 # decoding: integers -> sets, integers simply code the positions sk.coordvals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));   #ListWithIdenticalEntries(Length(ints),0); #now this is invalid
+  sets := List([1..DepthOfSkeleton(sk)-1], x->GetStar(sk,x));
   for level in [1..Length(ints)] do
     if ints[level] < GetStar(sk, level) then
       # the set at the position coded by the integer
       sets[level] := CoordVals(sk)[level][ints[level]];
-
     fi;
   od;
   return sets;
@@ -45,10 +48,10 @@ InstallGlobalFunction(HolonomySets2Ints,
 function(sk, sets)
 local set,level,ints,slot;
   set := BaseSet(sk);
-  ints := ListWithIdenticalEntries(Length(sets),0); #default: 0 (jumped over)
+  ints := EmptyPlist(Size(sets));
   for level in [1..Length(sets)] do
     if IsBlist(sets[level]) then
-      slot := GetSlot(set, sk); #TODO how can we make sure about the right slot?
+      slot := GetSlot(set, sk);
       ints[level] := Position(CoordVals(sk)[level],
                              sets[level],
                              Shifts(sk)[level][slot]);
