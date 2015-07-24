@@ -543,22 +543,39 @@ InstallMethod(Display,"for a skeleton",[IsSkeleton],
 function(sk) ViewObj(sk); Print("\n"); end);
 
 DotChains := function(sk)
-  local f;
+  local f,str,out;
   #-----------------------------------------------------------------------------
-  f := function(prefix, indices)
-    local tiles, i;
-    # here is the payload calculations
-    Print(indices);Display(prefix[Size(prefix)]);
+  f := function(prefix, indices, parentnode)
+    local tiles, i, node;
+    node := Concatenation("n", ReplacedString(String(indices),",","_"));
+    RemoveCharacters(node, "[] ");
+    PrintTo(out, node, "[shape=record,label=\"", 
+            TrueValuePositionsBlistString(prefix[Size(prefix)]),
+            "\",color=\"black\"];\n");
+    if not IsEmpty(parentnode) then
+      PrintTo(out, parentnode ,"--", node,"\n");
+    fi;
+    Display(prefix[Size(prefix)]);
     # and the recursion
     tiles := TilesOf(sk, prefix[Size(prefix)]);
     for i in [1..Size(tiles)] do
       Add(prefix,tiles[i]);
       Add(indices,i);
-      f(prefix,indices);
+      f(prefix,indices,node);
       Remove(prefix);
       Remove(indices);
     od;
   end;
   #-----------------------------------------------------------------------------
-  f([BaseSet(sk)], [1]);
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"//dot\ngraph chains{\n");
+  
+  f([BaseSet(sk)], [1], "");
+
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+
+
 end;
