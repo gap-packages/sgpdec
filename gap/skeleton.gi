@@ -541,3 +541,24 @@ end);
 
 InstallMethod(Display,"for a skeleton",[IsSkeleton],
 function(sk) ViewObj(sk); Print("\n"); end);
+
+DotChains := function(sk)
+  local f;
+  #-----------------------------------------------------------------------------
+  f := function(prefix, indices)
+    local tiles, i;
+    # here is the payload calculations
+    Print(indices);Display(prefix[Size(prefix)]);
+    # and the recursion
+    tiles := TilesOf(sk, prefix[Size(prefix)]);
+    for i in [1..Size(tiles)] do
+      Add(prefix,tiles[i]);
+      Add(indices,i);
+      f(prefix,indices);
+      Remove(prefix);
+      Remove(indices);
+    od;
+  end;
+  #-----------------------------------------------------------------------------
+  f([BaseSet(sk)], [1]);
+end;
