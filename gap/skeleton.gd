@@ -63,5 +63,7 @@ DeclareGlobalFunction("SubductionClassesOnDepth");
 
 DeclareInfoClass("SkeletonInfoClass");
 
+DeclareGlobalFunction("DotChainActions");
+
 #EXPERIMENTAL
 DeclareGlobalFunction("WeakControlWords");

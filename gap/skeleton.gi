@@ -542,7 +542,8 @@ end);
 InstallMethod(Display,"for a skeleton",[IsSkeleton],
 function(sk) ViewObj(sk); Print("\n"); end);
 
-DotChains := function(sk)
+InstallGlobalFunction(DotChainActions,
+function(sk, t)
   local f,str,out;
   #-----------------------------------------------------------------------------
   f := function(prefix, indices, parentnode)
@@ -550,12 +551,11 @@ DotChains := function(sk)
     node := Concatenation("n", ReplacedString(String(indices),",","_"));
     RemoveCharacters(node, "[] ");
     PrintTo(out, node, "[shape=record,label=\"", 
-            TrueValuePositionsBlistString(prefix[Size(prefix)]),
+            TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t)),
             "\",color=\"black\"];\n");
     if not IsEmpty(parentnode) then
       PrintTo(out, parentnode ,"--", node,"\n");
     fi;
-    Display(prefix[Size(prefix)]);
     # and the recursion
     tiles := TilesOf(sk, prefix[Size(prefix)]);
     for i in [1..Size(tiles)] do
@@ -576,6 +576,4 @@ DotChains := function(sk)
   AppendTo(out,"}\n");
   CloseStream(out);
   return str;
-
-
-end;
+end);
