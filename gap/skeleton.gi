@@ -590,7 +590,7 @@ function(sk, t)
     else
       PrintTo(out, " child { node{");
     fi;
-    node := TrueValuePositionsBlistString(prefix[Size(prefix)]);
+    node := TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t));
     node := ReplacedString(node, "{", "\\{");
     node := ReplacedString(node, "}", "\\}");
     PrintTo(out,"$",node,"$}");
