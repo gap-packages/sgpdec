@@ -594,7 +594,10 @@ function(sk, t)
     else
       PrintTo(out, " child { node{");
     fi;
-    PrintTo(out,"$",TrueValuePositionsBlistString(prefix[Size(prefix)]),"$}");
+    node := TrueValuePositionsBlistString(prefix[Size(prefix)]);
+    node := ReplacedString(node, "{", "\\{");
+    node := ReplacedString(node, "}", "\\}");
+    PrintTo(out,"$",node,"$}");
     # and the recursion
     tiles := TilesOf(sk, prefix[Size(prefix)]);
     for i in [1..Size(tiles)] do
@@ -615,6 +618,7 @@ function(sk, t)
   PrintTo(out,"%latex\n");
   PrintTo(out,"\\documentclass{minimal}\\usepackage{tikz}");
   PrintTo(out,"\\usetikzlibrary{trees}\\begin{document}\\begin{tikzpicture}\n");
+  PrintTo(out, "[level distance=1cm,level 1/.style={sibling distance=6cm},level 2/.style={sibling distance=1.5cm}]");
   
   f([BaseSet(sk)]);
 
