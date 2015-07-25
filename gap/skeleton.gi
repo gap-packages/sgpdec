@@ -577,3 +577,48 @@ function(sk, t)
   CloseStream(out);
   return str;
 end);
+
+InstallGlobalFunction(TikzChainActions,
+function(sk, t)
+  local f,str,out;
+  #-----------------------------------------------------------------------------
+  f := function(prefix)
+    local tiles, i, node;
+    #node := Concatenation("n", ReplacedString(String(indices),",","_"));
+    #RemoveCharacters(node, "[] ");
+    #PrintTo(out, node, "[shape=record,label=\"", 
+    #        TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t)),
+    #        "\",color=\"black\"];\n");
+    if Size(prefix)=1 then
+      PrintTo(out, "\\node {");
+    else
+      PrintTo(out, " child { node{");
+    fi;
+    PrintTo(out,"$",TrueValuePositionsBlistString(prefix[Size(prefix)]),"$}");
+    # and the recursion
+    tiles := TilesOf(sk, prefix[Size(prefix)]);
+    for i in [1..Size(tiles)] do
+      Add(prefix,tiles[i]);
+      f(prefix);
+      Remove(prefix);
+    od;
+    if Size(prefix)=1 then
+      PrintTo(out, ";");
+    else
+      PrintTo(out, "}");
+    fi;
+
+  end;
+  #-----------------------------------------------------------------------------
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"%latex\n");
+  PrintTo(out,"\\documentclass{minimal}\\usepackage{tikz}");
+  PrintTo(out,"\\usetikzlibrary{trees}\\begin{document}\\begin{tikzpicture}\n");
+  
+  f([BaseSet(sk)]);
+
+  AppendTo(out,"\\end{tikzpicture}\\end{document}\n");
+  CloseStream(out);
+  return str;
+end);
