@@ -436,8 +436,8 @@ end);
 InstallGlobalFunction(ChainRoot,
 function(tc)
   local singleton;
-  singleton := tc[Size(tc)]; #the last element     
-  return First([1..Size(singleton)], x->singleton[x]);    
+  singleton := tc[Size(tc)]; #the last element
+  return First([1..Size(singleton)], x->singleton[x]);
 end);
 
 #for acting on tile chains
@@ -550,7 +550,7 @@ function(sk, t)
     local tiles, i, node;
     node := Concatenation("n", ReplacedString(String(indices),",","_"));
     RemoveCharacters(node, "[] ");
-    PrintTo(out, node, "[shape=record,label=\"", 
+    PrintTo(out, node, "[shape=record,label=\"",
             TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t)),
             "\",color=\"black\"];\n");
     if not IsEmpty(parentnode) then
@@ -570,7 +570,7 @@ function(sk, t)
   str := "";
   out := OutputTextString(str,true);
   PrintTo(out,"//dot\ngraph chains{\n");
-  
+
   f([BaseSet(sk)], [1], "");
 
   AppendTo(out,"}\n");
@@ -578,17 +578,13 @@ function(sk, t)
   return str;
 end);
 
+#only works nicely for very small trees, dist params need to be tweaked for big
 InstallGlobalFunction(TikzChainActions,
 function(sk, t)
   local f,str,out;
   #-----------------------------------------------------------------------------
   f := function(prefix)
     local tiles, i, node;
-    #node := Concatenation("n", ReplacedString(String(indices),",","_"));
-    #RemoveCharacters(node, "[] ");
-    #PrintTo(out, node, "[shape=record,label=\"", 
-    #        TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t)),
-    #        "\",color=\"black\"];\n");
     if Size(prefix)=1 then
       PrintTo(out, "\\node {");
     else
@@ -617,12 +613,11 @@ function(sk, t)
   out := OutputTextString(str,true);
   PrintTo(out,"%latex\n");
   PrintTo(out,"\\documentclass{minimal}\\usepackage{tikz}");
-  PrintTo(out,"\\usetikzlibrary{trees}\\begin{document}\\begin{tikzpicture}\n");
-  PrintTo(out, "[level distance=1cm,level 1/.style={sibling distance=6cm},level 2/.style={sibling distance=1.5cm}]");
-  
+  PrintTo(out,"\\usetikzlibrary{trees}\\begin{document}\n\n\\begin{tikzpicture}\n");
+  PrintTo(out, "[level distance=1cm,level 1/.style={sibling distance=1.3cm},");
+  PrintTo(out, "level 2/.style={sibling distance=.6cm}]\n\n");
   f([BaseSet(sk)]);
-
-  AppendTo(out,"\\end{tikzpicture}\\end{document}\n");
+  AppendTo(out,"\\end{tikzpicture}\n\n\\end{document}\n");
   CloseStream(out);
   return str;
 end);
