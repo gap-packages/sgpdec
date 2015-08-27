@@ -12,6 +12,8 @@ You need the latest version of the GAP computer algebra system (https://github.c
 
 To get some idea what SgpDec is capable of, check this paper: SgpDec: Cascade (De)Compositions of Finite Transformation Semigroups and Permutation Groups (http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13). For further details the documentation should be helpful.
 
+The preprint Computational Holonomy Decomposition of Transformation Semigroups http://arxiv.org/abs/1508.06345 contains a constructive proof of the holonomy decomposition that is in close correspondence to the implementation.
+
 ## Where to complain when something goes wrong?
 
 Please report any problem or request features by creating on issue on the project page here.
