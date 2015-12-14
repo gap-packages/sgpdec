@@ -5,7 +5,7 @@ Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependen
 <Cite Key="cascprod_arxiv"/>
 
 <Section Label="transcascade"><Heading>Transformation and permutation cascades</Heading>
-<E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups. 
+<E>Cascades</E> are tuples of dependency functions (see <Ref Subsect="depfunc" Style="Text"/>) compatible with a list of permutation groups and/or transformation semigroups.
     <#Include Label="IsCascade">
     <#Include Label="CascadeAttributes">
 </Section>
@@ -48,10 +48,10 @@ gap> Size(S);
 264
 gap> iso := IsomorphismTransformationSemigroup(S);
 MappingByFunction( &lt;cascade semigroup with 2 generators, 2 levels with (2, 3) \
-pts&gt;, &lt;transformation semigroup on 6 pts with 2 generators&gt;
+pts&gt;, &lt;transformation semigroup of degree 6 with 2 generators&gt;
  , &lt;Attribute "AsTransformation"&gt;, function( f ) ... end )
 gap> tS := Range(iso);
-&lt;transformation semigroup on 6 pts with 2 generators&gt;
+&lt;transformation semigroup of degree 6 with 2 generators&gt;
 gap> Size(tS);
 264
 </Example>
@@ -62,7 +62,7 @@ gap> Size(tS);
 For displaying the details (the dependency) maps <Ref Func="Display" BookName="ref"/> can be used.
 <Example>
 gap>
-</Example> 
+</Example>
 
     <#Include Label="DotCascade">
 </Section>
