@@ -77,10 +77,10 @@ gap> Add(semis, [Transformation( [ 1,2,1 ] ),Transformation( [ 3,3,1 ] )]);;
 #alifex
 gap> Add(semis, [Transformation([2,2,3,3,3]),Transformation([3,3,3,5,4])]);;
 gap> semis:=List(semis, Semigroup);
-[ <transformation semigroup on 6 pts with 6 generators>, 
-  <transformation semigroup on 8 pts with 3 generators>, 
-  <transformation semigroup on 3 pts with 2 generators>, 
-  <transformation semigroup on 5 pts with 2 generators> ]
+[ <transformation semigroup of degree 6 with 6 generators>, 
+  <transformation semigroup of degree 8 with 3 generators>, 
+  <transformation semigroup of degree 3 with 2 generators>, 
+  <transformation semigroup of degree 5 with 2 generators> ]
 
 #test the multiplication
 gap> comps:=[semis[1], semis[2], SymmetricGroup(3)];;
