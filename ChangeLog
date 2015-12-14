@@ -1,5 +1,5 @@
 0.7.31
-	Fixes for visualization.
+	Tests are compatible with GAP4.8/Semigroups 2.7. Small fixes for visualization.
 0.7.30
 	Bringing the code in sync with the paper: now we have an extra state on each level to act on representing jumped over levels. Numerous little fixes code improvements in the last year.
 0.7.29
