@@ -1,5 +1,5 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.7.30">
+##  <!ENTITY VERSION "0.7.31">
 ##  <!ENTITY COPYRIGHTYEARS "2008-2015">
 ##  <#/GAPDoc>
 
@@ -9,9 +9,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.7.30",
+Version := "0.7.31",
 
-Date := "20/07/2015",
+Date := "14/12/2015",
 
 ArchiveURL := "http://sgpdec.sf.net",
 
@@ -94,7 +94,7 @@ Dependencies := rec(
  GAP := ">= 4.7",
  NeededOtherPackages := [["GAPDoc", ">=1.5"],  #StringPrint
                    ["orb", ">=4.6"], #hashtable functionalities
-                   ["semigroups", ">=1.4"] 
+                   ["semigroups", ">=1.4"]
                    ],
  SuggestedOtherPackages := [],#["viz", ">=0.2"]], #Draw, Splash]
  ExternalConditions := [ ]
