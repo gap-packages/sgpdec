@@ -1,3 +1,5 @@
+0.7.32
+	Patching for missing hash function for boolean lists until Orb has one.
 0.7.31
 	Tests are compatible with GAP4.8/Semigroups 2.7. Small fixes for visualization.
 0.7.30
