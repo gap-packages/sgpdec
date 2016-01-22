@@ -2,7 +2,10 @@
 # SgpDec: Hierarchical Composition and Decomposition of Permutation Groups and Transformation Semigroups
 
 ## What is it good for?
-Understanding the structure of finite computations. In the long run, it is meant to be game changing in artificial intelligence, systems biology, physics, or in any field where models with discrete states make sense.
+Decomposing transformation semigroups and permutation groups into cascade (sub-wreath) products of simpler components.
+In other words, understanding the structure of finite computations.
+
+In the long run, it is meant to be game changing in artificial intelligence, systems biology, physics, or in any field where models with discrete states make sense.
 
 For a lightweight popular science style reading on computational semigroup theory check the computational semigroup theory blog (https://compsemi.wordpress.com/).
 
