@@ -3,7 +3,7 @@
 ##  <!ENTITY COPYRIGHTYEARS "2008-2016">
 ##  <#/GAPDoc>
 
-SetPackageInfo( rec(
+SetPackageInfo(rec(
 
 PackageName := "SgpDec",
 
@@ -12,10 +12,6 @@ Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 Version := "0.7.32",
 
 Date := "16/01/2016",
-
-ArchiveURL := "http://sgpdec.sf.net",
-
-ArchiveFormats := ".tar.gz",
 
 Persons := [
   rec(
@@ -68,16 +64,18 @@ Persons := [
 
 Status := "dev",
 
-README_URL := "http://sgpdec.sf.net",
-
-PackageInfoURL := "http://sgpdec.sf.net",
+PackageWWWHome := "http://gap-packages.github.io/sgpdec/",
+README_URL     := Concatenation(~.PackageWWWHome, "README"),
+PackageInfoURL := Concatenation(~.PackageWWWHome, "PackageInfo.g"),
+ArchiveURL     := Concatenation("https://github.com/gap-packages/sgpdec/",
+                           "releases/download/v", ~.Version,
+                           "/sgpdec-", ~.Version),
+                   ArchiveFormats := ".tar.gz .tar.bz2",
 
 AbstractHTML := "<span class=\"pkgname\">SgpDec</span> is  a <span class=\
                    \"pkgname\">GAP</span> \
                    package for hierarchical decompositions of finite \
                    permutation groups and transformation semigroups.",
-
-PackageWWWHome := "http://sgpdec.sf.net",
 
 PackageDoc := rec(
   BookName  := "SgpDec",
