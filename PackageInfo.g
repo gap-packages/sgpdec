@@ -102,7 +102,7 @@ AvailabilityTest := ReturnTrue,
 
 Autoload := false,
 
-TestFile := "tst/testinstall.tst",
+TestFile := "tst/test.g",
 
 Keywords := ["Krohn-Rhodes Theory",
              "transformation semigroup",
