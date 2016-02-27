@@ -1,3 +1,5 @@
+0.7.33
+	Update release compatible with GAP 4.8.2. Hash function patch removed.
 0.7.32
 	Patching for missing hash function for boolean lists until Orb has one.
 0.7.31

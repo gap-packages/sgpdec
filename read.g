@@ -1,7 +1,5 @@
 # read Implementation files
 
-ReadPackage("SgpDec","/patch.g");
-
 ReadPackage("SgpDec","/makedoc.g");
 
 ReadPackage("SgpDec","/gap/disjointuniongroups.gi");
