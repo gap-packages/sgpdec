@@ -1,10 +1,8 @@
 <Section Label="install"><Heading>Installing &SgpDec;</Heading>
-Released versions of <Package>SgpDec</Package> can be downloaded from
-<URL Text="HERE">http://sourceforge.net/projects/sgpdec/files/</URL>.
-The most recent (possibly broken) version can be obtained from the project's
- <URL Text="Mercurial Repository">
-   https://bitbucket.org/egri-nagy/sgpdec </URL>
-(see instructions there).
+<Package>SgpDec</Package> is currently hosted on GitHub, as a member project of the gap-packages virtual organization.
+The latest release and the Git repository can be found at
+<URL Text="https://github.com/gap-packages/sgpdec">https://github.com/gap-packages/sgpdec</URL>.
+
 
 Given that you have a working copy of the latest complete &GAP; system on a UNIX
 machine you can install SgpDec with the following commands. <C>GAPROOT</C>
