@@ -51,5 +51,5 @@
 </Body>
 
 <TheIndex/>
-<Bibliography Databases="SGPDEC" />
+<Bibliography Databases="SGPDECbib.xml" />
 </Book>
