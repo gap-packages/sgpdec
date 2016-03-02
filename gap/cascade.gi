@@ -1,12 +1,13 @@
 #############################################################################
-###
-##W  cascade.gi
-##Y  Copyright (C) 2011-12
-#   Attila Egri-Nagy, Chrystopher L. Nehaniv, and James D. Mitchell
-###
-###  Licensing information can be found in the README file of this package.
-###
-##############################################################################
+##
+## cascade.gi           SgpDec package
+##
+## Copyright (C) 2008-2016
+##
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##
+## Cascade transformations and permutations.
+##
 
 ################################################################################
 # CONSTRUCTORS #################################################################
@@ -27,16 +28,16 @@ function(doms, deps)
                            else return x; fi;end);
   fi;
 
-  if ForAll(doms, IsGroup) then 
+  if ForAll(doms, IsGroup) then
     f:=Objectify(PermCascadeType, rec());
-  else 
+  else
     f:=Objectify(TransCascadeType, rec());
   fi;
-  
+
   #maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
   depfuncs:=DependencyFunctions(depdom, deps);
-  
+
   SetDomainOf(f, EnumeratorOfCartesianProduct(compdoms));
   SetComponentDomains(f, compdoms);
   SetDependencyDomainsOf(f, depdom);
@@ -50,7 +51,7 @@ end);
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
   local f;
-  
+
   f:=Objectify(type, rec());
   SetDomainOf(f, dom);
   SetComponentDomains(f, compdoms);
@@ -63,8 +64,8 @@ end);
 #
 
 InstallGlobalFunction(IdentityCascade,
-function(comps) 
-  return Cascade(comps,[]); 
+function(comps)
+  return Cascade(comps,[]);
 end);
 
 #
@@ -73,16 +74,16 @@ InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
   local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
 
-  if not IsDenseList(list) then 
+  if not IsDenseList(list) then
     Error("usage: <doms> should be a dense list of transformation semigroup\n",
     " or permutation groups,");
     return;
   else
     isgroup:=true;
-    for x in list do 
-      if not IsPermGroup(x) then 
+    for x in list do
+      if not IsPermGroup(x) then
         isgroup:=false;
-        if not IsTransformationSemigroup(x) then 
+        if not IsTransformationSemigroup(x) then
           Error("usage: <doms> should be a dense list of transformation",
           " semigroup or permutation groups,");
           return;
@@ -91,12 +92,12 @@ function(list, numofdeps)
     od;
   fi;
 
-  if isgroup then 
+  if isgroup then
     type:=PermCascadeType;
   else
     type:=TransCascadeType;
   fi;
-  
+
   comps:=ComponentDomains(list);
   # create the enumerator for the dependency func
   depdoms:=DependencyDomains(comps);
@@ -154,7 +155,7 @@ InstallOtherMethod(InverseMutable, "for a permutation cascade",
 [IsPermCascade],
 function(pc)
   local dfs, depdoms, vals, x, depfuncs, i, j;
-  
+
   dfs:=DependencyFunctionsOf(pc);
   depdoms:=DependencyDomainsOf(pc); #TODO get rid of this
   #empty values lookup table based on the sizes of depdoms
@@ -380,7 +381,7 @@ InstallMethod(ViewObj, "for a cascade",
 function(f)
   local str, x;
 
-  if IsTransCascade(f) then 
+  if IsTransCascade(f) then
     str:="<trans ";
   else
     str:="<perm ";
@@ -414,7 +415,7 @@ end);
 
 InstallMethod(PrintObj, "for a cascade",
 [IsCascade],
-function(c)   
+function(c)
   Print("Cascade( ");
   Print(ComponentDomains(c));
   Print(", ");
@@ -504,7 +505,7 @@ function(arg)
   recdraw([],"n",false);
   #finally printing the top label if needed
   if IsBound(arg[2]) then
-    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"];\n");
+    PrintTo(out,"orig [shape=record,label=\"",arg[2],"\",color=\"black\"];\n");
     PrintTo(out,"orig--n [style=invis];\n");
   fi;
   AppendTo(out,"}\n");
@@ -552,7 +553,7 @@ function(arg)
   recdraw([],"n");
   #finally printing the top label if needed
   if IsBound(arg[2]) then
-    PrintTo(out,"orig [shape=record,label=\"", arg[2] ,"\",color=\"black\"];\n");
+    PrintTo(out,"orig [shape=record,label=\"",arg[2],"\",color=\"black\"];\n");
     PrintTo(out,"orig--n [style=invis];\n");
   fi;
   AppendTo(out,"}\n");

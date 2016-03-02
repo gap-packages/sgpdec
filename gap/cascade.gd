@@ -2,11 +2,11 @@
 ##
 ## cascade.gd           SgpDec package
 ##
-## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+## Copyright (C) 2008-2016
 ##
-## 2008-2012
+## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## Cascade permutations and transformations.
+## Cascade transformations and permutations.
 ##
 
 DeclareCategory("IsCascade", IsMultiplicativeElementWithOne
