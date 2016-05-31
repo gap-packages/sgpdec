@@ -10,16 +10,14 @@
   <note><URL Text="arxiv.org/abs/1303.0091" >http://arxiv.org/abs/1303.0091</URL></note>
   <year>2013</year>
 </unpublished></entry>
-<entry id="KrasnerKaloujnine"><article>
+<entry id="holonomy_arxiv"><unpublished>
   <author>
-    <name><first>Marc</first><last>Krasner</last></name>
-    <name><first>Leo</first><last>Kaloujnine</last></name>
+    <name><first>Attila</first><last>Egri-Nagy</last></name>
+    <name><first>Chrystopher L.</first><last>Nehaniv</last></name>
   </author>
-  <title>Produit complet des groupes de permutations et probleme d' extension
-      de groupes</title>
-  <journal>Acta Scientiarium Mathematicarum (Szeged)</journal>
-  <year>1951</year>
-  <volume>14</volume>
-  <pages>39-66</pages>
-</article></entry>
+  <title>Computational Holonomy Decomposition of Transformation Semigroups</title>
+  <note><URL Text="arxiv.org/abs/1508.06345" >http://arxiv.org/abs/1508.06345</URL></note>
+  <year>2013</year>
+</unpublished></entry>
+
 </file>
