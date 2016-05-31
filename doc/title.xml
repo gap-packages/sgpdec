@@ -11,7 +11,7 @@ transformation semigroups.
 </TitleComment>
 
 <Abstract>
-This  &GAP; <Package>4.7</Package> package contains computational implementations
+This  &GAP; <Package>4.8</Package> package contains computational implementations
 of coordinatizations, i.e. hierarchical decompositions of transformation
 semigroups (Krohn-Rhodes theory) and permutation groups. Cascade products
 (substructures of the wreath product) can be constructed by explicitly giving

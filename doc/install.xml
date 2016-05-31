@@ -33,7 +33,7 @@ This also loads the packages that <Package>SgpDec</Package> depends on.
  <HorLine/>
  <HorLine/>
   <Row>
-   <Item> <URL Text="Semigroups">http://www-groups.mcs.st-and.ac.uk/~jamesm/semigroups
+   <Item> <URL Text="Semigroups">https://gap-packages.github.io/Semigroups/
    </URL></Item>
    <Item>Calculating with transformation semigroups</Item>
   </Row>
