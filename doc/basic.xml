@@ -62,7 +62,7 @@ Level 2: 3 -> FF
 Level 3: 3 x 2 -> C3
 [2,1] -> (1,3,2)
 </Log>
-Component actions are displayed in the usual cyclic notation for permutations and in linear notation  ( <Cite Key="ClassicalTransSemigroups2009"/> 
+Component actions are displayed in the usual cyclic notation for permutations and in linear notation  ( <Cite Key="compactnotation_arxiv"/> 
 ) for transformations. 
 <P/>
 To see that it is a real operation, we can apply to some coordinatized state (tuple of states of the levels):
@@ -107,7 +107,7 @@ Level 3: 2 x 3 -> G4
 [1,3] -> (1,3)(2,4)
 [2,3] -> (1,3)(2,4)
 </Log>
-Transformation semigroups can be decomposed similarly by the holonomy method  <Cite Key="zeiger67a"/> <Cite Key="zeiger67b"/><Cite Key="eilenberg"/> <Cite Key="holcombe_textbook"/>  <Cite Key="automatanetworks2005"/>.
+Transformation semigroups can be decomposed similarly by the holonomy method  <Cite Key="holonomy_arxiv"/>.
 <Log>
 gap> gens :=[ Transformation( [ 3, 2, 4, 6, 1, 6, 5 ] ),
               Transformation( [ 5, 2, 7, 5, 3, 5, 3 ] ), 

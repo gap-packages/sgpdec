@@ -31,6 +31,11 @@
 <#Include SYSTEM="install.xml">
 </Chapter>
 
+<Chapter><Heading>Basic usage examples</Heading>
+<#Include SYSTEM="basic.xml">
+</Chapter>
+
+
 <Chapter><Heading>Coordinates and Dependency Functions</Heading>
 <#Include SYSTEM="depfunc.xml">
 </Chapter>
