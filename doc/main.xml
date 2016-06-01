@@ -31,7 +31,7 @@
 <#Include SYSTEM="install.xml">
 </Chapter>
 
-<Chapter><Heading>Basic usage examples</Heading>
+<Chapter Label="ch:basic"><Heading>Basic usage examples</Heading>
 <#Include SYSTEM="basic.xml">
 </Chapter>
 

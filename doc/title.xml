@@ -1,7 +1,7 @@
 <TitlePage>
 <Title>&SgpDec;</Title>
 <Version>Version &VERSION;</Version>
-<Author>Attila Egri-Nagy <Email>A.Egri-Nagy@herts.ac.uk</Email></Author>
+<Author>Attila Egri-Nagy <Email>egri-nagy@aiu.ac.jp</Email></Author>
 <Author>Chrystopher L. Nehaniv<Email>C.L.Nehaniv@herts.ac.uk</Email></Author>
 <Author>James Mitchell<Email>jdm3@st-and.ac.uk</Email></Author>
 
@@ -11,13 +11,21 @@ transformation semigroups.
 </TitleComment>
 
 <Abstract>
-This  &GAP; <Package>4.8</Package> package contains computational implementations
-of coordinatizations, i.e. hierarchical decompositions of transformation
+This  &GAP; <Package>4.8</Package> package contains implementations
+of hierarchical decompositions of transformation
 semigroups (Krohn-Rhodes theory) and permutation groups. Cascade products
 (substructures of the wreath product) can be constructed by explicitly giving
 the dependency functions between the components or can be obtained by the
 decomposition algorithms (holonomy for semigroups and Lagrange-Frobenius
 decomposition for groups).
+
+<P/>
+To get a quick impression about what <Package>SgpDec</Package> is capable of, reading <Ref Chap="ch:basic" Style="Text"/> 
+
+<P/>
+
+This documentation does not contain rigorous definitions of the used mathematical concepts, however the references point to easily accessible preprints that describe the constructions in detail. Those papers also provide an extensive list of related monographs and research papers.
+
 </Abstract>
 
 <Copyright>&copyright; &COPYRIGHTYEARS; Attila Egri-Nagy, Chrystopher L. Nehaniv, James Mitchell.<P/>
