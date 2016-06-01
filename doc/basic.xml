@@ -12,6 +12,7 @@ Basically, there are two different ways of using the <Package>SgpDec</Package> p
 
 <Section Label="basic"><Heading>Compositions</Heading>
 
+A commonly used method for defining semigroups and groups is to give a generator set.
 We build composite semigroups  by giving a set of generators. 
 
 
