@@ -44,11 +44,11 @@
 <#Include SYSTEM="cascade.xml">
 </Chapter>
 
-<Chapter><Heading>Frobenius-Lagrange Decomposition</Heading>
+<Chapter Label="ch:fl"><Heading>Frobenius-Lagrange Decomposition</Heading>
 <#Include SYSTEM="fl.xml">
 </Chapter>
 
-<Chapter><Heading>Holonomy Decomposition</Heading>
+<Chapter Label="ch:holonomy"><Heading>Holonomy Decomposition</Heading>
 <#Include SYSTEM="holonomy.xml">
 </Chapter>
 

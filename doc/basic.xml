@@ -5,28 +5,26 @@
  that we can explicitly represent and therefore we can examine directly the
  elements of the wreath product with their full structure, i.e. dependency
  functions from the state sets of components of the levels above in the
- hierarchy. 
+ hierarchy (see <Cite Key="cascprod_arxiv"/>). 
 
 <P/>
-Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a complex structure or a set of simple(r) building blocks, we can do decomposition or composition.
+Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a set of building blocks a complex structure, we can do composition and decomposition.
 
-<Section Label="basic"><Heading>Compositions</Heading>
+<Section><Heading>Compositions</Heading>
 
 A commonly used method for defining semigroups and groups is to give a generator set.
-We build composite semigroups  by giving a set of generators. 
-
-
-Typical question is <E>'What can be built from a given set of simple(r) components?'</E>.
+We build composite semigroups  by giving a set of generators.  So, what are these generators?
+Given a list of components (or at least a list of the number of states at each level starting from the top ),  the generators are elements of the wreath product of these components. We call these <E>cascades</E>
 
 
 
 </Section>
 
-<Section Label="basic"><Heading>Decompositions</Heading>
+<Section><Heading>Decompositions</Heading>
 
-<B>Decomposition</B>: finding components and the hierarchical connections between the components for  a nonsimple semigroup/group, establishing homo/isomorphims between the original structure and the cascaded product. See Chapter <Ref Chap="HierarchicalDecompositions" Style="Text"/>. 
+<B>Decomposition</B>: finding components and the hierarchical connections between the components for  a nonsimple semigroup/group, establishing homo/isomorphims between the original structure and the cascaded product.  
 <Br/>
-A typical scenario is that for a given composite semigroup or group we choose a decomposition algorithm which returns a cascaded product. For permutation groups the Lagrange coordinatization  (see Section <Ref Sect="sec:lagrange decomposition" Style="Number"/>)is used. For transformation semigroups the holonomy method will be  used (see Section <Ref Sect="sec:holonomy decomposition" Style="Number"/>).
+A typical scenario is that for a given composite semigroup or group we choose a decomposition algorithm which returns a cascaded product. For permutation groups the Lagrange coordinatization  (see Chapter <Ref Sect="ch:fl" Style="Text"/>) is used. For transformation semigroups the holonomy method will be  used (see Chapter <Ref Sect="ch:holonomy" Style="Text"/>).
 
 Transformation semigroups can be decomposed similarly by the holonomy method  <Cite Key="holonomy_arxiv"/>.
 
