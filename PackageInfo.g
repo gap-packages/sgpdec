@@ -71,7 +71,11 @@ ArchiveURL     := Concatenation("https://github.com/gap-packages/sgpdec/",
                            "releases/download/v", ~.Version,
                            "/sgpdec-", ~.Version),
                    ArchiveFormats := ".tar.gz .tar.bz2",
-
+SourceRepository := rec( 
+  Type := "git", 
+  URL := "https://github.com/gap-packages/sgpdec"
+),
+IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
 AbstractHTML := "<span class=\"pkgname\">SgpDec</span> is  a <span class=\
                    \"pkgname\">GAP</span> \
                    package for hierarchical decompositions of finite \
