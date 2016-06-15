@@ -27,4 +27,4 @@ Attila Egri-Nagy www.egri-nagy.hu @EgriNagy
 
 James D. Mitchell http://www-groups.mcs.st-andrews.ac.uk/~jamesm/ @jdmjdmjdmjdm 
 
-Chrystopher L. Nehaniv http://homepages.herts.ac.uk/~comqcln/
+Chrystopher L. Nehaniv http://homepages.herts.ac.uk/~nehaniv/  @NehanivCL
