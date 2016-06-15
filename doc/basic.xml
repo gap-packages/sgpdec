@@ -14,7 +14,7 @@ Basically, there are two different ways of using the <Package>SgpDec</Package> p
 
 A commonly used method for defining semigroups and groups is to give a generator set.
 We build composite semigroups  by giving a set of generators.  So, what are these generators?
-Given a list of components (or at least a list of the number of states at each level starting from the top ),  the generators are elements of the wreath product of these components. We call these <E>cascades</E>
+Given a list of components (or at least a list of the number of states at each level starting from the top ),  the generators are elements of the wreath product of these components. We call these <E>cascades</E>, they are tuples of dependency functions (see Chapter <Ref Sect="ch:depfunc" Style="Text"/> and <Ref Sect="ch:cascade" Style="Text"/>)
 
 <Example><![CDATA[
 gap> c := Cascade([2,2], [ [[],(1,2)], [[2], (1,2)]  ]);  
