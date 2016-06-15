@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE file SYSTEM "bibxmlext.dtd">
 <file>
+  <entry id="rsta"><article>
+  <author>
+    <name><first>Chrystopher L.</first><last>Nehaniv</last></name>
+    <name><first>John</first><last>Rhodes</last></name>
+    <name><first>Attila</first><last>Egri-Nagy</last></name>
+    <name><first>Paolo</first><last>Dini</last></name>
+    <name><first>Eric Rothstein</first><last>Morris</last></name>
+    <name><first>Gábor</first><last>Horváth</last></name>
+    <name><first>Fariba</first><last>Karimi</last></name>
+    <name><first>Daniel</first><last>Schreckling</last></name>
+    <name><first>Maria J.</first><last>Schilstra</last></name>
+  </author>  
+  <title>Symmetry structure in discrete models of biochemical systems: natural
+      subsystems and the weak control hierarchy in a new model of computation
+      driven by interactions</title>
+  <journal>Philosophical Transactions of the Royal Society of London A:
+      Mathematical, Physical and Engineering Sciences</journal>
+  <year>2015</year>
+  <volume>373</volume>
+  <number>2046</number>
+  <note><URL>http://rsta.royalsocietypublishing.org/content/373/2046/20140223</URL></note>
+</article></entry>
+
+<entry id="sgpdec"><article>
+  <author>
+    <name><first>Attila</first><last>Egri-Nagy</last></name>
+        <name><first>James D.</first><last>Mitchell</last></name>
+    <name><first>Chrystopher L.</first><last>Nehaniv</last></name>
+  </author>
+  <title>Cascade Product of Permutation Groups</title>
+  <journal>Lecture Notes in Computer Science</journal>
+  <volume>8592</volume>
+  <pages>75-82</pages>
+  <note><URL Text="published version" >http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13</URL>, final draft
+  <URL Text="arxiv.org/abs/1303.0091" >http://arxiv.org/abs/1303.0091</URL></note>
+  <year>2013</year>
+</article></entry>
 <entry id="cascprod_arxiv"><unpublished>
   <author>
     <name><first>Attila</first><last>Egri-Nagy</last></name>

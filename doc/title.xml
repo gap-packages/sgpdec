@@ -21,10 +21,12 @@ decomposition for groups).
 
 <P/>
 To get a quick impression about what <Package>SgpDec</Package> is capable of, reading <Ref Chap="ch:basic" Style="Text"/> 
-
+or the paper <Cite Key="sgpdec"/> could be useful.
+To  see <Package>SgpDec</Package> in action, please check <Cite Key="rsta"/>.
 <P/>
 
 This documentation does not contain rigorous definitions of the used mathematical concepts, however the references point to easily accessible preprints that describe the constructions in detail. Those papers also provide an extensive list of related monographs and research papers.
+
 
 </Abstract>
 
