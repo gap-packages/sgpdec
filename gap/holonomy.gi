@@ -426,7 +426,13 @@ end;
 TestHolonomyRelationalMorphism := function(S)
   local sk;
   sk := Skeleton(S);
-  return ForAll(Tuples(AsList(S),2),
-                x -> x[1]*x[2] = AsHolonomyTransformation(
-                        AsHolonomyCascade(x[1],sk) * AsHolonomyCascade(x[2],sk),sk));
+  return ForAll(S,
+               function(x)
+                 local xcs;
+                 xcs := AsHolonomyCascade(x,sk);
+                 Print("#\c");
+                 return ForAll(S, y -> x*y = AsHolonomyTransformation(
+                                               xcs * AsHolonomyCascade(y,sk),
+                                               sk));
+               end);
 end;
