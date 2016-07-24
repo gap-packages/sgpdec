@@ -5,28 +5,28 @@
  that we can explicitly represent and therefore we can examine directly the
  elements of the wreath product with their full structure, i.e. dependency
  functions from the state sets of components of the levels above in the
- hierarchy (see <Cite Key="cascprod_arxiv"/>). 
+ hierarchy (see <Cite Key="cascprod_arxiv"/>).
 
 <P/>
-Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a set of building blocks a complex structure, we can do composition and decomposition.
+Basically, there are two different ways of using the <Package>SgpDec</Package> package. Depending on whether the starting point is a set of simple building blocks or a complex structure, we can do composition and decomposition.
 
 <Section><Heading>Compositions</Heading>
 
 A commonly used method for defining semigroups and groups is to give a generator set.
-We build composite semigroups  by giving a set of generators.  So, what are these generators?
+Similarly, we build composite cascade semigroups by giving a set of generators.  So, what are these generators?
 Given a list of components (or at least a list of the number of states at each level starting from the top ),  the generators are elements of the wreath product of these components. We call these <E>cascades</E>, they are tuples of dependency functions (see Chapter <Ref Sect="ch:depfunc" Style="Text"/> and <Ref Sect="ch:cascade" Style="Text"/>).
 
 Here we build a module 4 counter using two modulo 2 counters (cyclic groups of order 4 and 2). This is the motivating example of <Cite Key="cascprod_arxiv"/>).
 
 <Example><![CDATA[
-gap> c := Cascade([2,2], [ [[],(1,2)], [[2], (1,2)]  ]);  
+gap> c := Cascade([2,2], [ [[],(1,2)], [[2], (1,2)]  ]);
 <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>
-gap> mod4counter := SemigroupByGenerators([c]);         
+gap> mod4counter := SemigroupByGenerators([c]);
 <cascade semigroup with 1 generator, 2 levels with (2, 2) pts>
-gap> AsList(mod4counter);                               
-[ <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>, 
-  <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>, 
-  <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>, 
+gap> AsList(mod4counter);
+[ <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>,
+  <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>,
+  <trans cascade with 2 levels with (2, 2) pts, 2 dependencies>,
   <trans cascade with 2 levels with (2, 2) pts, 0 dependencies> ]
 gap> StructureDescription(Range(IsomorphismPermGroup(mod4counter)));
 "C4"
@@ -38,20 +38,20 @@ This particular case is special, since it is a group, so we can `flatten' the hi
 For constructing the wreath product of some components we have a dedicated function.
 
 <Example><![CDATA[
-gap> Z2 := SymmetricGroup(IsPermGroup,2);                    
+gap> Z2 := SymmetricGroup(IsPermGroup,2);
 Sym( [ 1 .. 2 ] )
-gap> W := FullCascadeGroup([Z2,Z2]);                         
+gap> W := FullCascadeGroup([Z2,Z2]);
 <wreath product of perm groups>
-gap> StructureDescription(Range(IsomorphismPermGroup(W))); 
+gap> StructureDescription(Range(IsomorphismPermGroup(W)));
 "D8"
 ]]></Example>
 
 This construction is defined for more than two components (iterated wreath product).
 
 <Example><![CDATA[
-gap> Z2 := SymmetricGroup(IsPermGroup,2);                    
+gap> Z2 := SymmetricGroup(IsPermGroup,2);
 Sym( [ 1 .. 2 ] )
-gap> W := FullCascadeGroup([Z2,Z2,Z2]);  
+gap> W := FullCascadeGroup([Z2,Z2,Z2]);
 <wreath product of perm groups>
 gap> StructureDescription(Range(IsomorphismPermGroup(W)));
 "(D8 x D8) : C2"
@@ -74,7 +74,7 @@ gap> Size(W);
 
 <Section><Heading>Decompositions</Heading>
 
-A typical scenario is that for a given composite semigroup or group we choose a decomposition algorithm which returns a cascade product. For permutation groups the Frobenius-Lagrange coordinatization  (see Chapter <Ref Sect="ch:fl" Style="Text"/>),  
+A typical scenario is that for a given composite semigroup or group we choose a decomposition algorithm which returns a cascade product. For permutation groups the Frobenius-Lagrange coordinatization  (see Chapter <Ref Sect="ch:fl" Style="Text"/>),
 
 <Example><![CDATA[
 gap> S4 := SymmetricGroup(IsPermGroup,4);
@@ -82,7 +82,7 @@ Sym( [ 1 .. 4 ] )
 gap> G := FLCascadeGroup(S4);
 <cascade group with 2 generators, 3 levels with (2, 3, 4) pts>
 gap> Generators(G);
-[ <perm cascade with 3 levels with (2, 3, 4) pts, 9 dependencies>, 
+[ <perm cascade with 3 levels with (2, 3, 4) pts, 9 dependencies>,
   <perm cascade with 3 levels with (2, 3, 4) pts, 7 dependencies> ]
 gap> Display(last[2]);
 Dependency function of depth 1 with 1 dependencies.
@@ -95,21 +95,21 @@ Dependency function of depth 3 with 6 dependencies.
 [ 2, 1 ] -> (1,4)(2,3)
 [ 2, 2 ] -> (1,3)(2,4)
 [ 2, 3 ] -> (1,2)(3,4)
-gap> List(ComponentsOfCascadeProduct(G), StructureDescription);    
+gap> List(ComponentsOfCascadeProduct(G), StructureDescription);
 [ "C2", "C3", "C2 x C2" ]
 ]]></Example>
 
 for transformation semigroups the holonomy method can be  used (see Chapter <Ref Sect="ch:holonomy" Style="Text"/>).
 <Example><![CDATA[
-gap> T5 := FullTransformationSemigroup(5);    
+gap> T5 := FullTransformationSemigroup(5);
 <full transformation monoid of degree 5>
-gap> S := HolonomyCascadeSemigroup(T5);       
+gap> S := HolonomyCascadeSemigroup(T5);
 <cascade semigroup with 4 generators, 4 levels with (6, 5, 4, 3) pts>
 gap> DisplayHolonomyComponents(SkeletonOf(S));
-1: (5,S5) 
-2: (4,S4) 
-3: (3,S3) 
-4: (2,C2) 
+1: (5,S5)
+2: (4,S4)
+3: (3,S3)
+4: (2,C2)
 ]]></Example>
 
 
