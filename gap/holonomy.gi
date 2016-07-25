@@ -401,19 +401,6 @@ function(HCS)
   return str;
 end);
 
-# straightforward implementation for multiplication for sets TODO what is this?
-InstallGlobalFunction(SetwiseProduct,
-function(S,T)
-  local ST,s,t;
-  ST := [];
-  for s in S do
-    for t in T do
-      AddSet(ST,s*t);
-    od;
-  od;
-  return ST;
-end);
-
 ################################################################################
 # test functions
 TestHolonomyEmulation := function(S)
@@ -434,5 +421,19 @@ TestHolonomyRelationalMorphism := function(S)
                  return ForAll(S, y -> x*y = AsHolonomyTransformation(
                                                xcs * AsHolonomyCascade(y,sk),
                                                sk));
+               end);
+end;
+
+TestHolonomyAction := function(S)
+  local sk;
+  sk := Skeleton(S);
+  return ForAll(S,
+               function(x)
+                 local xcs;
+                 xcs := AsHolonomyCascade(x,sk);
+                 Print("#\c");
+                 return ForAll(S, y -> x*y = AsHolonomyTransformation(
+                                                                       xcs * AsHolonomyCascade(y,sk),
+                                                                       sk));
                end);
 end;

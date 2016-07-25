@@ -24,7 +24,6 @@ DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("OldHolonomyComponentActions");
 DeclareGlobalFunction("HolonomyCascadeSemigroup");
 DeclareGlobalFunction("HolonomyRelationalMorphism");
-DeclareGlobalFunction("SetwiseProduct");
 #TODO, put these back as synonyms
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
