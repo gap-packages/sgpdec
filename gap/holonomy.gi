@@ -135,13 +135,14 @@ function(cs,sk)
   return ChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
 end;
 
+# all encoded holonomy coordinate tuples of a state k
 AllHolonomyCoords := function(k,sk)
   return List(ChainsBetween(sk,BaseSet(sk),FiniteSet([k],DegreeOfSkeleton(sk))),
               x -> HolonomySets2Ints(sk, EncodeChain(sk,x)));
 end;
 
-AsHolonomyCoords :=
-function(k,sk)
+# just a random holonomy coordinate tuple for a state k
+AsHolonomyCoords := function(k,sk)
   return HolonomySets2Ints(sk,
                  EncodeChain(sk,
                          RandomChain(sk,k)));
