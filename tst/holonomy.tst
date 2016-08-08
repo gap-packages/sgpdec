@@ -22,7 +22,7 @@ gap> S := Semigroup([
 > Transformation([4,4,4,1,2,3]),
 > Transformation([2,3,1,4,4,4])]);;
 > sk := Skeleton(S);;
-gap> ForAll([1..6], x -> x=AsHolonomyPoint(AsHolonomyCoords(x,sk),sk));
+gap> ForAll([1..6], x -> x=AsPoint(AsHolonomyCoords(x,sk),sk));
 true
 gap> hcs := HolonomyCascadeSemigroup(S);
 <cascade semigroup with 6 generators, 5 levels with (3, 5, 6, 6, 3) pts>

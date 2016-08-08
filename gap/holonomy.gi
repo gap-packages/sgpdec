@@ -129,11 +129,11 @@ InstallGlobalFunction(Interpret,
   return CoordVals(sk)[level][state];
 end);
 
-# TODO implementing as AsPoint?
-AsHolonomyPoint :=
+InstallOtherMethod(AsPoint, "for a coordinate tuple and a skeleton",
+                   [IsList, IsSkeleton],
 function(cs,sk)
   return ChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
-end;
+end);
 
 # all encoded holonomy coordinate tuples of a state k
 AllHolonomyCoords := function(k,sk)
@@ -320,7 +320,7 @@ local l, i;
   l := [];
   for i in ListBlist([1..DegreeOfSkeleton(sk)],
           BaseSet(sk)) do
-    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
+    l[i]:=AsPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
   od;
   return Transformation(l);
 end);
@@ -441,7 +441,7 @@ TestHolonomyAction := function(S)
     for p in [1..DegreeOfSkeleton(sk)] do
       p_ := p^s;
       if not ForAll(hcoords[p],
-                    x -> p_ = AsHolonomyPoint(OnHolonomyCoordinates(x,xcs),sk))
+                    x -> p_ = AsPoint(OnHolonomyCoordinates(x,xcs),sk))
       then
         Error(s);
       fi;
