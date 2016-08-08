@@ -430,16 +430,23 @@ TestHolonomyRelationalMorphism := function(S)
                end);
 end;
 
+# checking the action on all holonomy  coordinate tuples
+# TODO - all lift cascades of semigorup elements
 TestHolonomyAction := function(S)
-  local sk;
+  local sk, hcoords, p, s, xcs, p_;
   sk := Skeleton(S);
-  return ForAll(S,
-               function(x)
-                 local xcs;
-                 xcs := AsHolonomyCascade(x,sk);
-                 Print("#\c");
-                 return ForAll(S, y -> x*y = AsHolonomyTransformation(
-                                                                       xcs * AsHolonomyCascade(y,sk),
-                                                                       sk));
-               end);
+  hcoords := List([1..DegreeOfSkeleton(sk)], x->AllHolonomyCoords(x,sk));
+  for s in S do
+    xcs := AsHolonomyCascade(s,sk);
+    for p in [1..DegreeOfSkeleton(sk)] do
+      p_ := p^s;
+      if not ForAll(hcoords[p],
+                    x -> p_ = AsHolonomyPoint(OnHolonomyCoordinates(x,xcs),sk))
+      then
+        Error(s);
+      fi;
+    od; #p
+    Print("#\c");
+  od; #s
+  return true;
 end;
