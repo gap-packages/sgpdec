@@ -2,21 +2,21 @@
 
 ReadPackage("SgpDec","/makedoc.g");
 
-ReadPackage("SgpDec","/gap/disjointuniongroups.gi");
-ReadPackage("SgpDec","/gap/subgroupchains.gi");
-ReadPackage("SgpDec","/gap/finiteset.gi");
-ReadPackage("SgpDec","/gap/util.gi");
-ReadPackage("SgpDec","/gap/linearnotation.gi");
-ReadPackage("SgpDec","/gap/words.gi");
-ReadPackage("SgpDec","/gap/skeleton.gi");
-ReadPackage("SgpDec","/gap/skeletongroups.gi");
-ReadPackage("SgpDec","/gap/skeletonviz.gi");
-ReadPackage("SgpDec","/gap/depfunc.gi");
-ReadPackage("SgpDec","/gap/cascade.gi");
-ReadPackage("SgpDec","/gap/coords.gi");
-ReadPackage("SgpDec","/gap/cascadesemigroup.gi");
-ReadPackage("SgpDec","/gap/cascadegroup.gi");
-ReadPackage("SgpDec","/gap/fl.gi");
-ReadPackage("SgpDec","/gap/holonomy.gi");
+ReadPackage("SgpDec","/lib/disjointuniongroups.gi");
+ReadPackage("SgpDec","/lib/subgroupchains.gi");
+ReadPackage("SgpDec","/lib/finiteset.gi");
+ReadPackage("SgpDec","/lib/util.gi");
+ReadPackage("SgpDec","/lib/linearnotation.gi");
+ReadPackage("SgpDec","/lib/words.gi");
+ReadPackage("SgpDec","/lib/skeleton.gi");
+ReadPackage("SgpDec","/lib/skeletongroups.gi");
+ReadPackage("SgpDec","/lib/skeletonviz.gi");
+ReadPackage("SgpDec","/lib/depfunc.gi");
+ReadPackage("SgpDec","/lib/cascade.gi");
+ReadPackage("SgpDec","/lib/coords.gi");
+ReadPackage("SgpDec","/lib/cascadesemigroup.gi");
+ReadPackage("SgpDec","/lib/cascadegroup.gi");
+ReadPackage("SgpDec","/lib/fl.gi");
+ReadPackage("SgpDec","/lib/holonomy.gi");
 #just the test calling functions
 ReadPackage("SgpDec","/tst/testfunctions.g");
