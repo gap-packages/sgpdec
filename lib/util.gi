@@ -2,15 +2,15 @@
 ##
 ##  util.gi  SgpDec package
 ##
-##  (C)  2011-2012 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##  (C) 2011-2017 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-##  Some utility methods.
+##  Some utility methods for printing information in logs.
 ##
 
 ################################################################################
-### FormattedFloat ###########################################################
+### Float ###########################################################
 #when printing Floats the precision causes lots of trouble
-InstallGlobalFunction(FormattedFloat,
+InstallGlobalFunction(FloatString,
 function(f)
 local i,d,s;
   i := Int(f * 100);
@@ -23,9 +23,9 @@ end);
 ################################################################################
 ### PERCENTAGESTRING ###########################################################
 
-InstallGlobalFunction(FormattedPercentageString,
+InstallGlobalFunction(PercentageString,
 function(n,N)
-  return Concatenation(FormattedFloat((Float(n)/Float(N)) * 100),"%");
+  return Concatenation(FloatString((Float(n)/Float(N)) * 100),"%");
 end);
 
 ################################################################################
@@ -36,7 +36,7 @@ MakeReadOnlyGlobal("SGPDEC_util_timeunits");
 SGPDEC_util_durations := [24*60*60*1000, 60*60*1000, 60*1000, 1000, 1];
 MakeReadOnlyGlobal("SGPDEC_util_durations");
 
-InstallGlobalFunction(FormattedTimeString,
+InstallGlobalFunction(TimeString,
 function(t)
 local vals,k,s;
   if t = 0 then return "-";fi; #not measurable
@@ -59,23 +59,23 @@ end);
 ### MEMORYSTRING ###############################################################
 
 #returns the readable string representation of the number of bytes
-InstallGlobalFunction(FormattedMemoryString,
+InstallGlobalFunction(MemoryString,
 function(numofbytes)
   if numofbytes < 1024 then
     return Concatenation(String(numofbytes),"B");
   elif numofbytes >= 1024 and numofbytes < 1024^2 then
-    return Concatenation(FormattedFloat(Float(numofbytes/1024)),"KB");
+    return Concatenation(FloatString(Float(numofbytes/1024)),"KB");
   elif numofbytes >= 1024^2 and numofbytes < 1024^3 then
-    return Concatenation(FormattedFloat(Float(numofbytes/(1024^2))),"MB");
+    return Concatenation(FloatString(Float(numofbytes/(1024^2))),"MB");
   elif numofbytes >= 1024^3 and numofbytes < 1024^4 then
-    return Concatenation(FormattedFloat(Float(numofbytes/(1024^3))),"GB");
+    return Concatenation(FloatString(Float(numofbytes/(1024^3))),"GB");
   fi;
 end);
 
 # more readable format for big numbers
 # when bigger then a thousand only thousands are displayed
 # beyond 1000 septillions it gives up pretty printing
-InstallGlobalFunction(FormattedBigNumberString,
+InstallGlobalFunction(BigNumberString,
 function(num)
   local str,codes,i,n;  
   str := "";

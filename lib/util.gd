@@ -2,13 +2,13 @@
 ##
 ##  util.gi  SgpDec package
 ##
-##  (C)  2011-2012 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
+##  (C) 2011-2017 Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-##  Some utility methods.
+##  Some utility methods for printing information in logs.
 ##
 
-DeclareGlobalFunction("FormattedFloat");
-DeclareGlobalFunction("FormattedPercentageString");
-DeclareGlobalFunction("FormattedMemoryString");
-DeclareGlobalFunction("FormattedBigNumberString");
-DeclareGlobalFunction("FormattedTimeString");
+DeclareGlobalFunction("FloatString");
+DeclareGlobalFunction("PercentageString");
+DeclareGlobalFunction("MemoryString");
+DeclareGlobalFunction("BigNumberString");
+DeclareGlobalFunction("TimeString");
