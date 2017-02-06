@@ -29,7 +29,7 @@ InstallMethod(ToRepWords, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk) return []; end);
 
 
-#returns a word  that takes the representative to the set A 
+#returns a word  that takes the representative to the set A
 InstallGlobalFunction(FromRepw,
 function(sk, A)
 local pos, scc,o;
@@ -84,7 +84,7 @@ local pos, scc, n, outw, fg, inw, out,l,o;
     Add(l, outw);
     fg := Flat([inw,outw]);
     Add(l, ListWithIdenticalEntries(n,fg));
-    ToRepWords(sk)[pos] := Flat(l);  
+    ToRepWords(sk)[pos] := Flat(l);
     if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
       ToRepWords(sk)[pos] := Reduce2StraightWord(ToRepWords(sk)[pos],
                                      Generators(sk),
@@ -291,7 +291,7 @@ local grpcomps;
   return List([1..Length(grpcomps)],
               x -> PermutationResetSemigroup(
                       DisjointUnionPermGroup(grpcomps[x],Shifts(sk)[x]),
-                      Size(CoordVals(sk)[x])+1));
+                      Size(CoordVals(sk)[x])+1)); # +1 is for the star state
 end);
 
 ################################################################################
@@ -328,3 +328,25 @@ function(skeleton)
     Print("\n");
   od;
 end);
+
+# #levels |image set| #coordinate_tuples #structure
+HolonomyInfoString := function(skeleton)
+  local reps, l, n ,s, sizes, numofstates, structure;
+  reps := RepresentativeSets(skeleton);
+  sizes := List([1..Size(reps)-1],
+                d -> List(reps[d],
+                          r -> (Size(TilesOf(skeleton, r)))));
+  numofstates := Product(List(sizes,Sum));
+  sizes := List([1..Size(reps)-1],
+                d -> List(reps[d],
+                          r -> Concatenation(String(Size(TilesOf(skeleton, r))),
+                                             ","
+                                            ,StructureDescription(HolonomyGroup@SgpDec(skeleton,r):short))));
+  s :=  JoinStringsWithSeparator(List(sizes,
+                                      x->JoinStringsWithSeparator(x,"|")),
+                                 "||");
+  return JoinStringsWithSeparator([DepthOfSkeleton(skeleton),
+                                   Size(ForwardOrbit(skeleton)),
+                                   numofstates,
+                                   s]," ");
+end;
