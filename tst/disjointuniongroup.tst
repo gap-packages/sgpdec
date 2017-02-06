@@ -18,8 +18,8 @@ gap> dug := DisjointUnionPermGroup(l,shifts);
 gap> Size(dug)=Factorial(5)^15;
 true
 
-# testing isomorphism with nonspecified shifts
-gap> dug2 := DisjointUnionPermGroup(l);
+# testing isomorphism with default shifts
+gap> dug2 := DisjointUnionPermGroup(l, ShiftVector(l));
 <permutation group with 30 generators>
 gap> Size(dug) = Size(dug2);
 true

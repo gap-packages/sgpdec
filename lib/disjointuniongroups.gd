@@ -2,7 +2,7 @@
 ##
 ## disjointunion.gd           SgpDec package
 ##
-## Copyright (C) 2008-2015
+## Copyright (C) 2008-2017
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -10,4 +10,5 @@
 ##
 
 DeclareGlobalFunction("ShiftGroupAction");
+DeclareGlobalFunction("ShiftVector");
 DeclareGlobalFunction("DisjointUnionPermGroup");

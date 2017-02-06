@@ -2,7 +2,7 @@
 ##
 ## disjointunion.gi           SgpDec package
 ##
-## Copyright (C) 2008-2015
+## Copyright (C) 2008-2017
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -26,26 +26,27 @@ local gens,origens,i,j,n;
   return Group(List(gens, x -> PermList(x)));
 end);
 
-# 1st arg: list of permutation groups
-# 2nd arg: optional, vector of shifts, ith entry tells how much
+#vector of shifts, ith entry tells how much
 # the ith grouph is to be shifted, the last element tells the total
 # number of points to act on
+InstallGlobalFunction(ShiftVector,
+function(groups)
+local shifts;
+  shifts := [0];
+  Perform(groups,
+         function(G)
+           Add(shifts, shifts[Length(shifts)] + LargestMovedPoint(G));
+         end);
+  return shifts;
+end);
+
+# 1st arg: list of permutation groups
+# 2nd arg: vector of shifts
 # if your shift vector contains overlaps, then you get something funny
 # if the shift vector is not given, then it is calculated by moved points
 InstallGlobalFunction(DisjointUnionPermGroup,
-function(arg)
-  local gens,shiftedgroups,groups,shifts,n;
-  groups := arg[1];
-  #get the shifts from the second argument
-  if IsBound(arg[2]) then
-    shifts := arg[2];
-  else
-    shifts := [0];
-    Perform(groups,
-            function(G)
-              Add(shifts, shifts[Length(shifts)] + LargestMovedPoint(G));
-            end);
-  fi;
+function(groups, shifts)
+  local gens,shiftedgroups,n;
   n := shifts[Length(shifts)];
   #now shift the groups
   shiftedgroups := List([1..Size(groups)],
