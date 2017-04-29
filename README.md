@@ -6,9 +6,7 @@ SgpDec is a computational implementation of [Krohn-Rhodes theory](https://en.wik
 
 There is an excellent [video introduction to Krohn-Rhodes theory by Simon DeDeo](https://www.youtube.com/playlist?list=PLWpny35W2zZPr6COsyOD-PujR-_bWMjUk), a part of [an online course on renormalization](https://www.complexityexplorer.org/tutorials/67-introduction-to-renormalization). Throwing away information selectively in order to understand complex systems is a fundamental idea for SgpDec as well.
 
-
-
-For a lightweight popular science style reading on computational semigroup theory check the computational semigroup theory blog (https://compsemi.wordpress.com/).
+For more on computational semigroup theory check this [computational semigroup theory blog](https://compsemi.wordpress.com/).
 
 ## How to use it?
 
