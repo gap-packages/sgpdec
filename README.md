@@ -2,10 +2,11 @@
 # SgpDec: Hierarchical Composition and Decomposition of Permutation Groups and Transformation Semigroups
 
 ## What is it good for?
-Decomposing transformation semigroups and permutation groups into cascade (sub-wreath) products of simpler components.
-In other words, understanding the structure of finite computations.
+SgpDec is a computational implementation of Krohn-Rhodes theory. It is capable of decomposing transformation semigroups and permutation groups into simpler components, or composing simple components into complex structures. The building blocks are put together in a cascade product, which is an efficiently constructed subsemigroup of the wreath product of the components. The hierarchical nature of the cascade product allows us to build successive approximations of finite computational structures.
 
-In the long run, it is meant to be game changing in artificial intelligence, systems biology, physics, or in any field where models with discrete states make sense.
+There is an excellent [video introduction to Krohn-Rhodes theoryt by Simon DeDeo](https://www.youtube.com/playlist?list=PLWpny35W2zZPr6COsyOD-PujR-_bWMjUk), a part of [an online course on renormalization](https://www.complexityexplorer.org/tutorials/67-introduction-to-renormalization). Throwing away information selectively in order to understand complex systems is a fundamental idea for SgpDec as well.
+
+
 
 For a lightweight popular science style reading on computational semigroup theory check the computational semigroup theory blog (https://compsemi.wordpress.com/).
 
