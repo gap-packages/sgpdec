@@ -14,18 +14,18 @@ For a lightweight popular science style reading on computational semigroup theor
 
 You need the latest version of the [GAP computer algebra system](https://www.gap-system.org/).
 
-To get some idea what SgpDec is capable of, check this paper: SgpDec: Cascade (De)Compositions of Finite Transformation Semigroups and Permutation Groups (http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13). For further details the documentation should be helpful.
+To get some idea what can be computed with SgpDec, check this paper: [SgpDec: Cascade (De)Compositions of Finite Transformation Semigroups and Permutation Groups](http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13), [preprint](https://arxiv.org/abs/1501.03217). For further details the documentation should be helpful.
 
-The preprint Computational Holonomy Decomposition of Transformation Semigroups http://arxiv.org/abs/1508.06345 contains a constructive proof of the holonomy decomposition that is in close correspondence to the implementation.
+For implementational details, the preprint [Computational Holonomy Decomposition of Transformation Semigroups](https://arxiv.org/abs/1508.06345) contains a constructive proof of the holonomy decomposition that is in close correspondence to the implementation (work in progress).
 
 ## Where to complain when something goes wrong?
 
-Please report any problem or request features by creating on issue on the project page here.
+Please report any problem or request features by [creating on issue on the project page](https://github.com/gap-packages/sgpdec/issues).
 
 ## Who are you?
 
-Attila Egri-Nagy www.egri-nagy.hu @EgriNagy
+[Attila Egri-Nagy](http://www.egri-nagy.hu) [@EgriNagy](https://twitter.com/EgriNagy)
 
-James D. Mitchell http://www-groups.mcs.st-andrews.ac.uk/~jamesm/ @jdmjdmjdmjdm 
+[James D. Mitchell](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/) [@jdmjdmjdmjdm](https://twitter.com/jdmjdmjdmjdm)
 
-Chrystopher L. Nehaniv http://homepages.herts.ac.uk/~nehaniv/  @NehanivCL
+[Chrystopher L. Nehaniv](http://homepages.herts.ac.uk/~nehaniv/)  [@NehanivCL](https://twitter.com/NehanivCL)
