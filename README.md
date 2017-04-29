@@ -10,7 +10,7 @@ For more on computational semigroup theory check this [computational semigroup t
 
 ## How to use it?
 
-You need the latest version of the [GAP computer algebra system](https://www.gap-system.org/).
+You need the latest version of the [GAP computer algebra system](https://www.gap-system.org/), then installing SgpDec is merely extracting the [latest release's archive](https://github.com/gap-packages/sgpdec/releases) into the ```pkg``` folder of GAP.
 
 To get some idea what can be computed with SgpDec, check this paper: [SgpDec: Cascade (De)Compositions of Finite Transformation Semigroups and Permutation Groups](http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13), [preprint](https://arxiv.org/abs/1501.03217). For further details the documentation should be helpful.
 
