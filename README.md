@@ -1,4 +1,4 @@
-![SgpDec logo](https://github.com/egri-nagy/sgpdec/blob/master/doc/logo128x128.png)
+![SgpDec logo](doc/logo128x128.png)
 # SgpDec: Hierarchical Composition and Decomposition of Permutation Groups and Transformation Semigroups
 
 ## What is it good for?
