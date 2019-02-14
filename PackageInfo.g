@@ -11,7 +11,8 @@ Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
 Version := "0.8-dev",
 
-Date := "28/02/2016",
+Date := "28/02/2016", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 Persons := [
   rec(
