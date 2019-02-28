@@ -1,0 +1,4 @@
+
+DeclareGlobalFunction("DotSemigroupAction");
+DeclareGlobalFunction("DotSemigroupActionWithNames");
+
