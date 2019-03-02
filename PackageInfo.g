@@ -32,8 +32,8 @@ Persons := [
     Institution   := "UH"
   ),
   rec(
-    LastName      := "L. Nehaniv",
-    FirstNames    := "Chrystopher",
+    LastName      := "Nehaniv",
+    FirstNames    := "Chrystopher L.",
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "C.L.Nehaniv@herts.ac.uk",
