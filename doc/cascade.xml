@@ -60,9 +60,6 @@ gap> Size(tS);
 
 <Section Label="cascadeviz"><Heading>Displaying and drawing cascades</Heading>
 For displaying the details (the dependency) maps <Ref Func="Display" BookName="ref"/> can be used.
-<Example>
-gap>
-</Example>
 
     <#Include Label="DotCascade">
 </Section>

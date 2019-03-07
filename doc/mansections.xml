@@ -67,8 +67,6 @@ gap> AsCoords(79,hcs);
     <Returns></Returns>
     <Description>
 The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
-      <Example>
-      </Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
