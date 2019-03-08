@@ -2,7 +2,7 @@
 ##
 ## fl.gi           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -103,6 +103,7 @@ function(group_or_chain)
   SetTransversalsOf(flG, cosetactions.transversals);
   SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(G));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
+  SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
   return flG;
 end);
 
