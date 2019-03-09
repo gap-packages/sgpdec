@@ -189,7 +189,7 @@ tion( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
 n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
 )"
 
-# testing extracted dependencies
+# testing extracted dependencies - they should build the same cascade
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
 gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
 true
