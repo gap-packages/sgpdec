@@ -1,3 +1,5 @@
+0.8
+    Update release compatible with GAP 4.10.0. Some documentation added. Finiteness property set for cascade groups.
 0.7.33
 	Update release compatible with GAP 4.8.2. Hash function patch removed.
 0.7.32
