@@ -1,4 +1,5 @@
-# transformation notation tests
+# checking whether straight word reduction is really reduction and gives
+# the same transformation
 gap> START_TEST("Sgpdec package: straightword.tst");
 gap> LoadPackage("sgpdec");;
 gap> gens := GeneratorsOfSemigroup(FullTransformationSemigroup(9));;
