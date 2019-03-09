@@ -1,3 +1,4 @@
+# Testing dependency functions, the different ways of creating them.
 gap> START_TEST("Sgpdec package: depfunc.tst");
 gap> LoadPackage("sgpdec");;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
@@ -17,10 +18,10 @@ gap> depdoms2 = depdoms3;
 true
 
 # creating a dependency function can be done in 2 ways
-# 1. by domain a list of mappings
+# 1. by domain and a list of mappings
 # 2. by domain and a lookup table (internal representation)
-# 1.
-# We simply define it by giving its domain and mappings in the format
+#
+# 1. We simply define it by giving its domain and mappings in the format
 # [argument, value]
 # where argument is tuple of integers and value is a transformation/permutation
 # The range of the dependency function is defined implicitly.
