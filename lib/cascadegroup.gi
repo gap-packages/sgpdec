@@ -77,6 +77,7 @@ function(arg)
   SetDomainOf(s,
           EnumeratorOfCartesianProduct(ComponentDomains(s)));
   SetIsFullCascadeProduct(s,true);#TODO why is it needed? It should be implied.
+  SetIsFinite(s,true);
   return s;
 end);
 
