@@ -1,6 +1,5 @@
 ################################################################################
-#testing the full cascade (semi)group
-# testing the Frobenius-Lagrange decomposition
+# testing the full cascade (semi)group, it should be the wreath product 
 gap> START_TEST("Sgpdec package: wreath.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
@@ -8,8 +7,12 @@ gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 gap> pairs := [[Z2,Z3], [Z3,S4], [S3,Z2]];;
 gap> triples := [[Z3,Z2,Z2]];;
 
-# testing size against the stock version of group wreath product
-gap> ForAll(pairs,p->Size(WreathProduct(p[2],p[1]))=Size(FullCascadeGroup(p)));
+# checking isomorphism with the stock version of group wreath product
+gap> ForAll(pairs, function(p)
+>  local W, FC;
+>  W := Image(IsomorphismPermGroup(WreathProduct(p[2],p[1])));
+>  FC := Image(IsomorphismPermGroup(FullCascadeGroup(p)));
+>  return IsomorphismGroups(W,FC) <> fail; end); # TODO this should work even without converting to permutation groups
 true
 
 # testing associativity
