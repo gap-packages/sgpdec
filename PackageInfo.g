@@ -23,13 +23,12 @@ Persons := [
     Email         := "attila@egri-nagy.hu",
     WWWHome       := "http://www.egri-nagy.hu",
     PostalAddress := Concatenation( [
-                       "University of Hertfordshire\n",
-                       "STRI\n",
-                       "College Lane\n",
-                       "AL10 9AB\n",
-                       "United Kingdom" ] ),
-    Place         := "Hatfield, Herts",
-    Institution   := "UH"
+                       "Akita Internationl University\n",
+                       "Yuwa, Akita-City\n",
+                       "010-1292\n",
+                       "JAPAN" ] ),
+    Place         := "Akita",
+    Institution   := "AIU"
   ),
   rec(
     LastName      := "Nehaniv",
