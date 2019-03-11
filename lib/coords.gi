@@ -38,7 +38,7 @@ function(compdoms, abstract_state)
   return EnumeratorOfCartesianProduct(
                  List([1..Size(abstract_state)],
     function(x)
-      if IsBound(abstract_state[x]) and abstract_state[x]>0 then
+      if IsBound(abstract_state[x]) and abstract_state[x]>0 then #TODO Do we still have the zero convention?
         return [abstract_state[x]];
       else
         return compdoms[x];

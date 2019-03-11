@@ -2,7 +2,7 @@
 ##
 ## coords.gd           SgpDec package
 ##
-## Copyright (C) 2008-2015
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
