@@ -259,16 +259,19 @@ function(sk, s, CP)
   return cas;
 end);
 
-
-InstallGlobalFunction(HolonomyCascadeSemigroup,
-function(ts)
-  local sk, S;
-  sk := Skeleton(ts);
-  S := Semigroup(List(GeneratorsOfSemigroup(ts), t->AsHolonomyCascade(t,sk)));
+InstallMethod(HolonomyCascadeSemigroup, "for a skeleton", [IsSkeleton],
+function(sk)
+  local S;
+  S := Semigroup(List(GeneratorsOfSemigroup(TransSgp(sk)), t->AsHolonomyCascade(t,sk)));
   SetSkeletonOf(S,sk);
   SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(sk));
   SetIsHolonomyCascadeSemigroup(S,true);
   return S;
+end);
+
+InstallOtherMethod(HolonomyCascadeSemigroup, "for a transformation semigroup", [IsSemigroup],
+function(ts)
+  return HolonomyCascadeSemigroup(Skeleton(ts));
 end);
 
 # skeleton for recursive code to replace AsHolonomyCascade

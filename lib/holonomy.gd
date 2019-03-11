@@ -22,11 +22,12 @@ DeclareGlobalFunction("Interpret");
 DeclareAttribute("SkeletonOf", IsHolonomyCascadeSemigroup);
 DeclareGlobalFunction("HolonomyComponentActions");
 DeclareGlobalFunction("OldHolonomyComponentActions");
-DeclareGlobalFunction("HolonomyCascadeSemigroup");
 DeclareGlobalFunction("HolonomyRelationalMorphism");
 #TODO, put these back as synonyms
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
+
+DeclareOperation("HolonomyCascadeSemigroup",[IsSkeleton]);
 
 DeclareGlobalFunction("AsHolonomyCoords");
 DeclareGlobalFunction("AsHolonomyPoint");
