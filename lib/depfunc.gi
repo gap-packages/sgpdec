@@ -146,12 +146,12 @@ end);
 InstallGlobalFunction(OnDepArg,
 function(deparg, depfunc)
   local vals, dom, i, pos;
-  vals:=depfunc!.vals;
   dom:=depfunc!.dom;
   #if the argument is not in the domain
   if not(deparg in dom) then return fail; fi;
   #searching for the position of the argument tuple
   pos:=Position(dom, deparg);
+  vals:=depfunc!.vals;
   #the default value is the identity
   if not IsBound(vals[pos]) then
     return ();
