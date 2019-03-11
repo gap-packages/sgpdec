@@ -1,16 +1,16 @@
 # ALPHABETICAL ORDER (by label)
 
-#an empty one for template
-<#GAPDoc Label="">
-  <ManSection>
-    <Func Name="" Arg=""/>
-    <Returns></Returns>
-    <Description>
-      <Example>
-      </Example>
-    </Description>
-  </ManSection>
-<#/GAPDoc>
+<!-- #an empty one for template -->
+<!-- <#GAPDoc Label=""> -->
+<!--   <ManSection> -->
+<!--     <Func Name="" Arg=""/> -->
+<!--     <Returns></Returns> -->
+<!--     <Description> -->
+<!--       <Example> -->
+<!--       </Example> -->
+<!--     </Description> -->
+<!--   </ManSection> -->
+<!-- <#/GAPDoc> -->
 
 ##A
 
@@ -19,8 +19,6 @@
     <Func Name="AsCascade" Arg="transformation"/>
     <Returns>Coordinatized form of <Arg>transformation</Arg></Returns>
     <Description>
-      <Example>
-      </Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -118,9 +116,6 @@ Dependency function of depth 2 with 2 dependencies.
     <Returns>The dependency functions ordered in a list according to their depth.</Returns>
 <Description>
 Some of the attributes are aggregates of the contained dependency functions' attributes.
-<Example>
-gap>
-</Example>
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -166,9 +161,6 @@ though they may not be multiplied in the cascade product.
     <Returns>Returns all concrete states matching the abstract state.</Returns>
     <Description>
 Abstract coordinate tuples  contain unspecified levels, either denoted by a 0 value or simply omitting deeper levels.
-<Example>
-
-</Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -496,8 +488,6 @@ gap> Size(T);
     <Func Name="IdentityCascade" Arg="comps"/>
     <Returns>The identity cascade on the given components.</Returns>
     <Description>
-      <Example>
-      </Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -641,8 +631,6 @@ gap> OnFiniteSet(P,t*t);
     <Func Name="RandomCascade" Arg="comps,numofdeps"/>
     <Returns>A cascade with the given number of dependencies (or) less</Returns>
     <Description>
-      <Example>
-      </Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
