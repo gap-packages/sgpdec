@@ -125,15 +125,18 @@ end);
 ################################################################################
 # IMPLEMENTED METHODS FOR ABSTRACT DECOMPOSITION ###############################
 InstallGlobalFunction(Interpret,
-        function(sk,level,state)
+function(sk,level,state)
   return CoordVals(sk)[level][state];
+end);
+
+InstallGlobalFunction(AsHolonomyPoint,
+function(cs,sk)
+  return ChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
 end);
 
 InstallOtherMethod(AsPoint, "for a coordinate tuple and a skeleton",
                    [IsList, IsSkeleton],
-function(cs,sk)
-  return ChainRoot(DecodeCoords(sk, HolonomyInts2Sets(sk,cs)));
-end);
+                   AsHolonomyPoint);
 
 # all encoded holonomy coordinate tuples of a state k
 AllHolonomyCoords := function(k,sk)
@@ -142,11 +145,12 @@ AllHolonomyCoords := function(k,sk)
 end;
 
 # just a random holonomy coordinate tuple for a state k
-AsHolonomyCoords := function(k,sk)
+InstallGlobalFunction(AsHolonomyCoords,
+function(k,sk)
   return HolonomySets2Ints(sk,
                  EncodeChain(sk,
                          RandomChain(sk,k)));
-end;
+end);
 
 # special doubly encoded, the real cascade action on integer tuples
 OnHolonomyCoordinates:= function(coords, ct)

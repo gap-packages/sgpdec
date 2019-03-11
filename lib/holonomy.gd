@@ -28,6 +28,9 @@ DeclareGlobalFunction("HolonomyRelationalMorphism");
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroups");
 #DeclareGlobalFunction("UnderlyingSetsForHolonomyGroupsOnDepth");
 
+DeclareGlobalFunction("AsHolonomyCoords");
+DeclareGlobalFunction("AsHolonomyPoint");
+
 DeclareGlobalFunction("AsHolonomyCascade");
 DeclareGlobalFunction("AsHolonomyTransformation");
 

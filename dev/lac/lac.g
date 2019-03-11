@@ -89,7 +89,7 @@ OnHolonomyCoordinates(last, gen[1]);   # applying a cascade transformation these
 OnHolonomyCoordinates(last, gen[1]);   # applying it again 
 #[[ 1, 3, 1, 1, 9 ]
  
-AsPoint([ 1, 3, 1, 1, 9 ],skel_lac); # should be AsHolonomyPoint
+AsHolonomyPoint([ 1, 3, 1, 1, 9 ],skel_lac); # works as  AsPoint as well
      # The Op state   
 #To see what subsets the coordinates correspond to :
 CoordVals(skel_lac);
