@@ -1,4 +1,6 @@
-#
+#automatic splashing?
+splashing := false;
+
 # Algebraic Analysis follows of Lac Operon using SGPDEC  by Attila Egri-Nagy & Chrystopher L. Nehaniv, University of Hertfordshire, using 
 # S. Kaufmann's Boolean Network Model, following the journal article
 # A. Egri-Nagy & C. L. Nehaniv "Hierarchical Coordinate Systems for Understanding Complexity and Its Evolution, 
@@ -51,38 +53,43 @@ LAC := Semigroup(L0,L1,t);
 # carrying out a Krohn-Rhodes decomosition of the Lac Operon Automaton
 skel_lac := Skeleton(LAC);  
 
-dot_lac := DotSkeleton(skel_lac,rec(states  := LACstates, symbols :=LACsymbols));
-Splash(dot_lac);
+#dot_lac := DotSkeleton(skel_lac,rec(states  := LACstates, symbols :=LACsymbols));
+#Splash(dot_lac);
 
 DisplayHolonomyComponents(skel_lac);
 
-# If there is viz without my extension 
-# d:=DotSemigroupAction(LAC,[1..16],OnPoints);
+Display("Displaying skel lac done!");
 
-# If there is viz with my extension (put in gap4r7 viz/gap/dot.gi and dot.gd)
-d:=DotSemigroupActionWithNames(LAC,[1..16],OnPoints,LACstates,LACsymbols);
-Splash(d);
+if splashing then
+  # If there is viz without my extension 
+  # d:=DotSemigroupAction(LAC,[1..16],OnPoints);
+
+  # If there is viz with my extension (put in gap4r7 viz/gap/dot.gi and dot.gd)
+  d:=DotSemigroupActionWithNames(LAC,[1..16],OnPoints,LACstates,LACsymbols);
+  Splash(d);
+fi;
 
 LAC_Coordinatized:= HolonomyCascadeSemigroup(LAC);
 gen := GeneratorsOfSemigroup(LAC_Coordinatized);
 Display(gen[1]);
 Display(gen[2]);
 Display(gen[3]);
-Splash(DotCascade(gen[1]));
-Splash(DotCascade(gen[2]));
-Splash(DotCascade(gen[3]));
+if splashing then
+  Splash(DotCascade(gen[1]));
+  Splash(DotCascade(gen[2]));
+  Splash(DotCascade(gen[3]));
+fi;
 
-
-Size(LAC_Coordinatized);
+#Size(LAC_Coordinatized);
 
 AsHolonomyCoords(1,skel_lac);          # give the state and skeleton as arguments
 #[ 1, 1, 3, 3, 9 ]
-last^gen[1];   # applying a cascade transformation these the coordinate form (gen[1] is the lift of L0)#
+OnHolonomyCoordinates(last, gen[1]);   # applying a cascade transformation these the coordinate form (gen[1] is the lift of L0)#
 #[[ 1, 3, 1, 1, 9 ]
-last^gen[1];   # applying it again 
+OnHolonomyCoordinates(last, gen[1]);   # applying it again 
 #[[ 1, 3, 1, 1, 9 ]
  
-AsHolonomyPoint([ 1, 3, 1, 1, 9 ],skel_lac);
+AsPoint([ 1, 3, 1, 1, 9 ],skel_lac); # should be AsHolonomyPoint
      # The Op state   
 #To see what subsets the coordinates correspond to :
 CoordVals(skel_lac);
