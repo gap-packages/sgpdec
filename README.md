@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/gap-packages/sgpdec.svg?branch=master)](https://travis-ci.org/gap-packages/sgpdec)
+[![Code Coverage](https://codecov.io/github/gap-packages/sgpdec/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/sgpdec)
+
 ![SgpDec logo](doc/logo128x128.png)
 # SgpDec: Hierarchical Composition and Decomposition of Permutation Groups and Transformation Semigroups
 
