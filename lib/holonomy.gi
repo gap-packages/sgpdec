@@ -325,9 +325,8 @@ InstallGlobalFunction(AsHolonomyTransformation,
 function(co,sk)
 local l, i;
   l := [];
-  for i in ListBlist([1..DegreeOfSkeleton(sk)],
-          BaseSet(sk)) do
-    l[i]:=AsPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
+  for i in [1..DegreeOfSkeleton(sk)] do
+    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
   od;
   return Transformation(l);
 end);
