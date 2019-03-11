@@ -84,9 +84,9 @@ fi;
 
 AsHolonomyCoords(1,skel_lac);          # give the state and skeleton as arguments
 #[ 1, 1, 3, 3, 9 ]
-OnHolonomyCoordinates(last, gen[1]);   # applying a cascade transformation these the coordinate form (gen[1] is the lift of L0)#
+OnHolonomyCoords(last, gen[1]);   # applying a cascade transformation these the coordinate form (gen[1] is the lift of L0)#
 #[[ 1, 3, 1, 1, 9 ]
-OnHolonomyCoordinates(last, gen[1]);   # applying it again 
+OnHolonomyCoords(last, gen[1]);   # applying it again 
 #[[ 1, 3, 1, 1, 9 ]
  
 AsHolonomyPoint([ 1, 3, 1, 1, 9 ],skel_lac); # works as  AsPoint as well

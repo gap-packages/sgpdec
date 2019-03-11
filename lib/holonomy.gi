@@ -152,21 +152,22 @@ function(k,sk)
                          RandomChain(sk,k)));
 end);
 
-# special doubly encoded, the real cascade action on integer tuples
-OnHolonomyCoordinates:= function(coords, ct)
+# we build the dependency function arguments one position at a time from coords
+# for efficiency reasons
+InstallGlobalFunction(OnHolonomyCoords,
+function(coords, ct)
   local dfs, copy, out, len, i, action;
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
-  copy:=EmptyPlist(len);
+  copy:=EmptyPlist(len); #same as [], but avoids over and re-allocations
   out:=EmptyPlist(len);
   for i in [1..len] do
-    action := copy^dfs[i];
-    out[i]:=coords[i]^action;
-    copy[i]:=coords[i];
+    action := OnDepArg(copy,dfs[i]); # copy^dfs[i];
+    out[i]:=coords[i]^action; #action can be perm or transf
+    copy[i]:=coords[i]; # we grow 
   od;
   return out;
-end;
-MakeReadOnlyGlobal("OnHolonomyCoordinates");
+end);
 
 # creating the permutation action on the tiles, shifted properly to the slot
 PermutationOfTiles := function(action, depth, slot, sk)
@@ -326,7 +327,7 @@ function(co,sk)
 local l, i;
   l := [];
   for i in [1..DegreeOfSkeleton(sk)] do
-    l[i]:=AsHolonomyPoint(OnHolonomyCoordinates(AsHolonomyCoords(i,sk),co),sk);
+    l[i]:=AsHolonomyPoint(OnHolonomyCoords(AsHolonomyCoords(i,sk),co),sk);
   od;
   return Transformation(l);
 end);
@@ -447,7 +448,7 @@ TestHolonomyAction := function(S)
     for p in [1..DegreeOfSkeleton(sk)] do
       p_ := p^s;
       if not ForAll(hcoords[p],
-                    x -> p_ = AsPoint(OnHolonomyCoordinates(x,xcs),sk))
+                    x -> p_ = AsPoint(OnHolonomyCoords(x,xcs),sk))
       then
         Error(s);
       fi;

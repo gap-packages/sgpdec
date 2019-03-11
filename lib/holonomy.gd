@@ -2,7 +2,7 @@
 ##
 ## holonomy.gd           SgpDec package
 ##
-## Copyright (C) 2008-2015
+## Copyright (C) 2008-2019
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## A hierarchical decomposition: Holonomy coordinatization of semigroups.
@@ -15,6 +15,7 @@ DeclareGlobalFunction("RealTile");
 DeclareGlobalFunction("EncodeChain");
 DeclareGlobalFunction("PositionedChain");
 DeclareGlobalFunction("DecodeCoords");
+DeclareGlobalFunction("OnHolonomyCoords");
 DeclareGlobalFunction("ChangeCoveredSet");
 DeclareGlobalFunction("HolonomyInts2Sets");
 DeclareGlobalFunction("HolonomySets2Ints");
