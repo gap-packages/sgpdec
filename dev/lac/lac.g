@@ -7,6 +7,9 @@
 # Binary Variables defining state of system:
 # A = Allolactose Present, Op = Operator bound by Repressor (I think), ZYA = Enzymes being produced to metabolize lactose
 # L = Lactose present,   value= 1 if true / present, else 0.
+
+#
+#Modified 2019 February 2019 to run with Gap4r7 
 # 
 # 16 states 
 #
@@ -28,6 +31,9 @@
 # 15.    1 1  1  0
 # 16.    1 1  1  1
 #(Remark: state number is  given by 1 + binary vector interpreted base 2):
+LACstates := ["0","ZYA", "Op", "Op ZYA", "A", "A ZYA", "A Op", "A Op ZYA",
+              "L","L ZYA", "L Op", "L Op ZYA", "L A", "L A ZYA", "L A Op", "L A Op ZYA"];
+LACsymbols:=["L0", "L1", "t"];
 #
 # Transitions  (i.e. input symbols to the automaton, hence generating the lac operon transformation semigroup)
 #
@@ -40,34 +46,45 @@ L1 := Transformation([9,10,11,12,13,14,15,16,9,10,11,12,13,14,15,16]);
 # clock tick
 t := Transformation([4,4,3,3,2,2,1,1,16,12,15,11,14,10,13,9]);
 
+LAC := Semigroup(L0,L1,t);
+
 # carrying out a Krohn-Rhodes decomosition of the Lac Operon Automaton
-hd := HolonomyDecomposition(Semigroup(L0,L1,t));
+skel_lac := Skeleton(LAC);  
 
-# number of levels in the hierarchy
-Size(hd);
+dot_lac := DotSkeleton(skel_lac,rec(states  := LACstates, symbols :=LACsymbols));
+Splash(dot_lac);
 
-# structure of groups at each level (assumes only one per level):
-StructureDescription(GroupComponentsOnDepth(hd,1)[1]);
-StructureDescription(GroupComponentsOnDepth(hd,2)[1]);
-StructureDescription(GroupComponentsOnDepth(hd,3)[1]);
-StructureDescription(GroupComponentsOnDepth(hd,4)[1]);
-StructureDescription(GroupComponentsOnDepth(hd,5)[1]);
+DisplayHolonomyComponents(skel_lac);
 
+# If there is viz without my extension 
+# d:=DotSemigroupAction(LAC,[1..16],OnPoints);
 
-# lift the generators to the wreath product
-L1_hat := Raise(hd,L1);
-t_hat := Raise(hd,t);
-L0_hat :=Raise(hd,L0);
+# If there is viz with my extension (put in gap4r7 viz/gap/dot.gi and dot.gd)
+d:=DotSemigroupActionWithNames(LAC,[1..16],OnPoints,LACstates,LACsymbols);
+Splash(d);
 
-# display lifted generators
-#Display(L0_hat);
-#Display(t_hat);
-#Display(L1_hat);
-Print("\nLift of L0:\n");
-ShowDependencies(DepFuncTableFromCascOp(L0_hat)); 
-Print("\nLift of t:\n");
-ShowDependencies(DepFuncTableFromCascOp(t_hat)); 
-Print("\nLift of L1:\n");
-ShowDependencies(DepFuncTableFromCascOp(L1_hat)); 
+LAC_Coordinatized:= HolonomyCascadeSemigroup(LAC);
+gen := GeneratorsOfSemigroup(LAC_Coordinatized);
+Display(gen[1]);
+Display(gen[2]);
+Display(gen[3]);
+Splash(DotCascade(gen[1]));
+Splash(DotCascade(gen[2]));
+Splash(DotCascade(gen[3]));
 
 
+Size(LAC_Coordinatized);
+
+AsHolonomyCoords(1,skel_lac);          # give the state and skeleton as arguments
+#[ 1, 1, 3, 3, 9 ]
+last^gen[1];   # applying a cascade transformation these the coordinate form (gen[1] is the lift of L0)#
+#[[ 1, 3, 1, 1, 9 ]
+last^gen[1];   # applying it again 
+#[[ 1, 3, 1, 1, 9 ]
+ 
+AsHolonomyPoint([ 1, 3, 1, 1, 9 ],skel_lac);
+     # The Op state   
+#To see what subsets the coordinates correspond to :
+CoordVals(skel_lac);
+#[ [ {1,2,3,4,9,10,11,12,13,14,15,16}, {5}, {6}, {7}, {8} ],  [ {1}, {2}, {3,4,9,10,11,12,13,14,15,16} ], [ {3,9,10,11,12,13,14,15,16}, {4} ], [ {3}, {9,10,11,12,13,14,15,16} ],  [ {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16} ] ]
+#so for example the first 1 in [1,1,3,3,9] corresponds to the set {1,2,3,4,9,10,11,12,13,14,15,16}.
