@@ -24,8 +24,7 @@ Dependency function of depth 2 with 2 dependencies.
 [ 1 ] -> Transformation( [ 3, 3, 2 ] )
 [ 2 ] -> Transformation( [ 2, 3, 2 ] )
 
-# it is recognized if all components are given and they are groups
-# BUT only this case
+# it is recognized if all components are given and they are groups, or all dep values are permutations
 gap> c := Cascade([Z2,Z3], [ [[],(1,2)], [[1],(1,2,3)] ]);
 <perm cascade with 2 levels with (2, 3) pts, 2 dependencies>
 gap> Display(c);
@@ -51,7 +50,7 @@ gap> Order(c);
 
 # it is also possible to give only component domains, in that case
 gap> Cascade([[1..2],[1..3]],[]);
-<trans cascade with 2 levels with (2, 3) pts, 0 dependencies>
+<perm cascade with 2 levels with (2, 3) pts, 0 dependencies>
 
 # identity cascade
 gap> IdentityCascade([T3,Z2]);
