@@ -274,26 +274,6 @@ function(ts)
   return HolonomyCascadeSemigroup(Skeleton(ts));
 end);
 
-# skeleton for recursive code to replace AsHolonomyCascade
-frags := function(sk,t)
-  local f, tile,Qtile, P, Q, action, depth;
-  #-----------------------------------------------------------------------------
-  f := function(prefix)
-    # here is the payload calculations
-    action := HolonomyCore(sk, P,Q, Qtile,t,depth);
-    # and the recursion
-    for tile in TilesOf(sk, prefix[Size(prefix)]) do
-      Add(prefix,tile);
-      f(prefix);
-      Remove(prefix);
-    od;
-  end;
-  #-----------------------------------------------------------------------------
-  P := BaseSet(sk);
-  Q := BaseSet(sk);
-  f([BaseSet(sk)]);
-end;
-
 #this just enumerates the tile chains, convert to coordinates,
 #calls for the component actions, and records if nontrivial
 InstallGlobalFunction(AsHolonomyCascade,
