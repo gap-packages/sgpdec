@@ -164,7 +164,7 @@ function(coords, ct)
   for i in [1..len] do
     action := OnDepArg(copy,dfs[i]); # copy^dfs[i];
     out[i]:=coords[i]^action; #action can be perm or transf
-    copy[i]:=coords[i]; # we grow 
+    copy[i]:=coords[i]; # we grow
   od;
   return out;
 end);
@@ -222,11 +222,11 @@ HolonomyCore := function(sk, P,Q, Qtile,s, depth)
   if Ps  = Q then #PERMUTATION
     return PermutationOfTiles(FromRep(sk,P) * s * ToRep(sk,Q),#roundtrip
                               depth,GetSlot(Q,sk),sk);
-  elif IsSubsetBlist(Q, Ps) then #CONSTANT
+  else #elif IsSubsetBlist(Q, Ps) then #CONSTANT
+    # testing for sub is not needed - see HEYBUG story
     return ConstantMapToATile(RepTile(Qtile,Q,sk),
                               depth,GetSlot(Q,sk),sk);
   fi;
-  #no else branch, testing for sub is not needed but left there as a safety belt
 end;
 MakeReadOnlyGlobal("HolonomyCore");
 
@@ -332,14 +332,14 @@ local l, i;
   return Transformation(l);
 end);
 
-# cascade to ts
+# cascade sg onto the original
 InstallOtherMethod(HomomorphismTransformationSemigroup,
         "for a holonomy cascade semigroup",
 [IsHolonomyCascadeSemigroup],
 function(cS)
   local T,sk,f;
   sk := SkeletonOf(cS);
-  f := c -> AsHolonomyTransformation(c, sk);
+  f := ct -> AsHolonomyTransformation(ct, sk);
   T:=Semigroup(List(GeneratorsOfSemigroup(cS),f));
   return MappingByFunction(cS,T,f);
 end);
@@ -416,6 +416,7 @@ end);
 
 ################################################################################
 # test functions
+# testing the map down
 TestHolonomyEmulation := function(S)
   local hom,hcs;
   hcs := HolonomyCascadeSemigroup(S);
