@@ -502,7 +502,7 @@ end);
 InstallMethod(RepresentativeSets, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local reps;
-  reps := List([1..DepthOfSkeleton(sk)], i -> []);
+  reps := List([1..DepthOfSkeleton(sk)], i -> []); # different empty lists
   Perform(List(SkeletonTransversal(sk),x->ForwardOrbit(sk)[x]),
           function(x)Add(reps[DepthOfSet(sk,x)],x);end);
   return reps;
