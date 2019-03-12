@@ -28,7 +28,10 @@ function(doms, deps)
                            else return x; fi;end);
   fi;
 
-  if ForAll(doms, IsGroup) then
+  if ForAll(doms, IsGroup)
+     or 
+     ((not ForAny(doms, IsSemigroup))
+       and ForAll(deps, x -> IsPerm(x[2]))) then
     f:=Objectify(PermCascadeType, rec());
   else
     f:=Objectify(TransCascadeType, rec());
