@@ -240,8 +240,7 @@ function(sk, s, CP)
         cas, # encoded component actions
         positionedQ, # positioned CQ the get tile of choice
         stagesP, stagesQ; #the current state of approximations in chains CP, CQ
-  cas := List([1..DepthOfSkeleton(sk)-1],
-                  x -> One(HolonomyPermutationResetComponents(sk)[x]));
+  cas := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, IdentityTransformation);
   CPs := OnSequenceOfSets(CP,s);
   CQ := DominatingChain(sk,CPs);
   stagesP := ApproximationStages(sk,PositionedChain(sk,CP));
