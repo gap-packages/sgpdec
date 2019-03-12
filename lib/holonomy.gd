@@ -5,7 +5,8 @@
 ## Copyright (C) 2008-2019
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## A hierarchical decomposition: Holonomy coordinatization of semigroups.
+## A hierarchical decomposition: Holonomy coordinatization of transformation
+## semigroups.
 ##
 
 DeclareProperty("IsHolonomyCascadeSemigroup",IsCascadeSemigroup);

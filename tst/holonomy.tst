@@ -6,7 +6,7 @@ gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(3));
 gap> hom := HomomorphismTransformationSemigroup(hcs);
 MappingByFunction( <cascade semigroup with 4 generators, 2 levels with (4, 3) \
 pts>, <transformation monoid of degree 3 with 3 generators>
- , function( c ) ... end )
+ , function( ct ) ... end )
 gap> Size(Range(hom));
 27
 gap> hl := HolonomyRelationalMorphism(FullTransformationSemigroup(3));
@@ -29,7 +29,7 @@ gap> hcs := HolonomyCascadeSemigroup(S);
 gap> hom := HomomorphismTransformationSemigroup(hcs);
 MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (3, 5, \
 6, 6, 3) pts>, <transformation semigroup of degree 6 with 6 generators>
- , function( c ) ... end )
+ , function( ct ) ... end )
 gap> AsSortedList(S) = AsSortedList(Range(hom));
 true
 gap> DisplayHolonomyComponents(Skeleton(S));

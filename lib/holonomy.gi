@@ -2,21 +2,24 @@
 ##
 ## holonomy.gi           SgpDec package
 ##
-## Copyright (C) 2008-2015
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## A hierarchical decomposition: Holonomy coordinatization of semigroups.
+## A hierarchical decomposition: Holonomy coordinatization of transformation
+## semigroups.
 ##
 
 ################################################################################
 # CODING OF THE HOLONOMY COMPONENT STATES ######################################
 
 # CODEC: INTEGERS <--> SETS
-# Though the coordinate values are elements of the cover of a representative,
-# it still has to be converted to integers
+# The coordinate values are subsets of the state set (the tiles of a 
+# representative subsets). However, in order to define transformations of them
+# we need to encode them by integers.
 
 # figures out that which slot its representative belongs to (on the same level)
+# choosing a parallel component
 GetSlot := function(set,sk)
   return Position(RepresentativeSets(sk)[DepthOfSet(sk,set)],
                  RepresentativeSet(sk,set));
