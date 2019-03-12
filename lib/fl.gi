@@ -110,9 +110,8 @@ end);
 #gives a coordinate representation of an original point
 InstallGlobalFunction(AsFLCoords,
 function(i,FLG)
-  local st;
-  st := TransversalsOf(FLG);
-  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
+  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i],
+                     TransversalsOf(FLG));
 end);
 
 #TODO implement AllFLCoords
