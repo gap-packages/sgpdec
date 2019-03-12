@@ -20,6 +20,7 @@
 
 # figures out that which slot its representative belongs to (on the same level)
 # choosing a parallel component
+# finding the position of the representative set on the depth of the input
 GetSlot := function(set,sk)
   return Position(RepresentativeSets(sk)[DepthOfSet(sk,set)],
                  RepresentativeSet(sk,set));
@@ -32,7 +33,7 @@ MakeReadOnlyGlobal("GetSlot");
 GetStar := function(sk, depth) return Size(CoordVals(sk)[depth])+1; end;
 MakeReadOnlyGlobal("GetStar");
 
-# decoding: integers -> sets, integers simply code the positions sk.coordvals
+# decoding: integers -> sets, integers simply code the positions in CoordVals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;

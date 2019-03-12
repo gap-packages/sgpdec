@@ -2,7 +2,7 @@
 ##
 ## cascadesemigroup.gi           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##

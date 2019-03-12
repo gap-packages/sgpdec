@@ -138,7 +138,11 @@ end);
 InstallMethod(OneImmutable, "for a trans cascade",
 [IsTransCascade],
 function(ct)
-  return IdentityCascade(ComponentDomains(ct));
+  return CreateCascade(DomainOf(ct),
+                       ComponentDomains(ct),
+                       [],
+                       DependencyDomainsOf(ct),
+                       TransCascadeType);#IdentityCascade(ComponentDomains(ct));
 end);
 
 InstallMethod(OneImmutable, "for a permutation cascade",

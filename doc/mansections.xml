@@ -468,7 +468,7 @@ gap> gens := Generators(hcs);
 gap> surhom := HomomorphismTransformationSemigroup(hcs);
 MappingByFunction( &lt;cascade semigroup with 4 generators, 3 levels with (5, 4, \
 3) pts&gt;, &lt;transformation monoid of degree 4 with 3 generators&gt;
- , function( c ) ... end )
+ , function( ct ) ... end )
 gap> Image(surhom, gens[1]*gens[2]);
 Transformation( [ 1, 3, 4, 2 ] )
 gap> T := Range(surhom);
