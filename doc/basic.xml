@@ -21,13 +21,13 @@ Here we build a module 4 counter using two modulo 2 counters (cyclic groups of o
 <Example><![CDATA[
 gap> c := Cascade([2,2], [ [[],(1,2)], [[2], (1,2)]  ]);
 <perm cascade with 2 levels with (2, 2) pts, 2 dependencies>
-gap> mod4counter := SemigroupByGenerators([c]);
-<cascade semigroup with 1 generator, 2 levels with (2, 2) pts>
+gap> mod4counter := Group(c);
+<cascade group with 1 generator, 2 levels with (2, 2) pts>
 gap> AsList(mod4counter);
-[ <perm cascade with 2 levels with (2, 2) pts, 2 dependencies>,
+[ <perm cascade with 2 levels with (2, 2) pts, 0 dependencies>,
   <perm cascade with 2 levels with (2, 2) pts, 2 dependencies>,
   <perm cascade with 2 levels with (2, 2) pts, 2 dependencies>,
-  <perm cascade with 2 levels with (2, 2) pts, 0 dependencies> ]
+  <perm cascade with 2 levels with (2, 2) pts, 2 dependencies> ]
 gap> StructureDescription(Range(IsomorphismPermGroup(mod4counter)));
 "C4"
 ]]></Example>
