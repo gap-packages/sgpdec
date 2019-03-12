@@ -45,6 +45,8 @@ t := Transformation([4,4,3,3,2,2,1,1,16,12,15,11,14,10,13,9]);
 
 SgpDecTransitionNames := ["L0 ","L1 ", "t"];
 
+LAC := Semigroup([L0,L1,t]);
+sk := Skeleton(LAC);
 
 # C L Nehaniv, University of Hertfordshire, June 2013
 # Weak Control Words Hierarchy -  Script for Overview
@@ -52,7 +54,7 @@ SgpDecTransitionNames := ["L0 ","L1 ", "t"];
 if not IsBound(SgpDecTransitionNames) then SgpDecTransitionNames := []; fi;
 
 for dx in [1..DepthOfSkeleton(sk)-1] do
-   for  x1 in RepresentativesOnDepth(sk,dx) do
+   for  x1 in RepresentativeSetsOnDepth(sk,dx) do
      px1 := PermutatorGroup(sk,x1);
      hx1 := HolonomyGroup@SgpDec(sk,x1); 
      if IsTrivial(px1)  then
@@ -67,7 +69,7 @@ for dx in [1..DepthOfSkeleton(sk)-1] do
                     od; 
               Print("\n");
                for dy in [dx+1..DepthOfSkeleton(sk)-1] do
-                for Y in RepresentativesOnDepth(sk,dy) do
+                for Y in RepresentativeSetsOnDepth(sk,dy) do
                  pY:=PermutatorGroup(sk,Y);
            if IsTrivial(pY) then
                Print("");
