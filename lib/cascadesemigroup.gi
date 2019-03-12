@@ -154,9 +154,9 @@ function(s)
   local str, x;
 
   str:="<cascade semigroup with ";
-  Append(str, String(Length(GeneratorsOfSemigroup(s))));
+  Append(str, String(Length(Generators(s))));
   Append(str, " generator");
-  if Length(GeneratorsOfSemigroup(s))>1 then
+  if Length(Generators(s))>1 then
     Append(str, "s");
   fi;
   Append(str, ", ");

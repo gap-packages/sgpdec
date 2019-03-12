@@ -2,16 +2,16 @@
 gap> START_TEST("Sgpdec package: holonomy.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(3));
-<cascade semigroup with 4 generators, 2 levels with (4, 3) pts>
+<cascade semigroup with 3 generators, 2 levels with (4, 3) pts>
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 4 generators, 2 levels with (4, 3) \
-pts>, <transformation monoid of degree 3 with 3 generators>
+MappingByFunction( <cascade semigroup with 3 generators, 2 levels with (4, 3) \
+pts>, <transformation semigroup of degree 3 with 3 generators>
  , function( ct ) ... end )
 gap> Size(Range(hom));
 27
 gap> hl := HolonomyRelationalMorphism(FullTransformationSemigroup(3));
 MappingByFunction( <full transformation monoid of degree 3>, <cascade semigrou\
-p with 4 generators, 2 levels with (4, 3) pts>, function( t ) ... end )
+p with 3 generators, 2 levels with (4, 3) pts>, function( t ) ... end )
 gap> Size(Range(hl));
 30
 gap> S := Semigroup([

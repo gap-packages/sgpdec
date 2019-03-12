@@ -266,7 +266,7 @@ end);
 InstallMethod(HolonomyCascadeSemigroup, "for a skeleton", [IsSkeleton],
 function(sk)
   local S;
-  S := Semigroup(List(GeneratorsOfSemigroup(TransSgp(sk)), t->AsHolonomyCascade(t,sk)));
+  S := Semigroup(List(Generators(TransSgp(sk)), t->AsHolonomyCascade(t,sk)));
   SetSkeletonOf(S,sk);
   SetComponentsOfCascadeProduct(S, HolonomyPermutationResetComponents(sk));
   SetIsHolonomyCascadeSemigroup(S,true);

@@ -104,7 +104,7 @@ for transformation semigroups the holonomy method can be  used (see Chapter <Ref
 gap> T5 := FullTransformationSemigroup(5);
 <full transformation monoid of degree 5>
 gap> S := HolonomyCascadeSemigroup(T5);
-<cascade semigroup with 4 generators, 4 levels with (6, 5, 4, 3) pts>
+<cascade semigroup with 3 generators, 4 levels with (6, 5, 4, 3) pts>
 gap> DisplayHolonomyComponents(SkeletonOf(S));
 1: (5,S5)
 2: (4,S4)
