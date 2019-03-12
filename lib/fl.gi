@@ -32,7 +32,7 @@ local transversals, comps,i,compgens;
   return rec(transversals:=transversals,components:=comps);
 end);
 
-# we want to keep the origianl action of the group to be decomposed
+# we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
 OriginalCosetActionReps := function(G)
