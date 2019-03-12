@@ -35,14 +35,8 @@ end);
 # we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
-OriginalCosetActionReps := function(G)
-local stabrt, stabrtreps,i;
-  stabrt := RightTransversal(G,Stabilizer(G,1));
-  stabrtreps := [];
-  for i in [1..Length(stabrt)] do
-    stabrtreps[1^stabrt[i]] := stabrt[i];
-  od;
-  return stabrtreps;
+OriginalCosetActionReps := function(chain)
+  return RightTransversal(chain[1],chain[Length(chain)]);
 end;
 
 # just a handy abbreviation: getting the representative of an element
@@ -83,16 +77,18 @@ end);
 
 InstallGlobalFunction(FLCascadeGroup,
 function(group_or_chain)
-  local gens,id,cosetactions,G,flG;
+  local gens,id,cosetactions,G,flG,chain;
   if IsGroup(group_or_chain) then
-    cosetactions := CosetActionGroups(ChiefSeries(group_or_chain));
+    chain := ChiefSeries(group_or_chain);
+
     G := group_or_chain;
   elif IsListOfPermGroups(group_or_chain) then
-    cosetactions := CosetActionGroups(group_or_chain);
-    G := group_or_chain[1];
+    chain := group_or_chain;
+    G := chain[1];
   else
     ;#TODO usage message
   fi;
+  cosetactions := CosetActionGroups(chain);
   id := IdentityCascade(cosetactions.components);
   flG := Group(List(GeneratorsOfGroup(G),
                  g->Cascade(cosetactions.components,
@@ -101,7 +97,7 @@ function(group_or_chain)
                                  DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(G));
+  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(chain));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
   return flG;
@@ -110,8 +106,8 @@ end);
 #gives a coordinate representation of an original point
 InstallGlobalFunction(AsFLCoords,
 function(i,FLG)
-  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i],
-                     TransversalsOf(FLG));
+  local g;
+  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], TransversalsOf(FLG));
 end);
 
 #TODO implement AllFLCoords
@@ -119,7 +115,7 @@ end);
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
-  return 1^Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+  return PositionCanonical(OriginalCosetActionRepsOf(FLG),Coords2Perm(cs, TransversalsOf(FLG)) );
 end);
 
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
