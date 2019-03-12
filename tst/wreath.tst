@@ -4,8 +4,8 @@ gap> START_TEST("Sgpdec package: wreath.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
-gap> pairs := [[Z2,Z3], [Z3,S4], [S3,Z2]];;
-gap> triples := [[Z3,Z2,Z2]];;
+gap> pairs := [[Z2,Z3], [S3,Z2]];;
+gap> triples := [[Z2,Z2,Z3]];;
 
 # checking isomorphism with the stock version of group wreath product
 gap> ForAll(pairs, function(p)
