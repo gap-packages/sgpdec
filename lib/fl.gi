@@ -35,9 +35,6 @@ end);
 # we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
-# OriginalCosetActionReps := function(chain)
-#   return RightTransversal(chain[1],chain[Length(chain)]);
-# end;
 OriginalCosetActionReps := function(G,x)
   local stabrt, stabrtreps,i;
   stabrt := RightTransversal(G,Stabilizer(G,x));
@@ -231,9 +228,7 @@ TestFLAction := function(states, G, FL)
     for g in Generators(G) do
       FLx := AsFLCoords(x,FL);
       FLg := AsFLCascade(g,FL);
-      if (x^g) = AsFLPoint(FLx^FLg, FL) then
-        ;
-      else
+      if (x^g) <> AsFLPoint(FLx^FLg, FL) then
         Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
       fi;
     od;
