@@ -35,8 +35,17 @@ end);
 # we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
-OriginalCosetActionReps := function(chain)
-  return RightTransversal(chain[1],chain[Length(chain)]);
+# OriginalCosetActionReps := function(chain)
+#   return RightTransversal(chain[1],chain[Length(chain)]);
+# end;
+OriginalCosetActionReps := function(G,x)
+  local stabrt, stabrtreps,i;
+  stabrt := RightTransversal(G,Stabilizer(G,x));
+  stabrtreps := [];
+  for i in [1..Length(stabrt)] do
+    stabrtreps[x^stabrt[i]] := stabrt[i];
+  od;
+  return stabrtreps;
 end;
 
 # just a handy abbreviation: getting the representative of an element
@@ -75,19 +84,21 @@ function(cs, transversals)
     return Product(Reversed(Coords2CosetReps(cs, transversals)),());
 end);
 
-InstallGlobalFunction(FLCascadeGroup,
-function(group_or_chain)
-  local gens,id,cosetactions,G,flG,chain;
-  if IsGroup(group_or_chain) then
-    chain := ChiefSeries(group_or_chain);
+InstallMethod(FLCascadeGroup, "for a chain and stabilized point",
+              [IsList, IsPosInt],
+function(chain, x)
+  local gens,id,cosetactions,G,flG;
+  # if IsGroup(group_or_chain) then
+  #   chain := ChiefSeries(group_or_chain);
 
-    G := group_or_chain;
-  elif IsListOfPermGroups(group_or_chain) then
-    chain := group_or_chain;
-    G := chain[1];
-  else
-    ;#TODO usage message
-  fi;
+  #   G := group_or_chain;
+  # elif IsListOfPermGroups(group_or_chain) then
+  #   chain := group_or_chain;
+  #   G := chain[1];
+  # else
+  #   ;#TODO usage message
+  # fi;
+  G := chain[1];
   cosetactions := CosetActionGroups(chain);
   id := IdentityCascade(cosetactions.components);
   flG := Group(List(GeneratorsOfGroup(G),
@@ -97,24 +108,41 @@ function(group_or_chain)
                                  DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(chain));
+  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(G,x));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
+  SetStabilizedPoint(flG, x);
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
   return flG;
 end);
 
 #gives a coordinate representation of an original point
 InstallGlobalFunction(AsFLCoords,
-function(i,FLG)
-  local g;
-  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], TransversalsOf(FLG));
-end);
+                     function(i,FLG)
+                       local st;
+                       st := TransversalsOf(FLG);
+                       return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
+                     end);
+
+#TODO implement AllFLCoords
 
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
-function(cs,FLG)
-  return PositionCanonical(OriginalCosetActionRepsOf(FLG),Coords2Perm(cs, TransversalsOf(FLG)) );
-end);
+                     function(cs,FLG)
+                       return StabilizedPoint(FLG)^Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+                     end);
+
+#gives a coordinate representation of an original point
+# InstallGlobalFunction(AsFLCoords,
+# function(i,FLG)
+#   local g;
+#   return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], TransversalsOf(FLG));
+# end);
+
+# #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
+# InstallGlobalFunction(AsFLPoint,
+# function(cs,FLG)
+#   return PositionCanonical(OriginalCosetActionRepsOf(FLG),Coords2Perm(cs, TransversalsOf(FLG)) );
+# end);
 
 AsFLCascade := function(g, FLG)
   return Cascade(ComponentsOfCascadeProduct(FLG),
@@ -204,12 +232,10 @@ local decoded, cosetrepr, builders;
 end);
 
 
-TestFL := function(G)
-  local states, x, g, FL, FLx, FLg;
-  states := MovedPoints(G);
-  FL := FLCascadeGroup(G);
+TestFL := function(states, G, FL)
+  local  x, g, FLx, FLg;
   for x in states do
-    for g in G do
+    for g in Generators(G) do
       FLx := AsFLCoords(x,FL);
       FLg := AsFLCascade(g,FL);
       if (x^g) = AsFLPoint(FLx^FLg, FL) then
