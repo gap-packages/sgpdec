@@ -14,7 +14,7 @@ DeclareProperty("IsFLCascadeGroup",IsCascadeGroup);
 
 DeclareOperation("FLCascadeGroup", [IsList, IsPosInt]);
 
-DeclareGlobalFunction("CosetActionGroups");
+DeclareGlobalFunction("FLComponents");
 DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
 DeclareGlobalFunction("AsFLPoint");
@@ -25,5 +25,5 @@ DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
-DeclareAttribute("OriginalCosetActionRepsOf", IsFLCascadeGroup);
+DeclareAttribute("BottomCosetActionRepsOf", IsFLCascadeGroup);
 DeclareAttribute("StabilizedPoint", IsFLCascadeGroup);

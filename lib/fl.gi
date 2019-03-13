@@ -12,7 +12,7 @@
 
 # for a subgroupchain this calculates the right transversals and a group action
 # on the cosets will define the components, thus the cosets are the coord vals
-InstallGlobalFunction(CosetActionGroups,
+InstallGlobalFunction(FLComponents,
 function(subgroupchain)
 local transversals, comps,i,compgens;
   transversals := [];
@@ -35,7 +35,7 @@ end);
 # we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
-OriginalCosetActionReps := function(G,x)
+BottomCosetActionReps := function(G,x)
   local stabrt, stabrtreps,i;
   stabrt := RightTransversal(G,Stabilizer(G,x));
   stabrtreps := [];
@@ -86,7 +86,7 @@ InstallMethod(FLCascadeGroup, "for a chain and stabilized point",
 function(chain, x)
   local gens,id,cosetactions,G,flG;
   G := chain[1];
-  cosetactions := CosetActionGroups(chain);
+  cosetactions := FLComponents(chain);
   id := IdentityCascade(cosetactions.components);
   flG := Group(List(GeneratorsOfGroup(G),
                  g->Cascade(cosetactions.components,
@@ -95,7 +95,7 @@ function(chain, x)
                                  DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetOriginalCosetActionRepsOf(flG, OriginalCosetActionReps(G,x));
+  SetBottomCosetActionRepsOf(flG, BottomCosetActionReps(G,x));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
   SetStabilizedPoint(flG, x);
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
@@ -121,7 +121,7 @@ InstallGlobalFunction(AsFLCoords,
 function(i,FLG)
   local st;
   st := TransversalsOf(FLG);
-  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
+  return Perm2Coords(BottomCosetActionRepsOf(FLG)[i], st);
 end);
 
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
@@ -140,7 +140,7 @@ AsFLCascade := function(g, FLG)
 end;
 
 AsFLPermutation := function(co, FLG)
-  return PermList(List([1..Size(OriginalCosetActionRepsOf(FLG))],
+  return PermList(List([1..Size(BottomCosetActionRepsOf(FLG))],
                        x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
 end;
 

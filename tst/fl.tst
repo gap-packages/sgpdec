@@ -37,7 +37,7 @@ gap> #creating a subgroup chain from the chief series
 gap> subgroupchain := ShallowCopy(ChiefSeries(pocket_cube));;
 gap> Remove(subgroupchain,2);;
 gap> #getting the hierarchical components
-gap> cags := CosetActionGroups(subgroupchain);;
+gap> cags := FLComponents(subgroupchain);;
 gap> StructureDescription(cags.components[1]);
 "S8"
 gap> StructureDescription(cags.components[2]);
