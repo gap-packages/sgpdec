@@ -254,3 +254,18 @@ TestFLAction := function(states, G, FL)
   od;
   return true;
 end;  
+
+TestFLCosetAction := function(G, FL)
+  local  x, g, FLx, FLg;
+  for x in BottomCosetActionRepsOf(FL) do
+    for g in Generators(G) do
+      FLx := Perm2Coords(x,TransversalsOf(FL));
+      FLg := AsFLCascade(g,FL);
+      if PositionCanonical(BottomCosetActionRepsOf(FL), x*g) <> AsFLPoint(FLx^FLg, FL) then
+        Print(PositionCanonical(BottomCosetActionRepsOf(FL), x*g),
+              " expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+      fi;
+    od;
+  od;
+  return true;
+end;  
