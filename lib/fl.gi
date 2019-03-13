@@ -88,16 +88,6 @@ InstallMethod(FLCascadeGroup, "for a chain and stabilized point",
               [IsList, IsPosInt],
 function(chain, x)
   local gens,id,cosetactions,G,flG;
-  # if IsGroup(group_or_chain) then
-  #   chain := ChiefSeries(group_or_chain);
-
-  #   G := group_or_chain;
-  # elif IsListOfPermGroups(group_or_chain) then
-  #   chain := group_or_chain;
-  #   G := chain[1];
-  # else
-  #   ;#TODO usage message
-  # fi;
   G := chain[1];
   cosetactions := CosetActionGroups(chain);
   id := IdentityCascade(cosetactions.components);
@@ -115,34 +105,35 @@ function(chain, x)
   return flG;
 end);
 
+InstallOtherMethod(FLCascadeGroup,
+                   "for a chain",
+                   [IsList],
+function(chain)
+  return FLCascadeGroup(chain,1);
+end);
+
+InstallOtherMethod(FLCascadeGroup,
+                   "for a group",
+                   [IsGroup],
+function(G)
+  return FLCascadeGroup(ChiefSeries(G),1);
+end);
+
 #gives a coordinate representation of an original point
 InstallGlobalFunction(AsFLCoords,
-                     function(i,FLG)
-                       local st;
-                       st := TransversalsOf(FLG);
-                       return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
-                     end);
-
-#TODO implement AllFLCoords
+function(i,FLG)
+  local st;
+  st := TransversalsOf(FLG);
+  return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], st);
+end);
 
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
-                     function(cs,FLG)
-                       return StabilizedPoint(FLG)^Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
-                     end);
-
-#gives a coordinate representation of an original point
-# InstallGlobalFunction(AsFLCoords,
-# function(i,FLG)
-#   local g;
-#   return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], TransversalsOf(FLG));
-# end);
-
-# #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
-# InstallGlobalFunction(AsFLPoint,
-# function(cs,FLG)
-#   return PositionCanonical(OriginalCosetActionRepsOf(FLG),Coords2Perm(cs, TransversalsOf(FLG)) );
-# end);
+function(cs,FLG)
+  return StabilizedPoint(FLG)
+         ^
+         Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+end);
 
 AsFLCascade := function(g, FLG)
   return Cascade(ComponentsOfCascadeProduct(FLG),

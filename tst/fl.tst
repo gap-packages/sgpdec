@@ -4,7 +4,7 @@ gap> LoadPackage("sgpdec", false);;
 gap> flG := FLCascadeGroup(SymmetricGroup(IsPermGroup,3));
 <cascade group with 2 generators, 2 levels with (2, 3) pts>
 gap> Range(IsomorphismPermGroup(flG));
-Group([ (1,3,5)(2,4,6), (1,6)(2,5)(3,4) ])
+Group([ (1,2,3), (1,2) ])
 gap> Range(IsomorphismPermGroup(Group(GeneratorsOfGroup(flG))));
 Group([ (1,3,2)(4,5,6), (1,5)(2,6)(3,4) ])
 gap> G := DihedralGroup(IsPermGroup,24);
