@@ -19,7 +19,6 @@ matrix:
   include:
     - env: GAPBRANCH=master ABI=64
     - env: GAPBRANCH=master ABI=32
-    - env: GAPBRANCH=stable-4.9
     - env: GAPBRANCH=stable-4.10
 
 branches:
