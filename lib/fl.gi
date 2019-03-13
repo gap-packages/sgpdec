@@ -82,25 +82,31 @@ function(cs, transversals)
     return Product(Reversed(Coords2CosetReps(cs, transversals)),());
 end);
 
-InstallMethod(FLCascadeGroup,
-"for a subgroup chain (with a point stabilizer at the bottom) and stabilized point",
-[IsList, IsPosInt],
-function(chain, x)
-  local gens,id,cosetactions,G,flG;
+CreateFLCascadeGroup := function(chain)
+local gens,id,cosetactions,G,flG;
   G := chain[1];
   cosetactions := FLComponents(chain);
   id := IdentityCascade(cosetactions.components);
   flG := Group(List(GeneratorsOfGroup(G),
-                 g->Cascade(cosetactions.components,
-                         FLDependencies(g,
-                                 cosetactions.transversals,
-                                 DomainOf(id)))));
+                    g->Cascade(cosetactions.components,
+                               FLDependencies(g,
+                                              cosetactions.transversals,
+                                              DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetBottomCosetActionRepsOf(flG, BottomCosetActionReps(G,chain[Length(chain)],x));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
-  SetStabilizedPoint(flG, x);
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
+  return flG;
+end;
+
+InstallMethod(FLCascadeGroup,
+"for a subgroup chain (with a point stabilizer at the bottom) and stabilized point",
+[IsList, IsPosInt],
+function(chain, x)
+  local flG;
+  flG := CreateFLCascadeGroup(chain);
+  SetBottomCosetActionRepsOf(flG, BottomCosetActionReps(chain[1],chain[Length(chain)],x));
+  SetStabilizedPoint(flG, x);
   return flG;
 end);
 
@@ -108,7 +114,11 @@ InstallOtherMethod(FLCascadeGroup,
                    "for a subgroup chain",
                    [IsList],
 function(chain)
-  return FLCascadeGroup(chain,1);
+  local flG;
+  flG := CreateFLCascadeGroup(chain);
+  SetBottomCosetActionRepsOf(flG, RightTransversal(chain[1],chain[Length(chain)]));
+  SetStabilizedPoint(flG, 1);
+  return flG;
 end);
 
 InstallOtherMethod(FLCascadeGroup,
