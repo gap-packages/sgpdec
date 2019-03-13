@@ -35,9 +35,9 @@ end);
 # we want to keep the original action of the group to be decomposed
 # since any action is a coset action all we need is the coset space
 # of the stabilizer of a point
-BottomCosetActionReps := function(G,x)
+BottomCosetActionReps := function(G,bottomG,x)
   local stabrt, stabrtreps,i;
-  stabrt := RightTransversal(G,Stabilizer(G,x));
+  stabrt := RightTransversal(G,bottomG);
   stabrtreps := [];
   for i in [1..Length(stabrt)] do
     stabrtreps[x^stabrt[i]] := stabrt[i];
@@ -97,7 +97,7 @@ function(chain, x)
                                  DomainOf(id)))));
   SetIsFLCascadeGroup(flG,true);
   SetTransversalsOf(flG, cosetactions.transversals);
-  SetBottomCosetActionRepsOf(flG, BottomCosetActionReps(G,x));
+  SetBottomCosetActionRepsOf(flG, BottomCosetActionReps(G,chain[Length(chain)],x));
   SetComponentsOfCascadeProduct(flG,cosetactions.components);
   SetStabilizedPoint(flG, x);
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
