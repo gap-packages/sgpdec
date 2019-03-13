@@ -117,7 +117,6 @@ function(chain)
   local flG;
   flG := CreateFLCascadeGroup(chain);
   SetBottomCosetActionRepsOf(flG, RightTransversal(chain[1],chain[Length(chain)]));
-  SetStabilizedPoint(flG, 1);
   return flG;
 end);
 
