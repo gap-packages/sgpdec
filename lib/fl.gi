@@ -139,9 +139,14 @@ end);
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
-  return StabilizedPoint(FLG)
-         ^
-         Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+  if HasStabilizedPoint(FLG) then                     
+    return StabilizedPoint(FLG)
+           ^
+           Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+  else
+    return PositionCanonical(BottomCosetActionRepsOf(FLG),
+                             Coords2Perm(cs, TransversalsOf(FLG)));
+  fi;
 end);
 
 # group element to perm cascade
