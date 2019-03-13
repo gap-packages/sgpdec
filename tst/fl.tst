@@ -55,4 +55,10 @@ gap> halfsolvedcoords := Perm2Coords(halfsolved,cags.transversals);
 [ 1, 552 ]
 gap> halfsolved * levelkillers[2] = ();
 true
+gap> Stab2 := Stabilizer(pocket_cube,2);;
+gap> StabF := Stabilizer(pocket_cube,[2,14,17], OnSets);;
+gap> PC := FLCascadeGroup([pocket_cube, StabF, Stab2],2);
+<cascade group with 6 generators, 2 levels with (8, 3) pts>
+gap> TestFLAction([1..24], pocket_cube, PC);
+true
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);

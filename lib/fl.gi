@@ -222,19 +222,21 @@ local decoded, cosetrepr, builders;
   return builders;
 end);
 
-
-TestFL := function(states, G, FL)
+# testing the group action isomorphism, only for transitive actions
+# where the last element of the chain is a stabilizer of a point
+# and that point is given
+TestFLAction := function(states, G, FL)
   local  x, g, FLx, FLg;
   for x in states do
     for g in Generators(G) do
       FLx := AsFLCoords(x,FL);
       FLg := AsFLCascade(g,FL);
       if (x^g) = AsFLPoint(FLx^FLg, FL) then
-        Print("#\c");
+        ;
       else
         Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
       fi;
     od;
   od;
-  Print("\n");
+  return true;
 end;  
