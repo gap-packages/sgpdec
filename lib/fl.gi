@@ -123,19 +123,19 @@ AsFLCascade := function(g, FLG)
                                 DomainOf(FLG)));  
 end;
 
+AsFLPermutation := function(co, FLG)
+  return PermList(List([1..Size(OriginalCosetActionRepsOf(FLG))],
+                       x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
+end;
+
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
 [IsFLCascadeGroup],
 function(FLG)
   local H,f,invf;
-  f := co -> PermList(List([1..Size(OriginalCosetActionRepsOf(FLG))],
-                   x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
+  f := co -> AsFLPermutation(co, FLG);
   invf := g -> AsFLCascade(g,FLG);
-  H:=Group(List(GeneratorsOfGroup(FLG),f));
-  return MagmaIsomorphismByFunctionsNC(
-                 FLG,
-                 H,
-                 f,
-                 invf);
+  H := Group(List(GeneratorsOfGroup(FLG),f));
+  return MagmaIsomorphismByFunctionsNC(FLG, H, f, invf);
 end);
 
 # s - state (list), g - group element to be lifted,
