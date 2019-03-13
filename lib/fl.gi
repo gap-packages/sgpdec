@@ -44,6 +44,7 @@ BottomCosetActionReps := function(G,x)
   od;
   return stabrtreps;
 end;
+MakeReadOnlyGlobal("BottomCosetActionReps");
 
 # just a handy abbreviation: getting the representative of an element
 CosetRep := function(g,transversal)
@@ -81,8 +82,9 @@ function(cs, transversals)
     return Product(Reversed(Coords2CosetReps(cs, transversals)),());
 end);
 
-InstallMethod(FLCascadeGroup, "for a chain and stabilized point",
-              [IsList, IsPosInt],
+InstallMethod(FLCascadeGroup,
+"for a subgroup chain (with a point stabilizer at the bottom) and stabilized point",
+[IsList, IsPosInt],
 function(chain, x)
   local gens,id,cosetactions,G,flG;
   G := chain[1];
@@ -103,7 +105,7 @@ function(chain, x)
 end);
 
 InstallOtherMethod(FLCascadeGroup,
-                   "for a chain",
+                   "for a subgroup chain",
                    [IsList],
 function(chain)
   return FLCascadeGroup(chain,1);
@@ -132,17 +134,20 @@ function(cs,FLG)
          Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
 end);
 
-AsFLCascade := function(g, FLG)
+# group element to perm cascade
+InstallGlobalFunction(AsFLCascade,
+function(g, FLG)
   return Cascade(ComponentsOfCascadeProduct(FLG),
                  FLDependencies(g,
                                 TransversalsOf(FLG),
                                 DomainOf(FLG)));  
-end;
+end);
 
-AsFLPermutation := function(co, FLG)
+InstallGlobalFunction(AsFLPermutation,
+function(co, FLG)
   return PermList(List([1..Size(BottomCosetActionRepsOf(FLG))],
                        x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
-end;
+end);
 
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
 [IsFLCascadeGroup],
