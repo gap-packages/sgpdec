@@ -110,27 +110,29 @@ function(i,FLG)
   return Perm2Coords(OriginalCosetActionRepsOf(FLG)[i], TransversalsOf(FLG));
 end);
 
-#TODO implement AllFLCoords
-
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
   return PositionCanonical(OriginalCosetActionRepsOf(FLG),Coords2Perm(cs, TransversalsOf(FLG)) );
 end);
 
+AsFLCascade := function(g, FLG)
+  return Cascade(ComponentsOfCascadeProduct(FLG),
+                 FLDependencies(g,
+                                TransversalsOf(FLG),
+                                DomainOf(FLG)));  
+end;
+
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
 [IsFLCascadeGroup],
-function(G)
+function(FLG)
   local H,f,invf;
-  f := co -> PermList(List([1..Size(OriginalCosetActionRepsOf(G))],
-                   x-> AsFLPoint(OnCoordinates(AsFLCoords(x,G),co),G)));
-  invf := g->Cascade(ComponentsOfCascadeProduct(G),
-                  FLDependencies(g,
-                          TransversalsOf(G),
-                          DomainOf(G)));
-  H:=Group(List(GeneratorsOfGroup(G),f));
+  f := co -> PermList(List([1..Size(OriginalCosetActionRepsOf(FLG))],
+                   x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
+  invf := g -> AsFLCascade(g,FLG);
+  H:=Group(List(GeneratorsOfGroup(FLG),f));
   return MagmaIsomorphismByFunctionsNC(
-                 G,
+                 FLG,
                  H,
                  f,
                  invf);
@@ -200,3 +202,10 @@ local decoded, cosetrepr, builders;
   od;
   return builders;
 end);
+
+
+TestFL := function(G)
+  local states, x, g, FL;
+  states := MovedPoints(G);
+  FL := FLCascadeGroup(G);  
+end;  
