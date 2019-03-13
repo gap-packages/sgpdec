@@ -205,7 +205,19 @@ end);
 
 
 TestFL := function(G)
-  local states, x, g, FL;
+  local states, x, g, FL, FLx, FLg;
   states := MovedPoints(G);
-  FL := FLCascadeGroup(G);  
+  FL := FLCascadeGroup(G);
+  for x in states do
+    for g in G do
+      FLx := AsFLCoords(x,FL);
+      FLg := AsFLCascade(g,FL);
+      if (x^g) = AsFLPoint(FLx^FLg, FL) then
+        Print("#\c");
+      else
+        Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+      fi;
+    od;
+  od;
+  Print("\n");
 end;  
