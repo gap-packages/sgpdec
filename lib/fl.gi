@@ -254,7 +254,10 @@ TestFLAction := function(states, G, FL)
   od;
   return true;
 end;  
+MakeReadOnlyGlobal("TestFLAction");
 
+# for testing a coset action (for subgroup chains not necessarily ending
+# in a point stabilizer)
 TestFLCosetAction := function(G, FL)
   local  x, g, FLx, FLg;
   for x in BottomCosetActionRepsOf(FL) do
@@ -269,3 +272,4 @@ TestFLCosetAction := function(G, FL)
   od;
   return true;
 end;  
+MakeReadOnlyGlobal("TestFLCosetAction");
