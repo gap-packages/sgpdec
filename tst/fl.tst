@@ -42,14 +42,14 @@ gap> StructureDescription(cags.components[2]);
 "C3 x C3 x C3 x C3 x C3 x C3 x C3"
 gap> #solving the cube from a random state
 gap> scrambled := (1,10,12,6,23,14,16,24)(2,22,19,5,3,21,4,15)(7,9,20,17,11,8,18,13);;
-gap> coordinates := Perm2Coords(scrambled, cags.transversals);
+gap> coordinates := Perm2FLCoords(scrambled, cags.transversals);
 [ 22578, 552 ]
 gap> levelkillers := LevelKillers(coordinates,cags.transversals);
 [ (1,19,22,2,15,9,7,3)(4,21,10,18,24,16,14,23)(5,8,11,17,20,6,12,13), 
   (1,5,18)(3,13,10)(4,6,9)(8,19,24) ]
 gap> halfsolved := scrambled * levelkillers[1];
 (1,18,5)(3,10,13)(4,9,6)(8,24,19)
-gap> halfsolvedcoords := Perm2Coords(halfsolved,cags.transversals);
+gap> halfsolvedcoords := Perm2FLCoords(halfsolved,cags.transversals);
 [ 1, 552 ]
 gap> halfsolved * levelkillers[2] = ();
 true

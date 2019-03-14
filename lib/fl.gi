@@ -57,16 +57,8 @@ CosetRep := function(g,transversal)
 end;
 MakeReadOnlyGlobal("CosetRep");
 
-# decoding the integers back to coset representatives
-Coords2CosetReps := function(cascstate, transversals)
-  return List([1..Size(cascstate)],
-              i -> transversals[i][cascstate[i]]);
-end;
-MakeReadOnlyGlobal("Coords2CosetReps");
 
-# Each cascaded state corresponds to one element (in the regular representation)
-#of the group. This function gives the path corresponding to a group element
-#(through the Lagrange-Frobenius map).
+# a permutation is coordinatized by coset representatives
 InstallGlobalFunction(Perm2Reps,
 function(g, transversals)
   local reps,i;
@@ -79,19 +71,30 @@ function(g, transversals)
   return reps;
 end);
 
-InstallGlobalFunction(Perm2Coords,
-function(g, transversals)
-  local reps;
-  reps := Perm2Reps(g, transversals);
+InstallGlobalFunction(Reps2FLCoords,
+function(reps, transversals)
   #taking the representative elements then coding coset reps as points (indices)
   return List([1..Size(reps)],
               i -> PositionCanonical(transversals[i], reps[i]));
 end);
 
+# decoding the integers back to coset representatives
+InstallGlobalFunction(FLCoords2Reps,
+function(cascstate, transversals)
+  return List([1..Size(cascstate)],
+              i -> transversals[i][cascstate[i]]);
+end);
+
+# permutation converted coset reps, then integer encoding
+InstallGlobalFunction(Perm2FLCoords,
+function(g, transversals)
+  return Reps2FLCoords(Perm2Reps(g, transversals),transversals);
+end);
+
 #mapping down is just multiplying together
-InstallGlobalFunction(Coords2Perm,
+InstallGlobalFunction(FLCoords2Perm,
 function(cs, transversals)
-    return Product(Reversed(Coords2CosetReps(cs, transversals)),());
+    return Product(Reversed(FLCoords2Reps(cs, transversals)),());
 end);
 
 CreateFLCascadeGroup := function(chain)
@@ -145,7 +148,7 @@ InstallGlobalFunction(AsFLCoords,
 function(i,FLG)
   local st;
   st := TransversalsOf(FLG);
-  return Perm2Coords(BottomCosetActionRepsOf(FLG)[i], st);
+  return Perm2FLCoords(BottomCosetActionRepsOf(FLG)[i], st);
 end);
 
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
@@ -154,10 +157,10 @@ function(cs,FLG)
   if HasStabilizedPoint(FLG) then                     
     return StabilizedPoint(FLG)
            ^
-           Product(Reversed(Coords2CosetReps(cs,TransversalsOf(FLG))),());
+           Product(Reversed(FLCoords2Reps(cs,TransversalsOf(FLG))),());
   else
     return PositionCanonical(BottomCosetActionRepsOf(FLG),
-                             Coords2Perm(cs, TransversalsOf(FLG)));
+                             FLCoords2Perm(cs, TransversalsOf(FLG)));
   fi;
 end);
 
@@ -190,7 +193,7 @@ end);
 InstallGlobalFunction(FLComponentActions,
 function(g,s, transversals)
   local fudges,i;
-  s := Coords2CosetReps(s,transversals);
+  s := FLCoords2Reps(s,transversals);
   #on the top level we have simply g
   fudges := [g];
   #then going down to deeper levels
@@ -232,7 +235,7 @@ end);
 InstallGlobalFunction(LevelKillers,
 function(cs, transversals)
 local decoded, cosetrepr, killers;
-  decoded := Coords2CosetReps(cs, transversals);
+  decoded := FLCoords2Reps(cs, transversals);
   killers := [];
   for cosetrepr in decoded do
     Add(killers,Inverse(cosetrepr));
@@ -243,7 +246,7 @@ end);
 InstallGlobalFunction(LevelBuilders,
 function(cs, transversals)
 local decoded, cosetrepr, builders;
-  decoded := Coords2CosetReps(cs, transversals);
+  decoded := FLCoords2Reps(cs, transversals);
   builders := [];
   for cosetrepr in decoded do
     Add(builders,cosetrepr);
@@ -275,7 +278,7 @@ TestFLCosetAction := function(G, FL)
   local  x, g, FLx, FLg;
   for x in BottomCosetActionRepsOf(FL) do
     for g in Generators(G) do
-      FLx := Perm2Coords(x,TransversalsOf(FL));
+      FLx := Perm2FLCoords(x,TransversalsOf(FL));
       FLg := AsFLCascade(g,FL);
       if PositionCanonical(BottomCosetActionRepsOf(FL), x*g) <> AsFLPoint(FLx^FLg, FL) then
         Print(PositionCanonical(BottomCosetActionRepsOf(FL), x*g),
