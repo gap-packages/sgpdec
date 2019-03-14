@@ -459,7 +459,9 @@ gap> Size(P);
 
 <#GAPDoc Label="FLCascadeGroup">
   <ManSection>
-    <Func Name="FLCascadeGroup" Arg="G"/>
+    <Oper Name="FLCascadeGroup" Arg="chain, point"/>
+    <Oper Name="FLCascadeGroup" Arg="chain"/>
+    <Oper Name="FLCascadeGroup" Arg="group"/>
     <Returns>Cascade group isomorphic to <C>G</C>.</Returns>
     <Description>
 <Example>

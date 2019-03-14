@@ -26,6 +26,7 @@ Dot := function(objects, labels)
     fi;
   od;
 end;
+MakeReadOnlyGlobal("Dot");
 
 #TODO VIZ has List2CommaSeparatedString
 List2Label := function(l)
@@ -36,6 +37,7 @@ local str;
   str := ReplacedString(str," ","");
   return str;
 end;
+MakeReadOnlyGlobal("List2Label");
 
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeletonForwardOrbit,
