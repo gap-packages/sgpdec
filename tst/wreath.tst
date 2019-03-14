@@ -21,8 +21,8 @@ gap> ForAll(triples, function(t)
 >  A := t[1];
 >  B := t[2];
 >  C := t[3];
->  AB := Image(IsomorphismPermGroup(GroupWreathProduct(A,B)));
->  BC := Image(IsomorphismPermGroup(GroupWreathProduct(B,C)));
+>  AB := Image(IsomorphismPermGroup(GroupWreathProduct([A,B])));
+>  BC := Image(IsomorphismPermGroup(GroupWreathProduct([B,C])));
 >  ABC := Image(IsomorphismPermGroup(GroupWreathProduct([A,B,C])));
 >  AB_C := Image(IsomorphismPermGroup(GroupWreathProduct([AB,C])));
 >  A_BC := Image(IsomorphismPermGroup(GroupWreathProduct([A,BC])));
