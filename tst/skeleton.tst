@@ -27,6 +27,15 @@ gap> ExtendedImageSet(sk);
 gap> d := DegreeOfSkeleton(sk);;
 gap> ForAll([1..d], x -> NrChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(ChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
 true
+gap> DominatingChains(sk, [FiniteSet([1],6)]);
+[ [ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {1,2}, {1} ], 
+  [ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {1,3}, {1} ], 
+  [ {1,2,3,4,5,6}, {1,2,3,4}, {1,4}, {1} ] ]
+gap> sk := Skeleton(Semigroup(Transformation([5,5,5,5,5])));;
+gap> ExtendedImageSet(sk);
+[ {1,2,3,4,5}, {1}, {2}, {3}, {4}, {5} ]
+gap> NonImageSingletonClasses(sk);
+[ [ {4} ], [ {3} ], [ {2} ], [ {1} ] ]
 gap> SgpDecFiniteSetDisplayOff();;
 
 #
