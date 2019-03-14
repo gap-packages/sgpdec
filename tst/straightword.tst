@@ -12,6 +12,28 @@ true
 gap> BuildByWord(w,gens,One(gens[1]),\*)
 >       = BuildByWord(rw,gens,One(gens[1]),\*);
 true
+gap> l := [];; StraightWords(IdentityTransformation, Generators(FullTransformationSemigroup(2)), \*, SWP_SimpleCollector(l),10);;
+gap> l;
+[ [  ], [ 1 ], [ 1, 1 ], [ 1, 2 ], [ 1, 2, 1 ], [ 2 ], [ 2, 1 ] ]
+gap> StraightWords(IdentityTransformation, Generators(FullTransformationSemigroup(2)), \*, SWP_Printer,10);;
+IdentityTransformation:[  ]
+Transformation( [ 2, 1 ] ):[ 1 ]
+IdentityTransformation:[ 1, 1 ]
+Transformation( [ 1, 1 ] ):[ 1, 2 ]
+Transformation( [ 2, 2 ] ):[ 1, 2, 1 ]
+Transformation( [ 1, 1 ] ):[ 2 ]
+Transformation( [ 2, 2 ] ):[ 2, 1 ]
+gap> l := [];; StraightWords(IdentityTransformation, Generators(FullTransformationSemigroup(2)), \*, SWP_Search(l,Transformation([1,2])),10);;
+gap> l;
+[ [  ], [ 1, 1 ] ]
+gap> l := [];; StraightWords(IdentityTransformation, Generators(FullTransformationSemigroup(2)), \*, SWP_WordPointPairCollector(l),10);;
+gap> l;
+[ [ [  ], IdentityTransformation ], [ [ 1 ], Transformation( [ 2, 1 ] ) ], 
+  [ [ 1, 1 ], IdentityTransformation ], 
+  [ [ 1, 2 ], Transformation( [ 1, 1 ] ) ], 
+  [ [ 1, 2, 1 ], Transformation( [ 2, 2 ] ) ], 
+  [ [ 2 ], Transformation( [ 1, 1 ] ) ], 
+  [ [ 2, 1 ], Transformation( [ 2, 2 ] ) ] ]
 
 #
 gap> STOP_TEST( "Sgpdec package: straightword.tst", 10000);
