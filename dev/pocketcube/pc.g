@@ -16,7 +16,8 @@ TestFLAction([1..24],PocketCube,FL1);
 StabCorner2 := Stabilizer(Stab1, [2,14,17],OnSets);
 Stab2 := Stabilizer(StabCorner2, 2);
 FL2 := FLCascadeGroup([Stab1, StabCorner2,Stab2],2);
-TestFLAction(Difference([1..24],[1,5,18]),Stab1,FL2);
+#TestFLAction(Difference([1..24],[1,5,18]),Stab1,FL2);
+TestFLAction(ValidPoints(FL2),Stab1,FL2);
 
 StabCorner3 := Stabilizer(Stab2, [3,10,13],OnSets);
 Stab3 := Stabilizer(StabCorner3, 3);

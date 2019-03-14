@@ -51,6 +51,12 @@ BottomCosetActionReps := function(G,bottomG,x)
 end;
 MakeReadOnlyGlobal("BottomCosetActionReps");
 
+ValidPoints := function(FLG)
+  local l;
+  l := BottomCosetActionRepsOf(FLG);
+  return Filtered([1..Length(l)], x -> IsBound(l[x]));
+end;  
+
 # just a handy abbreviation: getting the representative of an element
 CosetRep := function(g,transversal)
   return transversal[PositionCanonical(transversal,g)];
@@ -175,8 +181,15 @@ end);
 
 InstallGlobalFunction(AsFLPermutation,
 function(co, FLG)
-  return PermList(List([1..Size(BottomCosetActionRepsOf(FLG))],
-                       x-> AsFLPoint(OnCoordinates(AsFLCoords(x,FLG),co),FLG)));
+  local l,i;
+  l := [];
+  for i in  ValidPoints(FLG) do
+    l[i] := AsFLPoint(OnCoordinates(AsFLCoords(i,FLG),co),FLG);
+  od;
+  return PermList(List([1..Size(l)],
+  function(x)
+    if IsBound(l[x]) then return l[x]; else return x;fi;
+  end));
 end);
 
 InstallMethod(IsomorphismPermGroup, "for a Frobenius-Lagrange cascade group",
