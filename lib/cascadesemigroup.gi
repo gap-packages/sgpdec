@@ -77,7 +77,8 @@ function(arg)
                       g -> AsTransformation(g,n)));
     fi;
   od;
-
+  
+  #TODO do this properly, since AsList(FullCascadeSemigroup([FF,FF,FF])) does not seem to terminate
   filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
   s:=Objectify( NewType( CollectionsFamily(TransCascadeFamily), filts ), rec());
   SetComponentsOfCascadeProduct(s, arg);
@@ -136,7 +137,7 @@ function(s)
     od;
   od;
 
-  return gens;
+  return DuplicateFreeList(gens);
 end);
 
 ################################################################################
