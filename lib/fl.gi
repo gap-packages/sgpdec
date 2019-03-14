@@ -267,6 +267,7 @@ TestFLCosetAction := function(G, FL)
       if PositionCanonical(BottomCosetActionRepsOf(FL), x*g) <> AsFLPoint(FLx^FLg, FL) then
         Print(PositionCanonical(BottomCosetActionRepsOf(FL), x*g),
               " expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+        return false;
       fi;
     od;
   od;

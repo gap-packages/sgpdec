@@ -59,4 +59,8 @@ gap> PC := FLCascadeGroup([pocket_cube, StabF, Stab2],2);
 <cascade group with 6 generators, 2 levels with (8, 3) pts>
 gap> TestFLAction([1..24], pocket_cube, PC);
 true
+gap> S4 := SymmetricGroup(4);;
+gap> FL := FLCascadeGroup(ChiefSeries(S4));;
+gap> TestFLCosetAction(S4,FL);
+true
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);
