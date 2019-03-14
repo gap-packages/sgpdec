@@ -18,4 +18,9 @@ Stab2 := Stabilizer(StabCorner2, 2);
 FL2 := FLCascadeGroup([Stab1, StabCorner2,Stab2],2);
 TestFLAction(Difference([1..24],[1,5,18]),Stab1,FL2);
 
+StabCorner3 := Stabilizer(Stab2, [3,10,13],OnSets);
+Stab3 := Stabilizer(StabCorner3, 3);
+FL3 := FLCascadeGroup([Stab2, StabCorner3,Stab3],3);
+TestFLAction(Difference([1..24],[1,5,18,2,14,17]),Stab2,FL3);
+
 #and so on...
