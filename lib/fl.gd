@@ -21,6 +21,7 @@ DeclareGlobalFunction("AsFLPoint");
 DeclareGlobalFunction("AsFLCoords");
 DeclareGlobalFunction("AsFLCascade");
 DeclareGlobalFunction("AsFLPermutation");
+DeclareGlobalFunction("Perm2Reps");
 DeclareGlobalFunction("Perm2Coords");
 DeclareGlobalFunction("Coords2Perm");
 DeclareGlobalFunction("LevelKillers");

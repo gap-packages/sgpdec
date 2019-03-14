@@ -10,6 +10,11 @@
 ## acting on coset spaces determined by a subgroup chain.
 ##
 
+# coords integers encoding coset representatives
+# reps coset representatives
+# point state
+# perm permutation
+
 # for a subgroupchain this calculates the right transversals and a group action
 # on the cosets will define the components, thus the cosets are the coord vals
 InstallGlobalFunction(FLComponents,
@@ -62,18 +67,25 @@ MakeReadOnlyGlobal("Coords2CosetReps");
 # Each cascaded state corresponds to one element (in the regular representation)
 #of the group. This function gives the path corresponding to a group element
 #(through the Lagrange-Frobenius map).
-InstallGlobalFunction(Perm2Coords,
+InstallGlobalFunction(Perm2Reps,
 function(g, transversals)
-local coords,i;
+  local reps,i;
   #on the top level we have simply g
-  coords := [g];
+  reps := [g];
   #then going down to deeper levels
   for i in [1..Length(transversals)-1] do
-    Add(coords, coords[i] * Inverse(CosetRep(coords[i],transversals[i])));
+    Add(reps, reps[i] * Inverse(CosetRep(reps[i],transversals[i])));
   od;
+  return reps;
+end);
+
+InstallGlobalFunction(Perm2Coords,
+function(g, transversals)
+  local reps;
+  reps := Perm2Reps(g, transversals);
   #taking the representative elements then coding coset reps as points (indices)
-  return List([1..Size(coords)],
-              i -> PositionCanonical(transversals[i], coords[i]));
+  return List([1..Size(reps)],
+              i -> PositionCanonical(transversals[i], reps[i]));
 end);
 
 #mapping down is just multiplying together
