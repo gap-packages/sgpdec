@@ -2,7 +2,7 @@
 ##
 ## skeletonviz.gi           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -246,6 +246,86 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
     fi;
   od;
   AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
+
+InstallGlobalFunction(DotChainActions,
+function(sk, t)
+  local f,str,out;
+  #-----------------------------------------------------------------------------
+  f := function(prefix, indices, parentnode)
+    local tiles, i, node;
+    node := Concatenation("n", ReplacedString(String(indices),",","_"));
+    RemoveCharacters(node, "[] ");
+    PrintTo(out, node, "[shape=record,label=\"",
+            TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t)),
+            "\",color=\"black\"];\n");
+    if not IsEmpty(parentnode) then
+      PrintTo(out, parentnode ,"--", node,"\n");
+    fi;
+    # and the recursion
+    tiles := TilesOf(sk, prefix[Size(prefix)]);
+    for i in [1..Size(tiles)] do
+      Add(prefix,tiles[i]);
+      Add(indices,i);
+      f(prefix,indices,node);
+      Remove(prefix);
+      Remove(indices);
+    od;
+  end;
+  #-----------------------------------------------------------------------------
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"//dot\ngraph chains{\n");
+
+  f([BaseSet(sk)], [1], "");
+
+  AppendTo(out,"}\n");
+  CloseStream(out);
+  return str;
+end);
+
+#only works nicely for very small trees, dist params need to be tweaked for big
+InstallGlobalFunction(TikzChainActions,
+function(sk, t)
+  local f,str,out;
+  #-----------------------------------------------------------------------------
+  f := function(prefix)
+    local tiles, i, node;
+    if Size(prefix)=1 then
+      PrintTo(out, "\\node {");
+    else
+      PrintTo(out, " child { node{");
+    fi;
+    node := TrueValuePositionsBlistString(OnFiniteSet(prefix[Size(prefix)],t));
+    node := ReplacedString(node, "{", "\\{");
+    node := ReplacedString(node, "}", "\\}");
+    PrintTo(out,"$",node,"$}");
+    # and the recursion
+    tiles := TilesOf(sk, prefix[Size(prefix)]);
+    for i in [1..Size(tiles)] do
+      Add(prefix,tiles[i]);
+      f(prefix);
+      Remove(prefix);
+    od;
+    if Size(prefix)=1 then
+      PrintTo(out, ";");
+    else
+      PrintTo(out, "}");
+    fi;
+
+  end;
+  #-----------------------------------------------------------------------------
+  str := "";
+  out := OutputTextString(str,true);
+  PrintTo(out,"%latex\n");
+  PrintTo(out,"\\documentclass{minimal}\\usepackage{tikz}");
+  PrintTo(out,"\\usetikzlibrary{trees}\\begin{document}\n\n\\begin{tikzpicture}\n");
+  PrintTo(out, "[level distance=1cm,level 1/.style={sibling distance=1.3cm},");
+  PrintTo(out, "level 2/.style={sibling distance=.6cm}]\n\n");
+  f([BaseSet(sk)]);
+  AppendTo(out,"\\end{tikzpicture}\n\n\\end{document}\n");
   CloseStream(out);
   return str;
 end);
