@@ -120,7 +120,7 @@ function(s)
             func[i]:=EmptyPlist(0);
           else
             func[i]:=EmptyPlist(pos);
-            func[i][pos]:=y;
+            if not IsOne(y) then func[i][pos]:=y; fi; #to avoid registing identities
           fi;
         od;
         nrgens:=nrgens+1;

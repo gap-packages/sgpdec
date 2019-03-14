@@ -30,6 +30,11 @@ gap> ForAll(triples, function(t)
 >         and
 >         IsomorphismGroups(ABC,AB_C)<>fail; end);
 true
+gap> W := FullCascadeSemigroup([FF,FF]);;
+gap> Size(W);
+27
+gap> Size(AsList(W));
+27
 
 #
 gap> STOP_TEST( "Sgpdec package: wreath.tst", 10000);
