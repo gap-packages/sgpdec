@@ -1,6 +1,7 @@
 # testing holonomy  decomposition
 gap> START_TEST("Sgpdec package: skeleton.tst");
 gap> LoadPackage("sgpdec", false);;
+gap> SgpDecFiniteSetDisplayOn();;
 gap> sk := Skeleton(FullTransformationSemigroup(5));;
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1,3,5],5), FiniteSet([2],5));
 false
@@ -18,11 +19,15 @@ gap> Q := FiniteSet([3,4],6);;
 gap> IsSubsetBlist(OnFiniteSet(Q, EvalWordInSkeleton(sk,
 >        SubductionWitness(sk,P,Q))),P);
 true
+gap> ExtendedImageSet(sk);
+[ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {4,5,6}, {1,2}, {1,3}, {1,4}, {2,3}, 
+  {2,4}, {3,4}, {4,5}, {4,6}, {5,6}, {1}, {2}, {3}, {4}, {5}, {6} ]
 
 #number of tile chains
 gap> d := DegreeOfSkeleton(sk);;
 gap> ForAll([1..d], x -> NrChainsBetween(sk,BaseSet(sk),FiniteSet([x],d)) = Size(ChainsBetween(sk, BaseSet(sk),FiniteSet([x],d))));
 true
+gap> SgpDecFiniteSetDisplayOff();;
 
 #
 gap> STOP_TEST( "Sgpdec package: skeleton.tst", 10000);
