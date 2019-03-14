@@ -68,4 +68,8 @@ gap> S4 := SymmetricGroup(4);;
 gap> FL := FLCascadeGroup(ChiefSeries(S4));;
 gap> TestFLCosetAction(S4,FL);
 true
+gap> DisplayFLComponents(FLCascadeGroup(SymmetricGroup(4)));
+1: (2,C2)
+2: (3,C3)
+3: (4,C2 x C2)
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);

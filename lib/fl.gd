@@ -25,6 +25,7 @@ DeclareGlobalFunction("Perm2Coords");
 DeclareGlobalFunction("Coords2Perm");
 DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");
+DeclareGlobalFunction("DisplayFLComponents");
 
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
 DeclareAttribute("BottomCosetActionRepsOf", IsFLCascadeGroup);

@@ -274,3 +274,19 @@ TestFLCosetAction := function(G, FL)
   return true;
 end;  
 MakeReadOnlyGlobal("TestFLCosetAction");
+
+InstallGlobalFunction(DisplayFLComponents,
+function(FLG)
+  local comps, trvs, i;
+  comps := ComponentsOfCascadeProduct(FLG);
+  trvs := TransversalsOf(FLG);
+  for i in [1..Size(comps)] do
+    Print(i,": (", Size(trvs[i]),",");
+    if SgpDecOptionsRec.SMALL_GROUPS then
+      Print(StructureDescription(comps[i]));
+    else
+      Print("group of size ",Size(comps[i]));
+    fi;
+    Print(")\n");
+  od;
+end);
