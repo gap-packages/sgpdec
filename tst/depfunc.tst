@@ -82,6 +82,10 @@ gap> Display(depfuncs[3]);
 Dependency function of depth 3 with 2 dependencies.
 [ 1, 2 ] -> (2,4)
 [ 2, 3 ] -> (1,2)
+gap> DependencyValues(depfuncs[3]);
+[ (2,4), (1,2) ]
+gap> DependencyFunction([],[]);
+<depfunc of depth 1 with 0 deps>
 
 #
 gap> STOP_TEST( "Sgpdec package: depfunc.tst", 10000);
