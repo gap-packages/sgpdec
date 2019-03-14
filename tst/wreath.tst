@@ -14,6 +14,10 @@ gap> ForAll(pairs, function(p)
 >  FC := Image(IsomorphismPermGroup(FullCascadeGroup(p)));
 >  return IsomorphismGroups(W,FC) <> fail; end); # TODO this should work even without converting to permutation groups
 true
+gap> W := FullCascadeGroup(pairs[1]);
+<wreath product of perm groups>
+gap> ComponentsOfCascadeProduct(W);
+[ Group([ (1,2) ]), Group([ (1,2,3) ]) ]
 
 # testing associativity
 gap> ForAll(triples, function(t)
