@@ -98,6 +98,7 @@ local gens,id,cosetactions,G,flG;
   SetIsFinite(flG,true); #otherwise it gets a forced finiteness test
   return flG;
 end;
+MakeReadOnlyGlobal("CreateFLCascadeGroup");
 
 InstallMethod(FLCascadeGroup,
 "for a subgroup chain (with a point stabilizer at the bottom) and stabilized point",

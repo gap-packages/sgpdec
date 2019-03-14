@@ -1,3 +1,7 @@
+# testing weak control words
+gap> START_TEST("Sgpdec package: WeakControlWords.tst");
+gap> LoadPackage("sgpdec", false);;
+gap> SgpDecFiniteSetDisplayOn();;
 gap> S:=FullTransformationSemigroup(5);
 <full transformation monoid of degree 5>
 gap> gens:=Generators(S);
@@ -25,4 +29,7 @@ gap> OnFiniteSet(x1,t2)=y;
 true
 gap> IsSubset(y,x1);
 true
+gap> SgpDecFiniteSetDisplayOn();;
 
+#
+gap> STOP_TEST( "Sgpdec package: WeakControlWords.tst", 10000);
