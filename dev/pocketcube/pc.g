@@ -22,6 +22,24 @@ TestFLAction(ValidPoints(FL2),Stab1,FL2);
 StabCorner3 := Stabilizer(Stab2, [3,10,13],OnSets);
 Stab3 := Stabilizer(StabCorner3, 3);
 FL3 := FLCascadeGroup([Stab2, StabCorner3,Stab3],3);
-TestFLAction(Difference([1..24],[1,5,18,2,14,17]),Stab2,FL3);
+TestFLAction(ValidPoints(FL3),Stab2,FL3);
 
-#and so on...
+StabCorner4 := Stabilizer(Stab3, [4,6,9],OnSets);
+Stab4 := Stabilizer(StabCorner4, 4);
+FL4 := FLCascadeGroup([Stab3, StabCorner4,Stab4],4);
+TestFLAction(ValidPoints(FL4),Stab3,FL4);
+
+StabCorner7 := Stabilizer(Stab4, [7,12,21],OnSets);
+Stab7 := Stabilizer(StabCorner7, 7);
+FL5 := FLCascadeGroup([Stab4, StabCorner7,Stab7],7);
+TestFLAction(ValidPoints(FL5),Stab4,FL5);
+
+StabCorner8 := Stabilizer(Stab7, [8,19,24],OnSets);
+Stab8 := Stabilizer(StabCorner8, 8);
+FL6 := FLCascadeGroup([Stab7, StabCorner8,Stab8],8);
+TestFLAction(ValidPoints(FL6),Stab7,FL6);
+
+StabCorner11 := Stabilizer(Stab8, [11,16,22],OnSets);
+Stab11 := Stabilizer(StabCorner11, 11);
+FL7 := FLCascadeGroup([Stab8, StabCorner11,Stab11],11);
+TestFLAction(ValidPoints(FL7),Stab8,FL7);
