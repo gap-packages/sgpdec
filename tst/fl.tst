@@ -53,6 +53,11 @@ gap> halfsolvedcoords := Perm2Coords(halfsolved,cags.transversals);
 [ 1, 552 ]
 gap> halfsolved * levelkillers[2] = ();
 true
+gap> levelbuilders := LevelBuilders(coordinates,cags.transversals);
+[ (1,3,7,9,15,2,22,19)(4,23,14,16,24,18,10,21)(5,13,12,6,20,17,11,8), 
+  (1,18,5)(3,10,13)(4,9,6)(8,24,19) ]
+gap> Product(Reversed(levelbuilders)) = scrambled;
+true
 gap> Stab2 := Stabilizer(pocket_cube,2);;
 gap> StabF := Stabilizer(pocket_cube,[2,14,17], OnSets);;
 gap> PC := FLCascadeGroup([pocket_cube, StabF, Stab2],2);
