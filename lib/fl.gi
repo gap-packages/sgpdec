@@ -304,11 +304,19 @@ TestFLCosetAction := function(G, FL)
 end;  
 MakeReadOnlyGlobal("TestFLCosetAction");
 
+#displays the components of an FL cascade group
+#if a series is given, it computes these components
 InstallGlobalFunction(DisplayFLComponents,
-function(FLG)
-  local comps, trvs, i;
-  comps := ComponentsOfCascadeProduct(FLG);
-  trvs := TransversalsOf(FLG);
+function(FLG_or_series)
+  local comps, trvs, i, r;
+  if IsCascadeGroup(FLG_or_series) then
+    comps := ComponentsOfCascadeProduct(FLG_or_series);
+    trvs := TransversalsOf(FLG_or_series);
+  else
+    r := FLComponents(FLG_or_series);
+    comps := r.components;
+    trvs := r.transversals;
+  fi;
   for i in [1..Size(comps)] do
     Print(i,": (", Size(trvs[i]),",");
     if SgpDecOptionsRec.SMALL_GROUPS then
