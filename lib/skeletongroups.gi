@@ -298,28 +298,39 @@ end);
 ################################################################################
 # DISPLAY
 
-InstallGlobalFunction(DisplayHolonomyComponents,
-function(skeleton)
-  local depth,rep,H,reps;
-  reps := RepresentativeSets(skeleton);
-  for depth in [1..Size(reps)-1] do
-    Print(depth,": ");
-    for rep in reps[depth] do
-      H := HolonomyGroup@SgpDec(skeleton, rep);
-      if Size(H) = 1 then
-        Print(Size(TilesOf(skeleton,rep))," ");
+# this was duplicated in holonomy.gi, hence the separate function
+DisplayStringHolonomyComponents := function(sk)
+  local groupnames,level, i,l,groups,sk,str;
+  groupnames := [];
+  for level in [1..DepthOfSkeleton(sk)-1] do
+    l := [];
+    groups := GroupComponents(sk)[level];
+    for i in [1..Length(groups)]  do
+      if IsTrivial(groups[i]) then
+        Add(l, String(NumOfPointsInSlot(sk,level,i)));
+      elif SgpDecOptionsRec.SMALL_GROUPS then
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
+                             ",", StructureDescription(groups[i]),")"));
       else
-        Print("(",Size(TilesOf(skeleton,rep)),",");
-        if SgpDecOptionsRec.SMALL_GROUPS then
-          Print(StructureDescription(H));
-        else
-          Print(Size(H));
-        fi;
-        Print(") ");
+        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
+                             ",G", String(Order(groups[i])),")"));
       fi;
     od;
-    Print("\n");
+    Add(groupnames,l);
   od;
+  str := "";
+  for i in [1..Length(groupnames)] do
+    Append(str, Concatenation(String(i),":"));
+    Perform(groupnames[i], function(x) Append(str,Concatenation(" ",x));end);
+    Append(str,"\n");
+  od;
+  return str;
+end;
+MakeReadOnlyGlobal("DisplayStringHolonomyComponents");
+
+InstallGlobalFunction(DisplayHolonomyComponents,
+function(skeleton)
+  Print(DisplayStringHolonomyComponents(skeleton));
 end);
 
 # #levels |image set| #coordinate_tuples #structure

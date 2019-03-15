@@ -365,36 +365,11 @@ NumOfPointsInSlot := function(sk, level, slot)
 end;
 MakeReadOnlyGlobal("NumOfPointsInSlot");
 
-#detailed print of the components
+#detailed print of the components (function body moved to skeletongroups.gi)
 InstallMethod(DisplayString,"for a holonomy decomposition",
         [ IsHolonomyCascadeSemigroup ],
 function(HCS)
-  local groupnames,level, i,l,groups,sk,str;;
-  sk := SkeletonOf(HCS);
-  groupnames := [];
-  for level in [1..DepthOfSkeleton(sk)-1] do
-    l := [];
-    groups := GroupComponents(SkeletonOf(HCS))[level];
-    for i in [1..Length(groups)]  do
-      if IsTrivial(groups[i]) then
-        Add(l, String(NumOfPointsInSlot(sk,level,i)));
-      elif SgpDecOptionsRec.SMALL_GROUPS then
-        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
-                ",", StructureDescription(groups[i]),")"));
-      else
-        Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
-                ",G", String(Order(groups[i])),")"));
-      fi;
-    od;
-    Add(groupnames,l);
-  od;
-  str := "";
-  for i in [1..Length(groupnames)] do
-    Append(str, Concatenation(String(i),":"));
-    Perform(groupnames[i], function(x) Append(str,Concatenation(" ",x));end);
-    Append(str,"\n");
-  od;
-  return str;
+  DisplayStringHolonomyComponents(SkeletonOf(HCS));
 end);
 
 ################################################################################
