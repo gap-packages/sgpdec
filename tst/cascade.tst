@@ -57,6 +57,12 @@ gap> S := Semigroup(c);
 gap> ComponentsOfCascadeProduct(S);
 [ <commutative semigroup with 1 generator>, 
   <transformation semigroup of degree 3 with 2 generators> ]
+gap> c := Cascade([[1,2],[1,2]], [[[],(1,2)], [[1],(1,2)]]);
+<perm cascade with 2 levels with (2, 2) pts, 2 dependencies>
+gap> G := Group(c);
+<cascade group with 1 generator, 2 levels with (2, 2) pts>
+gap> ComponentsOfCascadeProduct(G);
+[ Group([ (1,2) ]), Group([ (1,2) ]) ]
 
 # identity cascade
 gap> IdentityCascade([T3,Z2]);
