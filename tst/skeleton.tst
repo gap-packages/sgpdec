@@ -22,6 +22,8 @@ true
 gap> ExtendedImageSet(sk);
 [ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {4,5,6}, {1,2}, {1,3}, {1,4}, {2,3}, 
   {2,4}, {3,4}, {4,5}, {4,6}, {5,6}, {1}, {2}, {3}, {4}, {5}, {6} ]
+gap> Interpret(sk, 1,1);
+{1,2,3,4}
 
 #number of tile chains
 gap> d := DegreeOfSkeleton(sk);;
