@@ -188,6 +188,12 @@ tion( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
 n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
 )"
 
+# bit of coordinate manipulation
+gap> AsList(AllConcreteCoords([[1..2],[1..3], [1..4]],[1,0,2]));
+[ [ 1, 1, 2 ], [ 1, 2, 2 ], [ 1, 3, 2 ] ]
+gap> Concretize([[1..2],[1..3]],[0,1]);
+[ 1, 1 ]
+
 # testing extracted dependencies - they should build the same cascade
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
 gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
