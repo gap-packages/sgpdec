@@ -38,7 +38,8 @@ function(s, list, act)
   for t in [1..Size(gens)] do
     label := Concatenation("", String(t));
     for i in [1..Length(list)] do
-      if list[i] <> act(list[i], gens[t]) then
+   #  we do want to see nodes that aren't moved, and what generators do on them! -CLN
+   #   if list[i] <> act(list[i], gens[t]) then
         edge := Concatenation("\"", StringPrint(list[i]), "\"",
                               " -> \"",
                               StringPrint(act(list[i],gens[t])), "\"");
@@ -49,7 +50,7 @@ function(s, list, act)
         else
           HTUpdate(ht,edge,Concatenation(currentlabel,",",label));
         fi;
-      fi;
+     # fi;
     od;
   od;
   #nodenames
@@ -88,7 +89,8 @@ function(s, list, act, nodenames, generatornames)
   for t in [1..Size(gens)] do
     label := Concatenation("", String(generatornames[t]));
     for i in [1..Length(list)] do
-      if list[i] <> act(list[i], gens[t]) then
+   #  we do want to see nodes that aren't moved, and what generators do on them! -CLN
+   #   if list[i] <> act(list[i], gens[t]) then
         edge := Concatenation("\"", StringPrint(nodenames[list[i]]), "\"",
                               " -> \"", StringPrint(nodenames[act(list[i],gens[t])]), "\"");
         currentlabel :=  HTValue(ht, edge);
@@ -98,7 +100,7 @@ function(s, list, act, nodenames, generatornames)
         else
           HTUpdate(ht,edge,Concatenation(currentlabel,",",label));
         fi;
-      fi;
+     # fi;
     od;
   od;
   #nodenames
@@ -473,7 +475,7 @@ for dx in [1..DepthOfSkeleton(sk)-1] do
                   PermGenWord:=Concatenation(List(w,x->symbols[x]));   
                   Add(PermutatorGeneratorLabels,PermGenWord);
                     od; 
-           dot:=DotSemigroupActionWithNames(px1,[1..DegreeOfSkeleton(sk)],OnPoints,states,PermutatorGeneratorLabels);
+           dot:=DotSemigroupActionWithNames(px1,ListBlist([1..DegreeOfSkeleton(sk)],x1),OnPoints,states,PermutatorGeneratorLabels);
            Add(dotlist,dot);
        fi;
       od;
