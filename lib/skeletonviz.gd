@@ -19,6 +19,7 @@ DeclareGlobalFunction("DotChainActions");
 DeclareGlobalFunction("TikzChainActions");
 
 DeclareGlobalFunction("DotRepPermutatorGroups");
+DeclareGlobalFunction("DotRepHolonomyGroups");
 DeclareGlobalFunction("SplashList");
 
 
