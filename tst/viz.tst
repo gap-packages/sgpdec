@@ -54,6 +54,19 @@ gap> DotSemigroupActionWithNames(S, [1..3], OnPoints,["x1","x2","x3"],["g1","g2"
 "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x2\" -> \"x1\"[label=\
 \"g1\"]\n\"x3\" -> \"x2\"[label=\"g1\"]\n\"x1\" -> \"x3\"[label=\"g2\"]\n\"x3\
 \" -> \"x1\"[label=\"g2\"]\n}\n"
+gap> sk := Skeleton(FullTransformationSemigroup(3));;
+gap> DotRepPermutatorGroups(sk);
+[ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"1\" -> \"2\"[label=\
+\"1,2\"]\n\"2\" -> \"1\"[label=\"1\"]\n\"2\" -> \"3\"[label=\"2\"]\n\"3\" -> \
+\"1\"[label=\"2\"]\n}\n", 
+  "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"1\" -> \"2\"[label=\
+\"112313\"]\n\"2\" -> \"1\"[label=\"112313\"]\n}\n" ]
+gap> DotRepPermutatorGroups(sk, rec(states:=["x1","x2", "x3"], symbols:=["g1","g2", "g3"]) );
+[ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
+l=\"g1,g2\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x2\" -> \"x3\"[label=\"g2\"]\n\
+\"x3\" -> \"x1\"[label=\"g2\"]\n}\n", 
+  "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
+l=\"g1g1g2g3g1g3\"]\n\"x2\" -> \"x1\"[label=\"g1g1g2g3g1g3\"]\n}\n" ]
 gap> SgpDecFiniteSetDisplayOff();;
 
 #
