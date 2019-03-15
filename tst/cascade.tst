@@ -51,11 +51,17 @@ gap> Order(c);
 # it is also possible to give only component domains
 gap> Cascade([[1..2],[1..3]],[]);
 <perm cascade with 2 levels with (2, 3) pts, 0 dependencies>
-gap> c := Cascade([[1..2],[1..3]],[[[],(1,2)], [[1],Transformation([1,1,2])], [[2],Transformation([2,3,1])]]);;
+gap> c := Cascade([[1..2],[1..3]],[[[],Transformation([2,1])], [[1],Transformation([1,1,2])], [[2],Transformation([2,3,1])]]);;
 gap> S := Semigroup(c);
 <cascade semigroup with 1 generator, 2 levels with (2, 3) pts>
 gap> ComponentsOfCascadeProduct(S);
-[ <commutative semigroup with 1 generator>, 
+[ <commutative transformation semigroup of degree 2 with 1 generator>, 
+  <transformation semigroup of degree 3 with 2 generators> ]
+gap> c2 := Cascade([[1..2],[1..3]],[[[],Transformation([2,1])], [[],Transformation([2,2])], [[2],Transformation([2,3,2])]]);;
+gap> S := Semigroup([c,c2]);
+<cascade semigroup with 2 generators, 2 levels with (2, 3) pts>
+gap> ComponentsOfCascadeProduct(S);
+[ <transformation semigroup of degree 2 with 2 generators>, 
   <transformation semigroup of degree 3 with 2 generators> ]
 gap> c := Cascade([[1,2],[1,2]], [[[],(1,2)], [[1],(1,2)]]);
 <perm cascade with 2 levels with (2, 2) pts, 2 dependencies>
