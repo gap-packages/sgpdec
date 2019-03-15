@@ -48,9 +48,15 @@ Dependency function of depth 2 with 1 dependencies.
 gap> Order(c);
 6
 
-# it is also possible to give only component domains, in that case
+# it is also possible to give only component domains
 gap> Cascade([[1..2],[1..3]],[]);
 <perm cascade with 2 levels with (2, 3) pts, 0 dependencies>
+gap> c := Cascade([[1..2],[1..3]],[[[],(1,2)], [[1],Transformation([1,1,2])], [[2],Transformation([2,3,1])]]);;
+gap> S := Semigroup(c);
+<cascade semigroup with 1 generator, 2 levels with (2, 3) pts>
+gap> ComponentsOfCascadeProduct(S);
+[ <commutative semigroup with 1 generator>, 
+  <transformation semigroup of degree 3 with 2 generators> ]
 
 # identity cascade
 gap> IdentityCascade([T3,Z2]);
