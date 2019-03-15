@@ -360,16 +360,11 @@ end);
 ################################################################################
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
-NumOfPointsInSlot := function(sk, level, slot)
-  return Shifts(sk)[level][slot+1] - Shifts(sk)[level][slot];
-end;
-MakeReadOnlyGlobal("NumOfPointsInSlot");
-
 #detailed print of the components (function body moved to skeletongroups.gi)
 InstallMethod(DisplayString,"for a holonomy decomposition",
         [ IsHolonomyCascadeSemigroup ],
 function(HCS)
-  DisplayStringHolonomyComponents(SkeletonOf(HCS));
+  return DisplayStringHolonomyComponents(SkeletonOf(HCS));
 end);
 
 ################################################################################
@@ -389,7 +384,7 @@ TestHolonomyRelationalMorphism := function(S)
                function(x)
                  local xcs;
                  xcs := AsHolonomyCascade(x,sk);
-                 Print("#\c");
+                 #Print("#\c");
                  return ForAll(S, y -> x*y = AsHolonomyTransformation(
                                                xcs * AsHolonomyCascade(y,sk),
                                                sk));
@@ -412,7 +407,7 @@ TestHolonomyAction := function(S)
         Error(s);
       fi;
     od; #p
-    Print("#\c");
+    #Print("#\c");
   od; #s
   return true;
 end;

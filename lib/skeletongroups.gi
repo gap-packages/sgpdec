@@ -298,9 +298,15 @@ end);
 ################################################################################
 # DISPLAY
 
+#needed for the Display string
+NumOfPointsInSlot := function(sk, level, slot)
+  return Shifts(sk)[level][slot+1] - Shifts(sk)[level][slot];
+end;
+MakeReadOnlyGlobal("NumOfPointsInSlot");
+
 # this was duplicated in holonomy.gi, hence the separate function
 DisplayStringHolonomyComponents := function(sk)
-  local groupnames,level, i,l,groups,sk,str;
+  local groupnames,level, i,l,groups,str;
   groupnames := [];
   for level in [1..DepthOfSkeleton(sk)-1] do
     l := [];
