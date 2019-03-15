@@ -9,6 +9,9 @@
 ## Visualizing several several aspects of the skeleton.
 ##
 
+DeclareGlobalFunction("DotSemigroupAction");
+DeclareGlobalFunction("DotSemigroupActionWithNames");
+
 DeclareGlobalFunction("DotSkeleton");
 DeclareGlobalFunction("DotSkeletonForwardOrbit");
 DeclareGlobalFunction("DotSubductionEquivalencePoset");
