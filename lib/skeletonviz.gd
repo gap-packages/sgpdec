@@ -17,3 +17,8 @@ DeclareGlobalFunction("DotSkeletonForwardOrbit");
 DeclareGlobalFunction("DotSubductionEquivalencePoset");
 DeclareGlobalFunction("DotChainActions");
 DeclareGlobalFunction("TikzChainActions");
+
+DeclareGlobalFunction("DotRepPermutatorGroups");
+DeclareGlobalFunction("SplashList");
+
+
