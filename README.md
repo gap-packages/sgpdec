@@ -9,11 +9,13 @@ SgpDec is a computational implementation of [Krohn-Rhodes theory](https://en.wik
 
 There is an excellent [video introduction to Krohn-Rhodes theory by Simon DeDeo](https://www.youtube.com/playlist?list=PLWpny35W2zZPr6COsyOD-PujR-_bWMjUk), a unit of [an online course on renormalization](https://www.complexityexplorer.org/tutorials/67-introduction-to-renormalization). Throwing away information selectively in order to understand complex systems is a fundamental idea for SgpDec as well.
 
+The package is used for SYDE 710 (Topics in Mathematics) Algebraic Structures of Discrete Dynamical Systems, a graduate course at the [Systems Design Engineering](https://uwaterloo.ca/systems-design-engineering/) department of University of Waterloo.
+
 For more on computational semigroup theory check this [computational semigroup theory blog](https://compsemi.wordpress.com/).
 
 ## How to use it?
 
-You need the latest version of the [GAP computer algebra system](https://www.gap-system.org/), then installing SgpDec is merely extracting the [latest release's archive](https://github.com/gap-packages/sgpdec/releases) into the ```pkg``` folder of GAP.
+You need the latest version of the [GAP computer algebra system](https://www.gap-system.org/). Installing SgpDec is merely extracting the [latest release's archive](https://github.com/gap-packages/sgpdec/releases) into the ```pkg``` folder of GAP. Then the command `LoadPackage("SgpDec");` loads the package into the GAP system.
 
 To get some idea what can be computed with SgpDec, check this paper: [SgpDec: Cascade (De)Compositions of Finite Transformation Semigroups and Permutation Groups](http://link.springer.com/chapter/10.1007/978-3-662-44199-2_13), [preprint](https://arxiv.org/abs/1501.03217). For further details the documentation should be helpful.
 

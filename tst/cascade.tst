@@ -204,6 +204,8 @@ gap> AsCoords(6,W);
 [ 2, 1, 2 ]
 gap> AsPoint([2,2,2],W);
 8
+gap> AsPoint([2,2,0],W);
+[ 7, 8 ]
 
 # testing extracted dependencies - they should build the same cascade
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
