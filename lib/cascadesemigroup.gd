@@ -21,6 +21,8 @@ DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
         IsListOrCollection);
 DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 
+DeclareGlobalFunction("MonomialGenerators");
+
 DeclareGlobalFunction("SizeOfFullCascadeProduct");
 DeclareGlobalFunction("SizeOfIteratedTransformationWreathProduct",
         SizeOfFullCascadeProduct);

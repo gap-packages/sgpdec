@@ -53,7 +53,7 @@ end);
 ################################################################################
 InstallGlobalFunction(FullCascadeSemigroup,
 function(arg)
-  local filts, s, i,n;
+  local filts, s, i,n, comps, dom ,depdoms, compdoms;
 
   if Length(arg)=1 then
     if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then
@@ -78,36 +78,34 @@ function(arg)
     fi;
   od;
   
-  #TODO do this properly, since AsList(FullCascadeSemigroup([FF,FF,FF])) does not seem to terminate
-  filts:=IsSemigroup and IsAttributeStoringRep and IsFullCascadeSemigroup ;
-  s:=Objectify( NewType( CollectionsFamily(TransCascadeFamily), filts ), rec());
-  SetComponentsOfCascadeProduct(s, arg);
-  SetComponentDomains(s, ComponentDomains(arg));
-  SetNrComponents(s, Length(arg));
-  SetDependencyDomainsOf(s,
-   DependencyDomains(ComponentDomains(s)));
-  SetDomainOf(s,
-   EnumeratorOfCartesianProduct(ComponentDomains(s)));
+  comps := arg;
+  compdoms := ComponentDomains(comps);
+  depdoms := DependencyDomains(compdoms);
+  dom := EnumeratorOfCartesianProduct(compdoms);
+  s := Semigroup(MonomialGenerators(comps, compdoms, depdoms, dom));
+  SetComponentsOfCascadeProduct(s, comps);
+  SetComponentDomains(s, compdoms);
+  SetNrComponents(s, Length(comps));
+  SetDependencyDomainsOf(s, depdoms);
+  SetDomainOf(s,dom);
   SetIsFullCascadeProduct(s,true);#TODO why is it needed? It should be implied.
+  SetIsFullCascadeSemigroup(s,true);
   return s;
 end);
 
 #former monomial generators
-InstallMethod(GeneratorsOfSemigroup, "for a full cascade semigroup",
-[IsFullCascadeSemigroup],
-function(s)
-  local nr, comps, pts, prefix, dom, compdom, depdoms, gens, nrgens,
+
+InstallGlobalFunction(MonomialGenerators,
+function(comps, compdoms, depdoms, dom)
+  local nr, pts, prefix, gens, nrgens,
         m, pos, func, pre, x, y, i, depfuncs;
 
-  nr:=NrComponents(s);
-  comps:=ComponentsOfCascadeProduct(s);
+  nr:=Size(comps);
   pts:=List([1..nr], i-> [1..DegreeOfTransformationSemigroup(comps[i])]);
   #quick hack removing now dubious ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
 
-  dom:=DomainOf(s);
-  compdom:=ComponentDomains(s);
-  depdoms:=DependencyDomainsOf(s);
+
   gens:=[]; nrgens:=0;
 
   for pre in prefix do
@@ -128,8 +126,8 @@ function(s)
         depfuncs := List([1..Length(func)],
                    x -> DependencyFunction(depdoms[x],func[x]));
         gens[nrgens]:=CreateCascade(
-                              DomainOf(s),
-                              ComponentDomains(s),
+                              dom,
+                              compdoms,
                               depfuncs,
                               depdoms,
                               TransCascadeType);
