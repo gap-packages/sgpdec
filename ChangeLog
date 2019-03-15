@@ -1,3 +1,5 @@
+0.8.2
+	Successful CI integration. Group decomposition functions finalized. Increased code coverage. Fix: FullCascadeSemigroup created properly to avoid long elements enumeration.
 0.8.1
 	Update release compatible with GAP 4.10.1. Reworked group decomposition. Added documentation.
 0.8
