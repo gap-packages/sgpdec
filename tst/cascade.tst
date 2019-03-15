@@ -193,6 +193,11 @@ gap> AsList(AllConcreteCoords([[1..2],[1..3], [1..4]],[1,0,2]));
 [ [ 1, 1, 2 ], [ 1, 2, 2 ], [ 1, 3, 2 ] ]
 gap> Concretize([[1..2],[1..3]],[0,1]);
 [ 1, 1 ]
+gap> W := FullCascadeSemigroup([FF, FF, FF]);;
+gap> AsCoords(6,W);
+[ 2, 1, 2 ]
+gap> AsPoint([2,2,2],W);
+8
 
 # testing extracted dependencies - they should build the same cascade
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
