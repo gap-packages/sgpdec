@@ -2,7 +2,7 @@
 ##
 ## cascadeprod.gi           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -131,16 +131,6 @@ function(s)
   return gens;
 end);
 
-################################################################################
-# ADMINISTRATIVE METHODS #######################################################
-################################################################################
-InstallMethod(IsListOfPermGroups,
-[IsListOrCollection],
-function(l)
-  return not IsEmpty(l) and
-         IsDenseList(l) and
-         ForAll(l, IsPermGroup);
-end);
 
 ################################################################################
 # PRINTING #####################################################################

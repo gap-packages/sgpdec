@@ -2,7 +2,7 @@
 ##
 ## cascadegroup.gd           SgpDec package
 ##
-## Copyright (C) 2008-2013
+## Copyright (C) 2008-2019
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -12,8 +12,6 @@
 
 DeclareGlobalFunction("CascadeGroup");
 DeclareSynonym("IsCascadeGroup", IsGroup and IsPermCascadeCollection);
-
-DeclareProperty("IsListOfPermGroups", IsListOrCollection);
 
 #full cascade group
 DeclareProperty("IsFullCascadeGroup", IsCascadeGroup and IsFullCascadeProduct);
