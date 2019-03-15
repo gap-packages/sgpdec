@@ -292,7 +292,7 @@ function(p, compsordomsizes)
   else
     domsizes := compsordomsizes;
   fi;
-  AsCascade(AsTransformation(p), Product(domsizes), compsordomsizes);
+  return AsCascade(AsTransformation(p), compsordomsizes);
 end);
 
 # action and operators

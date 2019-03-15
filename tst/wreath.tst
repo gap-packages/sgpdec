@@ -16,6 +16,9 @@ gap> ForAll(pairs, function(p)
 true
 gap> W := FullCascadeGroup(pairs[1]);
 <wreath product of perm groups>
+gap> r := RandomCascade(ComponentsOfCascadeProduct(W), 2);;
+gap> r = AsCascade(AsPermutation(r), ComponentsOfCascadeProduct(W));
+true
 gap> ComponentsOfCascadeProduct(W);
 [ Group([ (1,2) ]), Group([ (1,2,3) ]) ]
 
