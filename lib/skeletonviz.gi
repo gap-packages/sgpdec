@@ -434,7 +434,7 @@ end);
 
 
 
-# Return dot list of Permutator Groups of Representations
+# Return dot list of Permutator Groups of Representives
 InstallGlobalFunction(DotRepPermutatorGroups,
 function(arg)
  local sk, params, states,symbols,dx,x1,px1, hx1, dot, PermGenWord, PermutatorGeneratorLabels,w, W, dotlist;
@@ -483,6 +483,57 @@ return dotlist;
 end);
 
 
+
+# Return dot list of Holonomy Groups of Representatives
+InstallGlobalFunction(DotRepHolonomyGroups,
+function(arg)
+ local sk, params, states,symbols,dx,x1,px1, hx1, dot, PermGenWord, PermutatorGeneratorLabels,w, W,tilenames, dotlist;
+
+ #getting local variables for the arguments
+  sk := arg[1];
+  if IsBound(arg[2]) then
+    params := arg[2];
+  else
+    params := rec();
+  fi;
+
+  #setting the state and symbol names
+
+ if "states" in RecNames(params) then
+    states := params.states;
+     else
+    states := List([1..DegreeOfSkeleton(sk)],String);
+  fi;
+  if "symbols" in RecNames(params) then
+    symbols := params.symbols;
+  else
+    symbols := List([1..Size(Generators(TransSgp(sk)))],String);
+  fi;
+
+dotlist:=[];
+
+for dx in [1..DepthOfSkeleton(sk)-1] do
+   for  x1 in RepresentativeSetsOnDepth(sk,dx) do
+     px1 := PermutatorGroup(sk,x1);
+       hx1 := HolonomyGroup@SgpDec(sk,x1); 
+     if not IsTrivial(px1)  then
+              PermutatorGeneratorLabels:=[];
+              W := NontrivialRoundTripWords(sk,x1);
+               for w in W do #print the permutator generator words using named transitions
+                  PermGenWord:=Concatenation(List(w,x->symbols[x]));   
+                  Add(PermutatorGeneratorLabels,PermGenWord);
+                    od; 
+           
+       tilenames :=List(TilesOf(sk,x1),TrueValuePositionsBlistString);
+               
+           dot:=DotSemigroupActionWithNames(hx1,[1..Size(TilesOf(sk,x1))],OnPoints,tilenames,PermutatorGeneratorLabels);
+           Add(dotlist,dot);
+       fi;
+      od;
+   od;
+
+return dotlist;
+end);
 
 InstallGlobalFunction(SplashList,
 function(dotlist)
