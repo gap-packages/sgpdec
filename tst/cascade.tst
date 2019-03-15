@@ -207,6 +207,15 @@ gap> DotCascade(c, "a cascade");
 \"];\nn -- n_2 [color=black,label=\"2\"];\nn_2 [color=black,label=\"([1,2],3)\
 \"];\norig [shape=record,label=\"a cascade\",color=\"black\"];\norig--n [style\
 =invis];\n}\n"
+gap> DotCascadeAction(c);
+"//dot\ngraph ct{\n node[color=black,width=0.1,height=0.1,label=\"\"];\n edge \
+[color=grey,fontsize=11,fontcolor=black];\nn[color=black,width=0.1,height=0.1,\
+label=\"\"];\nn -- n_1 [color=black,label=\"1\"];\nn_1[color=black,width=0.1,h\
+eight=0.1,label=\"\"];\nn_1 -- n_1_1 [color=black,label=\"3\"];\nn_1 -- n_1_2 \
+[color=black,label=\"3\"];\nn_1 -- n_1_3 [color=black,label=\"2\"];\nn -- n_2 \
+[color=black,label=\"1\"];\nn_2[color=black,width=0.1,height=0.1,label=\"\"];\
+\nn_2 -- n_2_1 [color=black,label=\"2\"];\nn_2 -- n_2_2 [color=black,label=\"3\
+\"];\nn_2 -- n_2_3 [color=black,label=\"2\"];\n}\n"
 
 #
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   
