@@ -27,6 +27,33 @@ label=\"2\"];\n\"{2,3}\" -> \"{1,2}\" [label=\"1,2\"];\n\"{3}\" -> \"{2}\" [la\
 bel=\"1\"];\n\"{3}\" -> \"{1}\" [label=\"2\"];\n\"{2}\" -> \"{1}\" [label=\"1\
 \"];\n\"{2}\" -> \"{2}\" [label=\"2\"];\n\"{1,2,3}\" [shape=box,color=black];\
 \n\"{1,2}\" [shape=box,color=black];\n\"{1}\" [shape=box,color=black];\n}\n"
+gap> DotSubductionEquivalencePoset(sk);
+"//dot\ndigraph skeleton{\nnode [shape=box ];\nedge [arrowhead=none ];\n1 [lab\
+el=\"{1,2,3} \"];\n2 [label=\"{1,2} {2,3} \"];\n3 [label=\"{1} {3} {2} \"];\n1\
+->2;\n2->3;\n}\n"
+gap> DotChainActions(sk,Transformation([3,2,1]));
+"//dot\ngraph chains{\nn1[shape=record,label=\"{1,2,3}\",color=\"black\"];\nn1\
+_1[shape=record,label=\"{2,3}\",color=\"black\"];\nn1--n1_1\nn1_1_1[shape=reco\
+rd,label=\"{3}\",color=\"black\"];\nn1_1--n1_1_1\nn1_1_2[shape=record,label=\"\
+{2}\",color=\"black\"];\nn1_1--n1_1_2\nn1_2[shape=record,label=\"{1,2}\",color\
+=\"black\"];\nn1--n1_2\nn1_2_1[shape=record,label=\"{2}\",color=\"black\"];\nn\
+1_2--n1_2_1\nn1_2_2[shape=record,label=\"{1}\",color=\"black\"];\nn1_2--n1_2_2\
+\n}\n"
+gap> TikzChainActions(sk,Transformation([3,2,1]));
+"%latex\n\\documentclass{minimal}\\usepackage{tikz}\\usetikzlibrary{trees}\\be\
+gin{document}\n\n\\begin{tikzpicture}\n[level distance=1cm,level 1/.style={sib\
+ling distance=1.3cm},level 2/.style={sibling distance=.6cm}]\n\n\\node {$\\{1,\
+2,3\\}$} child { node{$\\{2,3\\}$} child { node{$\\{3\\}$}} child { node{$\\{2\
+\\}$}}} child { node{$\\{1,2\\}$} child { node{$\\{2\\}$}} child { node{$\\{1\
+\\}$}}};\\end{tikzpicture}\n\n\\end{document}\n"
+gap> DotSemigroupAction(S, [1..3], OnPoints);
+"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"2\" -> \"1\"[label=\"\
+1\"]\n\"3\" -> \"2\"[label=\"1\"]\n\"1\" -> \"3\"[label=\"2\"]\n\"3\" -> \"1\"\
+[label=\"2\"]\n}\n"
+gap> DotSemigroupActionWithNames(S, [1..3], OnPoints,["x1","x2","x3"],["g1","g2"] );
+"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x2\" -> \"x1\"[label=\
+\"g1\"]\n\"x3\" -> \"x2\"[label=\"g1\"]\n\"x1\" -> \"x3\"[label=\"g2\"]\n\"x3\
+\" -> \"x1\"[label=\"g2\"]\n}\n"
 gap> SgpDecFiniteSetDisplayOff();;
 
 #
