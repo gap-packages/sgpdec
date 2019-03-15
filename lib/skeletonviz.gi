@@ -524,7 +524,7 @@ for dx in [1..DepthOfSkeleton(sk)-1] do
                   Add(PermutatorGeneratorLabels,PermGenWord);
                     od; 
            
-       tilenames :=List(TilesOf(sk,x1),TrueValuePositionsBlistString);
+       tilenames :=List(TilesOf(sk,x1),x->TrueValuePositionsBlistString(x,states));
                
            dot:=DotSemigroupActionWithNames(hx1,[1..Size(TilesOf(sk,x1))],OnPoints,tilenames,PermutatorGeneratorLabels);
            Add(dotlist,dot);
