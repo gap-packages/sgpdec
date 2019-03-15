@@ -192,6 +192,21 @@ n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
 gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
 true
+gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+>               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);;
+gap> DotCascade(c);
+"//dot\ngraph ct{\n node[color=grey,width=0.1,height=0.1,fontsize=11,label=\"\
+\"];\n edge [color=grey,fontsize=11,fontcolor=black];\nn [color=black,label=\"\
+1\"];\nn -- n_1 [color=black,label=\"1\"];\nn_1 [color=black,label=\"([1,3],2)\
+\"];\nn -- n_2 [color=black,label=\"2\"];\nn_2 [color=black,label=\"([1,2],3)\
+\"];\n}\n"
+gap> DotCascade(c, "a cascade");
+"//dot\ngraph ct{\n node[color=grey,width=0.1,height=0.1,fontsize=11,label=\"\
+\"];\n edge [color=grey,fontsize=11,fontcolor=black];\nn [color=black,label=\"\
+1\"];\nn -- n_1 [color=black,label=\"1\"];\nn_1 [color=black,label=\"([1,3],2)\
+\"];\nn -- n_2 [color=black,label=\"2\"];\nn_2 [color=black,label=\"([1,2],3)\
+\"];\norig [shape=record,label=\"a cascade\",color=\"black\"];\norig--n [style\
+=invis];\n}\n"
 
 #
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   

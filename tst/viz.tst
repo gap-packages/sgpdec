@@ -1,4 +1,4 @@
-# testing Doting and Tikzing 
+# testing Doting and Tikzing from skeletonviz 
 gap> START_TEST("Sgpdec package: viz.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> SgpDecFiniteSetDisplayOn();;
