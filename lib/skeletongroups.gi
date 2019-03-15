@@ -339,6 +339,7 @@ function(skeleton)
   Print(DisplayStringHolonomyComponents(skeleton));
 end);
 
+# for compact displaying - used for experiments with many decompositions
 # #levels |image set| #coordinate_tuples #structure
 HolonomyInfoString := function(skeleton)
   local reps, l, n ,s, sizes, numofstates, structure;
@@ -360,3 +361,4 @@ HolonomyInfoString := function(skeleton)
                                    numofstates,
                                    s]," ");
 end;
+MakeReadOnlyGlobal("HolonomyInfoString");

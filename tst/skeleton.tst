@@ -38,6 +38,8 @@ gap> ExtendedImageSet(sk);
 [ {1,2,3,4,5}, {1}, {2}, {3}, {4}, {5} ]
 gap> NonImageSingletonClasses(sk);
 [ [ {4} ], [ {3} ], [ {2} ], [ {1} ] ]
+gap> HolonomyInfoString(sk);
+"2 2 5 5,1"
 gap> SgpDecFiniteSetDisplayOff();;
 
 #
