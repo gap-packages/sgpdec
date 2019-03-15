@@ -34,11 +34,18 @@ gap> ForAll(triples, function(t)
 >         and
 >         IsomorphismGroups(ABC,AB_C)<>fail; end);
 true
-gap> W := FullCascadeSemigroup([FF,FF]);;
+gap> W := FullCascadeSemigroup([FF,Z2]);;
 gap> Size(W);
-27
+12
 gap> Size(AsList(W));
-27
+12
+gap> ComponentsOfCascadeProduct(W);
+[ <transformation monoid of size 3, degree 2 with 2 generators>, 
+  <transformation group of size 2, degree 2 with 1 generator> ]
+gap> S := Range(IsomorphismTransformationSemigroup(W));
+<transformation monoid of degree 4 with 4 generators>
+gap> Size(S);
+12
 
 #
 gap> STOP_TEST( "Sgpdec package: wreath.tst", 10000);
