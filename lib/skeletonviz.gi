@@ -181,7 +181,6 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,o,og;
               " [label=\"",
               List2Label(Positions(og[i],j)),  # TODO : allow symbols as transition labels
               "\"];\n");
-      Display("");
     od;
   od;
   #drawing the representatives as rectangles and their covers

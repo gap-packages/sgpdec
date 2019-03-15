@@ -11,6 +11,7 @@ local test;
           "holonomy",
           "cartesianenum",
           "transnot",
+          "viz",      
           "straightword"
           ] do
     Test(Concatenation(
