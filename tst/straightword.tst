@@ -9,6 +9,10 @@ gap> Length(rw) <= Length(w);
 true
 gap> IsStraightWord(rw,gens,One(gens[1]),\*);
 true
+gap> IsStraightWord([1],[Transformation([1,1])],Transformation([1,1]),\*);
+true
+gap> IsStraightWord([1,1],[Transformation([1,1])],Transformation([1,1]),\*); #TODO maybe revise definition
+false
 gap> BuildByWord(w,gens,One(gens[1]),\*)
 >       = BuildByWord(rw,gens,One(gens[1]),\*);
 true
