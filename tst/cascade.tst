@@ -206,6 +206,14 @@ gap> AsPoint([2,2,2],W);
 8
 gap> AsPoint([2,2,0],W);
 [ 7, 8 ]
+gap> dom := EnumeratorOfCartesianProduct([1..3],[1..2]);
+<enumerator>
+gap> AsList(dom);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 3, 1 ], [ 3, 2 ] ]
+gap> AsCoords(1,dom);
+[ 1, 1 ]
+gap> AsCoords(5,dom);
+[ 3, 1 ]
 
 # testing extracted dependencies - they should build the same cascade
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
