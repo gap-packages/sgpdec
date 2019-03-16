@@ -40,24 +40,6 @@ gap> NonImageSingletonClasses(sk);
 [ [ {4} ], [ {3} ], [ {2} ], [ {1} ] ]
 gap> HolonomyInfoString(sk);
 "2 2 5 5,1"
-gap> SgpDecRunManualExamples();
-# Running list 1 . . .
-# Running list 2 . . .
-# Running list 3 . . .
-# Running list 4 . . .
-# Running list 5 . . .
-# Running list 6 . . .
-# Running list 7 . . .
-# Running list 8 . . .
-# Running list 9 . . .
-# Running list 10 . . .
-# Running list 11 . . .
-# Running list 12 . . .
-# Running list 13 . . .
-# Running list 14 . . .
-# Running list 15 . . .
-# Running list 16 . . .
-# Running list 17 . . .
 gap> SgpDecFiniteSetDisplayOff();;
 
 #
