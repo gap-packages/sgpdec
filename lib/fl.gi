@@ -285,6 +285,24 @@ TestFLAction := function(states, G, FL)
 end;  
 MakeReadOnlyGlobal("TestFLAction");
 
+# instead of acting on lifted coordinates only, here we act on all
+# possible coordinate values and see whether the flat action is the same or not
+TestFLActionAllCoords := function(G, FL)
+  local  x, g, FLx, FLg;
+  for FLx in DomainOf(FL) do
+    for g in Generators(G) do
+      x := AsFLPoint(FLx,FL);
+      FLg := AsFLCascade(g,FL);
+      if (x^g) <> AsFLPoint(FLx^FLg, FL) then
+        Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+      fi;
+    od;
+  od;
+  return true;
+end;
+MakeReadOnlyGlobal("TestFLActionAllCoords");
+
+
 # for testing a coset action (for subgroup chains not necessarily ending
 # in a point stabilizer)
 TestFLCosetAction := function(G, FL)

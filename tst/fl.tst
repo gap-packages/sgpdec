@@ -76,4 +76,12 @@ gap> DisplayFLComponents(ChiefSeries(SymmetricGroup(4)));
 1: (2,C2)
 2: (3,C3)
 3: (4,C2 x C2)
+gap> D4 := Group([(1,2,3,4), (1,3)]);
+Group([ (1,2,3,4), (1,3) ])
+
+# the chain goes down to the trivial group, therefore we have more coordinates then states
+gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4, [1,3], OnSets), Group(())],1);
+<cascade group with 2 generators, 2 levels with (2, 4) pts>
+gap> TestFLActionAllCoords(D4,FLD4);
+true
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);
