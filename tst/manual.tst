@@ -19,6 +19,8 @@ gap> SgpDecRunManualExamples();
 # Running list 15 . . .
 # Running list 16 . . .
 # Running list 17 . . .
+# Running list 18 . . .
+# Running list 19 . . .
 
 #
 gap> STOP_TEST( "Sgpdec package: manual.tst", 10000);
