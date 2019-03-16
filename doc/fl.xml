@@ -9,3 +9,13 @@
 <#Include Label="AsFLCascade">
 <#Include Label="AsFLPermutation">
 </Section>
+
+<Section Label="FLcosetreps"><Heading>Coset representatives as coordinates</Heading>
+
+</Section>
+
+<Section Label="FLsolve"><Heading>"Solving" the decomposition </Heading>
+<#Include Label="LevelKillers">
+<#Include Label="LevelBuilders">
+
+</Section>

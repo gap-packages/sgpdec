@@ -671,6 +671,32 @@ Similarly to transformations and permutations we distinguish between transformat
   </ManSection>
 <#/GAPDoc>
 
+##K
+
+##L
+
+<#GAPDoc Label="LevelBuilders">
+  <ManSection>
+    <Func Name="LevelBuilders" Arg="coords, transversals"/>
+    <Returns></Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="LevelKillers">
+  <ManSection>
+    <Func Name="LevelKillers" Arg="coords, transversals"/>
+    <Returns></Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+
+
 ##M
 
 ##N
