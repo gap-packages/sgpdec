@@ -63,6 +63,22 @@ gap> AsCoords(79,hcs);
     <Func Name="AsFLCascade" Arg="p, FLG"/>
     <Returns>Coordinatized form of permutation p in an FL cascade group.</Returns>
     <Description>
+<Example><![CDATA[
+gap> D4 := Group([(1,2,3,4), (1,2)(3,4)]);
+Group([ (1,2,3,4), (1,2)(3,4) ])
+gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4, [1,3], OnSets), Stabilizer(D4, 1)],1);
+<cascade group with 2 generators, 2 levels with (2, 2) pts>
+gap> c := AsFLCascade((1,2,3,4), FLD4);
+<perm cascade with 2 levels with (2, 2) pts, 2 dependencies>
+gap> Display(c);
+Dependency function of depth 1 with 1 dependencies.
+[ ] -> (1,2)
+Dependency function of depth 2 with 1 dependencies.
+[ 1 ] -> (1,2)
+gap> AsFLPermutation(c, FLD4);
+(1,2,3,4)
+]]></Example>
+
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -542,6 +558,11 @@ gap> Size(P);
     <Oper Name="FLCascadeGroup" Arg="group"/>
     <Returns>Cascade group isomorphic to <C>G</C>.</Returns>
     <Description>
+      The decomposition is done based on a subgroup chain. If the subgroup chain ends in a stabilizer of a point, then the decomposition is isomorphic as a permutation group, i.e. the states are coordinatized as well. In that case the stabilized point needs to be explicitly given. the decomposition will only contain the orbit of this point, so for non-transitive actions the orbits have to be handled separately.
+
+      An arbitrary chain also can be given as an input. If the chain goes down to trivial group, then the right regular representation is coordinatized.
+
+      If only a group is given, then the decomposition is done for the chief series and for the orbit of 1.
 <Example>
 gap> S4 := SymmetricGroup(IsPermGroup,4);;
 gap> flS4 := FLCascadeGroup(S4);
