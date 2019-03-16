@@ -53,8 +53,8 @@ gap> Z2 := SymmetricGroup(IsPermGroup,2);
 Sym( [ 1 .. 2 ] )
 gap> W := FullCascadeGroup([Z2,Z2,Z2]);
 <wreath product of perm groups>
-gap> StructureDescription(Range(IsomorphismPermGroup(W)));
-"(C2 x D8) : D8"
+gap> Size(W);
+128
 ]]></Example>
 
 And for transformation semigroups.

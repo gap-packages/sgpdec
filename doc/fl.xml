@@ -1,3 +1,9 @@
-<Section Label="FLdecomposition"><Heading>Frobenius-Lagrange Coordinates for Permutation Groups</Heading>
-    <#Include Label="FLCascadeGroup">
+<Section Label="FLdecomposition"><Heading>Frobenius-Lagrange Decompositions</Heading>
+<#Include Label="FLCascadeGroup">
+<#Include Label="DisplayFLComponents">
+</Section>
+
+<Section Label="FLmappings"><Heading>Lifting up permutations and mapping down cascades</Heading>
+<#Include Label="AsFLCascade">
+<#Include Label="AsFLPermutation">
 </Section>

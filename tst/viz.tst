@@ -46,37 +46,47 @@ ling distance=1.3cm},level 2/.style={sibling distance=.6cm}]\n\n\\node {$\\{1,\
 2,3\\}$} child { node{$\\{2,3\\}$} child { node{$\\{3\\}$}} child { node{$\\{2\
 \\}$}}} child { node{$\\{1,2\\}$} child { node{$\\{2\\}$}} child { node{$\\{1\
 \\}$}}};\\end{tikzpicture}\n\n\\end{document}\n"
+
+#
 gap> DotSemigroupAction(S, [1..3], OnPoints);
-"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"2\" -> \"1\"[label=\"\
-1\"]\n\"3\" -> \"2\"[label=\"1\"]\n\"1\" -> \"3\"[label=\"2\"]\n\"3\" -> \"1\"\
-[label=\"2\"]\n}\n"
+"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"1\" -> \"1\"[label=\"\
+1\"]\n\"2\" -> \"1\"[label=\"1\"]\n\"3\" -> \"2\"[label=\"1\"]\n\"1\" -> \"3\"\
+[label=\"2\"]\n\"2\" -> \"2\"[label=\"2\"]\n\"3\" -> \"1\"[label=\"2\"]\n}\n"
+
+#
 gap> DotSemigroupActionWithNames(S, [1..3], OnPoints,["x1","x2","x3"],["g1","g2"] );
-"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x2\" -> \"x1\"[label=\
-\"g1\"]\n\"x3\" -> \"x2\"[label=\"g1\"]\n\"x1\" -> \"x3\"[label=\"g2\"]\n\"x3\
-\" -> \"x1\"[label=\"g2\"]\n}\n"
+"//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x1\"[label=\
+\"g1\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x3\" -> \"x2\"[label=\"g1\"]\n\"x1\
+\" -> \"x3\"[label=\"g2\"]\n\"x2\" -> \"x2\"[label=\"g2\"]\n\"x3\" -> \"x1\"[l\
+abel=\"g2\"]\n}\n"
+
+#
 gap> sk := Skeleton(FullTransformationSemigroup(3));;
 gap> DotRepPermutatorGroups(sk);
 [ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"1\" -> \"2\"[label=\
-\"1,2\"]\n\"2\" -> \"1\"[label=\"1\"]\n\"2\" -> \"3\"[label=\"2\"]\n\"3\" -> \
-\"1\"[label=\"2\"]\n}\n", 
+\"1,2\"]\n\"2\" -> \"1\"[label=\"1\"]\n\"3\" -> \"3\"[label=\"1\"]\n\"2\" -> \
+\"3\"[label=\"2\"]\n\"3\" -> \"1\"[label=\"2\"]\n}\n", 
   "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"1\" -> \"2\"[label=\
 \"112313\"]\n\"2\" -> \"1\"[label=\"112313\"]\n}\n" ]
+
+#
 gap> DotRepPermutatorGroups(sk, rec(states:=["x1","x2", "x3"], symbols:=["g1","g2", "g3"]) );
 [ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
-l=\"g1,g2\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x2\" -> \"x3\"[label=\"g2\"]\n\
-\"x3\" -> \"x1\"[label=\"g2\"]\n}\n", 
+l=\"g1,g2\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x3\" -> \"x3\"[label=\"g1\"]\n\
+\"x2\" -> \"x3\"[label=\"g2\"]\n\"x3\" -> \"x1\"[label=\"g2\"]\n}\n", 
   "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
 l=\"g1g1g2g3g1g3\"]\n\"x2\" -> \"x1\"[label=\"g1g1g2g3g1g3\"]\n}\n" ]
 gap> DotRepHolonomyGroups(sk);
-[ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"{1,3}\" -> \"{2,3}\
-\"[label=\"1\"]\n\"{2,3}\" -> \"{1,3}\"[label=\"1,2\"]\n\"{1,2}\" -> \"{2,3}\"\
-[label=\"2\"]\n\"{1,3}\" -> \"{1,2}\"[label=\"2\"]\n}\n", 
+[ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"{1,2}\" -> \"{1,2}\
+\"[label=\"1\"]\n\"{1,3}\" -> \"{2,3}\"[label=\"1\"]\n\"{2,3}\" -> \"{1,3}\"[l\
+abel=\"1,2\"]\n\"{1,2}\" -> \"{2,3}\"[label=\"2\"]\n\"{1,3}\" -> \"{1,2}\"[lab\
+el=\"2\"]\n}\n", 
   "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"{1}\" -> \"{2}\"[la\
 bel=\"112313\"]\n\"{2}\" -> \"{1}\"[label=\"112313\"]\n}\n" ]
 gap> DotRepPermutatorGroups(sk, rec(states:=["x1","x2", "x3"], symbols:=["g1","g2", "g3"]) );
 [ "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
-l=\"g1,g2\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x2\" -> \"x3\"[label=\"g2\"]\n\
-\"x3\" -> \"x1\"[label=\"g2\"]\n}\n", 
+l=\"g1,g2\"]\n\"x2\" -> \"x1\"[label=\"g1\"]\n\"x3\" -> \"x3\"[label=\"g1\"]\n\
+\"x2\" -> \"x3\"[label=\"g2\"]\n\"x3\" -> \"x1\"[label=\"g2\"]\n}\n", 
   "//dot\ndigraph aut{\nnode [shape=circle]edge [len=1.2]\"x1\" -> \"x2\"[labe\
 l=\"g1g1g2g3g1g3\"]\n\"x2\" -> \"x1\"[label=\"g1g1g2g3g1g3\"]\n}\n" ]
 gap> SgpDecFiniteSetDisplayOff();;
