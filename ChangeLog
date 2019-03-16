@@ -1,3 +1,5 @@
+0.8.3
+	Adding new visualization functions: DotRepPermutatorGroups, DotRepHolonomyGroups. Small fixes and cleanups related to increased code coverage.
 0.8.2
 	Successful CI integration. Group decomposition functions finalized. Increased code coverage. Fix: FullCascadeSemigroup created properly to avoid long elements enumeration.
 0.8.1
