@@ -58,6 +58,11 @@ gap> Size(tS);
     <#Include Label="ComponentsOfCascadeProduct">
 </Section>
 
+<Section Label="wreath"><Heading>Iterated wreath products</Heading>
+<#Include Label="FullCascadeGroup">
+<#Include Label="FullCascadeSemigroup">
+</Section>
+
 <Section Label="cascadeviz"><Heading>Displaying and drawing cascades</Heading>
 For displaying the details (the dependency) maps <Ref Func="Display" BookName="ref"/> can be used.
 

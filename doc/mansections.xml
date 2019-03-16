@@ -58,6 +58,25 @@ gap> AsCoords(79,hcs);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="AsFLCascade">
+  <ManSection>
+    <Func Name="AsFLCascade" Arg="p, FLG"/>
+    <Returns>Coordinatized form of permutation p in an FL cascade group.</Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsFLPermutation">
+  <ManSection>
+    <Func Name="AsFLPermutation" Arg="cp, FLG"/>
+    <Returns>Mapping a permutation cascade down to a permutation. The inverse of <Ref Func="AsFLCascade" BookName="sgpdec"/>.</Returns>
+    <Description>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="AsHolonomyCoords">
   <ManSection>
     <Func Name="AsHolonomyCoords" Arg="point, skeleton"/>
@@ -339,6 +358,28 @@ gap> DependencyValues(df);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DisplayFLComponents">
+  <ManSection>
+    <Func Name="DisplayFLComponents" Arg="FLG"/>
+    <Func Name="DisplayFLComponents" Arg="subgroup_chain"/>
+    <Description>
+Display a concise textual summary of the FL decomposition components. Works both with a cascade group (that is a result of an FL decomposition) and simply with a subgroup chain.
+<Example><![CDATA[
+gap> FLG := FLCascadeGroup(SymmetricGroup(4));
+<cascade group with 2 generators, 3 levels with (2, 3, 4) pts>
+gap> DisplayFLComponents(FLG);
+1: (2,C2)
+2: (3,C3)
+3: (4,C2 x C2)
+gap> DisplayFLComponents(ChiefSeries(SymmetricGroup(4)));
+1: (2,C2)
+2: (3,C3)
+3: (4,C2 x C2)
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DisplayHolonomyComponents">
   <ManSection>
     <Func Name="DisplayHolonomyComponents" Arg="skeleton"/>
@@ -474,6 +515,28 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="FullCascadeGroup">
+  <ManSection>
+    <Func Name="FullCascadeGroup" Arg="permgroups"/>
+    <Returns>Returns the group of all cascade permutations of the given component groups.</Returns>
+    <Description>
+      Input is either a list of permutation groups, or n arguments containing those groups.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="FullCascadeSemigroup">
+  <ManSection>
+    <Func Name="FullCascadeSemigroup" Arg="semigroups"/>
+    <Returns>Returns the semigroup of all cascade transformations of the given component semigroups.</Returns>
+    <Description>
+      Input is either a list of transformation semigroups (permutation groups), or n arguments containing those semigroups.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 ##G
 
