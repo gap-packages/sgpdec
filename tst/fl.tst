@@ -19,18 +19,11 @@ gap> pocket_cube_L := (5,6,7,8)(1,9,21,19)(4,12,24,18);;
 gap> pocket_cube_D := (21,22,23,24)(12,16,20,8)(11,15,19,7);;
 gap> pocket_cube_B := (17,18,19,20)(1,8,23,14)(2,5,24,15);;
 gap> pocket_cube_gens := [pocket_cube_U, pocket_cube_L, pocket_cube_F, pocket_cube_R, pocket_cube_B, pocket_cube_D];;
-gap> pocket_cube_gen_names := ["U","L","F","R","B","D"];;
 gap> pocket_cube := GroupByGenerators(pocket_cube_gens);
 <permutation group with 6 generators>
 gap> scrambled := (1,19,20,3,18,24,15,10,5,8,23,13)(2,6,7,17,4,12,14,9,21);;
 gap> inverse := Inverse(scrambled);
 (1,13,23,8,5,10,15,24,18,3,20,19)(2,21,9,14,12,4,17,7,6)
-gap> epi := EpimorphismFromFreeGroup(pocket_cube:names:=["U","L","F","R","B","D"]);;
-gap> sequence := PreImagesRepresentative(epi,inverse);
-B^-1*R*F*L^-1*B^-1*L*U^-1*L*F^-1*L^-2*U*L*U^-1*F^-1*L*U*L*U^-1*F*L^-1*U^-1*F^-\
-1*U*F*U^-2*R*U*R^-1*U
-gap> Length(sequence);
-31
 gap> #creating a subgroup chain from the chief series
 gap> subgroupchain := ShallowCopy(ChiefSeries(pocket_cube));;
 gap> Remove(subgroupchain,2);;
