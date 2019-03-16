@@ -3,10 +3,10 @@
 # the string representation
 gap> START_TEST("Sgpdec package: transnot.tst");
 gap> LoadPackage("sgpdec", false);;
-gap> ForAll([1..314],function(i)
+gap> ForAll([1..10],function(i)
 >  local rnd;
->  rnd := RandomTransformation(163);
->  return rnd = AsTransformation(LinearNotation(rnd),163);
+>  rnd := RandomTransformation(931);
+>  return rnd = AsTransformation(LinearNotation(rnd),931);
 >  end);
 true
 gap> LinearNotation(Transformation([5,5,5,5,5]));
