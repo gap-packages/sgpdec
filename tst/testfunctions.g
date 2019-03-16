@@ -12,7 +12,8 @@ local test;
           "cartesianenum",
           "transnot",
           "viz",      
-          "straightword"
+          "straightword",
+          "manual"
           ] do
     Test(Concatenation(
             PackageInfo("sgpdec")[1]!.InstallationPath,
