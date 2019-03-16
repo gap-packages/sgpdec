@@ -4,6 +4,8 @@
 </Section>
 
 <Section Label="FLmappings"><Heading>Lifting up permutations and mapping down cascades</Heading>
+<#Include Label="AsFLCoords">
+<#Include Label="AsFLPoint">
 <#Include Label="AsFLCascade">
 <#Include Label="AsFLPermutation">
 </Section>

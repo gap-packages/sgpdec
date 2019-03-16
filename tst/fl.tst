@@ -80,6 +80,7 @@ gap> D4 := Group([(1,2,3,4), (1,3)]);
 Group([ (1,2,3,4), (1,3) ])
 
 # the chain goes down to the trivial group, therefore we have more coordinates then states
+# sort of the wrong attempt to coordinatize the action tightly
 gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4, [1,3], OnSets), Group(())],1);
 <cascade group with 2 generators, 2 levels with (2, 4) pts>
 gap> TestFLActionAllCoords(D4,FLD4);

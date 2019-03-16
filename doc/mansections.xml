@@ -67,11 +67,48 @@ gap> AsCoords(79,hcs);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="AsFLCoords">
+  <ManSection>
+    <Func Name="AsFLCoords" Arg="x, FLG"/>
+    <Returns>Coordinatized form of state x in an FL cascade group.</Returns>
+    <Description>
+<Example><![CDATA[
+gap> D4 := Group([(1,2,3,4), (1,2)(3,4)]);
+Group([ (1,2,3,4), (1,2)(3,4) ])
+gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4, [1,3], OnSets), Stabilizer(D4, 1)],1);
+<cascade group with 2 generators, 2 levels with (2, 2) pts>
+gap> AsFLCoords(1,FLD4);
+[ 1, 1 ]
+gap> AsFLCoords(2,FLD4);
+[ 2, 2 ]
+gap> AsFLCoords(3,FLD4);
+[ 1, 2 ]
+gap> AsFLCoords(4,FLD4);
+[ 2, 1 ]
+gap> AsFLPoint([1,1],FLD4);
+1
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="AsFLPermutation">
   <ManSection>
     <Func Name="AsFLPermutation" Arg="cp, FLG"/>
-    <Returns>Mapping a permutation cascade down to a permutation. The inverse of <Ref Func="AsFLCascade" BookName="sgpdec"/>.</Returns>
+    <Returns>Mapping a permutation cascade down to a permutation. </Returns>
     <Description>
+      The inverse of <Ref Func="AsFLCascade" BookName="sgpdec"/>.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AsFLPoint">
+  <ManSection>
+    <Func Name="AsFLPoint" Arg="coords, FLG"/>
+    <Returns>State x that the given coordinates map down to in an FL cascade group.</Returns>
+    <Description>
+      The inverse of <Ref Func="AsFLCoords" BookName="sgpdec"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
