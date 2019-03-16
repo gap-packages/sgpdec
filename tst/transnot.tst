@@ -9,6 +9,22 @@ gap> ForAll([1..314],function(i)
 >  return rnd = AsTransformation(LinearNotation(rnd),163);
 >  end);
 true
+gap> LinearNotation(Transformation([5,5,5,5,5]));
+"[1,2,3,4;5]"
+gap> SimplerLinearNotation(Transformation([5,5,5,5,5]));
+"[->5]"
+gap> SimplerLinearNotation(Transformation([4,5,4,5,4,5]));
+"([1,3;4],[2,6;5])"
+gap> SimplerLinearNotation(Transformation([1]));
+"()"
+gap> SimplerLinearNotation(Transformation([1,2]));
+"()"
+gap> SimplerLinearNotation(Transformation([2,1]));
+"(1,2)"
+gap> SimplerLinearNotation(Transformation([5,5,5,2,2,2]));
+"([1,3;5],[4,6;2])"
+gap> SimplerLinearNotation(Transformation([1,1,1,2,2,2]));
+"[[4,5,6;2],3;1]"
 
 #
 gap> STOP_TEST( "Sgpdec package: transnot.tst", 10000);
