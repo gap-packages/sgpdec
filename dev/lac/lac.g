@@ -1,5 +1,5 @@
 #automatic splashing?
-splashing := false;
+splashing := true;
 
 # Algebraic Analysis follows of Lac Operon using SGPDEC  by Attila Egri-Nagy & Chrystopher L. Nehaniv, University of Hertfordshire, using 
 # S. Kaufmann's Boolean Network Model, following the journal article
@@ -53,8 +53,10 @@ LAC := Semigroup(L0,L1,t);
 # carrying out a Krohn-Rhodes decomosition of the Lac Operon Automaton
 skel_lac := Skeleton(LAC);  
 
-#dot_lac := DotSkeleton(skel_lac,rec(states  := LACstates, symbols :=LACsymbols));
-#Splash(dot_lac);
+if splashing then
+dot_lac := DotSkeleton(skel_lac,rec(states  := LACstates, symbols :=LACsymbols));
+Splash(dot_lac);
+fi;
 
 DisplayHolonomyComponents(skel_lac);
 
@@ -81,6 +83,11 @@ if splashing then
 fi;
 
 #Size(LAC_Coordinatized);
+
+if splashing then
+SplashList(DotRepHolonomyGroups(skel_lac, rec(states  := LACstates, symbols :=LACsymbols)));
+SplashList(DotNaturalSubsystems(skel_lac, rec(states  := LACstates, symbols :=LACsymbols)));
+fi;
 
 cs := AsHolonomyCoords(1,skel_lac);          # give the state and skeleton as arguments
 #[ 1, 1, 3, 3, 9 ]

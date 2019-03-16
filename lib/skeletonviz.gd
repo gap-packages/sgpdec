@@ -21,5 +21,6 @@ DeclareGlobalFunction("TikzChainActions");
 DeclareGlobalFunction("DotRepPermutatorGroups");
 DeclareGlobalFunction("DotRepHolonomyGroups");
 DeclareGlobalFunction("SplashList");
+DeclareSynonym("DotNaturalSubsystems",DotRepPermutatorGroups);
 
 
