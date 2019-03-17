@@ -802,6 +802,16 @@ gap> OnFiniteSet(P,t*t);
 
 ##P
 
+<#GAPDoc Label="Perm2Reps">
+  <ManSection>
+<Func Name="Perm2Reps" Arg="g, transversals"/>
+    <Returns>List of coset representatives at each level corresponding to the permutation <Arg>g</Arg></Returns>
+<Description>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="PermutatorGroup">
   <ManSection>
 <Func Name="PermutatorGroup" Arg="sk, set"/>
@@ -944,6 +954,16 @@ gap> TilesOf(sk, FiniteSet([1,2,4],5));
 [ {1,2}, {1,4}, {2,4} ]
 gap> SgpDecFiniteSetDisplayOff();
 </Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="TransversalsOf">
+  <ManSection>
+    <Attr Name="TransversalsOf" Arg="FLG"/>
+    <Returns>The transversals of an FL cascade group decomposition <Arg>FLG</Arg>.</Returns>
+    <Description>
+      These are lists of lists of coset representatives on each level. This is the data structure needed for most computations in the decomposition.
     </Description>
   </ManSection>
 <#/GAPDoc>

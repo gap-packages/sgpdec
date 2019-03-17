@@ -1,5 +1,6 @@
 <Section Label="FLdecomposition"><Heading>Frobenius-Lagrange Decompositions</Heading>
 <#Include Label="FLCascadeGroup">
+<#Include Label="TransversalsOf">
 <#Include Label="DisplayFLComponents">
 </Section>
 
@@ -11,10 +12,12 @@
 </Section>
 
 <Section Label="FLcosetreps"><Heading>Coset representatives as coordinates</Heading>
-
+Coordinate values are coset representative permutations before encoding them as integer component states.
+<#Include Label="Perm2Reps">
 </Section>
 
 <Section Label="FLsolve"><Heading>"Solving" the decomposition </Heading>
+
 <#Include Label="LevelKillers">
 <#Include Label="LevelBuilders">
 
