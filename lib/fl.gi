@@ -55,7 +55,7 @@ ValidPoints := function(FLG)
   local l;
   l := BottomCosetActionRepsOf(FLG);
   return Filtered([1..Length(l)], x -> IsBound(l[x]));
-end;  
+end;
 
 # just a handy abbreviation: getting the representative of an element
 CosetRep := function(g,transversal)
@@ -75,6 +75,11 @@ function(g, transversals)
     Add(reps, reps[i] * Inverse(CosetRep(reps[i],transversals[i])));
   od;
   return reps;
+end);
+
+InstallGlobalFunction(Reps2Perm,
+function(reps)
+  return Product(Reversed(reps),());
 end);
 
 InstallGlobalFunction(Reps2FLCoords,
@@ -100,7 +105,7 @@ end);
 #mapping down is just multiplying together
 InstallGlobalFunction(FLCoords2Perm,
 function(cs, transversals)
-    return Product(Reversed(FLCoords2Reps(cs, transversals)),());
+    return Reps2Perm(FLCoords2Reps(cs, transversals));
 end);
 
 CreateFLCascadeGroup := function(chain)
@@ -160,7 +165,7 @@ end);
 #coords -> point, the Frobenius-Lagrange map TODO this assumes transitivity
 InstallGlobalFunction(AsFLPoint,
 function(cs,FLG)
-  if HasStabilizedPoint(FLG) then                     
+  if HasStabilizedPoint(FLG) then
     return StabilizedPoint(FLG)
            ^
            Product(Reversed(FLCoords2Reps(cs,TransversalsOf(FLG))),());
@@ -176,7 +181,7 @@ function(g, FLG)
   return Cascade(ComponentsOfCascadeProduct(FLG),
                  FLDependencies(g,
                                 TransversalsOf(FLG),
-                                DomainOf(FLG)));  
+                                DomainOf(FLG)));
 end);
 
 InstallGlobalFunction(AsFLPermutation,
@@ -282,7 +287,7 @@ TestFLAction := function(states, G, FL)
     od;
   od;
   return true;
-end;  
+end;
 MakeReadOnlyGlobal("TestFLAction");
 
 # instead of acting on lifted coordinates only, here we act on all
@@ -319,7 +324,7 @@ TestFLCosetAction := function(G, FL)
     od;
   od;
   return true;
-end;  
+end;
 MakeReadOnlyGlobal("TestFLCosetAction");
 
 #displays the components of an FL cascade group

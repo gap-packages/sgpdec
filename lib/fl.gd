@@ -13,23 +13,24 @@
 DeclareProperty("IsFLCascadeGroup",IsCascadeGroup);
 
 DeclareOperation("FLCascadeGroup", [IsList, IsPosInt]);
-
 DeclareGlobalFunction("FLComponents");
 DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
+DeclareGlobalFunction("DisplayFLComponents");
+DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
+DeclareAttribute("BottomCosetActionRepsOf", IsFLCascadeGroup);
+DeclareAttribute("StabilizedPoint", IsFLCascadeGroup);
+
 DeclareGlobalFunction("AsFLPoint");
 DeclareGlobalFunction("AsFLCoords");
 DeclareGlobalFunction("AsFLCascade");
 DeclareGlobalFunction("AsFLPermutation");
+
 DeclareGlobalFunction("Perm2Reps");
+DeclareGlobalFunction("Reps2Perm");
 DeclareGlobalFunction("Reps2FLCoords");
 DeclareGlobalFunction("FLCoords2Reps");
 DeclareGlobalFunction("Perm2FLCoords");
 DeclareGlobalFunction("FLCoords2Perm");
 DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");
-DeclareGlobalFunction("DisplayFLComponents");
-
-DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
-DeclareAttribute("BottomCosetActionRepsOf", IsFLCascadeGroup);
-DeclareAttribute("StabilizedPoint", IsFLCascadeGroup);
