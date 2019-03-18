@@ -11,7 +11,7 @@ transformation semigroups.
 </TitleComment>
 
 <Abstract>
-This  &GAP; <Package>4.8</Package> package contains implementations
+This  &GAP; <Package>4.10</Package> package contains implementations
 of hierarchical decompositions of transformation
 semigroups (Krohn-Rhodes theory) and permutation groups. Cascade products
 (substructures of the wreath product) can be constructed by explicitly giving
@@ -20,7 +20,7 @@ decomposition algorithms (holonomy for semigroups and Lagrange-Frobenius
 decomposition for groups).
 
 <P/>
-To get a quick impression about what <Package>SgpDec</Package> is capable of, reading <Ref Chap="ch:basic" Style="Text"/> 
+To get a quick impression about what <Package>SgpDec</Package> is capable of, reading <Ref Chap="ch:basic" Style="Text"/>
 or the paper <Cite Key="sgpdec"/> could be useful.
 To  see <Package>SgpDec</Package> in action, please check <Cite Key="rsta"/>.
 <P/>
