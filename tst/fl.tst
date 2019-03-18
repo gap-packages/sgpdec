@@ -57,10 +57,16 @@ gap> PC := FLCascadeGroup([pocket_cube, StabF, Stab2],2);
 <cascade group with 6 generators, 2 levels with (8, 3) pts>
 gap> TestFLAction([1..24], pocket_cube, PC);
 true
+gap> TestFLCosetAction(pocket_cube,PC); # should fail due to different bottom coset action
+fail expected, found: 9
+false
 gap> S4 := SymmetricGroup(4);;
 gap> FL := FLCascadeGroup(ChiefSeries(S4));;
 gap> TestFLCosetAction(S4,FL);
 true
+gap> TestFLAction(ValidPoints(FL),S4,FL); # not having the right coset action
+2 expected, found: 23
+false
 gap> SgpDecOptionsRec.SMALL_GROUPS := true;;
 gap> DisplayFLComponents(FLCascadeGroup(SymmetricGroup(4)));
 1: (2,C2)
@@ -81,4 +87,10 @@ gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4, [1,3], OnSets), Group(())],1);
 <cascade group with 2 generators, 2 levels with (2, 4) pts>
 gap> TestFLActionAllCoords(D4,FLD4);
 true
+gap> D4 := Group([(1,2,3,4), (1,3)]);; # have to repeat this definition, otherwise we get different fail case
+gap> FLD4 := FLCascadeGroup([D4, Stabilizer(D4,1)],2); #wrong stabilized point given
+<cascade group with 2 generators, 1 levels with (4) pts>
+gap> TestFLActionAllCoords(D4,FLD4);
+3 expected, found: 1
+false
 gap> STOP_TEST( "Sgpdec package: fl.tst", 10000);
