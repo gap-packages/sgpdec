@@ -345,7 +345,7 @@ function(FLG_or_series)
     if SgpDecOptionsRec.SMALL_GROUPS then
       Print(StructureDescription(comps[i]));
     else
-      Print("group of size ",Size(comps[i]));
+      Print("|G|=",Size(comps[i]));
     fi;
     Print(")\n");
   od;

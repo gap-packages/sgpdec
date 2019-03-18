@@ -61,14 +61,17 @@ gap> S4 := SymmetricGroup(4);;
 gap> FL := FLCascadeGroup(ChiefSeries(S4));;
 gap> TestFLCosetAction(S4,FL);
 true
+gap> SgpDecOptionsRec.SMALL_GROUPS := true;;
 gap> DisplayFLComponents(FLCascadeGroup(SymmetricGroup(4)));
 1: (2,C2)
 2: (3,C3)
 3: (4,C2 x C2)
+gap> SgpDecOptionsRec.SMALL_GROUPS := false;;
 gap> DisplayFLComponents(ChiefSeries(SymmetricGroup(4)));
-1: (2,C2)
-2: (3,C3)
-3: (4,C2 x C2)
+1: (2,|G|=2)
+2: (3,|G|=3)
+3: (4,|G|=4)
+gap> SgpDecOptionsRec.SMALL_GROUPS := true;; #the default
 gap> D4 := Group([(1,2,3,4), (1,3)]);
 Group([ (1,2,3,4), (1,3) ])
 

@@ -46,6 +46,7 @@ gap> S := Semigroup([ Transformation( [ 1, 1 ] ), Transformation( [ 2, 2 ] ),
 >   Transformation( [ 1, 2, 3, 4, 3, 4 ] ), 
 >   Transformation( [ 1, 2, 5, 6, 5, 6 ] ), 
 >   Transformation( [ 1, 2, 3, 4, 5, 2 ] ) ]);;
+gap> SgpDecOptionsRec.SMALL_GROUPS := true;;
 gap> DisplayHolonomyComponents(Skeleton(S));
 1: 5
 2: 4
@@ -53,6 +54,15 @@ gap> DisplayHolonomyComponents(Skeleton(S));
 4: (4,C2) 3
 5: (3,C3) 2
 6: (2,C2)
+gap> SgpDecOptionsRec.SMALL_GROUPS := false;;
+gap> DisplayHolonomyComponents(Skeleton(S));
+1: 5
+2: 4
+3: 4 3
+4: (4,|G|=2) 3
+5: (3,|G|=3) 2
+6: (2,|G|=2)
+gap> SgpDecOptionsRec.SMALL_GROUPS := true;; #the default
 gap> BEX := Semigroup([ Transformation([1,2,1,1]), Transformation([4,4,4,3]), Transformation([3,3,4,4]), Transformation([4,4,1,2]), Transformation([2,1,4,4])]);;
 gap> TestHolonomyEmulation(BEX);
 true

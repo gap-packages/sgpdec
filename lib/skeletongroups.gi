@@ -319,7 +319,7 @@ DisplayStringHolonomyComponents := function(sk)
                              ",", StructureDescription(groups[i]),")"));
       else
         Add(l, Concatenation("(",String(NumOfPointsInSlot(sk,level,i)),
-                             ",G", String(Order(groups[i])),")"));
+                             ",|G|=", String(Order(groups[i])),")"));
       fi;
     od;
     Add(groupnames,l);
