@@ -26,6 +26,10 @@ The skeleton of a transformation semigroup is a data structure containing inform
 <#Include Label="AsHolonomyCoords">
 <#Include Label="AsHolonomyPoint">
 
+<#Include Label="AsHolonomyCascade">
+<#Include Label="AsHolonomyTransformation">
+
+
 <#Include Label="PermutatorGroup">
 
 </Section>
