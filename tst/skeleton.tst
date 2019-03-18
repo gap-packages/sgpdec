@@ -40,6 +40,10 @@ gap> NonImageSingletonClasses(sk);
 [ [ {4} ], [ {3} ], [ {2} ], [ {1} ] ]
 gap> HolonomyInfoString(sk);
 "2 2 5 5,1"
+gap> PermutatorSemigroupElts(FullTransformationSemigroup(3), FiniteSet([1,2],3));
+[ Transformation( [ 1, 2, 1 ] ), Transformation( [ 1, 2, 2 ] ), 
+  IdentityTransformation, Transformation( [ 2, 1, 1 ] ), 
+  Transformation( [ 2, 1, 2 ] ), Transformation( [ 2, 1 ] ) ]
 gap> SgpDecFiniteSetDisplayOff();;
 
 #

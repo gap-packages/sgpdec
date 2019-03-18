@@ -164,7 +164,7 @@ end);
 #TODO this is brute force! any other idea?
 InstallGlobalFunction(PermutatorSemigroupElts,
 function(ts,set)
-  return Filtered(ts, t -> OnFiniteSet(set,t) = t);
+  return Filtered(ts, t -> OnFiniteSet(set,t) = set);
 end);
 
 InstallGlobalFunction(PermutatorGroup,
