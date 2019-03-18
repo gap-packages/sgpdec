@@ -78,8 +78,8 @@ function(list, numofdeps)
   local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
 
   if not IsDenseList(list) then
-    Error("usage: <doms> should be a dense list of transformation semigroup\n",
-    " or permutation groups,");
+    Error("first argument should be a list of transformation semigroups\n",
+    " or permutation groups.");
     return;
   else
     isgroup:=true;
@@ -87,8 +87,8 @@ function(list, numofdeps)
       if not IsPermGroup(x) then
         isgroup:=false;
         if not IsTransformationSemigroup(x) then
-          Error("usage: <doms> should be a dense list of transformation",
-          " semigroup or permutation groups,");
+          Error("first argument should be a list of transformation\n",
+                "semigroups or permutation groups.");
           return;
         fi;
       fi;
