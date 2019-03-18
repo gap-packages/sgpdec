@@ -1,5 +1,5 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.8.3">
+##  <!ENTITY VERSION "0.9">
 ##  <!ENTITY COPYRIGHTYEARS "2008-2019">
 ##  <#/GAPDoc>
 
@@ -9,9 +9,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.8.3",
+Version := "0.9",
 
-Date := "15/03/2019", # dd/mm/yyyy format
+Date := "18/03/2019", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
