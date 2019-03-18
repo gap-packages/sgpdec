@@ -14,6 +14,11 @@
 <Section Label="FLcosetreps"><Heading>Coset representatives as coordinates</Heading>
 Coordinate values are coset representative permutations before encoding them as integer component states.
 <#Include Label="Perm2Reps">
+<#Include Label="Reps2Perm">
+<#Include Label="Reps2FLCoords">
+<#Include Label="FLCoords2Reps">
+<#Include Label="Perm2FLCoords">
+<#Include Label="FLCoords2Perm">
 </Section>
 
 <Section Label="FLsolve"><Heading>"Solving" the decomposition </Heading>

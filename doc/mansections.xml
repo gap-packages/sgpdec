@@ -574,6 +574,28 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="FLCoords2Perm">
+  <ManSection>
+<Func Name="FLCoords2Perm" Arg="coords, transversals"/>
+    <Returns>The permutation corresponding to  <Arg>coords</Arg>.</Returns>
+    <Description>
+        The combination of <Ref Func="FLCoords2Reps" BookName="sgpdec"/> and <Ref Func="Reps2Perm" BookName="sgpdec"/>.
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="FLCoords2Reps">
+  <ManSection>
+<Func Name="FLCoords2Reps" Arg="coords, transversals"/>
+    <Returns>Coset representatives for  <Arg>coords</Arg>.</Returns>
+    <Description>
+        Inverse of <Ref Func="Reps2FLCoords" BookName="sgpdec"/>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="FullCascadeGroup">
   <ManSection>
     <Func Name="FullCascadeGroup" Arg="permgroups"/>
@@ -802,6 +824,17 @@ gap> OnFiniteSet(P,t*t);
 
 ##P
 
+<#GAPDoc Label="Perm2FLCoords">
+  <ManSection>
+<Func Name="Perm2FLCoords" Arg="g, transversals"/>
+    <Returns>Encoded integer coordinates corresponding to  <Arg>g</Arg>.</Returns>
+    <Description>
+        The combination of <Ref Func="Perm2Reps" BookName="sgpdec"/> and <Ref Func="Reps2FLCoords" BookName="sgpdec"/>.
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="Perm2Reps">
   <ManSection>
 <Func Name="Perm2Reps" Arg="g, transversals"/>
@@ -855,6 +888,27 @@ gap> SgpDecFiniteSetDisplayOff();
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="Reps2FLCoords">
+  <ManSection>
+<Func Name="Reps2FLCoords" Arg="reps, transversals"/>
+    <Returns>Encoded integer coordinates for  <Arg>reps</Arg>.</Returns>
+    <Description>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="Reps2Perm">
+  <ManSection>
+<Func Name="Reps2Perm" Arg="reps"/>
+    <Returns>A permutation coordinatized by <Arg>reps</Arg>.</Returns>
+    <Description>
+        Inverse of <Ref Func="Perm2Reps" BookName="sgpdec"/>
+</Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 ##S
 
