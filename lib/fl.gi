@@ -15,16 +15,28 @@
 # point state
 # perm permutation
 
+# for a subgroupchain this calculates a list of right transversals 
+InstallGlobalFunction(FLTransversals,
+function(subgroupchain)
+local transversals,i;
+  transversals := [];
+  for i in [1..Length(subgroupchain)-1] do
+    #the transversals corresponding to coset spaces
+    transversals[i] := RightTransversal(subgroupchain[i],subgroupchain[i+1]);
+      od;
+return transversals;
+end);
+
 # for a subgroupchain this calculates the right transversals and a group action
 # on the cosets will define the components, thus the cosets are the coord vals
 InstallGlobalFunction(FLComponents,
 function(subgroupchain)
 local transversals, comps,i,compgens;
-  transversals := [];
+
+  transversals := FLTransversals(subgroupchain);
+
   comps := [];
   for i in [1..Length(subgroupchain)-1] do
-    #the transversals - coset spaces
-    transversals[i] := RightTransversal(subgroupchain[i],subgroupchain[i+1]);
     #the generators of the component by the canonical action on the cosets
     compgens := List(GeneratorsOfGroup(subgroupchain[i]),
                      gen -> AsPermutation(
