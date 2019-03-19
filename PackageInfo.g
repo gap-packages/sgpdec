@@ -71,8 +71,8 @@ ArchiveURL     := Concatenation("https://github.com/gap-packages/sgpdec/",
                            "releases/download/v", ~.Version,
                            "/sgpdec-", ~.Version),
                    ArchiveFormats := ".tar.gz .tar.bz2",
-SourceRepository := rec( 
-  Type := "git", 
+SourceRepository := rec(
+  Type := "git",
   URL := "https://github.com/gap-packages/sgpdec"
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
@@ -106,7 +106,7 @@ AvailabilityTest := ReturnTrue,
 
 Autoload := false,
 
-TestFile := "tst/test.g",
+TestFile := "tst/testall.g",
 
 Keywords := ["Krohn-Rhodes Theory",
              "transformation semigroup",
