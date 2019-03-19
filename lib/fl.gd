@@ -14,6 +14,7 @@ DeclareProperty("IsFLCascadeGroup",IsCascadeGroup);
 
 DeclareOperation("FLCascadeGroup", [IsList, IsPosInt]);
 DeclareGlobalFunction("FLComponents");
+DeclareGlobalFunction("FLTransversals");
 DeclareGlobalFunction("FLDependencies");
 DeclareGlobalFunction("FLComponentActions");
 DeclareGlobalFunction("DisplayFLComponents");
