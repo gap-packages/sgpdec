@@ -1,3 +1,5 @@
+0.9.1
+	Separating computation of  transversals and component groups into different functions: FLTransversals, FLComponents. This is useful for computing decompositions partially, in case the whole FLCascadeGroup is not feasible. ValidPoints is now defined as an attribute of FLCascadeGroup to avoid recalculation. Standard way of testing with TestPackage("sgpdec") is available now.
 0.9
 	Reps2Perm added. PermutatorSemigroupElts fixed. Documentation entries added. Unified format for DisplayHolonomyComponents and DisplayFLComponents when the Small Groups library is not used.
 0.8.3
