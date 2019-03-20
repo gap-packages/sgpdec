@@ -29,7 +29,7 @@ function(doms, deps)
   fi;
 
   if ForAll(doms, IsGroup)
-     or 
+     or
      ((not ForAny(doms, IsSemigroup))
        and ForAll(deps, x -> IsPerm(x[2]))) then
     f:=Objectify(PermCascadeType, rec());
@@ -80,7 +80,6 @@ function(list, numofdeps)
   if not IsDenseList(list) then
     Error("first argument should be a list of transformation semigroups\n",
     " or permutation groups.");
-    return;
   else
     isgroup:=true;
     for x in list do
@@ -89,7 +88,6 @@ function(list, numofdeps)
         if not IsTransformationSemigroup(x) then
           Error("first argument should be a list of transformation\n",
                 "semigroups or permutation groups.");
-          return;
         fi;
       fi;
     od;

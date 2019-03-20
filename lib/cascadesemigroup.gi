@@ -228,7 +228,6 @@ function(comps)
   if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
     Error("A list of transformation semigroups",
           "and/or permutation groups expected.");
-    return;
   fi;
   domains:=[];
   for comp in comps do
