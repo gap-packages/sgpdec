@@ -21,6 +21,7 @@ DeclareGlobalFunction("DisplayFLComponents");
 DeclareAttribute("TransversalsOf", IsFLCascadeGroup);
 DeclareAttribute("BottomCosetActionRepsOf", IsFLCascadeGroup);
 DeclareAttribute("StabilizedPoint", IsFLCascadeGroup);
+DeclareAttribute("ValidPoints", IsFLCascadeGroup);
 
 DeclareGlobalFunction("AsFLPoint");
 DeclareGlobalFunction("AsFLCoords");

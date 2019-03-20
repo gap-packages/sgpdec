@@ -15,7 +15,7 @@
 # point state
 # perm permutation
 
-# for a subgroupchain this calculates a list of right transversals 
+# for a subgroupchain this calculates a list of right transversals
 InstallGlobalFunction(FLTransversals,
 function(subgroupchain)
 local transversals,i;
@@ -63,11 +63,12 @@ BottomCosetActionReps := function(G,bottomG,x)
 end;
 MakeReadOnlyGlobal("BottomCosetActionReps");
 
-ValidPoints := function(FLG)
+InstallMethod(ValidPoints, "for an FL cascade group", [IsFLCascadeGroup],
+function(FLG)
   local l;
   l := BottomCosetActionRepsOf(FLG);
   return Filtered([1..Length(l)], x -> IsBound(l[x]));
-end;
+end);
 
 # just a handy abbreviation: getting the representative of an element
 CosetRep := function(g,transversal)
