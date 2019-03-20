@@ -59,13 +59,13 @@ function(arg)
     if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then
       arg:=arg[1];
     else
-      Error("the argument must be a list of transformation semigroup and perm",
-      " groups");
+      Error("The argument must be a list of transformation semigroups and/or ",
+      "permutation groups.");
     fi;
   else
     if not IsListOfPermGroupsAndTransformationSemigroups(arg) then
-      Error("the argument must consist of transformation semigroups and perm ",
-      "groups,");
+      Error("The arguments should be transformation semigroups and/or ",
+      "permutation groups.");
     fi;
   fi;
   #converting group components to semigroups
@@ -77,7 +77,7 @@ function(arg)
                       g -> AsTransformation(g,n)));
     fi;
   od;
-  
+
   comps := arg;
   compdoms := ComponentDomains(comps);
   depdoms := DependencyDomains(compdoms);
@@ -226,7 +226,8 @@ InstallOtherMethod(ComponentDomains,
 function(comps)
   local domains, comp;
   if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
-    Error("insert meaningful error message here,");
+    Error("A list of transformation semigroups",
+          "and/or permutation groups expected.");
     return;
   fi;
   domains:=[];

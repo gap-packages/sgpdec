@@ -70,6 +70,10 @@ gap> G := Group(c);
 gap> ComponentsOfCascadeProduct(G);
 [ Group([ (1,2) ]), Group([ (1,2) ]) ]
 
+# testing error messages
+gap> ComponentDomains([1,2,3]);
+Error, A list of transformation semigroupsand/or permutation groups expected.
+
 # identity cascade
 gap> IdentityCascade([T3,Z2]);
 <trans cascade with 2 levels with (3, 2) pts, 0 dependencies>
