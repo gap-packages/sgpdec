@@ -34,7 +34,7 @@ function(s, list, act)
   Append(str, "edge [len=1.2]");
   ht:=HTCreate("1 -> 2");
   entries := [];
-  
+
   for t in [1..Size(gens)] do
     label := Concatenation("", String(t));
     for i in [1..Length(list)] do
@@ -65,10 +65,10 @@ end);
 #############################################################################
 # Extension of DotSemigroupAction to show node names and generator names
 # by C L Nehaniv, June 2013
-#                  Updated 27 February 2019 
+#                  Updated 27 February 2019
 #
 
-# Usage: semigroup, list, action, list of node names, list of generator names. 
+# Usage: semigroup, list, action, list of node names, list of generator names.
 # For example,
 # DotSemigroupActionWithNames(s, Elements(s), OnRight,NodeNames,GeneratorNames);
 # DotSemigroupActionWithNames(s, Combinations([1..4]), OnSets,NodeNames,GeneratorNames);
@@ -85,7 +85,7 @@ function(s, list, act, nodenames, generatornames)
   Append(str, "edge [len=1.2]");
   ht:=HTCreate("1 -> 2");
   entries := [];
-  
+
   for t in [1..Size(gens)] do
     label := Concatenation("", String(generatornames[t]));
     for i in [1..Length(list)] do
@@ -114,22 +114,6 @@ end);
 
 ################################################################################
 # VIZ ##########################################################################
-
-# objects: a list of vertices, or a list of edges (their string representation)
-# labels: a record used as a lookup table
-# not used at the moment
-Dot := function(objects, labels)
-  local o,str;
-  str := "";
-  for o in objects do
-    if IsBound(labels.(o)) then
-      str := Concatenation(str, o," ",labels.(o),";\n");
-    else
-      str := Concatenation(str, o,";\n");
-    fi;
-  od;
-end;
-MakeReadOnlyGlobal("Dot");
 
 #TODO VIZ has List2CommaSeparatedString
 List2Label := function(l)
@@ -289,7 +273,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
           AppendTo(out,"[label=\"", tmpstring, "\"]\n");
         else
           AppendTo(out,"[label=\"", String(witness), "\"]\n");
-        fi; 
+        fi;
       fi;
     od;
   od;
@@ -315,7 +299,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   PrintTo(out,"//dot\ndigraph skeleton{\n");
   #setting the state names
   if "states" in RecNames(params) then
-    states := params.states; 
+    states := params.states;
   else
     states := [1..DegreeOfSkeleton(sk)];
   fi;
@@ -467,14 +451,14 @@ dotlist:=[];
 for dx in [1..DepthOfSkeleton(sk)-1] do
    for  x1 in RepresentativeSetsOnDepth(sk,dx) do
      px1 := PermutatorGroup(sk,x1);
-       hx1 := HolonomyGroup@SgpDec(sk,x1); 
+       hx1 := HolonomyGroup@SgpDec(sk,x1);
      if not IsTrivial(px1)  then
               PermutatorGeneratorLabels:=[];
               W := NontrivialRoundTripWords(sk,x1);
                for w in W do #print the permutator generator words using named transitions
-                  PermGenWord:=Concatenation(List(w,x->symbols[x]));   
+                  PermGenWord:=Concatenation(List(w,x->symbols[x]));
                   Add(PermutatorGeneratorLabels,PermGenWord);
-                    od; 
+                    od;
            dot:=DotSemigroupActionWithNames(px1,ListBlist([1..DegreeOfSkeleton(sk)],x1),OnPoints,states,PermutatorGeneratorLabels);
            Add(dotlist,dot);
        fi;
@@ -517,17 +501,17 @@ dotlist:=[];
 for dx in [1..DepthOfSkeleton(sk)-1] do
    for  x1 in RepresentativeSetsOnDepth(sk,dx) do
      px1 := PermutatorGroup(sk,x1);
-       hx1 := HolonomyGroup@SgpDec(sk,x1); 
+       hx1 := HolonomyGroup@SgpDec(sk,x1);
      if not IsTrivial(px1)  then
               PermutatorGeneratorLabels:=[];
               W := NontrivialRoundTripWords(sk,x1);
                for w in W do #print the permutator generator words using named transitions
-                  PermGenWord:=Concatenation(List(w,x->symbols[x]));   
+                  PermGenWord:=Concatenation(List(w,x->symbols[x]));
                   Add(PermutatorGeneratorLabels,PermGenWord);
-                    od; 
-           
+                    od;
+
        tilenames :=List(TilesOf(sk,x1),x->TrueValuePositionsBlistString(x,states));
-               
+
            dot:=DotSemigroupActionWithNames(hx1,[1..Size(TilesOf(sk,x1))],OnPoints,tilenames,PermutatorGeneratorLabels);
            Add(dotlist,dot);
        fi;
@@ -541,4 +525,4 @@ InstallGlobalFunction(SplashList,
 function(dotlist)
 local dot;
 for dot in dotlist do Splash(dot); od;
-end); 
+end);
