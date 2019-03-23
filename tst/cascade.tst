@@ -272,6 +272,11 @@ eight=0.1,label=\"\"];\nn_1 -- n_1_1 [color=black,label=\"3\"];\nn_1 -- n_1_2 \
 [color=black,label=\"1\"];\nn_2[color=black,width=0.1,height=0.1,label=\"\"];\
 \nn_2 -- n_2_1 [color=black,label=\"2\"];\nn_2 -- n_2_2 [color=black,label=\"3\
 \"];\nn_2 -- n_2_3 [color=black,label=\"2\"];\n}\n"
+gap> DotCascade(AsCascade(Transformation([2,3,4,5,6,2]),[2,6])); #testing for the grey paths
+"//dot\ngraph ct{\n node[color=grey,width=0.1,height=0.1,fontsize=11,label=\"\
+\"];\n edge [color=grey,fontsize=11,fontcolor=black];\nn -- n_1 [color=grey,la\
+bel=\"1\",fontcolor=grey];\nn_1 [color=black,label=\"([1,2],3,4,5,6)\"];\nn --\
+ n_2 [color=grey,label=\"2\",fontcolor=grey];\n}\n"
 
 #
 gap> STOP_TEST( "Sgpdec package: cascade.tst", 10000);   

@@ -468,7 +468,7 @@ function(arg)
   GREYLABELPREFIX := " [color=grey,label=\"";
   BLACKLABELPREFIX := " [color=black,label=\"";
   #-----------------------------------------------------------------------------
-  recdraw := function(coordprefix, nodename,inscope)
+  recdraw := function(coordprefix, nodename,inscope) #inscope sg above not fixed
     local l,i,nontrivial,childname,val;
     nontrivial := false;
     l := Length(coordprefix);
