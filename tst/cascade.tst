@@ -116,6 +116,11 @@ gap> for i in [1..333] do
 >     Print("multiplication of cascades isn't working...2\n");
 >   fi;
 > od;
+gap> AsCascade(Transformation([2,3,4,5,6,1]),[2,3]); #not in the wreath of T2 T3
+#W not in the wreath product
+fail
+gap> AsCascade(Transformation([6,6,6,5,5,4]),[2,3]);
+<trans cascade with 2 levels with (2, 3) pts, 3 dependencies>
 
 #
 gap> comps:=[semis[3], semis[2], semis[4]];;

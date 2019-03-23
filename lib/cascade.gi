@@ -246,6 +246,7 @@ function(f, compsordomsizes)
       pos:=Position(depdoms[level], args);
       if IsBound(vals[level][pos][coords[level]])
          and vals[level][pos][coords[level]] <>  new[level] then
+        Print("#W not in the wreath product\n");
         return fail;
       else
         #registering even the trivial map is important as it may conflict
