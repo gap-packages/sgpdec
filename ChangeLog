@@ -1,3 +1,5 @@
+0.9.2
+	Making FL conversion functions polymorphic, so they can either take an FLCascadeGroup for convenience, or a list of transversals if obtaining a decompositions (lifting the generators) is not feasible.
 0.9.1
 	Separating computation of  transversals and component groups into different functions: FLTransversals, FLComponents. This is useful for computing decompositions partially, in case the whole FLCascadeGroup is not feasible. ValidPoints is now defined as an attribute of FLCascadeGroup to avoid recalculation. Standard way of testing with TestPackage("sgpdec") is available now.
 0.9
