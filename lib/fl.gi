@@ -78,7 +78,8 @@ MakeReadOnlyGlobal("CosetRep");
 
 
 # a permutation is coordinatized by coset representatives
-InstallGlobalFunction(Perm2Reps,
+InstallMethod(Perm2Reps, "for a permutation and a list of transversals",
+              [IsPerm, IsList],
 function(g, transversals)
   local reps,i;
   #on the top level we have simply g
@@ -88,6 +89,12 @@ function(g, transversals)
     Add(reps, reps[i] * Inverse(CosetRep(reps[i],transversals[i])));
   od;
   return reps;
+end);
+
+InstallOtherMethod(Perm2Reps, "for a permutation and an FL cascade group",
+              [IsPerm, IsFLCascadeGroup],
+function(g, FLG)
+  return Perm2Reps(g, TransversalsOf(FLG));
 end);
 
 InstallGlobalFunction(Reps2Perm,

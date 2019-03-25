@@ -28,7 +28,7 @@ DeclareGlobalFunction("AsFLCoords");
 DeclareGlobalFunction("AsFLCascade");
 DeclareGlobalFunction("AsFLPermutation");
 
-DeclareGlobalFunction("Perm2Reps");
+DeclareOperation("Perm2Reps", [IsPerm, IsList]);
 DeclareGlobalFunction("Reps2Perm");
 DeclareGlobalFunction("Reps2FLCoords");
 DeclareGlobalFunction("FLCoords2Reps");
