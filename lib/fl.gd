@@ -29,10 +29,10 @@ DeclareGlobalFunction("AsFLCascade");
 DeclareGlobalFunction("AsFLPermutation");
 
 DeclareOperation("Perm2Reps", [IsPerm, IsList]);
-DeclareGlobalFunction("Reps2Perm");
-DeclareGlobalFunction("Reps2FLCoords");
-DeclareGlobalFunction("FLCoords2Reps");
-DeclareGlobalFunction("Perm2FLCoords");
-DeclareGlobalFunction("FLCoords2Perm");
+DeclareGlobalFunction("Reps2Perm"); # this doesn't need transversals
+DeclareOperation("Reps2FLCoords", [IsPermCollection, IsList]);
+DeclareOperation("FLCoords2Reps", [IsList, IsList]);
+DeclareOperation("Perm2FLCoords", [IsPerm, IsList]);
+DeclareOperation("FLCoords2Perm", [IsList, IsList]);
 DeclareGlobalFunction("LevelKillers");
 DeclareGlobalFunction("LevelBuilders");

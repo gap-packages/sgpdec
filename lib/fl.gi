@@ -102,31 +102,67 @@ function(reps)
   return Product(Reversed(reps),());
 end);
 
-InstallGlobalFunction(Reps2FLCoords,
+InstallMethod(Reps2FLCoords,
+              "for a list of coset rep permutations and a list of transversals",
+              [IsPermCollection, IsList],
 function(reps, transversals)
   #taking the representative elements then coding coset reps as points (indices)
   return List([1..Size(reps)],
               i -> PositionCanonical(transversals[i], reps[i]));
 end);
 
+InstallOtherMethod(Reps2FLCoords,
+                   "for a list of coset rep permutations and an FL cascade group",
+              [IsPermCollection, IsFLCascadeGroup],
+function(reps, FLG)
+  return Reps2FLCoords(reps, TransversalsOf(FLG));
+end);
+
+
 # decoding the integers back to coset representatives
-InstallGlobalFunction(FLCoords2Reps,
-function(cascstate, transversals)
-  return List([1..Size(cascstate)],
-              i -> transversals[i][cascstate[i]]);
+InstallMethod(FLCoords2Reps,
+              "for coordinates and a list of transversals",
+              [IsList, IsList],
+function(coords, transversals)
+  return List([1..Size(coords)],
+              i -> transversals[i][coords[i]]);
+end);
+
+InstallOtherMethod(FLCoords2Reps,
+              "for coordinates and an FL cascade group",
+              [IsList, IsFLCascadeGroup],
+function(coords, FLG)
+  return FLCoords2Reps(coords, TransversalsOf(FLG));
 end);
 
 # permutation converted coset reps, then integer encoding
-InstallGlobalFunction(Perm2FLCoords,
+InstallMethod(Perm2FLCoords, "for a permutation and a list of transversals",
+              [IsPerm, IsList],
 function(g, transversals)
   return Reps2FLCoords(Perm2Reps(g, transversals),transversals);
 end);
 
-#mapping down is just multiplying together
-InstallGlobalFunction(FLCoords2Perm,
-function(cs, transversals)
-    return Reps2Perm(FLCoords2Reps(cs, transversals));
+InstallOtherMethod(Perm2FLCoords, "for a permutation and an FL cascade group",
+                   [IsPerm, IsFLCascadeGroup],
+function(g, FLG)
+  return Perm2FLCoords(g, TransversalsOf(FLG));
 end);
+
+#mapping down is just multiplying together after decoding
+InstallMethod(FLCoords2Perm,
+              "for coordinates and a list of transversals",
+              [IsList, IsList],
+function(coords, transversals)
+    return Reps2Perm(FLCoords2Reps(coords, transversals));
+end);
+
+InstallOtherMethod(FLCoords2Perm,
+              "for coordinates and an FL cascade group",
+              [IsList, IsFLCascadeGroup],
+function(coords, FLG)
+  return Reps2Perm(FLCoords2Reps(coords, TransversalsOf(FLG)));
+end);
+
 
 CreateFLCascadeGroup := function(chain)
 local gens,id,cosetactions,G,flG;
