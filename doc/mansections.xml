@@ -603,7 +603,8 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 
 <#GAPDoc Label="FLCoords2Perm">
   <ManSection>
-<Func Name="FLCoords2Perm" Arg="coords, transversals"/>
+      <Oper Name="FLCoords2Perm" Arg="coords, transversals"/>
+      <Oper Name="FLCoords2Perm" Arg="coords, FLG"/>
     <Returns>The permutation corresponding to  <Arg>coords</Arg>.</Returns>
     <Description>
         The combination of <Ref Func="FLCoords2Reps" BookName="sgpdec"/> and <Ref Func="Reps2Perm" BookName="sgpdec"/>.
@@ -614,7 +615,8 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 
 <#GAPDoc Label="FLCoords2Reps">
   <ManSection>
-<Func Name="FLCoords2Reps" Arg="coords, transversals"/>
+      <Oper Name="FLCoords2Reps" Arg="coords, transversals"/>
+      <Oper Name="FLCoords2Reps" Arg="coords, FLG"/>
     <Returns>Coset representatives for  <Arg>coords</Arg>.</Returns>
     <Description>
         Inverse of <Ref Func="Reps2FLCoords" BookName="sgpdec"/>
@@ -726,7 +728,8 @@ Similarly to transformations and permutations we distinguish between transformat
 
 <#GAPDoc Label="LevelBuilders">
   <ManSection>
-    <Func Name="LevelBuilders" Arg="coords, transversals"/>
+      <Oper Name="LevelBuilders" Arg="coords, transversals"/>
+      <Oper Name="LevelBuilders" Arg="coords, FLG"/>
     <Returns></Returns>
     <Description>
     </Description>
@@ -736,7 +739,8 @@ Similarly to transformations and permutations we distinguish between transformat
 
 <#GAPDoc Label="LevelKillers">
   <ManSection>
-    <Func Name="LevelKillers" Arg="coords, transversals"/>
+      <Oper Name="LevelKillers" Arg="coords, transversals"/>
+      <Oper Name="LevelKillers" Arg="coords, FLG"/>
     <Returns></Returns>
     <Description>
     </Description>
@@ -853,7 +857,8 @@ gap> OnFiniteSet(P,t*t);
 
 <#GAPDoc Label="Perm2FLCoords">
   <ManSection>
-<Func Name="Perm2FLCoords" Arg="g, transversals"/>
+      <Oper Name="Perm2FLCoords" Arg="g, transversals"/>
+      <Oper Name="Perm2FLCoords" Arg="g, FLG"/>
     <Returns>Encoded integer coordinates corresponding to  <Arg>g</Arg>.</Returns>
     <Description>
         The combination of <Ref Func="Perm2Reps" BookName="sgpdec"/> and <Ref Func="Reps2FLCoords" BookName="sgpdec"/>.
@@ -864,7 +869,8 @@ gap> OnFiniteSet(P,t*t);
 
 <#GAPDoc Label="Perm2Reps">
   <ManSection>
-<Func Name="Perm2Reps" Arg="g, transversals"/>
+      <Oper Name="Perm2Reps" Arg="g, transversals"/>
+      <Oper Name="Perm2Reps" Arg="g, FLG"/>
     <Returns>List of coset representatives at each level corresponding to the permutation <Arg>g</Arg></Returns>
 <Description>
 </Description>
@@ -918,7 +924,8 @@ gap> SgpDecFiniteSetDisplayOff();
 
 <#GAPDoc Label="Reps2FLCoords">
   <ManSection>
-<Func Name="Reps2FLCoords" Arg="reps, transversals"/>
+      <Oper Name="Reps2FLCoords" Arg="reps, transversals"/>
+      <Oper Name="Reps2FLCoords" Arg="reps, FLG"/>
     <Returns>Encoded integer coordinates for  <Arg>reps</Arg>.</Returns>
     <Description>
 </Description>

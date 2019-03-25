@@ -34,5 +34,5 @@ DeclareOperation("Reps2FLCoords", [IsPermCollection, IsList]);
 DeclareOperation("FLCoords2Reps", [IsList, IsList]);
 DeclareOperation("Perm2FLCoords", [IsPerm, IsList]);
 DeclareOperation("FLCoords2Perm", [IsList, IsList]);
-DeclareGlobalFunction("LevelKillers");
-DeclareGlobalFunction("LevelBuilders");
+DeclareOperation("LevelKillers",[IsList, IsList]);
+DeclareOperation("LevelBuilders", [IsList, IsList]);

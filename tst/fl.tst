@@ -62,6 +62,10 @@ fail expected, found: 9
 false
 gap> S4 := SymmetricGroup(4);;
 gap> FL := FLCascadeGroup(ChiefSeries(S4));;
+gap> LevelKillers(Perm2FLCoords((1,2,3), FL),FL);
+[ (), (2,3,4), (1,3)(2,4) ]
+gap> LevelBuilders(Perm2FLCoords((1,2,3), FL),FL);
+[ (), (2,4,3), (1,3)(2,4) ]
 gap> TestFLCosetAction(S4,FL);
 true
 gap> TestFLAction(ValidPoints(FL),S4,FL); # not having the right coset action

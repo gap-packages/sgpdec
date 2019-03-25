@@ -306,10 +306,12 @@ end);
 
 #given a cascaded state it returns an array of flat cascops that -
 #applied in order - kills of levels top-down.
-InstallGlobalFunction(LevelKillers,
-function(cs, transversals)
+InstallMethod(LevelKillers,
+              "for coordinates and a list of transversals",
+              [IsList, IsList],
+function(coords, transversals)
 local decoded, cosetrepr, killers;
-  decoded := FLCoords2Reps(cs, transversals);
+  decoded := FLCoords2Reps(coords, transversals);
   killers := [];
   for cosetrepr in decoded do
     Add(killers,Inverse(cosetrepr));
@@ -317,15 +319,32 @@ local decoded, cosetrepr, killers;
   return killers;
 end);
 
-InstallGlobalFunction(LevelBuilders,
-function(cs, transversals)
+InstallOtherMethod(LevelKillers,
+              "for coordinates and an FL cascade group",
+              [IsList, IsFLCascadeGroup],
+function(coords, FLG)
+  return LevelKillers(coords, TransversalsOf(FLG));
+end);
+
+
+InstallMethod(LevelBuilders,
+              "for coordinates and a list of transversals",
+              [IsList, IsList],
+function(coords, transversals)
 local decoded, cosetrepr, builders;
-  decoded := FLCoords2Reps(cs, transversals);
+  decoded := FLCoords2Reps(coords, transversals);
   builders := [];
   for cosetrepr in decoded do
     Add(builders,cosetrepr);
   od;
   return builders;
+end);
+
+InstallOtherMethod(LevelBuilders,
+                   "for coordinates and an FL cascade group",
+                   [IsList, IsFLCascadeGroup],
+function(coords, FLG)
+  return LevelBuilders(coords, TransversalsOf(FLG));
 end);
 
 # testing the group action isomorphism, only for transitive actions
