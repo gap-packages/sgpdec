@@ -20,6 +20,11 @@ fail
 gap> ImageWitness(sk, FiniteSet([5]), FiniteSet([1..5]));
 [ 1 ]
 
+#testing for a semigroup with no singleton image, important for height correction
+gap> sk := Skeleton(Semigroup(Transformation([4,2,4,4])));;
+gap> DepthOfSkeleton(sk);
+3
+
 #becks
 gap> gens := [
 > Transformation([1,2,3,1,1,1]), Transformation([4,4,4,5,4,6]),
