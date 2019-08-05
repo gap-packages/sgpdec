@@ -8,6 +8,18 @@ false
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1],5), FiniteSet([2,4,5],5));
 true
 
+#extended image set for a constant monoid
+gap> S := Semigroup(Transformation([5,5,5,5,5]));;
+gap> sk := Skeleton(S);;
+gap> Display(sk);
+<skeleton of Semigroup( [ Transformation( [ 5, 5, 5, 5, 5 ] ) ] )>
+gap> ExtendedImageSet(sk);
+[ {1,2,3,4,5}, {1}, {2}, {3}, {4}, {5} ]
+gap> ImageWitness(sk, FiniteSet([1..5]), FiniteSet([5]));
+fail
+gap> ImageWitness(sk, FiniteSet([5]), FiniteSet([1..5]));
+[ 1 ]
+
 #becks
 gap> gens := [
 > Transformation([1,2,3,1,1,1]), Transformation([4,4,4,5,4,6]),
