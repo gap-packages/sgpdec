@@ -69,16 +69,13 @@ end;
 MakeReadOnlyGlobal("DescendingSizeSorter");
 
 # the image set extended with singletons and ordered by descending size
+# we only need to add non-image singletons, as the base set is in the orbit
 InstallMethod(ExtendedImageSet, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   local imageset;
   #we have to copy it
   imageset := ShallowCopy(UnderlyingPlist(ForwardOrbit(sk)));
-  #extending with the state set...
-  if not (BaseSet(sk) in ForwardOrbit(sk)) then
-    Add(imageset,BaseSet(sk),1); #adding it as first
-  fi;
-  #...and the singletons
+  #add the missing singletons
   Perform(NonImageSingletons(sk),
           function(x) Add(imageset,x);end);
   #now sorting descending by size
