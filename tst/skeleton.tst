@@ -27,6 +27,13 @@ gap> DepthOfSkeleton(sk);
 gap> TilesOf(sk, FiniteSet([1,3],4));
 fail
 
+#nontrivial class for nonimage singletons
+gap> sk := Skeleton(Semigroup(Transformation([1,3,3,3]), Transformation([1,2,4,3])));;
+gap> NonImageSingletons(sk);
+[ {1}, {2}, {3}, {4} ]
+gap> NonImageSingletonClasses(sk);
+[ [ {4}, {3} ], [ {2} ], [ {1} ] ]
+
 #becks
 gap> gens := [
 > Transformation([1,2,3,1,1,1]), Transformation([4,4,4,5,4,6]),
