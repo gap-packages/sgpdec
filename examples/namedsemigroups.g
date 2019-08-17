@@ -102,14 +102,6 @@ Transformation([2,1,4,4])];#makes H({1,2}) nontrivial
 BEX := Semigroup(bex);
 SetName(BEX,"BEX");
 
-#simple automaton demonstrating nonisomorphic permutator semigroups on
-#equivalent subsets
-nonisomperm := [Transformation([2,1,3]),
-                Transformation([3,2,3]),
-                Transformation([1,1,2])];
-NONISOMPERM := Semigroup(nonisomperm);
-SetName(NONISOMPERM,"NONISOMPERM");
-
 #small example from Alife X paper
 alifex := [Transformation([2,2,3,3,3]),Transformation([3,3,3,5,4])];
 ALIFEX := Semigroup(alifex);
