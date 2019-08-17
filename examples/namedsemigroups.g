@@ -142,6 +142,25 @@ smallp2hnt := [Transformation([2,1,3]),
                Transformation([1,2,2])];
 SMALLP2HNT := Semigroup(smallp2hnt);
 
+# finding all nontrivial differences between permutator and holonomy groups
+# this can easily find C2n -> Cn in random transformation semigroups
+findPermHolDiff := function(S)
+  local sk, diffs;
+  sk := Skeleton(S);
+  diffs := Filtered(Concatenation(RepresentativeSets(sk)),
+                   x ->
+                   StructureDescription(PermutatorGroup(sk,x))
+                   <>
+                   StructureDescription(HolonomyGroup@SgpDec(sk,x)));
+  Perform(diffs,
+          function(x)
+    Print(TrueValuePositionsBlistString(x),
+          StructureDescription(PermutatorGroup(sk,x)),
+                  "->",
+                        StructureDescription(HolonomyGroup@SgpDec(sk,x)));
+                    end);
+end;
+
 #Overlapping covers for parallel components
 ovlcovers := [Transformation([4,3,4,2]),
               Transformation([1,2,2,1]),
