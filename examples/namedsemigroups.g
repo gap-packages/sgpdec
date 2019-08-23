@@ -171,3 +171,36 @@ SetName(OVLCOVERS,"OVLCOVERS");
 
 nosingleton := [Transformation([5,1,3,5,1]), Transformation([5,4,5,2,4])];
 NOSINGLETON := Monoid(nosingleton);
+
+#X's wide examples never coded before
+collapser := function(l) local t;
+               t := ListWithIdenticalEntries(6,l[1]);
+               t[l[1]] := l[1];
+               t[l[2]] := l[2];
+               t[l[3]] := l[3];
+               return Transformation(t);
+             end;
+
+cycle := function(l) local t;
+           t := ListWithIdenticalEntries(6,l[1]);
+           t[l[1]] := l[2];
+           t[l[2]] := l[3];
+           t[l[3]] := l[1];
+           return Transformation(t);
+         end;
+
+transposition := function(l) local t;
+           t := ListWithIdenticalEntries(6,l[1]);
+           t[l[1]] := l[2];
+           t[l[2]] := l[1];
+           t[l[3]] := l[3];
+           return Transformation(t);
+         end;
+
+transpositions := List(Combinations([1..6],3), transposition);;
+cycles := List(Combinations([1..6],3), cycle);;
+collapsers := List(Combinations([1..6],3), collapser);;
+
+lastminute := Concatenation(collapsers, cycles, transpositions);
+
+LASTMINUTE := Semigroup(lastminute);
