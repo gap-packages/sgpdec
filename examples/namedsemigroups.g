@@ -202,6 +202,6 @@ transpositions := List(Combinations([1..6],3), transposition);
 cycles := List(Combinations([1..6],3), cycle);
 collapsers := List(Combinations([1..6],3), collapser);
 
-lastminute := Concatenation(collapsers, cycles, transpositions);
+lastminute := collapsers; #Concatenation(collapsers, cycles, transpositions);
 
 LASTMINUTE := Semigroup(lastminute);
