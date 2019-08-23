@@ -173,6 +173,7 @@ nosingleton := [Transformation([5,1,3,5,1]), Transformation([5,4,5,2,4])];
 NOSINGLETON := Monoid(nosingleton);
 
 #X's wide examples never coded before
+# l is a triple (list)
 collapser := function(l) local t;
                t := ListWithIdenticalEntries(6,l[1]);
                t[l[1]] := l[1];
@@ -197,9 +198,9 @@ transposition := function(l) local t;
            return Transformation(t);
          end;
 
-transpositions := List(Combinations([1..6],3), transposition);;
-cycles := List(Combinations([1..6],3), cycle);;
-collapsers := List(Combinations([1..6],3), collapser);;
+transpositions := List(Combinations([1..6],3), transposition);
+cycles := List(Combinations([1..6],3), cycle);
+collapsers := List(Combinations([1..6],3), collapser);
 
 lastminute := Concatenation(collapsers, cycles, transpositions);
 
