@@ -24,8 +24,6 @@ DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 DeclareGlobalFunction("MonomialGenerators");
 
 DeclareGlobalFunction("SizeOfFullCascadeProduct");
-DeclareGlobalFunction("SizeOfIteratedTransformationWreathProduct",
-        SizeOfFullCascadeProduct);
 DeclareProperty("IsFullCascadeSemigroup",
         IsCascadeSemigroup and IsFullCascadeProduct);
 DeclareSynonym("IsSemigroupWreathProduct", IsFullCascadeSemigroup);
