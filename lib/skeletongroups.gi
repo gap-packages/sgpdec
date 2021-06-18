@@ -284,7 +284,7 @@ local grpcomps;
   return List([1..Length(grpcomps)],
               x -> PermutationResetSemigroup(
                       DisjointUnionPermGroup(grpcomps[x],Shifts(sk)[x]),
-                      Size(CoordVals(sk)[x])+1)); # +1 is for the star state
+                      Size(CoordVals(sk)[x])));
 end);
 
 ################################################################################

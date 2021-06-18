@@ -37,12 +37,12 @@ MakeReadOnlyGlobal("GetStar");
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-  sets := List([1..DepthOfSkeleton(sk)-1], x->GetStar(sk,x));
+  sets := List([1..DepthOfSkeleton(sk)-1], x->1);
   for level in [1..Length(ints)] do
-    if ints[level] < GetStar(sk, level) then
-      # the set at the position coded by the integer
-      sets[level] := CoordVals(sk)[level][ints[level]];
-    fi;
+    #if ints[level] < GetStar(sk, level) then
+    # the set at the position coded by the integer
+    sets[level] := CoordVals(sk)[level][ints[level]];
+    #fi;
   od;
   return sets;
 end);
@@ -61,7 +61,7 @@ local set,level,ints,slot;
                              Shifts(sk)[level][slot]);
       set := sets[level];
     else
-      ints[level] := GetStar(sk, level);
+      ints[level] := 1;
     fi;
   od;
   return ints;
@@ -256,8 +256,8 @@ function(sk, s, CP)
                             positionedQ[depth], s, depth);
     else
       #constant *
-      star := GetStar(sk, depth);
-      cas[depth] := Transformation(List([1..star], x->star));
+      #star := GetStar(sk, depth);
+      cas[depth] :=  ConstantTransformation(Size(CoordVals(sk)[depth]),1);
     fi;
   od;
   return cas;
@@ -377,18 +377,24 @@ TestHolonomyEmulation := function(S)
   return AsSet(S) = AsSet(Range(hom));
 end;
 
+TestHolonomyCascadeMultiplication := function(x,y,sk)
+  local xcs,ycs,xy,xycs,xyf,matching;
+  xcs := AsHolonomyCascade(x,sk);
+  ycs := AsHolonomyCascade(y,sk);
+  xy := x*y;
+  xycs := xcs*ycs;
+  xyf := AsHolonomyTransformation(xycs,sk);
+  matching := xy = xyf;
+  if (not matching) then Print("Expected: ", xy, " Result: ", xyf); fi;
+  return matching;
+end;
+
 TestHolonomyRelationalMorphism := function(S)
   local sk;
   sk := Skeleton(S);
   return ForAll(S,
-               function(x)
-                 local xcs;
-                 xcs := AsHolonomyCascade(x,sk);
-                 #Print("#\c");
-                 return ForAll(S, y -> x*y = AsHolonomyTransformation(
-                                               xcs * AsHolonomyCascade(y,sk),
-                                               sk));
-               end);
+                x-> ForAll(S,
+                           y -> TestHolonomyCascadeMultiplication(x,y,sk)));
 end;
 
 # checking the action on all holonomy  coordinate tuples
