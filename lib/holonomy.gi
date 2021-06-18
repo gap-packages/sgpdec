@@ -95,7 +95,7 @@ InstallGlobalFunction(EncodeChain,
 function(sk, chain)
   local sets,i;
   #filling up with ones - jumped over levels are abstract but we cannot use zero
-  sets := List([1..DepthOfSkeleton(sk)-1], x->1);
+  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
   for i in [2..Length(chain)] do
     sets[DepthOfSet(sk, chain[i-1])] := RepTile(chain[i], chain[i-1], sk);
   od;
@@ -106,7 +106,7 @@ end);
 InstallGlobalFunction(PositionedChain,
         function(sk, chain)
   local positioned,i;
-  positioned := List([1..DepthOfSkeleton(sk)-1],x-> 1);
+  positioned := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
   for i in [2..Length(chain)] do
     positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
   od;
