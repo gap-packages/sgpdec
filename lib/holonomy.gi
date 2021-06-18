@@ -27,22 +27,13 @@ GetSlot := function(set,sk)
 end;
 MakeReadOnlyGlobal("GetSlot");
 
-# at each level we add an extra state 'star' representing the don't care state
-# since we act on it, it cannot be 0 (the cascade abstract state)
-# so we take it to be #states +1
-GetStar := function(sk, depth) return Size(CoordVals(sk)[depth])+1; end;
-MakeReadOnlyGlobal("GetStar");
-
 # decoding: integers -> sets, integers simply code the positions in CoordVals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
 local sets, level;
-  sets := List([1..DepthOfSkeleton(sk)-1], x->1);
+  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
   for level in [1..Length(ints)] do
-    #if ints[level] < GetStar(sk, level) then
-    # the set at the position coded by the integer
     sets[level] := CoordVals(sk)[level][ints[level]];
-    #fi;
   od;
   return sets;
 end);
@@ -107,8 +98,8 @@ end);
 InstallGlobalFunction(EncodeChain,
 function(sk, chain)
   local sets,i;
-  #filling up with zeros - jumped over levels are abstract
-  sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));
+  #filling up with ones - jumped over levels are abstract but we cannot use zero
+  sets := List([1..DepthOfSkeleton(sk)-1], x->1);
   for i in [2..Length(chain)] do
     sets[DepthOfSet(sk, chain[i-1])] := RepTile(chain[i], chain[i-1], sk);
   od;
@@ -119,7 +110,7 @@ end);
 InstallGlobalFunction(PositionedChain,
         function(sk, chain)
   local positioned,i;
-  positioned := List([1..DepthOfSkeleton(sk)-1],x-> GetStar(sk,x));
+  positioned := List([1..DepthOfSkeleton(sk)-1],x-> 1);
   for i in [2..Length(chain)] do
     positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
   od;
