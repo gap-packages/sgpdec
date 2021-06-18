@@ -30,12 +30,8 @@ MakeReadOnlyGlobal("GetSlot");
 # decoding: integers -> sets, integers simply code the positions in CoordVals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
-local sets, level;
-  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
-  for level in [1..Length(ints)] do
-    sets[level] := CoordVals(sk)[level][ints[level]];
-  od;
-  return sets;
+  return List([1..Length(ints)],
+              level -> CoordVals(sk)[level][ints[level]]);
 end);
 
 # encoding: sets -> integers, we need to find the set in the right slot
@@ -246,8 +242,7 @@ function(sk, s, CP)
       cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth],
                             positionedQ[depth], s, depth);
     else
-      #constant *
-      #star := GetStar(sk, depth);
+      #jumped over level, we simply choose state 1 for the constant map
       cas[depth] :=  ConstantTransformation(Size(CoordVals(sk)[depth]),1);
     fi;
   od;
