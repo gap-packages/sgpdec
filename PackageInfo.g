@@ -1,6 +1,6 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.9.3-dev">
-##  <!ENTITY COPYRIGHTYEARS "2008-2019">
+##  <!ENTITY VERSION "0.9.3">
+##  <!ENTITY COPYRIGHTYEARS "2008-2021">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
@@ -9,9 +9,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.9.3-dev",
+Version := "0.9.3",
 
-Date := "05/08/2019", # dd/mm/yyyy format
+Date := "29/06/2021", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
