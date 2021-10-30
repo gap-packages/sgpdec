@@ -67,8 +67,7 @@ InstallGlobalFunction(DependencyDomains,
 function(comps)
   local doms, depdoms, tup, i;
   doms := CreateComponentDomains(comps);
-  #JDM Why +1? To avoid reallocation?
-  depdoms:=EmptyPlist(Length(doms)+1);
+  depdoms:=EmptyPlist(Length(doms));
   #the top level depdoms is just the empty list
   depdoms[1]:=[[]];
   tup:=[]; #we add the components one by one
