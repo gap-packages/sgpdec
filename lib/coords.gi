@@ -2,7 +2,7 @@
 ##
 ## coords.gi           SgpDec package
 ##
-## Copyright (C) 2008-2019
+## Copyright (C) 2008-2021
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -23,12 +23,12 @@ local l;
   Append(l,ListWithIdenticalEntries(Length(compdoms) - Size(abstract_state),0));
   #then replacing all zeroes with a valid coordinate
   l := List([1..Length(l)],
-          function(i)
-            if l[i]>0 then
-              return l[i];
-            else
-              return Representative(compdoms[i]);
-            fi;end);
+         function(i)
+           if l[i]>0 then
+             return l[i];
+           else
+             return Representative(compdoms[i]);
+           fi;end);
   return l;
 end);
 
@@ -38,7 +38,7 @@ function(compdoms, abstract_state)
   return EnumeratorOfCartesianProduct(
                  List([1..Size(abstract_state)],
     function(x)
-      if IsBound(abstract_state[x]) and abstract_state[x]>0 then #TODO Do we still have the zero convention?
+      if IsBound(abstract_state[x]) and abstract_state[x]>0 then
         return [abstract_state[x]];
       else
         return compdoms[x];
@@ -66,7 +66,7 @@ function(coords, compdoms, dom)
   fi;
 end);
 
-# maps (abstract) coordinates to points, required info from a cascade sgp
+# maps (abstract) coordinates to points, requires info from a cascade sgp
 InstallOtherMethod(AsPoint, "for coordinates in a cascade product",
 [IsList,IsCascadeSemigroup],
 function(coords,cascsgp)
