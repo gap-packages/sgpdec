@@ -2,16 +2,16 @@
 gap> START_TEST("Sgpdec package: holonomy.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(3));
-<cascade semigroup with 3 generators, 2 levels with (4, 3) pts>
+<cascade semigroup with 3 generators, 2 levels with (3, 2) pts>
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 3 generators, 2 levels with (4, 3) \
+MappingByFunction( <cascade semigroup with 3 generators, 2 levels with (3, 2) \
 pts>, <transformation semigroup of degree 3 with 3 generators>
  , function( ct ) ... end )
 gap> Size(Range(hom));
 27
 gap> hl := HolonomyRelationalMorphism(FullTransformationSemigroup(3));
 MappingByFunction( <full transformation monoid of degree 3>, <cascade semigrou\
-p with 3 generators, 2 levels with (4, 3) pts>, function( t ) ... end )
+p with 3 generators, 2 levels with (3, 2) pts>, function( t ) ... end )
 gap> Size(Range(hl));
 30
 gap> S := Semigroup([
@@ -23,11 +23,11 @@ gap> S := Semigroup([
 > Transformation([2,3,1,4,4,4])]);;
 > sk := Skeleton(S);;
 gap> AllHolonomyCoords(1,sk);
-[ [ 1, 1, 6, 1, 2 ], [ 1, 1, 6, 2, 1 ], [ 1, 2, 4, 6, 3 ] ]
+[ [ 1, 1, 1, 1, 2 ], [ 1, 1, 1, 2, 1 ], [ 1, 2, 4, 1, 1 ] ]
 gap> ForAll([1..6], x -> x=AsPoint(AsHolonomyCoords(x,sk),sk));
 true
 gap> hcs := HolonomyCascadeSemigroup(S);
-<cascade semigroup with 6 generators, 5 levels with (3, 5, 6, 6, 3) pts>
+<cascade semigroup with 6 generators, 5 levels with (2, 4, 5, 5, 2) pts>
 gap> Display(hcs);
 1: 2
 2: (4,C3)
@@ -35,8 +35,8 @@ gap> Display(hcs);
 4: (3,C3) (2,C2)
 5: 2
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (3, 5, \
-6, 6, 3) pts>, <transformation semigroup of degree 6 with 6 generators>
+MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (2, 4, \
+5, 5, 2) pts>, <transformation semigroup of degree 6 with 6 generators>
  , function( ct ) ... end )
 gap> AsSortedList(S) = AsSortedList(Range(hom));
 true

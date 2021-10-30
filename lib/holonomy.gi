@@ -27,24 +27,11 @@ GetSlot := function(set,sk)
 end;
 MakeReadOnlyGlobal("GetSlot");
 
-# at each level we add an extra state 'star' representing the don't care state
-# since we act on it, it cannot be 0 (the cascade abstract state)
-# so we take it to be #states +1
-GetStar := function(sk, depth) return Size(CoordVals(sk)[depth])+1; end;
-MakeReadOnlyGlobal("GetStar");
-
 # decoding: integers -> sets, integers simply code the positions in CoordVals
 InstallGlobalFunction(HolonomyInts2Sets,
 function(sk, ints)
-local sets, level;
-  sets := List([1..DepthOfSkeleton(sk)-1], x->GetStar(sk,x));
-  for level in [1..Length(ints)] do
-    if ints[level] < GetStar(sk, level) then
-      # the set at the position coded by the integer
-      sets[level] := CoordVals(sk)[level][ints[level]];
-    fi;
-  od;
-  return sets;
+  return List([1..Length(ints)],
+              level -> CoordVals(sk)[level][ints[level]]);
 end);
 
 # encoding: sets -> integers, we need to find the set in the right slot
@@ -61,7 +48,7 @@ local set,level,ints,slot;
                              Shifts(sk)[level][slot]);
       set := sets[level];
     else
-      ints[level] := GetStar(sk, level);
+      ints[level] := 1;
     fi;
   od;
   return ints;
@@ -107,8 +94,8 @@ end);
 InstallGlobalFunction(EncodeChain,
 function(sk, chain)
   local sets,i;
-  #filling up with zeros - jumped over levels are abstract
-  sets := List([1..DepthOfSkeleton(sk)-1], x -> GetStar(sk,x));
+  #filling up with ones - jumped over levels are abstract but we cannot use zero
+  sets := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
   for i in [2..Length(chain)] do
     sets[DepthOfSet(sk, chain[i-1])] := RepTile(chain[i], chain[i-1], sk);
   od;
@@ -119,7 +106,7 @@ end);
 InstallGlobalFunction(PositionedChain,
         function(sk, chain)
   local positioned,i;
-  positioned := List([1..DepthOfSkeleton(sk)-1],x-> GetStar(sk,x));
+  positioned := ListWithIdenticalEntries(DepthOfSkeleton(sk)-1, 1);
   for i in [2..Length(chain)] do
     positioned[DepthOfSet(sk, chain[i-1])] := chain[i];
   od;
@@ -255,9 +242,8 @@ function(sk, s, CP)
       cas[depth] := HolonomyCore(sk, stagesP[depth], stagesQ[depth],
                             positionedQ[depth], s, depth);
     else
-      #constant *
-      star := GetStar(sk, depth);
-      cas[depth] := Transformation(List([1..star], x->star));
+      #jumped over level, we simply choose state 1 for the constant map
+      cas[depth] :=  ConstantTransformation(Size(CoordVals(sk)[depth]),1);
     fi;
   od;
   return cas;
@@ -377,18 +363,24 @@ TestHolonomyEmulation := function(S)
   return AsSet(S) = AsSet(Range(hom));
 end;
 
+TestHolonomyCascadeMultiplication := function(x,y,sk)
+  local xcs,ycs,xy,xycs,xyf,matching;
+  xcs := AsHolonomyCascade(x,sk);
+  ycs := AsHolonomyCascade(y,sk);
+  xy := x*y;
+  xycs := xcs*ycs;
+  xyf := AsHolonomyTransformation(xycs,sk);
+  matching := xy = xyf;
+  if (not matching) then Print("Expected: ", xy, " Result: ", xyf); fi;
+  return matching;
+end;
+
 TestHolonomyRelationalMorphism := function(S)
   local sk;
   sk := Skeleton(S);
   return ForAll(S,
-               function(x)
-                 local xcs;
-                 xcs := AsHolonomyCascade(x,sk);
-                 #Print("#\c");
-                 return ForAll(S, y -> x*y = AsHolonomyTransformation(
-                                               xcs * AsHolonomyCascade(y,sk),
-                                               sk));
-               end);
+                x-> ForAll(S,
+                           y -> TestHolonomyCascadeMultiplication(x,y,sk)));
 end;
 
 # checking the action on all holonomy  coordinate tuples
