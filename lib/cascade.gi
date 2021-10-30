@@ -2,7 +2,7 @@
 ##
 ## cascade.gi           SgpDec package
 ##
-## Copyright (C) 2008-2019
+## Copyright (C) 2008-2021
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -13,6 +13,24 @@
 # CONSTRUCTORS #################################################################
 ################################################################################
 
+InstallGlobalFunction(CreateComponentDomains,
+function(comps)
+  local domains, comp;
+  domains:=[];
+  for comp in comps do
+    if IsTransformationSemigroup(comp) then
+      Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
+    elif IsPermGroup(comp) then
+      Add(domains, MovedPoints(comp));
+    elif IsPosInt(comp) then
+      Add(domains, [1..comp]);
+    else
+      Add(domains, comp);
+    fi;
+  od;
+  return domains;
+end);
+
 #  ways to create cascades
 # 1. Cascade, giving components/component domains and a list of dependencies
 # 2. by giving dependency functions
@@ -20,13 +38,13 @@ InstallGlobalFunction(Cascade,
 function(doms, deps)
   local isgroup, type, compdoms, depdom, depfuncs, f, x;
 
-  if IsListOfPermGroupsAndTransformationSemigroups(doms) then
-    compdoms:=ComponentDomains(doms);
-  else
-    compdoms:=List(doms,
-               function(x) if IsPosInt(x) then return [1..x];
-                           else return x; fi;end);
-  fi;
+  #if IsListOfPermGroupsAndTransformationSemigroups(doms) then
+    compdoms:=CreateComponentDomains(doms);
+  #else
+  #  compdoms:=List(doms,
+  #             function(x) if IsPosInt(x) then return [1..x];
+  #                         else return x; fi;end);
+  #fi;
 
   if ForAll(doms, IsGroup)
      or
@@ -49,12 +67,10 @@ function(doms, deps)
   return f;
 end);
 
-#
-
+# a simple constructor that populates the object's members
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
   local f;
-
   f:=Objectify(type, rec());
   SetDomainOf(f, dom);
   SetComponentDomains(f, compdoms);
@@ -64,8 +80,7 @@ function(dom, compdoms, depfuncs, depdom, type)
   return f;
 end);
 
-#
-
+# no dependencies mean the identity transformation on all levels
 InstallGlobalFunction(IdentityCascade,
 function(comps)
   return Cascade(comps,[]);
@@ -99,7 +114,7 @@ function(list, numofdeps)
     type:=TransCascadeType;
   fi;
 
-  comps:=ComponentDomains(list);
+  comps:=CreateComponentDomains(list);
   # create the enumerator for the dependency func
   depdoms:=DependencyDomains(comps);
 
@@ -208,16 +223,10 @@ InstallMethod(AsCascade,
         [IsTransformation, IsDenseList],
 function(f, compsordomsizes)
   local depdoms,dom,n,vals,one,args,level,pos,i,j,depfuncs,coords,new, compdoms,
-        knowcomps, comps, domsizes;
-  #deciding what input we got###################################################
-  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
-    comps := compsordomsizes;
-    domsizes := List(ComponentDomains(comps), c -> Size(c));
-    knowcomps := true;
-  else
-    domsizes := compsordomsizes;
-    knowcomps := false;
-  fi;
+        domsizes;
+
+  compdoms := CreateComponentDomains(compsordomsizes);
+  domsizes := List(compdoms, Size);
   #sanity check on the domain sizes
   if not ForAll(domsizes, IsPosInt)
      or DegreeOfTransformation(f)>Product(domsizes) then
@@ -264,7 +273,7 @@ function(f, compsordomsizes)
       if one[i][j] then
         Unbind(vals[i][j]);
       else
-        if knowcomps and IsPermGroup(comps[i]) then
+        if IsPermGroup(compsordomsizes[i]) then
           vals[i][j]:=PermList(vals[i][j]);
         else
           vals[i][j]:=TransformationNC(vals[i][j]);
@@ -286,11 +295,11 @@ function(p, compsordomsizes)
   local domsizes;
   #TODO detecting the input twice looks pretty bad
   #deciding what input we got
-  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
-    domsizes := List(ComponentDomains(compsordomsizes), c -> Size(c));
-  else
-    domsizes := compsordomsizes;
-  fi;
+#  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
+ #   domsizes := List(ComponentDomains(compsordomsizes), c -> Size(c));
+ # else
+  #  domsizes := compsordomsizes;
+  #fi;
   return AsCascade(AsTransformation(p), compsordomsizes);
 end);
 

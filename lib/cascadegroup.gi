@@ -70,7 +70,7 @@ function(arg)
   filts:=IsGroup and IsAttributeStoringRep and IsFullCascadeGroup;
   s:=Objectify( NewType( CollectionsFamily(PermCascadeFamily), filts ), rec());
   SetComponentsOfCascadeProduct(s, arg);
-  SetComponentDomains(s, ComponentDomains(arg));
+  SetComponentDomains(s, CreateComponentDomains(arg));
   SetNrComponents(s, Length(arg));
   SetDependencyDomainsOf(s,
           DependencyDomains(ComponentDomains(s)));

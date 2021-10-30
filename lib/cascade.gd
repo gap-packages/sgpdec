@@ -2,7 +2,7 @@
 ##
 ## cascade.gd           SgpDec package
 ##
-## Copyright (C) 2008-2019
+## Copyright (C) 2008-2021
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -12,8 +12,8 @@
 DeclareCategory("IsCascade", IsMultiplicativeElementWithOne
         and IsAssociativeElement and IsAttributeStoringRep
         and IsMultiplicativeElementWithInverse);
-
 DeclareCategoryCollections("IsCascade");
+
 DeclareCategory("IsPermCascade", IsCascade);
 DeclareCategoryCollections("IsPermCascade");
 DeclareCategory("IsTransCascade", IsCascade);
@@ -35,6 +35,7 @@ BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
 #DeclareGlobalFunction("CascadeNC"); # TODO doing an NC version later
 DeclareGlobalFunction("Cascade");
 DeclareGlobalFunction("CreateCascade");
+DeclareGlobalFunction("CreateComponentDomains");
 DeclareGlobalFunction("IdentityCascade");
 DeclareGlobalFunction("RandomCascade");
 DeclareOperation("AsCascade", [IsTransformation, IsDenseList]);

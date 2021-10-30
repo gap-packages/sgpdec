@@ -79,7 +79,7 @@ function(arg)
   od;
 
   comps := arg;
-  compdoms := ComponentDomains(comps);
+  compdoms := CreateComponentDomains(comps);
   depdoms := DependencyDomains(compdoms);
   dom := EnumeratorOfCartesianProduct(compdoms);
   s := Semigroup(MonomialGenerators(comps, compdoms, depdoms, dom));
@@ -219,25 +219,6 @@ InstallOtherMethod(NrComponents,
 [IsCascadeSemigroup],
 function(cascprod)
   return Size(ComponentDomains(Representative(cascprod)));
-end);
-
-InstallOtherMethod(ComponentDomains,
-[IsListOrCollection],
-function(comps)
-  local domains, comp;
-  if not IsListOfPermGroupsAndTransformationSemigroups(comps) then
-    Error("A list of transformation semigroups",
-          "and/or permutation groups expected.");
-  fi;
-  domains:=[];
-  for comp in comps do
-    if IsTransformationSemigroup(comp) then
-      Add(domains, [1..DegreeOfTransformationSemigroup(comp)]);
-    else
-      Add(domains, MovedPoints(comp));
-    fi;
-  od;
-  return domains;
 end);
 
 
