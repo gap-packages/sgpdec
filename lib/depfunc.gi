@@ -4,7 +4,7 @@
 ##
 ## (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2008-2012
+## 2008-2021
 ##
 ## Dependency function. A lookup for [arg,val] pairs.
 ##
@@ -67,14 +67,7 @@ end);
 InstallGlobalFunction(DependencyDomains,
 function(doms)
   local depdoms, tup, i;
-  #converting integers to actual domains
-  #doms := List(doms,
-   #            function(x) if IsPosInt(x) then return [1..x];
-    #                       else return x; fi;end);
-  #converting to domains if semigroups/groups
-  #if IsSemigroup(doms[1]) then
-    doms := CreateComponentDomains(doms);
-  #fi;
+  doms := CreateComponentDomains(doms);
   #JDM Why +1? To avoid reallocation?
   depdoms:=EmptyPlist(Length(doms)+1);
   #the top level depdoms is just the empty list
