@@ -2,7 +2,7 @@
 ##
 ## cascadeprod.gi           SgpDec package
 ##
-## Copyright (C) 2008-2019
+## Copyright (C) 2008-2021
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -28,7 +28,7 @@ end);
 
 #this may produce something bigger than the actual component
 InstallMethod(ComponentsOfCascadeProduct, "for a group cascade product",
-        [IsCascadeGroup],
+              [IsCascadeGroup],
 function(s)
   local vals, n, comp, i, j;
   vals:=List(GeneratorsOfGroup(s),
@@ -76,7 +76,7 @@ function(arg)
           DependencyDomains(ComponentDomains(s)));
   SetDomainOf(s,
           EnumeratorOfCartesianProduct(ComponentDomains(s)));
-  SetIsFullCascadeProduct(s,true);#TODO why is it needed? It should be implied.
+  SetIsFullCascadeProduct(s,true);#@ the categories are a bit messy.
   SetIsFinite(s,true);
   return s;
 end);
