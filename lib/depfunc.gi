@@ -63,11 +63,10 @@ end);
 
 # Creates the list of all dependency domains of given sizes.
 # These are the arguments of the dependency functions on each level.
-# doms: list of pos ints or actual domains, integer x is converted to [1..x]
 InstallGlobalFunction(DependencyDomains,
-function(doms)
-  local depdoms, tup, i;
-  doms := CreateComponentDomains(doms);
+function(comps)
+  local doms, depdoms, tup, i;
+  doms := CreateComponentDomains(comps);
   #JDM Why +1? To avoid reallocation?
   depdoms:=EmptyPlist(Length(doms)+1);
   #the top level depdoms is just the empty list
