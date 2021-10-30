@@ -54,19 +54,8 @@ end);
 InstallGlobalFunction(FullCascadeSemigroup,
 function(arg)
   local filts, s, i,n, comps, dom ,depdoms, compdoms;
-
-  if Length(arg)=1 then
-    if IsListOfPermGroupsAndTransformationSemigroups(arg[1]) then
+  if Length(arg)=1 then #if one argument only, then it must be a list of comps
       arg:=arg[1];
-    else
-      Error("The argument must be a list of transformation semigroups and/or ",
-      "permutation groups.");
-    fi;
-  else
-    if not IsListOfPermGroupsAndTransformationSemigroups(arg) then
-      Error("The arguments should be transformation semigroups and/or ",
-      "permutation groups.");
-    fi;
   fi;
   #converting group components to semigroups
   for i in [1..Length(arg)] do
@@ -77,7 +66,6 @@ function(arg)
                       g -> AsTransformation(g,n)));
     fi;
   od;
-
   comps := arg;
   compdoms := CreateComponentDomains(comps);
   depdoms := DependencyDomains(compdoms);
@@ -206,14 +194,6 @@ end);
 ################################################################################
 InstallMethod(DomainOf,[IsCascadeSemigroup],
 x-> DomainOf(Representative(x)));
-
-InstallMethod(IsListOfPermGroupsAndTransformationSemigroups,
-[IsListOrCollection],
-function(l)
-  return not IsEmpty(l) and
-         IsDenseList(l) and
-         ForAll(l, x-> IsTransformationSemigroup(x) or IsPermGroup(x));
-end);
 
 InstallOtherMethod(NrComponents,
 [IsCascadeSemigroup],

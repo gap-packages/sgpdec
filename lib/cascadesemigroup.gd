@@ -16,9 +16,6 @@ DeclareProperty("IsFullCascadeProduct", IsCascadeSemigroup);
 
 DeclareAttribute("ComponentsOfCascadeProduct", IsCascadeSemigroup);
 DeclareAttribute("DomainOf", IsCascadeSemigroup);
-
-DeclareProperty("IsListOfPermGroupsAndTransformationSemigroups",
-        IsListOrCollection);
 DeclareAttribute("ComponentDomains", IsCascadeSemigroup);
 
 DeclareGlobalFunction("MonomialGenerators");

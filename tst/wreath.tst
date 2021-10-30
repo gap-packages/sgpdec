@@ -50,13 +50,5 @@ gap> S := Range(IsomorphismTransformationSemigroup(W));
 gap> Size(S);
 12
 
-# testing error messages
-gap> FullCascadeSemigroup([1,2,3]);
-Error, The argument must be a list of transformation semigroups and/or permuta\
-tion groups.
-gap> FullCascadeSemigroup(1,2,3);
-Error, The arguments should be transformation semigroups and/or permutation gr\
-oups.
-
 #
 gap> STOP_TEST( "Sgpdec package: wreath.tst", 10000);
