@@ -2,7 +2,7 @@
 ##
 ## cascadesemigroup.gi           SgpDec package
 ##
-## Copyright (C) 2008-2019
+## Copyright (C) 2008-2021
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -76,13 +76,12 @@ function(arg)
   SetNrComponents(s, Length(comps));
   SetDependencyDomainsOf(s, depdoms);
   SetDomainOf(s,dom);
-  SetIsFullCascadeProduct(s,true);#TODO why is it needed? It should be implied.
+  SetIsFullCascadeProduct(s,true);#@ better handling needed
   SetIsFullCascadeSemigroup(s,true);
   return s;
 end);
 
-#former monomial generators
-
+#@ this is a brute force implementation - better one needed
 InstallGlobalFunction(MonomialGenerators,
 function(comps, compdoms, depdoms, dom)
   local nr, pts, prefix, gens, nrgens,
@@ -92,7 +91,6 @@ function(comps, compdoms, depdoms, dom)
   pts:=List([1..nr], i-> [1..DegreeOfTransformationSemigroup(comps[i])]);
   #quick hack removing now dubious ActionRepresentatives(comps[i]));
   prefix:=DependencyDomains(pts);
-
 
   gens:=[]; nrgens:=0;
 
@@ -107,7 +105,7 @@ function(comps, compdoms, depdoms, dom)
             func[i]:=EmptyPlist(0);
           else
             func[i]:=EmptyPlist(pos);
-            if not IsOne(y) then func[i][pos]:=y; fi; #to avoid registing identities
+            if not IsOne(y) then func[i][pos]:=y; fi; #to avoid registering identities
           fi;
         od;
         nrgens:=nrgens+1;
@@ -135,7 +133,7 @@ function(s)
   Print("<wreath product of semigroups>");
 end);
 
-InstallMethod(ViewObj, "for a cascade product",
+InstallMethod(ViewObj, "for a cascade product of semigroups",
 [IsCascadeSemigroup and HasGeneratorsOfSemigroup],
 function(s)
   local str, x;
@@ -200,7 +198,6 @@ InstallOtherMethod(NrComponents,
 function(cascprod)
   return Size(ComponentDomains(Representative(cascprod)));
 end);
-
 
 InstallOtherMethod(ComponentDomains,
         [IsCascadeSemigroup],
