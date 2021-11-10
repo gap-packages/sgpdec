@@ -11,7 +11,7 @@ There is an excellent [video introduction to Krohn-Rhodes theory by Simon DeDeo]
 
 The package is used for SYDE 710 (Topics in Mathematics) Algebraic Structures of Discrete Dynamical Systems, a graduate course at the [Systems Design Engineering](https://uwaterloo.ca/systems-design-engineering/) department of University of Waterloo.
 
-For more on computational semigroup theory check this [computational semigroup theory blog](https://compsemi.wordpress.com/).
+For more on computational semigroup theory check this [computational semigroup theory blog (outdated)](https://compsemi.wordpress.com/).
 
 ## How to use it?
 
@@ -26,9 +26,8 @@ For implementational details, the preprint [Cascade product of permutation group
 Please report any problem or request features by [creating on issue on the project page](https://github.com/gap-packages/sgpdec/issues).
 
 ## Who are you?
-
-[Attila Egri-Nagy](http://www.egri-nagy.hu) [@EgriNagy](https://twitter.com/EgriNagy)
-
-[James D. Mitchell](http://www-groups.mcs.st-andrews.ac.uk/~jamesm/) [@jdmjdmjdmjdm](https://twitter.com/jdmjdmjdmjdm)
-
-[Chrystopher L. Nehaniv](http://homepages.herts.ac.uk/~nehaniv/)  [@NehanivCL](https://twitter.com/NehanivCL)
+WEB | Twitter
+----|-----------
+[Attila Egri-Nagy](http://www.egri-nagy.hu) | [@EgriNagy](https://twitter.com/EgriNagy)
+[James D. Mitchell](https://jdbm.me/) | [@jdmjdmjdmjdm](https://twitter.com/jdmjdmjdmjdm)
+[Chrystopher L. Nehaniv](https://uwaterloo.ca/systems-design-engineering/profile/cnehaniv) | [@NehanivCL](https://twitter.com/NehanivCL)
