@@ -2,7 +2,7 @@
 ##
 ## words.gi           SgpDec package
 ##
-## Copyright (C)
+## Copyright (C) 2010-2022
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##

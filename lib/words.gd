@@ -2,7 +2,7 @@
 ##
 ## words.gd           SgpDec package
 ##
-## Copyright (C) 2010-2012
+## Copyright (C) 2010-2022
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -10,7 +10,7 @@
 ##
 
 #words consisting of positive integers only (no inverse operation)
-DeclareGlobalFunction("BuildByWord"); #TODO this is implemented elsewhere
+DeclareGlobalFunction("BuildByWord"); # TODO the Semigroups package has EvaluateWord, check whether we can use taht or we need this more general function
 DeclareGlobalFunction("TrajectoryByWord");
 DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
