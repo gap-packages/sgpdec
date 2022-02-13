@@ -2,7 +2,7 @@
 ##
 ## disjointunion.gd           SgpDec package
 ##
-## Copyright (C) 2008-2017
+## Copyright (C) 2008-2022
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
