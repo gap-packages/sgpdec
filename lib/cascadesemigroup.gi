@@ -10,6 +10,9 @@
 ################################################################################
 # CASCADE SEMIGROUP ############################################################
 ################################################################################
+
+# simply creating a standard GAP isomorphism by using AsTransformation to flatten
+# cascade transformations
 InstallMethod(IsomorphismTransformationSemigroup, "for a cascade product",
 [IsCascadeSemigroup],
 function(s)
@@ -22,7 +25,8 @@ function(s)
                  f -> AsCascade(f, ComponentDomains(s)));
 end);
 
-#this may produce something bigger than the actual component
+# takes all the local actions and generate semigroups for each level
+# this may produce something bigger than the actual component
 InstallMethod(ComponentsOfCascadeProduct, "for a semigroup cascade product",
         [IsCascadeSemigroup],
 function(s)
