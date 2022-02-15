@@ -2,7 +2,7 @@
 ##
 ## cascade.gi           SgpDec package
 ##
-## Copyright (C) 2008-2021
+## Copyright (C) 2008-2022
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -13,6 +13,10 @@
 # CONSTRUCTORS #################################################################
 ################################################################################
 
+# Component domains are the sets of integers [1..n] that the components of a
+# (de)composition act on. This functions creates these domains when a list of
+# components is given. These can be transformation semigroups, permutation
+# groups or simply the size of the domain.
 InstallGlobalFunction(CreateComponentDomains,
 function(comps)
   local domains, comp;
@@ -31,43 +35,38 @@ function(comps)
   return domains;
 end);
 
-#  ways to create cascades
-# 1. Cascade, giving components/component domains and a list of dependencies
-# 2. by giving dependency functions
+# create a cascade for a given list of components (see ComponentDomains) for
+# valid inputs and a list of dependencies
 InstallGlobalFunction(Cascade,
-function(doms, deps)
-  local isgroup, type, compdoms, depdom, depfuncs, f, x;
+function(comps, deps)
+  local compdoms, depdom, depfuncs, o;
 
-  #if IsListOfPermGroupsAndTransformationSemigroups(doms) then
-    compdoms:=CreateComponentDomains(doms);
-  #else
-  #  compdoms:=List(doms,
-  #             function(x) if IsPosInt(x) then return [1..x];
-  #                         else return x; fi;end);
-  #fi;
-
+  compdoms:=CreateComponentDomains(comps);
+  # figuring out whether we have a permutation cascade or not
   if ForAll(doms, IsGroup)
      or
      ((not ForAny(doms, IsSemigroup))
        and ForAll(deps, x -> IsPerm(x[2]))) then
-    f:=Objectify(PermCascadeType, rec());
+    o:=Objectify(PermCascadeType, rec());
   else
-    f:=Objectify(TransCascadeType, rec());
+    o:=Objectify(TransCascadeType, rec());
   fi;
 
-  #maybe there should be a ShallowCopy here? JDM
+  #TODO maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
   depfuncs:=DependencyFunctions(depdom, deps);
 
-  SetDomainOf(f, EnumeratorOfCartesianProduct(compdoms));
-  SetComponentDomains(f, compdoms);
-  SetDependencyDomainsOf(f, depdom);
-  SetDependencyFunctionsOf(f, depfuncs);
-  SetNrComponents(f, Length(compdoms));
-  return f;
+  # setting the stored attributes of the newly created cascade
+  SetDomainOf(o, EnumeratorOfCartesianProduct(compdoms));
+  SetComponentDomains(o, compdoms);
+  SetDependencyDomainsOf(o, depdom);
+  SetDependencyFunctionsOf(o, depfuncs);
+  SetNrComponents(o, Length(compdoms));
+  return o;
 end);
 
 # a simple constructor that populates the object's members
+# not menat for the end user at the commandline
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
   local f;
@@ -87,7 +86,6 @@ function(comps)
 end);
 
 #
-
 InstallGlobalFunction(RandomCascade,
 function(list, numofdeps)
   local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
@@ -380,7 +378,7 @@ function(f)
    x-> NrDependencies(x));
 end);
 
-# returning the dependencies back in a list
+# returning the dependencies back in a flat list
 # not for time critical code, but DotCascade can be made representation agnostic
 InstallGlobalFunction(DependenciesOfCascade,
 function(ct)
