@@ -41,21 +41,19 @@ InstallGlobalFunction(Cascade,
 function(comps, deps)
   local compdoms, depdom, depfuncs, o;
 
-  compdoms:=CreateComponentDomains(comps);
   # figuring out whether we have a permutation cascade or not
-  if ForAll(doms, IsGroup)
+  if ForAll(comps, IsGroup)
      or
-     ((not ForAny(doms, IsSemigroup))
+     ((not ForAny(comps, IsSemigroup))
        and ForAll(deps, x -> IsPerm(x[2]))) then
     o:=Objectify(PermCascadeType, rec());
   else
     o:=Objectify(TransCascadeType, rec());
   fi;
-
+  compdoms:=CreateComponentDomains(comps);
   #TODO maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
   depfuncs:=DependencyFunctions(depdom, deps);
-
   # setting the stored attributes of the newly created cascade
   SetDomainOf(o, EnumeratorOfCartesianProduct(compdoms));
   SetComponentDomains(o, compdoms);
@@ -87,15 +85,15 @@ end);
 
 #
 InstallGlobalFunction(RandomCascade,
-function(list, numofdeps)
-  local isgroup, type, comps, depdoms, vals, len, x, j, k, val, depfuncs, i;
+function(comps, numofdeps)
+  local isgroup, type, compdoms, depdoms, vals, len, x, j, k, val, depfuncs, i;
 
-  if not IsDenseList(list) then
+  if not IsDenseList(comps) then
     Error("first argument should be a list of transformation semigroups\n",
     " or permutation groups.");
   else
     isgroup:=true;
-    for x in list do
+    for x in comps do
       if not IsPermGroup(x) then
         isgroup:=false;
         if not IsTransformationSemigroup(x) then
@@ -112,9 +110,9 @@ function(list, numofdeps)
     type:=TransCascadeType;
   fi;
 
-  comps:=CreateComponentDomains(list);
+  compdoms:=CreateComponentDomains(comps);
   # create the enumerator for the dependency func
-  depdoms:=DependencyDomains(comps);
+  depdoms:=DependencyDomains(compdoms);
 
   # create the function
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
@@ -130,7 +128,7 @@ function(list, numofdeps)
       j:=j-Length(depdoms[k]);
       k:=k+1;
     od;
-    val:=Random(list[k]);
+    val:=Random(comps[k]);
     if not IsOne(val) then
       vals[k][j]:=val;
     fi;
@@ -138,8 +136,8 @@ function(list, numofdeps)
   depfuncs := List([1..Length(vals)],
                    x -> DependencyFunction(depdoms[x],vals[x]));
 
-  return CreateCascade(EnumeratorOfCartesianProduct(comps),
-                 comps, depfuncs, depdoms, type);
+  return CreateCascade(EnumeratorOfCartesianProduct(compdoms),
+                 compdoms, depfuncs, depdoms, type);
 end);
 
 ################################################################################
