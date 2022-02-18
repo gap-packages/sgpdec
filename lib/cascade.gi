@@ -78,6 +78,7 @@ function(dom, compdoms, depfuncs, depdom, type)
 end);
 
 # no dependencies mean the identity transformation on all levels
+# it creates a PermCascade by default
 InstallGlobalFunction(IdentityCascade,
 function(comps)
   return Cascade(comps,[]);
@@ -218,7 +219,6 @@ function(f, compsordomsizes)
   fi;
   #the actual algorithm#########################################################
   depdoms:=DependencyDomains(domsizes);
-  compdoms := List(domsizes,x -> [1..x]);
   dom:=EnumeratorOfCartesianProduct(compdoms);
   n:=Length(domsizes);
   #vals collecting the images of individual points
@@ -276,13 +276,6 @@ InstallOtherMethod(AsCascade,
         [IsPerm, IsDenseList],
 function(p, compsordomsizes)
   local domsizes;
-  #TODO detecting the input twice looks pretty bad
-  #deciding what input we got
-#  if IsListOfPermGroupsAndTransformationSemigroups(compsordomsizes) then
- #   domsizes := List(ComponentDomains(compsordomsizes), c -> Size(c));
- # else
-  #  domsizes := compsordomsizes;
-  #fi;
   return AsCascade(AsTransformation(p), compsordomsizes);
 end);
 
