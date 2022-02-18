@@ -83,47 +83,34 @@ function(comps)
   return Cascade(comps,[]);
 end);
 
-#
+# gives a random cascade for the given components (permutation groups and
+# transformation semigroups) aiming for the given number of non-identity entry
 InstallGlobalFunction(RandomCascade,
 function(comps, numofdeps)
-  local isgroup, type, compdoms, depdoms, vals, len, x, j, k, val, depfuncs, i;
+  local type, compdoms, depdoms, vals, len, inputs, j, k, val, depfuncs, i;
 
-  if not IsDenseList(comps) then
-    Error("first argument should be a list of transformation semigroups\n",
-    " or permutation groups.");
-  else
-    isgroup:=true;
-    for x in comps do
-      if not IsPermGroup(x) then
-        isgroup:=false;
-        if not IsTransformationSemigroup(x) then
-          Error("first argument should be a list of transformation\n",
-                "semigroups or permutation groups.");
-        fi;
-      fi;
-    od;
+  if (not ForAll(comps, c-> IsPermGroup(c) or IsTransformationSemigroup(c))) then
+    return fail; # components have to be perm groups or tss
   fi;
-
-  if isgroup then
+  # figuring out type
+  if ForAll(comps, IsPermGroup) then
     type:=PermCascadeType;
   else
     type:=TransCascadeType;
   fi;
 
   compdoms:=CreateComponentDomains(comps);
-  # create the enumerator for the dependency func
   depdoms:=DependencyDomains(compdoms);
 
-  # create the function
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
   len:=Sum(List(depdoms, Length));
   numofdeps:=Minimum([len, numofdeps]);
 
-  x:=[1..len];
+  inputs:=[1..len]; # indices for all input coordinates
   for i in [1..numofdeps] do
-    j:=Random(x);
-    RemoveSet(x, j);
-    k:=1;
+    j:=Random(inputs);
+    RemoveSet(inputs, j);
+    k:=1; # an awkward way of finding the right input
     while j>Length(depdoms[k]) do
       j:=j-Length(depdoms[k]);
       k:=k+1;

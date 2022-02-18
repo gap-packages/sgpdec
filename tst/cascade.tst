@@ -132,13 +132,9 @@ gap> for i in [1..333] do
 >   fi;
 > od;
 
-# RandomCascade error messages
-gap> RandomCascade(2,2);
-Error, first argument should be a list of transformation semigroups
- or permutation groups.
+# RandomCascade error message
 gap> RandomCascade([2],2);
-Error, first argument should be a list of transformation
-semigroups or permutation groups.
+fail
 
 #
 gap> c:=
