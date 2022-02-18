@@ -147,7 +147,7 @@ InstallMethod(OneImmutable, "for a permutation cascade",
 function(ct)
   local id;
   id := IdentityCascade(ComponentDomains(ct));
-  #TODO this is just repackaging the Cascade id to PermCascade;
+  # just repackaging the Cascade id to PermCascade to get the right type
   return CreateCascade(DomainOf(id),
                  ComponentDomains(id),
                  DependencyFunctionsOf(id),
@@ -161,7 +161,7 @@ function(pc)
   local dfs, depdoms, vals, x, depfuncs, i, j;
 
   dfs:=DependencyFunctionsOf(pc);
-  depdoms:=DependencyDomainsOf(pc); #TODO get rid of this
+  depdoms:=DependencyDomainsOf(pc);
   #empty values lookup table based on the sizes of depdoms
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
   #going through all depdoms
@@ -300,13 +300,14 @@ end);
 InstallOtherMethod(\^, "for coordinate list and cascade",
 [IsList, IsCascade], OnCoordinates);
 
+# cascade composition (wreath product multiplication)
 InstallGlobalFunction(OnCascade,
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
 
   dep_f:=DependencyFunctionsOf(f);
   dep_g:=DependencyFunctionsOf(g);
-  depdoms:=DependencyDomainsOf(f); #TODO get rid of this
+  depdoms:=DependencyDomainsOf(f);
   #empty values lookup table based on the sizes of depdoms
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
   #going through all depdoms
