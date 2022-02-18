@@ -232,7 +232,6 @@ function(f, compsordomsizes)
     #we copy coords, as we will remove its elements one by one
     args:=ShallowCopy(coords);
     for level in Reversed([1..n]) do
-      #while not IsBound(vals[level][pos][coords[level]]) do
       Remove(args, level);
       #the position in dependency domain on the level
       pos:=Position(depdoms[level], args);
@@ -279,20 +278,20 @@ function(p, compsordomsizes)
   return AsCascade(AsTransformation(p), compsordomsizes);
 end);
 
-# action and operators
-
+# acting on coordinates by a cascade transformation
 InstallGlobalFunction(OnCoordinates,
 function(coords, ct)
-  local dfs, copy, out, len, i;
+  local dfs, prefix, out, len, i;
 
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
-  copy:=EmptyPlist(len);
+  # prefix contains the dependnecy function arguments, built one by one
+  prefix:=EmptyPlist(len);
   out:=EmptyPlist(len);
 
   for i in [1..len] do
-    out[i]:=coords[i]^(copy^dfs[i]);
-    copy[i]:=coords[i];
+    out[i]:=coords[i]^(prefix^dfs[i]);
+    prefix[i]:=coords[i];
   od;
   return out;
 end);
