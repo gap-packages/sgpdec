@@ -64,7 +64,7 @@ Persons := [
 
 Status := "dev",
 
-PackageWWWHome := "http://gap-packages.github.io/sgpdec/",
+PackageWWWHome := "https://gap-packages.github.io/sgpdec/",
 README_URL     := Concatenation(~.PackageWWWHome, "README"),
 PackageInfoURL := Concatenation(~.PackageWWWHome, "PackageInfo.g"),
 ArchiveURL     := Concatenation("https://github.com/gap-packages/sgpdec/",
