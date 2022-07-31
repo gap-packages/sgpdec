@@ -2,8 +2,6 @@
 ##
 #W semigroup.gi           GrAsP library  
 ##
-#H  @(#)$Id: semigroup.gi,v 1.9 2003/06/25 12:50:28 sirna Exp $
-##
 #Y  Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv
 ##
 #Y  2003 University of Hertfordshire, Hatfield, UK

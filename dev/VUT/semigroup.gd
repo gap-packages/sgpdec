@@ -2,8 +2,6 @@
 ##
 #W  semigroup.gd           GAP library         Attila Egri-Nagy
 ##
-#H  @(#)$Id: semigroup.gd,v 1.7 2003/06/25 12:26:10 sirna Exp $
-##
 #Y  Copyright (C) Attila Egri-Nagy, Chrystopher L. Nehaniv  
 ##
 #Y  2003, University of Hertfordshire, Hatfield, UK
