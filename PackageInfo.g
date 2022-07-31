@@ -84,7 +84,7 @@ AbstractHTML := "<span class=\"pkgname\">SgpDec</span> is  a <span class=\
 PackageDoc := rec(
   BookName  := "SgpDec",
   ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Hierarchical Decompositions and Coordinate Systems",
