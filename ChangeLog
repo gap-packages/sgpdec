@@ -1,3 +1,7 @@
+0.9.4
+	Release for GAP 4.12.0. Semigroups introduced RandomWord, so it is removed from SgpDec.
+0.9.3
+	The star state was added previously to explicitly represent the situation where the cascade action 'jumps over' some levels. However, the extra states unnecessarily increase the size of the component state sets, leading to bigger decompositions. This release removes the star state and uses the constant 1 map as the default component action. Thus, the decompositions will be smaller.
 0.9.2
 	Making FL conversion functions polymorphic, so they can either take an FLCascadeGroup for convenience, or a list of transversals if obtaining a decompositions (lifting the generators) is not feasible.
 0.9.1
