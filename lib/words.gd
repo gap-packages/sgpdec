@@ -14,7 +14,6 @@ DeclareGlobalFunction("BuildByWord"); # TODO the Semigroups package has Evaluate
 DeclareGlobalFunction("TrajectoryByWord");
 DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
-DeclareGlobalFunction("RandomWord");
 
 #enumerating straight words
 DeclareGlobalFunction("StraightWords");

@@ -79,15 +79,6 @@ function(word, gens, point, action)
   return StraightenWord(word,TrajectoryByWord(word,gens,point,action));
 end);
 
-#l - length of the word, n - number of generators
-InstallGlobalFunction(RandomWord,
-function(l,n)
-local list;
-  list := [1..n];
-  return List([1..l], x->Random(list));
-end);
-
-
 ################################################################################
 # BACKTRACK BASED ENUMERATION OF STRAIGHT WORDS ################################
 
