@@ -10,7 +10,7 @@
 ##
 
 #words consisting of positive integers only (no inverse operation)
-DeclareGlobalFunction("BuildByWord"); # TODO the Semigroups package has EvaluateWord, check whether we can use taht or we need this more general function
+DeclareGlobalFunction("BuildByWord"); # TODO the Semigroups package has EvaluateWord, check whether we can use that or we need this more general function
 DeclareGlobalFunction("TrajectoryByWord");
 DeclareGlobalFunction("IsStraightWord");
 DeclareGlobalFunction("Reduce2StraightWord");
