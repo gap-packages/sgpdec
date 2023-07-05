@@ -71,7 +71,7 @@ end);
 # end);
 
 InstallGlobalFunction(GetSubgroupIdempotents, function(arg)
-  local sk, params, states, dx, cls, x1, px1, hx1, IDs, subgIds, w, W, IdempotentWords;
+  local sk, params, states, dx, cls, x1, px1, hx1, IDs, subgIds, w, W, IdempotentSet;
 
   # Getting local variables for the arguments
   sk := arg[1];
@@ -97,19 +97,19 @@ InstallGlobalFunction(GetSubgroupIdempotents, function(arg)
         hx1 := HolonomyGroup@SgpDec(sk, x1);
 
         if not IsTrivial(px1) then
-          IdempotentWords := [];
+          IdempotentSet := [];
           W := IdempotentsForSubset(sk, x1);
 
           for w in W do
-            IDs := Concatenation(List(w, x -> String(x)));
-            Add(IdempotentWords, IDs);
+            IDs := EvalWordInSkeleton(sk, w);#Concatenation(List(w, x -> String(x)));
+            Add(IdempotentSet, IDs);
           od;
 
           # Store the permutation group information as a tuple
           subgIds := rec(
             depth := dx,
             states := x1,
-            idempotents := IdempotentWords
+            idempotents := Set(IdempotentSet)
           );
 
           Add(result, subgIds);
@@ -118,5 +118,5 @@ InstallGlobalFunction(GetSubgroupIdempotents, function(arg)
     od;
   od;
 
-  return result;
+  return Set(result);
 end);
