@@ -68,16 +68,17 @@ end);
 # TODO: is this thorough?
 # TODO: check the entire set of idempotents
 InstallGlobalFunction(IdempotentsForSubset,
-function(sk,set)
-local w, Ws, ID, IdempotentSet;
-  Ws := IdempotentWordsForSubset(sk, set);
+function(S, sk, set)
+local e, IdempotentSet, ssize;
+  ssize := Size(BaseSet(sk));
   IdempotentSet := [];
-  
-  for w in Ws do
-    ID := EvalWordInSkeleton(sk, w);#Concatenation(List(w, x -> String(x)));
-    Add(IdempotentSet, ID);
+  for e in Idempotents(S) do
+    #if FiniteSet(ImageSetOfTransformation(e), ssize) = set then
+    if OnFiniteSet(BaseSet(sk), e) = set then
+       Add(IdempotentSet, e);
+    fi;
   od;
-  return Set(IdempotentSet);
+  return IdempotentSet;
 end);
 
 # InstallGlobalFunction(Test, function(arg)
@@ -136,19 +137,43 @@ InstallGlobalFunction(GetSubgroupIdempotents, function(arg)
   return Set(result);
 end);
 
+# Read("C://Users//thoma//Desktop//ECE 5C//Research//hex.g");
 # x1 := FiniteSet([1,5,65,86]);
 # x2 := FiniteSet([5,65,86]);
-# e1s := IdempotentsForSubset(skel, x1);
-# e2s := IdempotentsForSubset(skel, x2);
+# e1s := IdempotentsForSubset(Game, skel, x1);
+# e2s := IdempotentsForSubset(Game, skel, x2);
 # e1 := e1s[1];
 # e2 := e2s[1];
-# o = Orb(G1, x2, OnFiniteSet, rec(shreier := true, orbitgraph := true));
-# Enumerate(o);
+# G1 := SchutzenbergerGroup(HClass(Game, e1));
+# CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(shreier := true, orbitgraph := true)));
+# CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
+# for Xt in CalX2 do
+#   CalI2 := Concatenation(CalI2, IdempotentsForSubset(Game, skel, Xt));
+# od;
 
+# Test Case:
+# S := FullTransformationSemigroup(4);
+# sk := Skeleton(S);
+# DisplayHolonomyComponents(sk);
+# CheckEssentialDependency(S, sk, 1, 2);
+# CheckEssentialDependency(S, sk, 2, 3);
+
+# x1 := FiniteSet([1,2,3,4]);
+# x2 := FiniteSet([1,2,3], 4);
+# e1s := IdempotentsForSubset(S, sk, x1);
+# e2s := IdempotentsForSubset(S, sk, x2);
+# e1 := e1s[1];
+# e2 := e2s[1];
+# G1 := SchutzenbergerGroup(HClass(S, e1));
+# CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(schreier := true, orbitgraph := true)));
+# CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
+# for Xt in CalX2 do
+#   CalI2 := Concatenation(CalI2, IdempotentsForSubset(S, sk, Xt));
+# od;
 
 InstallGlobalFunction(CheckEssentialDependency, function(S, sk, d1, d2)
   # d1 is lower than d2 so larger set
-  local G1, G2, CalX2, CalI2, J, x1, x2, e1, Xt, j;
+  local G1, G2, CalX2, CalI2, J, x1, x2, e1, Xt, j, JGroup;
 
   G1 := SubductionClassesOnDepth(sk, d1);
   G2 := SubductionClassesOnDepth(sk, d2);
@@ -157,28 +182,27 @@ InstallGlobalFunction(CheckEssentialDependency, function(S, sk, d1, d2)
     for x2 in Concatenation(G2) do
       if IsSubsetBlist(x1, x2) then
         # Find idempotent:
-        for e1 in IdempotentsForSubset(sk, x1) do
+        for e1 in IdempotentsForSubset(S, sk, x1) do
 
           G1 := SchutzenbergerGroup(HClass(S, e1));
-          GeneratorsOfGroup(G1);
-          StructureDescription(G1);
+          # GeneratorsOfGroup(G1);
+          # StructureDescription(G1);
 
-          CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(shreier := true, orbitgraph := true)));
+          CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(schreier := true, orbitgraph := true)));
           CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
           for Xt in CalX2 do
-            CalI2 := Concatenation(CalI2, IdempotentsForSubset(sk, Xt));
+            CalI2 := Concatenation(CalI2, IdempotentsForSubset(S, sk, Xt));
           od;
 
           # need help!
           J := Semigroup(CalI2);
-          if Size(J) > 1 then
-            for j in J do
-              Permuted(j, x2);
-            od;
+          JGroup := PermutatorGroup(Skeleton(J), x2);
+          if Size(JGroup) > 1 then
+            return JGroup;
           fi;
 
           # For all elements from J: if it permutes x2, then we are done (return True)
-          # for e2 in IdempotentsForSubset(sk, x2) do
+          # for e2 in IdempotentsForSubset(S, sk, x2) do
           #   e2 := Idempotents(Semigroup([e1 * e2 * e1]))[1];
           # od;
         od;
@@ -186,6 +210,7 @@ InstallGlobalFunction(CheckEssentialDependency, function(S, sk, d1, d2)
       fi;
     od;
   od;
+  return Group(());
 end);
 
 
