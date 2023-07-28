@@ -1,5 +1,6 @@
 DeclareGlobalFunction("GetPermutationGroups");
+DeclareGlobalFunction("IdempotentWordsForSubset");
 DeclareGlobalFunction("IdempotentsForSubset");
 DeclareGlobalFunction("GetSubgroupIdempotents");
-#DeclareGlobalFunction("Test");
+DeclareGlobalFunction("CheckEssentialDependency");
 
