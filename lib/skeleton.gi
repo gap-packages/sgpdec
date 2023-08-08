@@ -95,29 +95,6 @@ end);
 # INCLUSION RELATION ###########################################################
 ################################################################################
 
-# returns the maximal subsets of the given set found in the given ordered set
-# of sets, for the skeleton the extended set of images
-#TODO can this be further improved by recursion
-MaximalSubsets := function(sk, set)
-local covers, pos, orderedsubsets;
-  #singletons have no covers
-  if SizeBlist(set) = 1 then return []; fi;
-  covers := [];
-  #we search only from this position in the descending order
-  orderedsubsets := ExtendedImageSet(sk);
-  pos := Position(orderedsubsets, set) + 1;
-  while pos <= Size(orderedsubsets) do
-    if IsProperFiniteSubset(set, orderedsubsets[pos])
-       and
-       not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
-      Add(covers,orderedsubsets[pos]);
-    fi;
-    pos := pos + 1;
-  od;
-  return covers;
-end;
-MakeReadOnlyGlobal("MaximalSubsets");
-
 # binary relation defined by covering elements (sort of HasseDiagram)
 BinaryRelationByCoverFuncNC := function(set, coverfunc)
 local x,y,dom,tups;
@@ -135,8 +112,9 @@ MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
 InstallMethod(InclusionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
-                 set->MaximalSubsets(sk,set));
+  return HasseDiagramBinaryRelation(
+          PartialOrderByOrderingFunction(Domain(ExtendedImageSet(sk)),
+                                         IsSubsetBlist));
 end);
 
 ################################################################################
@@ -159,7 +137,8 @@ local rep,o,indx,og,covers,ol,l;
     #direct images
     Perform(og[indx], function(x) AddSet(covers, ol[x]);end);
     #tiles, checking for fail for nonimage singletons
-    Perform(Filtered(List(TilesOf(sk,o[indx]),x->Position(o,x)),y -> y<>fail),
+    Perform(Filtered(List(TilesOf(sk,o[indx]),x->Position(o,x)),
+                    y -> y<>fail),
             function(z) AddSet(covers, ol[z]);end);
   od;
   #removing self-image
