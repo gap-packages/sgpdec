@@ -12,7 +12,7 @@
 
 ################################################################################
 # CONSTRUCTOR ##################################################################
-# setting the basic attributes of the skeleton
+# setting the basic attributes of the skeleton, but not computing anything yet
 InstallGlobalFunction(Skeleton,
 function(ts)
   local o;
@@ -39,7 +39,7 @@ end);
 # the list of representatives as indices
 InstallMethod(SkeletonTransversal, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(OrbSCC(ForwardOrbit(sk)), x->x[1]);
+  return List(OrbSCC(ForwardOrbit(sk)), First);
 end);
 
 ################################################################################
