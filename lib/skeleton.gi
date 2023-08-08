@@ -9,6 +9,9 @@
 ## Skeleton of the semigroup action on a set. Subduction relation,
 ## equivalence classes, tilechains.
 ##
+## Some of the functions below use undocumented features of the Orb package,
+## namely OrbSCC, OrbSCCLookup and !.schreierpos,
+## therefore they could break due to changes upstream.
 
 ################################################################################
 # CONSTRUCTOR ##################################################################
@@ -39,7 +42,7 @@ end);
 # the list of representatives as indices
 InstallMethod(SkeletonTransversal, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(OrbSCC(ForwardOrbit(sk)), First);
+  return List(OrbSCC(ForwardOrbit(sk)), First); #TODO choice for representatives made here 
 end);
 
 ################################################################################
