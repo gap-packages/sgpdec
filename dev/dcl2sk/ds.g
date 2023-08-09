@@ -1,4 +1,19 @@
-LoadPackage("dust"); #for associative lists
+LoadPackage("datastructures"); #for hashmaps
+
+ReversedHashMap := function(m) #todo, do a more functional (I mean nicer) version
+local nm,k,val,l;
+  nm := HashMap();
+  for k in Keys(m) do
+      val := m[k];
+      if val in Keys(nm) then
+          l := nm[val];
+          AddSet(l,k); #mutable values!
+      else
+          nm[val] := [k];
+      fi;
+  od;
+  return nm;
+end;
 
 ImagesInDClass := function(dcl)
   return DuplicateFreeList(List(dcl,
@@ -28,18 +43,18 @@ end;
 
 #highly distorted version of Semigroups' DotDClasses
 DotDClasses2 := function(ts)
-  local str, i, gp, h, rel, j, k, d, l, x,tl,al,ii, s, dc2str;
+  local str, i, gp, h, rel, j, k, d, l, x,tl,al,ii, s, dc2str, D;
   str:="";
-  Append(str, "digraph  DClasses {\n ranksep=1.0;\n");
+  Append(str, "//dot\n digraph  DClasses {\n ranksep=1.0;\n");
   Append(str, "node [shape=plaintext]\n");
   Append(str, "edge [color=red]\n");
   i:=0;
-  al := AssociativeList();
+  al := HashMap();
   #dc2str := AssociativeList();
   for j in [1..Size(DClasses(ts))] do
-    Assign(al, j,ImagesInDClass(DClasses(ts)[j]));
+    al[j] := ImagesInDClass(DClasses(ts)[j]);
   od;
-  al := ReversedAssociativeList(al);
+  al := ReversedHashMap(al);
   ii := 1;
   for j in Keys(al) do
     tl := al[j];
@@ -79,15 +94,24 @@ DotDClasses2 := function(ts)
     Append(str, "</TR>");
     Append(str, "</TABLE>>];\n");
   od;
-  rel:=PartialOrderOfDClasses(ts);
-  rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
-  for i in [1..Length(rel)] do
-    j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
-    for k in j do
-      k:=String(k);
-      Append(str, Concatenation(i, " -> ", k, "\n"));
+
+   D := PartialOrderOfDClasses(ts);
+  rel := OutNeighbours(DigraphReflexiveTransitiveReduction(D));
+  for i in [1 .. Length(rel)] do
+    ii := String(i);
+    for k in rel[i] do
+      Append(str, Concatenation(ii, " -> ", String(k), "\n"));
     od;
   od;
+  # rel:=PartialOrderOfDClasses(ts);
+  # rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
+  # for i in [1..Length(rel)] do
+  #   j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
+  #   for k in j do
+  #     k:=String(k);
+  #     Append(str, Concatenation(i, " -> ", k, "\n"));
+  #   od;
+  # od;
   Append(str, " }");
   return str;
 end;

@@ -9,7 +9,7 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
 
-Version := "0.9.4",
+Version := "0.9.5-dev",
 
 Date := "03/09/2022", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",

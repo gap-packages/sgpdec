@@ -2,17 +2,20 @@
 ##
 ## skeleton.gi           SgpDec package
 ##
-## Copyright (C) 2010-2019
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Skeleton of the semigroup action on a set. Subduction relation,
 ## equivalence classes, tilechains.
 ##
+## Some of the functions below use undocumented features of the Orb package,
+## namely OrbSCC, OrbSCCLookup and !.schreierpos,
+## therefore they could break due to changes upstream.
 
 ################################################################################
 # CONSTRUCTOR ##################################################################
-# setting the basic attributes of the skeleton
+# setting the basic attributes of the skeleton, but not computing anything yet
 InstallGlobalFunction(Skeleton,
 function(ts)
   local o;
@@ -39,7 +42,7 @@ end);
 # the list of representatives as indices
 InstallMethod(SkeletonTransversal, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(OrbSCC(ForwardOrbit(sk)), x->x[1]);
+  return List(OrbSCC(ForwardOrbit(sk)), First); #TODO choice for representatives made here 
 end);
 
 ################################################################################
@@ -95,48 +98,12 @@ end);
 # INCLUSION RELATION ###########################################################
 ################################################################################
 
-# returns the maximal subsets of the given set found in the given ordered set
-# of sets, for the skeleton the extended set of images
-#TODO can this be further improved by recursion
-MaximalSubsets := function(sk, set)
-local covers, pos, orderedsubsets;
-  #singletons have no covers
-  if SizeBlist(set) = 1 then return []; fi;
-  covers := [];
-  #we search only from this position in the descending order
-  orderedsubsets := ExtendedImageSet(sk);
-  pos := Position(orderedsubsets, set) + 1;
-  while pos <= Size(orderedsubsets) do
-    if IsProperFiniteSubset(set, orderedsubsets[pos])
-       and
-       not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
-      Add(covers,orderedsubsets[pos]);
-    fi;
-    pos := pos + 1;
-  od;
-  return covers;
-end;
-MakeReadOnlyGlobal("MaximalSubsets");
-
-# binary relation defined by covering elements (sort of HasseDiagram)
-BinaryRelationByCoverFuncNC := function(set, coverfunc)
-local x,y,dom,tups;
-  dom := Domain(set);
-  tups := [];
-  for x in dom do
-    for y in coverfunc(x) do
-      Add(tups, Tuple([x, y]));
-    od;
-  od;
-  return BinaryRelationByElements(dom, tups);
-end;
-MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
-
 InstallMethod(InclusionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return BinaryRelationByCoverFuncNC(ExtendedImageSet(sk),
-                 set->MaximalSubsets(sk,set));
+  return HasseDiagramBinaryRelation(
+          PartialOrderByOrderingFunction(Domain(ExtendedImageSet(sk)),
+                                         IsSubsetBlist));
 end);
 
 ################################################################################
@@ -145,37 +112,35 @@ end);
 
 #the subduction Hasse diagram of representatives
 
-# returns the indices of the direct images of the scc indexed by indx
-# and the maximal subsets
-# sccindx - the index of an orbit SCC
-SubductionCovers := function(sk,sccindx)
-local rep,o,indx,og,covers,ol,l;
+
+RepSubRel := function(sk)
+  local o, SCCLookup, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
-  og := OrbitGraph(o);
-  ol := OrbSCCLookup(o);
-  covers := [];
-  #for all elements in the SCC
-  for indx in OrbSCC(o)[sccindx] do
-    #direct images
-    Perform(og[indx], function(x) AddSet(covers, ol[x]);end);
-    #tiles, checking for fail for nonimage singletons
-    Perform(Filtered(List(TilesOf(sk,o[indx]),x->Position(o,x)),y -> y<>fail),
-            function(z) AddSet(covers, ol[z]);end);
-  od;
-  #removing self-image
-  if sccindx in covers then Remove(covers, Position(covers,sccindx));fi;
-  return covers;
+  # functions are defined for better readability and separating technical (Orb) code
+  SCCLookup := x -> OrbSCCLookup(o)[x]; #finds SCC of an orbit element (the index of it)
+  DirectImages := x -> OrbitGraph(o)[x]; #direct descendants in the orbit graph
+  NonFailing := x -> x <> fail; #predicate function for not being fail
+  Set2Index := x -> Position(o,x);
+  reps := SkeletonTransversal(sk);
+  SubSets := x -> Images(InclusionCoverBinaryRelation(sk),o[x]);
+  #subduction is image of and subset of relation combined
+  imgs := List(reps, DirectImages); #direct images of representatives
+  subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
+  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i]));
+  return TransitiveClosureBinaryRelation(
+           ReflexiveClosureBinaryRelation(
+             BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup))))));
 end;
-MakeReadOnlyGlobal("SubductionCovers");
+
+RepSubHDRel := function(sk)
+  return HasseDiagramBinaryRelation(RepSubRel(sk));
+end;
 
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
 InstallMethod(RepSubductionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
-  return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
-                 x->SubductionCovers(sk,x));
-end);
+  RepSubHDRel);
 
 ################################################################################
 # subduction based on orbits from sets (not so nicely called partial orbits)
@@ -194,34 +159,27 @@ function(sk, A, B)
          = OrbSCCLookup(o)[Position(o, B)];
 end);
 
-#just a util functions to check whether the required partial orbit is available
-#if not, then calculate it
-CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
-  if not IsBound(PartialOrbits(sk)[Qindx]) then
-    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSet,
-                                 rec(schreier:=true,orbitgraph:=true));
-    Enumerate(PartialOrbits(sk)[Qindx]);
-  fi;
-end;
-MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
-
-# true is P \subseteq Qs
+# true if P \subseteq Qs for some S
+# here we use a general property of partial orders that if P is related to Q
+# then any P-equivalent element is related to any Q-equivalent element
 InstallGlobalFunction(IsSubductionLessOrEquivalent,
 function(sk, P, Q)
-  local Qindx;
-  Qindx := Position(ExtendedImageSet(sk),Q);
-  CalcPartialOrbitOnDemand(sk,Q, Qindx);
-  return ForAny(PartialOrbits(sk)[Qindx],
-                Qs -> IsSubsetBlist(Qs,P));
+  local o, Pbar, Qbar;
+  o := ForwardOrbit(sk);
+  Pbar := OrbSCCLookup(o)[Position(o,P)];
+  Qbar := OrbSCCLookup(o)[Position(o,Q)];
+  return Pbar in Images(RepSubRel(sk), Qbar);
 end);
 
-#TODO it is not optimal to search twice for a superset
+#TODO the witness functions calculate partial orbits, this should be replaced by a search
+#in the already calculated orbit
+
+#returns an s such that P\subseteq S
 InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
   local Qorb,Qs;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
-  #we know that the partial orbit is already calculated by IsSubductionLessOr...
-  Qorb := PartialOrbits(sk)[Position(ExtendedImageSet(sk),Q)];
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
@@ -230,9 +188,7 @@ end);
 InstallGlobalFunction(ImageWitness,
 function(sk, P, Q)
   local Qorb,Qs,Qindx;
-  Qindx := Position(ExtendedImageSet(sk),Q);
-  CalcPartialOrbitOnDemand(sk,Q, Qindx);
-  Qorb := PartialOrbits(sk)[Qindx];
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
   Qs := First(Qorb, Qs->Qs=P);
   if Qs = fail then
     return fail;
@@ -246,15 +202,18 @@ end);
 InstallMethod(NonImageSingletonClasses,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  local l, cls, tmp,s,q;
+  local l, cls, tmp,s,q, ImageOfBruteForce;
+  ImageOfBruteForce := function(sk, P, Q)
+    return P in Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet));
+  end;
   l := ShallowCopy(NonImageSingletons(sk));
   cls := [];
   while not IsEmpty(l) do
     q := Remove(l);
     tmp := [q]; #starting new class with the last one
     for s in ShallowCopy(l) do #to be on the safe side
-      if IsSubductionLessOrEquivalent(sk,s,q) and
-         IsSubductionLessOrEquivalent(sk,q,s) then
+      if ImageOfBruteForce(sk,s,q) and
+         ImageOfBruteForce(sk,q,s) then
         Add(tmp,s);
         Remove(l,Position(l,s));
       fi;
