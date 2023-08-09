@@ -179,7 +179,7 @@ InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
   local Qorb,Qs;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
-  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true)));
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
@@ -187,8 +187,8 @@ end);
 #return s such that P=Qs
 InstallGlobalFunction(ImageWitness,
 function(sk, P, Q)
-  local Qorb,Qs,Qindx;
-  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
+  local Qorb,Qs;
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true)));
   Qs := First(Qorb, Qs->Qs=P);
   if Qs = fail then
     return fail;
