@@ -176,26 +176,47 @@ xxx := function(sk)
                                             DefiningRelations(sk)))));
 end;
 
-Reachable := function(og, ol, sccP, sccQ)
+Reachable := function(og, ol, sccP, sccQ, visited)
+Print(sccP,sccQ," ");
   if sccQ = sccP then return true; fi;
-  return ForAny(og[sccQ], scc -> Reachable(og, ol, sccP, ol[scc]));
+  return ForAny(List(og[sccQ], x->ol[x] ), scc ->  (not (scc = sccQ))
+                                                    and (not (scc in visited))
+                                                    and Reachable(og, ol, sccP, ol[scc], (visited, scc)));
+end;
+
+RepSubHDRel := function(sk)
+  local o, ol, og, tr, imgs;
+  o := ForwardOrbit(sk);
+  ol := OrbSCCLookup(o);
+  og := OrbitGraph(o);
+  tr := SkeletonTransversal(sk);
+  imgs := List(
+            List(tr, x-> OrbitGraph(o)[x]), #direct images of representatives
+            l -> Unique(List(l, x -> OrbSCCLookup(o)[x]))); #turning them into scc-indices
+  return HasseDiagramBinaryRelation(
+          TransitiveClosureBinaryRelation(
+            ReflexiveClosureBinaryRelation(
+              BinaryRelationOnPoints(imgs))));
 end;
 
 subduction := function(sk, P, Q)
-local o, ol;
-o := ForwardOrbit(sk);
-ol := OrbSCCLookup(o);
-
-return
-  IsSubsetBlist(Q,P)
-  or
-  Reachable(OrbitGraph(o), ol, ol[Position(o,P)], ol[Position(o,Q)]);
+  local o, ol;
+  o := ForwardOrbit(sk);
+  ol := OrbSCCLookup(o);
+  return
+    IsSubsetBlist(Q,P)
+    or
+    Reachable(OrbitGraph(o), ol, ol[Position(o,P)], ol[Position(o,Q)],[]);
 end;
 
 xx := function(sk)
+  local o, tr;  
+  o := ForwardOrbit(sk);
+  tr := SkeletonTransversal(sk);
   return HasseDiagramBinaryRelation(
           PartialOrderByOrderingFunction(Domain([1..Size(SkeletonTransversal(sk))]),
-                                         function(P,Q) return subduction(sk,P,Q);end));
+                                         function(P,Q) 
+                                         return subduction(sk,o[tr[P]],o[tr[Q]]);end));
 end;
 
 #collecting the direct images and inclusion covers of an SCC
