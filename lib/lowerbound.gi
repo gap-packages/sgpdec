@@ -1,79 +1,11 @@
-## Dot Natural subsystem code - Modified to store permutation group information without dot and symbols
-result := [];  # Store permutation group information
 
-InstallGlobalFunction(GetPermutationGroups, function(arg)
-  local sk, params, states, dx, cls, x1, px1, hx1, PermGenWord, PermutatorGeneratorWords, w, W, permutationGroup;
-
-  # Getting local variables for the arguments
-  sk := arg[1];
-  if IsBound(arg[2]) then
-    params := arg[2];
-  else
-    params := rec();
-  fi;
-
-  # Setting the state names
-  if "states" in RecNames(params) then
-    states := params.states;
-  else
-    states := List([1..DegreeOfSkeleton(sk)], String);
-  fi;
-
-  SgpDecFiniteSetDisplayOn();
-
-  for dx in [1..DepthOfSkeleton(sk)-1] do
-    for cls in SubductionClassesOnDepth(sk, dx) do
-      for x1 in cls do
-        px1 := PermutatorGroup(sk, x1);
-        hx1 := HolonomyGroup@SgpDec(sk, x1);
-
-        if not IsTrivial(px1) then
-          PermutatorGeneratorWords := [];
-          W := NontrivialRoundTripWords(sk, x1);
-
-          for w in W do
-            PermGenWord := Concatenation(List(w, x -> String(x)));
-            Add(PermutatorGeneratorWords, PermGenWord);
-          od;
-
-          # Store the permutation group information as a tuple
-          permutationGroup := rec(
-            depth := dx,
-            states := x1,
-            permutatorWords := PermutatorGeneratorWords
-          );
-
-          Add(result, permutationGroup);
-        fi;
-      od;
-    od;
-  od;
-
-  return result;
-end);
-
-InstallGlobalFunction(IdempotentWordsForSubset,
-function(sk,set)
-local roundtrips,rtws,ids;
-  if not ContainsSet(sk,set) then return fail;fi;
-  rtws := RoundTripWords(sk,set);
-  roundtrips := List(rtws, w->EvalWordInSkeleton(sk,w));
-  ids := Filtered([1..Size(roundtrips)],
-                      x-> IsIdentityOnFiniteSet(roundtrips[x],set));
-  Info(SkeletonInfoClass, 2, "identity roundtrips/all roundtrips: ",
-       Size(rtws), "/", Size(ids));
-  return rtws{ids};
-end);
-
-# TODO: is this thorough?
-# TODO: check the entire set of idempotents
 InstallGlobalFunction(IdempotentsForSubset,
 function(S, sk, set)
 local e, IdempotentSet, ssize;
   ssize := Size(BaseSet(sk));
   IdempotentSet := [];
   for e in Idempotents(S) do
-    #if FiniteSet(ImageSetOfTransformation(e), ssize) = set then
+    # check whether the image of e is set
     if OnFiniteSet(BaseSet(sk), e) = set then
        Add(IdempotentSet, e);
     fi;
@@ -81,112 +13,16 @@ local e, IdempotentSet, ssize;
   return IdempotentSet;
 end);
 
-# InstallGlobalFunction(Test, function(arg)
-#   S := arg[1];
-  
-# end);
-
-InstallGlobalFunction(GetSubgroupIdempotents, function(arg)
-  local sk, params, states, dx, cls, x1, px1, hx1, IDs, subgIds, w, W, IdempotentSet;
-
-  # Getting local variables for the arguments
-  sk := arg[1];
-  if IsBound(arg[2]) then
-    params := arg[2];
-  else
-    params := rec();
-  fi;
-
-  # Setting the state names
-  if "states" in RecNames(params) then
-    states := params.states;
-  else
-    states := List([1..DegreeOfSkeleton(sk)], String);
-  fi;
-
-  SgpDecFiniteSetDisplayOn();
-
-  for dx in [1..DepthOfSkeleton(sk)-1] do
-    for cls in SubductionClassesOnDepth(sk, dx) do
-      for x1 in cls do # TODO: duplicates of sets???
-        px1 := PermutatorGroup(sk, x1);
-        #hx1 := HolonomyGroup@SgpDec(sk, x1);
-
-        if not IsTrivial(px1) then
-          IdempotentSet := [];
-          W := IdempotentWordsForSubset(sk, x1);
-
-          for w in W do
-            IDs := EvalWordInSkeleton(sk, w);#Concatenation(List(w, x -> String(x)));
-            Add(IdempotentSet, IDs);
-          od;
-
-          # Store the permutation group information as a tuple
-          subgIds := rec(
-            depth := dx,
-            states := x1,
-            idempotents := Set(IdempotentSet)
-          );
-
-          Add(result, subgIds);
-        fi;
-      od;
-    od;
-  od;
-
-  return Set(result);
-end);
-
-# Read("C://Users//thoma//Desktop//ECE 5C//Research//hex.g");
-# x1 := FiniteSet([1,5,65,86]);
-# x2 := FiniteSet([5,65,86]);
-# e1s := IdempotentsForSubset(Game, skel, x1);
-# e2s := IdempotentsForSubset(Game, skel, x2);
-# e1 := e1s[1];
-# e2 := e2s[1];
-# G1 := SchutzenbergerGroup(HClass(Game, e1));
-# CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(shreier := true, orbitgraph := true)));
-# CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
-# for Xt in CalX2 do
-#   CalI2 := Concatenation(CalI2, IdempotentsForSubset(Game, skel, Xt));
-# od;
-
-# Test Case:
-# S := FullTransformationSemigroup(4);
-# sk := Skeleton(S);
-# DisplayHolonomyComponents(sk);
-# CheckEssentialDependency(S, sk, 1, 2);
-# CheckEssentialDependency(S, sk, 2, 3);
-
-# x1 := FiniteSet([1,2,3,4]);
-# x2 := FiniteSet([1,2,3], 4);
-# e1s := IdempotentsForSubset(S, sk, x1);
-# e2s := IdempotentsForSubset(S, sk, x2);
-# e1 := e1s[1];
-# e2 := e2s[1];
-# G1 := SchutzenbergerGroup(HClass(S, e1));
-# CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(schreier := true, orbitgraph := true)));
-# CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
-# for Xt in CalX2 do
-#   CalI2 := Concatenation(CalI2, IdempotentsForSubset(S, sk, Xt));
-# od;
-
 InstallGlobalFunction(CheckEssentialDependency, function(S, sk, d1, d2)
   # d1 is lower than d2 so larger set
-  local G1, G2, CalX2, CalI2, J, x1, x2, e1, Xt, j, JGroup;
+  local G1, CalX2, CalI2, skJ, J, x1, x2, e1, Xt, JGroup;
 
-  G1 := SubductionClassesOnDepth(sk, d1);
-  G2 := SubductionClassesOnDepth(sk, d2);
-
-  for x1 in Concatenation(G1) do
-    for x2 in Concatenation(G2) do
+  for x1 in Concatenation(SubductionClassesOnDepth(sk, d1)) do
+    for x2 in Concatenation(SubductionClassesOnDepth(sk, d2)) do
       if IsSubsetBlist(x1, x2) then
-        # Find idempotent:
-        for e1 in IdempotentsForSubset(S, sk, x1) do
 
+        for e1 in IdempotentsForSubset(S, sk, x1) do
           G1 := SchutzenbergerGroup(HClass(S, e1));
-          # GeneratorsOfGroup(G1);
-          # StructureDescription(G1);
 
           CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet, rec(schreier := true, orbitgraph := true)));
           CalI2 := []; #Cal_I2 = all idempotents with images that are members of CalX2;
@@ -194,17 +30,24 @@ InstallGlobalFunction(CheckEssentialDependency, function(S, sk, d1, d2)
             CalI2 := Concatenation(CalI2, IdempotentsForSubset(S, sk, Xt));
           od;
 
-          # need help!
-          J := Semigroup(CalI2);
-          JGroup := PermutatorGroup(Skeleton(J), x2);
-          if Size(JGroup) > 1 then
-            return JGroup;
+          if IsEmpty(CalI2) then
+            continue;
           fi;
+          
+          J := Semigroup(CalI2);
+          skJ := Skeleton(J);
 
-          # For all elements from J: if it permutes x2, then we are done (return True)
-          # for e2 in IdempotentsForSubset(S, sk, x2) do
-          #   e2 := Idempotents(Semigroup([e1 * e2 * e1]))[1];
-          # od;
+          if ContainsSet( skJ, x2 ) then
+            JGroup := PermutatorGroup(skJ, x2);
+
+            if Size(JGroup) > 1 then # the stricter test is PermutatorGroup(sk, x2) = JGroup
+              Assert( 1, PermutatorGroup(sk, x2) = JGroup, 
+                Concatenation("PermutatorGroup(sk, x2) <> JGroup\nx2 = ", 
+                  TrueValuePositionsBlistString(x2), "\nx1 = ",
+                  TrueValuePositionsBlistString(x1), "\n") );
+              return JGroup;
+            fi;
+          fi;
         od;
 
       fi;
