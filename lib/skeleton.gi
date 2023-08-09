@@ -164,8 +164,21 @@ function(sk, A, B)
          = OrbSCCLookup(o)[Position(o, B)];
 end);
 
+# true if P \subseteq Qs for some S
+# here we use a general property of partial orders that if P is related to Q
+# then any P-equivalent element is related to any Q-equivalent element
+InstallGlobalFunction(IsSubductionLessOrEquivalent,
+function(sk, P, Q)
+  local o, Pbar, Qbar;
+  o := ForwardOrbit(sk);
+  Pbar := OrbSCCLookup(o)[Position(o,P)];
+  Qbar := OrbSCCLookup(o)[Position(o,Q)];
+  return Pbar in Images(RepSubRel(sk), Qbar);
+end);
+
+
 #just a util functions to check whether the required partial orbit is available
-#if not, then calculate it
+#if not, then calculate it TODO rewrite all the functions calling this and then remove
 CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
   if not IsBound(PartialOrbits(sk)[Qindx]) then
     PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSet,
@@ -176,24 +189,14 @@ end;
 MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
 
 
-
-# true is P \subseteq Qs
-InstallGlobalFunction(IsSubductionLessOrEquivalent,
-function(sk, P, Q)
-  local Qindx;
-  Qindx := Position(ExtendedImageSet(sk),Q);
-  CalcPartialOrbitOnDemand(sk,Q, Qindx);
-  return ForAny(PartialOrbits(sk)[Qindx],
-                Qs -> IsSubsetBlist(Qs,P));
-end);
-
 #TODO it is not optimal to search twice for a superset
 InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
-  local Qorb,Qs;
+  local Qorb,Qs,Qindx;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
-  #we know that the partial orbit is already calculated by IsSubductionLessOr...
-  Qorb := PartialOrbits(sk)[Position(ExtendedImageSet(sk),Q)];
+  Qindx := Position(ExtendedImageSet(sk),Q);
+  CalcPartialOrbitOnDemand(sk,Q, Qindx);
+  Qorb := PartialOrbits(sk)[Qindx];
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
@@ -213,6 +216,10 @@ function(sk, P, Q)
   fi;
 end);
 
+ImageOfBruteForce := function(sk, P, Q)
+  return P in Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet));
+end;
+
 #lots of muscle work for the nonimage singletons
 #calculating subduction equivalence
 InstallMethod(NonImageSingletonClasses,
@@ -225,8 +232,8 @@ function(sk)
     q := Remove(l);
     tmp := [q]; #starting new class with the last one
     for s in ShallowCopy(l) do #to be on the safe side
-      if IsSubductionLessOrEquivalent(sk,s,q) and
-         IsSubductionLessOrEquivalent(sk,q,s) then
+      if ImageOfBruteForce(sk,s,q) and
+         ImageOfBruteForce(sk,q,s) then
         Add(tmp,s);
         Remove(l,Position(l,s));
       fi;
