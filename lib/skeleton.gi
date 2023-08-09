@@ -112,6 +112,7 @@ local x,y,dom,tups;
 end;
 MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
 
+
 InstallMethod(InclusionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
@@ -150,6 +151,53 @@ local rep,o,indx,og,covers,ol,l;
 end;
 MakeReadOnlyGlobal("SubductionCovers");
 
+DefiningRelations := function(sk)
+  local o, sccs, scclookup, comps, parentof, directimages;
+  o := ForwardOrbit(sk);
+  sccs := OrbSCC(o);
+  scclookup := OrbSCCLookup(o);
+  parentof := o!.schreierpos;
+  comps := sccs{[2..Size(sccs)]}; #ignore the first scc as it does not have incoming relations
+  directimages := List(comps,  comp -> Unique(List(comp, x->scclookup[parentof[x]])));
+  return Concatenation(List([2..Size(sccs)], x -> List(directimages[x-1], y->DirectProductElement([y,x]))));
+end;
+MakeReadOnlyGlobal("DefiningRelations");
+
+
+#collecting the direct images and inclusion covers of an SCC
+#thus building the generalized inclusion covers
+#InstallMethod(RepSubductionCoverBinaryRelation,
+#        "for a skeleton (SgpDec)", [IsSkeleton],
+xxx := function(sk)
+  return HasseDiagramBinaryRelation(
+          ReflexiveClosureBinaryRelation(
+           TransitiveClosureBinaryRelation(
+            BinaryRelationByElements(Domain([1..Size(OrbSCC(ForwardOrbit(sk)))]),
+                                            DefiningRelations(sk)))));
+end;
+
+Reachable := function(og, ol, sccP, sccQ)
+  if sccQ = sccP then return true; fi;
+  return ForAny(og[sccQ], scc -> Reachable(og, ol, sccP, ol[scc]));
+end;
+
+subduction := function(sk, P, Q)
+local o, ol;
+o := ForwardOrbit(sk);
+ol := OrbSCCLookup(o);
+
+return
+  IsSubsetBlist(Q,P)
+  or
+  Reachable(OrbitGraph(o), ol, ol[Position(o,P)], ol[Position(o,Q)]);
+end;
+
+xx := function(sk)
+  return HasseDiagramBinaryRelation(
+          PartialOrderByOrderingFunction(Domain([1..Size(SkeletonTransversal(sk))]),
+                                         function(P,Q) return subduction(sk,P,Q);end));
+end;
+
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
 InstallMethod(RepSubductionCoverBinaryRelation,
@@ -158,6 +206,7 @@ function(sk)
   return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
                  x->SubductionCovers(sk,x));
 end);
+
 
 ################################################################################
 # subduction based on orbits from sets (not so nicely called partial orbits)
@@ -186,6 +235,8 @@ CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
   fi;
 end;
 MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
+
+
 
 # true is P \subseteq Qs
 InstallGlobalFunction(IsSubductionLessOrEquivalent,
