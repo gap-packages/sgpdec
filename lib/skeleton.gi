@@ -98,21 +98,6 @@ end);
 # INCLUSION RELATION ###########################################################
 ################################################################################
 
-# binary relation defined by covering elements (sort of HasseDiagram)
-BinaryRelationByCoverFuncNC := function(set, coverfunc)
-local x,y,dom,tups;
-  dom := Domain(set);
-  tups := [];
-  for x in dom do
-    for y in coverfunc(x) do
-      Add(tups, Tuple([x, y]));
-    od;
-  od;
-  return BinaryRelationByElements(dom, tups);
-end;
-MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
-
-
 InstallMethod(InclusionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
@@ -127,106 +112,35 @@ end);
 
 #the subduction Hasse diagram of representatives
 
-# returns the indices of the direct images of the scc indexed by indx
-# and the maximal subsets
-# sccindx - the index of an orbit SCC
-SubductionCovers := function(sk,sccindx)
-local rep,o,indx,og,covers,ol,l;
-  o := ForwardOrbit(sk);
-  og := OrbitGraph(o);
-  ol := OrbSCCLookup(o);
-  covers := [];
-  #for all elements in the SCC
-  for indx in OrbSCC(o)[sccindx] do
-    #direct images
-    Perform(og[indx], function(x) AddSet(covers, ol[x]);end);
-    #tiles, checking for fail for nonimage singletons
-    Perform(Filtered(List(TilesOf(sk,o[indx]),x->Position(o,x)),
-                    y -> y<>fail),
-            function(z) AddSet(covers, ol[z]);end);
-  od;
-  #removing self-image
-  if sccindx in covers then Remove(covers, Position(covers,sccindx));fi;
-  return covers;
-end;
-MakeReadOnlyGlobal("SubductionCovers");
-
-DefiningRelations := function(sk)
-  local o, sccs, scclookup, comps, parentof, directimages;
-  o := ForwardOrbit(sk);
-  sccs := OrbSCC(o);
-  scclookup := OrbSCCLookup(o);
-  parentof := o!.schreierpos;
-  comps := sccs{[2..Size(sccs)]}; #ignore the first scc as it does not have incoming relations
-  directimages := List(comps,  comp -> Unique(List(comp, x->scclookup[parentof[x]])));
-  return Concatenation(List([2..Size(sccs)], x -> List(directimages[x-1], y->DirectProductElement([y,x]))));
-end;
-MakeReadOnlyGlobal("DefiningRelations");
-
-
-#collecting the direct images and inclusion covers of an SCC
-#thus building the generalized inclusion covers
-#InstallMethod(RepSubductionCoverBinaryRelation,
-#        "for a skeleton (SgpDec)", [IsSkeleton],
-xxx := function(sk)
-  return HasseDiagramBinaryRelation(
-          ReflexiveClosureBinaryRelation(
-           TransitiveClosureBinaryRelation(
-            BinaryRelationByElements(Domain([1..Size(OrbSCC(ForwardOrbit(sk)))]),
-                                            DefiningRelations(sk)))));
-end;
-
-Reachable := function(og, ol, sccP, sccQ, visited)
-Print(sccP,sccQ," ");
-  if sccQ = sccP then return true; fi;
-  return ForAny(List(og[sccQ], x->ol[x] ), scc ->  (not (scc = sccQ))
-                                                    and (not (scc in visited))
-                                                    and Reachable(og, ol, sccP, ol[scc], (visited, scc)));
-end;
 
 RepSubHDRel := function(sk)
-  local o, ol, og, tr, imgs;
+  local o, ol, og, tr, imgs, subs, l;
   o := ForwardOrbit(sk);
   ol := OrbSCCLookup(o);
   og := OrbitGraph(o);
   tr := SkeletonTransversal(sk);
-  imgs := List(
-            List(tr, x-> OrbitGraph(o)[x]), #direct images of representatives
-            l -> Unique(List(l, x -> OrbSCCLookup(o)[x]))); #turning them into scc-indices
+  imgs := List(tr, x-> OrbitGraph(o)[x]); #direct images of representatives
+            #l -> Unique(List(l, x -> OrbSCCLookup(o)[x]))); #turning them into scc-indices
+  subs := List(tr, x->
+                     Filtered(List(Images(InclusionCoverBinaryRelation(sk),o[x]),
+                                   y->Position(o,y)),
+                            z->z<>fail)); #maximal subsets
+  l := List([1..Size(tr)], i -> Union(imgs[i], subs[i]));
   return HasseDiagramBinaryRelation(
           TransitiveClosureBinaryRelation(
             ReflexiveClosureBinaryRelation(
-              BinaryRelationOnPoints(imgs))));
-end;
-
-subduction := function(sk, P, Q)
-  local o, ol;
-  o := ForwardOrbit(sk);
-  ol := OrbSCCLookup(o);
-  return
-    IsSubsetBlist(Q,P)
-    or
-    Reachable(OrbitGraph(o), ol, ol[Position(o,P)], ol[Position(o,Q)],[]);
-end;
-
-xx := function(sk)
-  local o, tr;  
-  o := ForwardOrbit(sk);
-  tr := SkeletonTransversal(sk);
-  return HasseDiagramBinaryRelation(
-          PartialOrderByOrderingFunction(Domain([1..Size(SkeletonTransversal(sk))]),
-                                         function(P,Q) 
-                                         return subduction(sk,o[tr[P]],o[tr[Q]]);end));
+              BinaryRelationOnPoints(List(l, z -> Unique(List(z, x -> OrbSCCLookup(o)[x])))))));
 end;
 
 #collecting the direct images and inclusion covers of an SCC
 #thus building the generalized inclusion covers
 InstallMethod(RepSubductionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
-  return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
-                 x->SubductionCovers(sk,x));
-end);
+  RepSubHDRel);
+# function(sk)
+#   return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
+#                  x->SubductionCovers(sk,x));
+# end);
 
 
 ################################################################################
