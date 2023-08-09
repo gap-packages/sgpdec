@@ -1,6 +1,7 @@
 SgpDecTestInstall := function()
 local test;
   for test in [
+          "lowerbound",
           "disjointuniongroup",
           "WeakControlWords",
           "wreath",
