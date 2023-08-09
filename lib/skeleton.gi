@@ -2,7 +2,7 @@
 ##
 ## skeleton.gi           SgpDec package
 ##
-## Copyright (C) 2010-2019
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -113,23 +113,27 @@ end);
 #the subduction Hasse diagram of representatives
 
 
-RepSubHDRel := function(sk)
-  local o, ol, og, tr, imgs, subs, l;
+RepSubRel := function(sk)
+  local o, SCCLookup, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
-  ol := OrbSCCLookup(o);
-  og := OrbitGraph(o);
-  tr := SkeletonTransversal(sk);
-  imgs := List(tr, x-> OrbitGraph(o)[x]); #direct images of representatives
-            #l -> Unique(List(l, x -> OrbSCCLookup(o)[x]))); #turning them into scc-indices
-  subs := List(tr, x->
-                     Filtered(List(Images(InclusionCoverBinaryRelation(sk),o[x]),
-                                   y->Position(o,y)),
-                            z->z<>fail)); #maximal subsets
-  l := List([1..Size(tr)], i -> Union(imgs[i], subs[i]));
-  return HasseDiagramBinaryRelation(
-          TransitiveClosureBinaryRelation(
-            ReflexiveClosureBinaryRelation(
-              BinaryRelationOnPoints(List(l, z -> Unique(List(z, x -> OrbSCCLookup(o)[x])))))));
+  # functions are defined for better readability and separating technical (Orb) code
+  SCCLookup := x -> OrbSCCLookup(o)[x]; #finds SCC of an orbit element (the index of it)
+  DirectImages := x -> OrbitGraph(o)[x]; #direct descendants in the orbit graph
+  NonFailing := x -> x <> fail; #predicate function for not being fail
+  Set2Index := x -> Position(o,x);
+  reps := SkeletonTransversal(sk);
+  SubSets := x -> Images(InclusionCoverBinaryRelation(sk),o[x]);
+  #subduction is image of and subset of relation combined
+  imgs := List(reps, DirectImages); #direct images of representatives
+  subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
+  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i]));
+  return TransitiveClosureBinaryRelation(
+           ReflexiveClosureBinaryRelation(
+             BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup))))));
+end;
+
+RepSubHDRel := function(sk)
+  return HasseDiagramBinaryRelation(RepSubRel(sk));
 end;
 
 #collecting the direct images and inclusion covers of an SCC

@@ -2,7 +2,7 @@
 ##
 ## skeleton.gd           SgpDec package
 ##
-## Copyright (C) 2010-2015
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
