@@ -103,15 +103,6 @@ DotDClasses2 := function(ts)
       Append(str, Concatenation(ii, " -> ", String(k), "\n"));
     od;
   od;
-  # rel:=PartialOrderOfDClasses(ts);
-  # rel:=List([1..Length(rel)], x-> Filtered(rel[x], y-> not x=y));
-  # for i in [1..Length(rel)] do
-  #   j:=Difference(rel[i], Union(rel{rel[i]})); i:=String(i);
-  #   for k in j do
-  #     k:=String(k);
-  #     Append(str, Concatenation(i, " -> ", k, "\n"));
-  #   od;
-  # od;
   Append(str, " }");
   return str;
 end;
