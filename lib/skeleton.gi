@@ -141,11 +141,6 @@ end;
 InstallMethod(RepSubductionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
   RepSubHDRel);
-# function(sk)
-#   return BinaryRelationByCoverFuncNC([1..Size(SkeletonTransversal(sk))],
-#                  x->SubductionCovers(sk,x));
-# end);
-
 
 ################################################################################
 # subduction based on orbits from sets (not so nicely called partial orbits)
@@ -176,27 +171,15 @@ function(sk, P, Q)
   return Pbar in Images(RepSubRel(sk), Qbar);
 end);
 
+#TODO the witness functions calculate partial orbits, this should be replaced by a search
+#in the already calculated orbit
 
-#just a util functions to check whether the required partial orbit is available
-#if not, then calculate it TODO rewrite all the functions calling this and then remove
-CalcPartialOrbitOnDemand := function(sk,Q,Qindx)
-  if not IsBound(PartialOrbits(sk)[Qindx]) then
-    PartialOrbits(sk)[Qindx] := Orb(TransSgp(sk), Q, OnFiniteSet,
-                                 rec(schreier:=true,orbitgraph:=true));
-    Enumerate(PartialOrbits(sk)[Qindx]);
-  fi;
-end;
-MakeReadOnlyGlobal("CalcPartialOrbitOnDemand");
-
-
-#TODO it is not optimal to search twice for a superset
+#returns an s such that P\subseteq S
 InstallGlobalFunction(SubductionWitness,
 function(sk, P, Q)
-  local Qorb,Qs,Qindx;
+  local Qorb,Qs;
   if not IsSubductionLessOrEquivalent(sk,P,Q) then return fail; fi;
-  Qindx := Position(ExtendedImageSet(sk),Q);
-  CalcPartialOrbitOnDemand(sk,Q, Qindx);
-  Qorb := PartialOrbits(sk)[Qindx];
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
   Qs := First(Qorb, Qs -> IsSubsetBlist(Qs,P));
   return TraceSchreierTreeForward(Qorb, Position(Qorb,Qs));
 end);
@@ -205,9 +188,7 @@ end);
 InstallGlobalFunction(ImageWitness,
 function(sk, P, Q)
   local Qorb,Qs,Qindx;
-  Qindx := Position(ExtendedImageSet(sk),Q);
-  CalcPartialOrbitOnDemand(sk,Q, Qindx);
-  Qorb := PartialOrbits(sk)[Qindx];
+  Qorb := Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet, rec(schreier:=true,orbitgraph:=true)));
   Qs := First(Qorb, Qs->Qs=P);
   if Qs = fail then
     return fail;
@@ -216,16 +197,15 @@ function(sk, P, Q)
   fi;
 end);
 
-ImageOfBruteForce := function(sk, P, Q)
-  return P in Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet));
-end;
-
 #lots of muscle work for the nonimage singletons
 #calculating subduction equivalence
 InstallMethod(NonImageSingletonClasses,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  local l, cls, tmp,s,q;
+  local l, cls, tmp,s,q, ImageOfBruteForce;
+  ImageOfBruteForce := function(sk, P, Q)
+    return P in Enumerate(Orb(TransSgp(sk), Q, OnFiniteSet));
+  end;
   l := ShallowCopy(NonImageSingletons(sk));
   cls := [];
   while not IsEmpty(l) do
