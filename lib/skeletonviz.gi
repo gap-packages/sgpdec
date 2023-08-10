@@ -308,11 +308,8 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   AppendTo(out, "edge [arrowhead=none ];\n");
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
-  #making it really into a Hasse diagram
-  subduction := HasseDiagramBinaryRelation(
-                        TransitiveClosureBinaryRelation(
-                                ReflexiveClosureBinaryRelation(
-                                        RepSubductionCoverBinaryRelation(sk))));
+  #this is a Hasse diagram
+  subduction := RepSubductionCoverBinaryRelation(sk);
   #nodes
   for i in [1..Length(classes)] do
     if not classes[i][1] in NonImageSingletons(sk) then
