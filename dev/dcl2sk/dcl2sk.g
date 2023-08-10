@@ -24,24 +24,24 @@ end;
 # drawing the surjective morphism from the partial order of D-classes to the partial
 # order of subduction equivalence classes
 DotSurHom := function(ts)
-  local  str, i,j,out,dcls, dpo, states, classes, subduction, sk, img,
+  local  str, i,j,out,dcls, dpo, states, classes, subduction, sk, src, img,
   DClass2SubductionClass, gdcls;
 
   dcls := GreensDClasses(ts);
-  dpo := OutNeighbours(PartialOrderOfDClasses(ts));
+  dpo := OutNeighbours(DigraphReflexiveTransitiveReduction(PartialOrderOfDClasses(ts)));
   sk := Skeleton(ts);
   DClass2SubductionClass :=
     function(dcl)
       return SubductionClassOfSet(sk,
               FiniteSet(
-                ImageListOfTransformation(Representative(dcl)),
+                ImageListOfTransformation(Representative(dcl), DegreeOfSkeleton(sk)),
                 DegreeOfSkeleton(sk)));
     end;
   str := "";
   out := OutputTextString(str,true);
   SetPrintFormattingStatus(out,false); #no formatting, line breaks
   PrintTo(out,"//dot\ndigraph surhom{\n");
-  AppendTo(out, "node [shape=circle];\n");
+  AppendTo(out, "node [shape=circle,width=0.2];\n");
 
   AppendTo(out, "subgraph cluster_D{\n");  
   #### D class poset ####
@@ -49,13 +49,19 @@ DotSurHom := function(ts)
   #we draw the collapsed D-classes in a cluster
   gdcls := Values(Classify(dcls, DClass2SubductionClass));
   for i in [1..Length(gdcls)] do
-    AppendTo(out, Concatenation("subgraph cluster_D", String(i),"{\n"));
-    Perform(gdcls[i],
-            function(dcl) #we still use the node name by the position is dcls for edges
-              AppendTo(out, Concatenation("D",String(Position(dcls,dcl)),
-                                          " [label=\"\"]\n"));
-            end);
-    AppendTo(out,"}\n");
+    if Length(gdcls[i])=1 then
+      AppendTo(out, Concatenation("D",String(Position(dcls,First(gdcls[i]))),
+                                  " [label=\"\"]\n"));
+    else
+      AppendTo(out, Concatenation("subgraph cluster_D", String(i),"{\n",
+                                  "style=filled;color=lightgrey;\n"));
+      Perform(gdcls[i],
+              function(dcl) #we still use the node name by the position is dcls for edges
+                AppendTo(out, Concatenation("D",String(Position(dcls,dcl)),
+                                            " [label=\"\"]\n"));
+              end);
+      AppendTo(out,"}\n");
+    fi;
   od;
   #edges
   for i in [1..Length(dcls)] do
@@ -76,11 +82,11 @@ DotSurHom := function(ts)
   for i in [1..Length(classes)] do
       AppendTo(out, Concatenation("S",String(i)));
       AppendTo(out, " [label=\"");
-      for j in [1..Length(classes[i])] do
-        AppendTo(out,List2Label(
-                TrueValuePositionsBlistString(classes[i][j],states))," ");
-      od;
-      AppendTo(out, "\",shape=box];\n");
+      # for j in [1..Length(classes[i])] do
+      #   AppendTo(out,List2Label(
+      #           TrueValuePositionsBlistString(classes[i][j],states))," ");
+      # od;
+      AppendTo(out, "\",shape=circle];\n");
   od;
   #edges
   for i in [1..Length(classes)] do
@@ -90,11 +96,11 @@ DotSurHom := function(ts)
   od;
   AppendTo(out,"}\n");
 
-  #now the connection
-  for i in [1..Length(dcls)] do
-    img := DClass2SubductionClass(dcls[i]);
-    AppendTo(out,Concatenation("D",String(i),"->S",String(Position(classes,img)),
-      "[color=red];\n"));
+  #now the connections
+  for i in [1..Length(gdcls)] do #using Last in group for bottom connections
+    src := Position(dcls,Last(gdcls[i])); #the index of D-class (last in its group)
+    img := Position(classes, DClass2SubductionClass(Last(gdcls[i]))); # the index of the resulting image
+    AppendTo(out,Concatenation("D",String(src),"->S",String(img),"[color=red];\n"));
   od;
 
   AppendTo(out,"}\n");

@@ -8,6 +8,14 @@ false
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1],5), FiniteSet([2,4,5],5));
 true
 
+#this was a bug in the 2023.08 rewrite
+gap>  ts := Semigroup(Transformation([2,2,1,2,4]),Transformation([3,5,2,3,2]), Transformation([3,5,4,5,4]));;
+gap> sk := Skeleton(ts);;
+gap> IsSubductionLessOrEquivalent(sk, FiniteSet([1,2],5), FiniteSet([2,5],5));
+true
+gap> SubductionWitness(sk, FiniteSet([1,2],5), FiniteSet([2,5],5));
+[ 3, 2, 1 ]
+
 #extended image set for a constant monoid
 gap> S := Semigroup(Transformation([5,5,5,5,5]));;
 gap> sk := Skeleton(S);;
