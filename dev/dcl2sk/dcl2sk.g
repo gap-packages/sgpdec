@@ -28,7 +28,7 @@ DotSurHom := function(ts)
   DClass2SubductionClass, gdcls;
 
   dcls := GreensDClasses(ts);
-  dpo := OutNeighbours(PartialOrderOfDClasses(ts));
+  dpo := OutNeighbours(DigraphReflexiveTransitiveReduction(PartialOrderOfDClasses(ts)));
   sk := Skeleton(ts);
   DClass2SubductionClass :=
     function(dcl)
