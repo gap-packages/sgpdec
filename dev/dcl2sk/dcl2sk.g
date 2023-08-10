@@ -1,27 +1,16 @@
 # diagrams for showing the surjective map between the D-class and the subduction partial orders
 
-DotMap := function(arg)
+DotSurHom := function(ts)
 local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
-  #getting local variables for the arguments
-  sk := arg[1];
-  if IsBound(arg[2]) then
-    params := arg[2];
-  else
-    params := rec();
-  fi;
-  str := "";
-  out := OutputTextString(str,true);
-  SetPrintFormattingStatus(out,false); #no formatting, line breaks
-  PrintTo(out,"//dot\ndigraph skeleton{\n");
-  #setting the state names
-  if "states" in RecNames(params) then
-    states := params.states;
-  else
-    states := [1..DegreeOfSkeleton(sk)];
-  fi;
-  #dot source production starts here
-  AppendTo(out, "node [shape=box ];\n");
-  AppendTo(out, "edge [arrowhead=none ];\n");
+dcls := GreensDClasses(ts);
+dpo := PartialOrderofDClasses(ts);
+
+str := "";
+out := OutputTextString(str,true);
+SetPrintFormattingStatus(out,false); #no formatting, line breaks
+PrintTo(out,"//dot\ndigraph surhom{\n");
+AppendTo(out, "node [shape=box ];\n");
+AppendTo(out, "edge [arrowhead=none];\n");
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
   #making it really into a Hasse diagram

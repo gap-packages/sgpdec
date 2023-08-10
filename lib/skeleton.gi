@@ -197,8 +197,7 @@ function(sk, P, Q)
   fi;
 end);
 
-#lots of muscle work for the nonimage singletons
-#calculating subduction equivalence
+# calculating subduction equivalence classes for nonimage singletons
 InstallMethod(NonImageSingletonClasses,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
