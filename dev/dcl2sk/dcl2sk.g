@@ -21,6 +21,12 @@ Classify := function (coll,f)
   return m;
 end;
 
+FactorizedWord:=function(S,x)
+  return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"{Factorization(S,x)};
+end;
+
+Dclasselts := function(S,Dclass) return Concatenation("{",JoinStringsWithSeparator(List(AsList(Dclass), t->FactorizedWord(S,t)),"|"),"}");end;
+
 # drawing the surjective morphism from the partial order of D-classes to the partial
 # order of subduction equivalence classes
 DotSurHom := function(ts)
@@ -41,7 +47,7 @@ DotSurHom := function(ts)
   out := OutputTextString(str,true);
   SetPrintFormattingStatus(out,false); #no formatting, line breaks
   PrintTo(out,"//dot\ndigraph surhom{\n");
-  AppendTo(out, "node [shape=circle,width=0.2];\n");
+  AppendTo(out, "node [width=0.01 margin=0.01 height=0.01];\n");
 
   AppendTo(out, "subgraph cluster_D{\n");  
   #### D class poset ####
@@ -50,15 +56,20 @@ DotSurHom := function(ts)
   gdcls := Values(Classify(dcls, DClass2SubductionClass));
   for i in [1..Length(gdcls)] do
     if Length(gdcls[i])=1 then
+    Print(gdcls[i]);
       AppendTo(out, Concatenation("D",String(Position(dcls,First(gdcls[i]))),
-                                  " [label=\"\"]\n"));
+                                  " [shape=record label=\"",
+                                  Dclasselts(ts, First(gdcls[i])),
+                                  "\"]\n"));
     else
       AppendTo(out, Concatenation("subgraph cluster_D", String(i),"{\n",
                                   "style=filled;color=lightgrey;\n"));
       Perform(gdcls[i],
               function(dcl) #we still use the node name by the position is dcls for edges
                 AppendTo(out, Concatenation("D",String(Position(dcls,dcl)),
-                                            " [label=\"\"]\n"));
+                                            " [shape=record label=\"",
+                                            Dclasselts(ts, dcl),
+                                            "\"]\n"));
               end);
       AppendTo(out,"}\n");
     fi;
@@ -82,11 +93,11 @@ DotSurHom := function(ts)
   for i in [1..Length(classes)] do
       AppendTo(out, Concatenation("S",String(i)));
       AppendTo(out, " [label=\"");
-      # for j in [1..Length(classes[i])] do
-      #   AppendTo(out,List2Label(
-      #           TrueValuePositionsBlistString(classes[i][j],states))," ");
-      # od;
-      AppendTo(out, "\",shape=circle];\n");
+       for j in [1..Length(classes[i])] do
+         AppendTo(out,List2Label(
+                 TrueValuePositionsBlistString(classes[i][j],states))," ");
+       od;
+      AppendTo(out, "\",shape=box];\n");
   od;
   #edges
   for i in [1..Length(classes)] do
