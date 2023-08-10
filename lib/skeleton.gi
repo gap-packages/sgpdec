@@ -114,15 +114,16 @@ end);
 
 
 RepSubRel := function(sk)
-  local o, SCCLookup, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
+  local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
   # functions are defined for better readability and separating technical (Orb) code
   SCCLookup := x -> OrbSCCLookup(o)[x]; #finds SCC of an orbit element (the index of it)
-  DirectImages := x -> OrbitGraph(o)[x]; #direct descendants in the orbit graph
+  SCCOf := x -> OrbSCC(o)[OrbSCCLookup(o)[x]]; #finds the SCC and return the whole class
+  DirectImages := x -> Union(List(SCCOf(x),  y -> OrbitGraph(o)[y])); #direct descendants in the orbit graph
   NonFailing := x -> x <> fail; #predicate function for not being fail
   Set2Index := x -> Position(o,x);
   reps := SkeletonTransversal(sk);
-  SubSets := x -> Images(InclusionCoverBinaryRelation(sk),o[x]);
+  SubSets := x -> Union(List(SCCOf(x), y -> Images(InclusionCoverBinaryRelation(sk),o[y])));
   #subduction is image of and subset of relation combined
   imgs := List(reps, DirectImages); #direct images of representatives
   subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
