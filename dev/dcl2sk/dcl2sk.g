@@ -49,13 +49,19 @@ DotSurHom := function(ts)
   #we draw the collapsed D-classes in a cluster
   gdcls := Values(Classify(dcls, DClass2SubductionClass));
   for i in [1..Length(gdcls)] do
-    AppendTo(out, Concatenation("subgraph cluster_D", String(i),"{\n"));
-    Perform(gdcls[i],
-            function(dcl) #we still use the node name by the position is dcls for edges
-              AppendTo(out, Concatenation("D",String(Position(dcls,dcl)),
-                                          " [label=\"\"]\n"));
-            end);
-    AppendTo(out,"}\n");
+    if Length(gdcls[i])=1 then
+      AppendTo(out, Concatenation("D",String(Position(dcls,First(gdcls[i]))),
+                                  " [label=\"\"]\n"));
+    else
+      AppendTo(out, Concatenation("subgraph cluster_D", String(i),"{\n",
+                                  "style=filled;color=lightgrey;\n"));
+      Perform(gdcls[i],
+              function(dcl) #we still use the node name by the position is dcls for edges
+                AppendTo(out, Concatenation("D",String(Position(dcls,dcl)),
+                                            " [label=\"\"]\n"));
+              end);
+      AppendTo(out,"}\n");
+    fi;
   od;
   #edges
   for i in [1..Length(dcls)] do
