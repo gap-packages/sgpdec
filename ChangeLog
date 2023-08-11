@@ -1,5 +1,5 @@
 0.9.5
-	Adding preliminary support for calculating essential dependencies. Simplifying functions in skeleton.gi. Subduction relation checking is more efficient now, using the partial order of equivalence class representatives.
+	Adding preliminary support for calculating essential dependencies. Simplifying functions in skeleton.gi. Subduction relation checking is more efficient now, using the partial order of equivalence class representatives. Partial orbit calculation caching removed.
 0.9.4
 	Release for GAP 4.12.0. Semigroups introduced RandomWord, so it is removed from SgpDec.
 0.9.3
