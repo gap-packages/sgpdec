@@ -43,6 +43,7 @@ DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("TilesContaining");
 DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
+DeclareGlobalFunction("MakeRepresentative");
 DeclareGlobalFunction("RandomChain");
 DeclareGlobalFunction("ChainsBetween");
 DeclareGlobalFunction("Chains");
