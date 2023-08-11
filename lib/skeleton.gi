@@ -143,15 +143,6 @@ InstallMethod(RepSubductionCoverBinaryRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
   RepSubHDRel);
 
-################################################################################
-# subduction based on orbits from sets (not so nicely called partial orbits)
-
-#just empty lists in the beginning, built on demand
-#contains the forward orbits of elements from the image set
-#indices coming from ExtendedImageSet
-InstallMethod(PartialOrbits, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk) return []; end);
-
 InstallGlobalFunction(IsSubductionEquivalent,
 function(sk, A, B)
   local o;

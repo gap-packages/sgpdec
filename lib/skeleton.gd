@@ -35,8 +35,6 @@ DeclareAttribute("DepthOfSkeleton",IsSkeleton);
 DeclareAttribute("Heights",IsSkeleton);
 DeclareAttribute("RepresentativeSets",IsSkeleton);
 DeclareGlobalFunction("RepresentativeSetsOnDepth");
-PartialOrbits := NewAttribute("PartialOrbits",IsSkeleton,"mutable");
-MakeReadOnlyGlobal("PartialOrbits");
 
 #functions
 DeclareGlobalFunction("ContainsSet");
