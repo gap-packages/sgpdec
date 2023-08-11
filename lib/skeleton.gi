@@ -98,7 +98,7 @@ end);
 # INCLUSION RELATION ###########################################################
 ################################################################################
 
-InstallMethod(InclusionCoverBinaryRelation,
+InstallMethod(InclusionCoverRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return HasseDiagramBinaryRelation(
@@ -113,7 +113,9 @@ end);
 #the subduction Hasse diagram of representatives
 
 
-RepSubRel := function(sk)
+InstallMethod(SubductionEquivClassRelation,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
   local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
   # functions are defined for better readability and separating technical (Orb) code
@@ -123,7 +125,7 @@ RepSubRel := function(sk)
   NonFailing := x -> x <> fail; #predicate function for not being fail
   Set2Index := x -> Position(o,x);
   reps := SkeletonTransversal(sk);
-  SubSets := x -> Union(List(SCCOf(x), y -> Images(InclusionCoverBinaryRelation(sk),o[y])));
+  SubSets := x -> Union(List(SCCOf(x), y -> Images(InclusionCoverRelation(sk),o[y])));
   #subduction is image of and subset of relation combined
   imgs := List(reps, DirectImages); #direct images of representatives
   subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
@@ -131,17 +133,13 @@ RepSubRel := function(sk)
   return TransitiveClosureBinaryRelation(
            ReflexiveClosureBinaryRelation(
              BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup))))));
-end;
+end);
 
-RepSubHDRel := function(sk)
-  return HasseDiagramBinaryRelation(RepSubRel(sk));
-end;
-
-#collecting the direct images and inclusion covers of an SCC
-#thus building the generalized inclusion covers
-InstallMethod(RepSubductionCoverBinaryRelation,
+InstallMethod(SubductionEquivClassCoverRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
-  RepSubHDRel);
+function(sk)
+  return HasseDiagramBinaryRelation(SubductionEquivClassRelation(sk));
+end);
 
 InstallGlobalFunction(IsSubductionEquivalent,
 function(sk, A, B)
@@ -160,7 +158,7 @@ function(sk, P, Q)
   o := ForwardOrbit(sk);
   Pbar := OrbSCCLookup(o)[Position(o,P)];
   Qbar := OrbSCCLookup(o)[Position(o,Q)];
-  return Pbar in Images(RepSubRel(sk), Qbar);
+  return Pbar in Images(SubductionEquivClassRelation(sk), Qbar);
 end);
 
 #TODO the witness functions calculate partial orbits, this should be replaced by a search
@@ -248,7 +246,7 @@ MinimalHeightValues := function(sk)
   #-----------------------------------------------------------------------------
   RecHeight := function(sk, eqclassindx ,height)
     local p,parents;
-    parents := PreImages(RepSubductionCoverBinaryRelation(sk), eqclassindx);
+    parents := PreImages(SubductionEquivClassCoverRelation(sk), eqclassindx);
     for p in parents do
       if not IsSingleton(o[reps[p]]) then #if it is not a singleton
         if heights[p] < height+1 then
@@ -262,7 +260,7 @@ MinimalHeightValues := function(sk)
   #-----------------------------------------------------------------------------
   #we start chains from the elements with no children
   leaves := Filtered([1..Length(reps)],
-                    x->IsEmpty(Images(RepSubductionCoverBinaryRelation(sk),x)));
+                    x->IsEmpty(Images(SubductionEquivClassCoverRelation(sk),x)));
   for leaf in leaves do
     if IsSingleton(o[reps[leaf]]) then
       heights[leaf] := 0;
@@ -303,7 +301,7 @@ end);
 InstallGlobalFunction(TilesOf,
 function(sk,set)
   if ContainsSet(sk,set) then
-    return Images(InclusionCoverBinaryRelation(sk),set);
+    return Images(InclusionCoverRelation(sk),set);
   else
     return fail;
   fi;
@@ -312,7 +310,7 @@ end);
 #all tiles of A containing B
 InstallGlobalFunction(TilesContaining,
 function(sk, A,B)
-    return Filtered(Images(InclusionCoverBinaryRelation(sk),A),
+    return Filtered(Images(InclusionCoverRelation(sk),A),
                    x->IsSubsetBlist(x,B));
 end);
 

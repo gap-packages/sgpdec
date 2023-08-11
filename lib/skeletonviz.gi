@@ -309,7 +309,7 @@ local  str, i,j,label,node,out,class,classes,set,states,G,sk,params,subduction;
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
   #this is a Hasse diagram
-  subduction := RepSubductionCoverBinaryRelation(sk);
+  subduction := SubductionEquivClassCoverRelation(sk);
   #nodes
   for i in [1..Length(classes)] do
     if not classes[i][1] in NonImageSingletons(sk) then
