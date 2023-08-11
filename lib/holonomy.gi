@@ -375,9 +375,9 @@ TestHolonomyCascadeMultiplication := function(x,y,sk)
   return matching;
 end;
 
-TestHolonomyRelationalMorphism := function(S)
-  local sk;
-  sk := Skeleton(S);
+TestHolonomyRelationalMorphism := function(sk)
+  local S;
+  S := TransSgp(sk);
   return ForAll(S,
                 x-> ForAll(S,
                            y -> TestHolonomyCascadeMultiplication(x,y,sk)));

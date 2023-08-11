@@ -66,7 +66,7 @@ gap> SgpDecOptionsRec.SMALL_GROUPS := true;; #the default
 gap> BEX := Semigroup([ Transformation([1,2,1,1]), Transformation([4,4,4,3]), Transformation([3,3,4,4]), Transformation([4,4,1,2]), Transformation([2,1,4,4])]);;
 gap> TestHolonomyEmulation(BEX);
 true
-gap> TestHolonomyRelationalMorphism(BEX);
+gap> TestHolonomyRelationalMorphism(Skeleton(BEX));
 true
 gap> TestHolonomyAction(BEX);
 true
