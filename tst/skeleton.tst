@@ -2,11 +2,20 @@
 gap> START_TEST("Sgpdec package: skeleton.tst");
 gap> LoadPackage("sgpdec", false);;
 gap> SgpDecFiniteSetDisplayOn();;
+
+#testing subduction in the T5
 gap> sk := Skeleton(FullTransformationSemigroup(5));;
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1,3,5],5), FiniteSet([2],5));
 false
 gap> IsSubductionLessOrEquivalent(sk,FiniteSet([1],5), FiniteSet([2,4,5],5));
 true
+
+#testing representatives
+gap> RepresentativeSets(sk);
+[ [ {1,2,3,4,5} ], [ {1,2,3,4} ], [ {1,2,3} ], [ {1,3} ], [ {1} ] ]
+gap> sk2 := MakeRepresentative(sk, FiniteSet([3,4,5],5));;
+gap> RepresentativeSets(sk2);
+[ [ {1,2,3,4,5} ], [ {1,2,3,4} ], [ {3,4,5} ], [ {1,3} ], [ {1} ] ]
 
 #this was a bug in the 2023.08 rewrite
 gap>  ts := Semigroup(Transformation([2,2,1,2,4]),Transformation([3,5,2,3,2]), Transformation([3,5,4,5,4]));;
