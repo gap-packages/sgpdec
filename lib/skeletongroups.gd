@@ -2,18 +2,12 @@
 ##
 ## skeletongroups.gd           SgpDec package
 ##
-## Copyright (C) 2010-2019
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Groups acting on subsets of the state set.
 ##
-
-FromRepMaps := NewAttribute("FromRepMaps",IsSkeleton,"mutable");
-FromRepWords := NewAttribute("FromRepWords",IsSkeleton,"mutable");
-ToRepMaps := NewAttribute("ToRepMaps",IsSkeleton,"mutable");
-ToRepWords := NewAttribute("ToRepWords",IsSkeleton,"mutable");
-#TODO make them readonly
 
 DeclareGlobalFunction("FromRep");
 DeclareGlobalFunction("FromRepw");

@@ -2,7 +2,7 @@
 ##
 ## skeletongroups.gi           SgpDec package
 ##
-## Copyright (C) 2010-2019
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -11,98 +11,65 @@
 
 ################################################################################
 ### words and transformation for moving between sets and representatives
-###  with a primitive caching method to avoid double calculation
-
-#just empty lists in the beginning, built on demand, very scary mutable list!!
-#indexed by the set's position in the orbit
-#this is memoization
-InstallMethod(FromRepMaps, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk) return []; end);
-
-InstallMethod(FromRepWords, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk) return []; end);
-
-InstallMethod(ToRepMaps, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk) return []; end);
-
-InstallMethod(ToRepWords, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk) return []; end);
-
 
 #returns a word  that takes the representative to the set A
 InstallGlobalFunction(FromRepw,
 function(sk, A)
-local pos, scc,o;
+local pos, scc,o, w;
   o := ForwardOrbit(sk);
   pos := Position(o, A);
-  if not IsBound(FromRepWords(sk)[pos]) then
-    scc := OrbSCCLookup(o)[pos];
-    FromRepWords(sk)[pos] :=
-      Concatenation(
-              TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
-              TraceSchreierTreeOfSCCForward(o, scc, pos));
-  fi;
+  scc := OrbSCCLookup(o)[pos];
+    w := Concatenation(
+          TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
+          TraceSchreierTreeOfSCCForward(o, scc, pos));
   if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
-    FromRepWords(sk)[pos] := Reduce2StraightWord(FromRepWords(sk)[pos],
-                                     Generators(sk),
-                                     IdentityTransformation, OnRight);
+    w := Reduce2StraightWord(w,
+                             Generators(sk),
+                             IdentityTransformation, OnRight);
   fi;
-  return FromRepWords(sk)[pos];
+  return w;
 end);
 
 #evaluates the word as transformation and stores it
 InstallGlobalFunction(FromRep,
 function(sk, A)
-local pos;
-  pos := Position(ForwardOrbit(sk), A);
-  if not IsBound(FromRepMaps(sk)[pos]) then
-    FromRepMaps(sk)[pos] := EvalWordInSkeleton(sk, FromRepw(sk,A));
-  fi;
-  return FromRepMaps(sk)[pos];
+  return EvalWordInSkeleton(sk, FromRepw(sk,A));
 end);
 
 #returns a word  that takes A to its representative
 InstallGlobalFunction(ToRepw,
 function(sk, A)
-local pos, scc, n, outw, fg, inw, out,l,o;
+local w, pos, scc, n, outw, fg, inw, out,l,o;
   o := ForwardOrbit(sk);
   pos := Position(o, A);
-  if not IsBound(ToRepWords(sk)[pos]) then
-    scc := OrbSCCLookup(o)[pos];
-    outw :=
-      Concatenation(
-              TraceSchreierTreeOfSCCBack(o, scc, pos),
-              TraceSchreierTreeOfSCCForward(o,scc,
-                      SkeletonTransversal(sk)[scc]));
-    out := EvalWordInSkeleton(sk, outw);
-    inw := FromRepw(sk,A);
-    #now doing it properly (Lemma 5.9. in ENA PhD thesis)
-    n := First(PositiveIntegers,
-               x-> IsIdentityOnFiniteSet( (FromRep(sk,A) * out)^(x+1),
+  scc := OrbSCCLookup(o)[pos];
+  outw := Concatenation(
+            TraceSchreierTreeOfSCCBack(o, scc, pos),
+            TraceSchreierTreeOfSCCForward(o,scc,
+                    SkeletonTransversal(sk)[scc]));
+  out := EvalWordInSkeleton(sk, outw);
+  inw := FromRepw(sk,A);
+  #now doing it properly (Lemma 5.9. in ENA PhD thesis)
+  n := First(PositiveIntegers,
+             x-> IsIdentityOnFiniteSet( (FromRep(sk,A) * out)^(x+1),
                        RepresentativeSet(sk,A)));
-    l := [];
-    Add(l, outw);
-    fg := Flat([inw,outw]);
-    Add(l, ListWithIdenticalEntries(n,fg));
-    ToRepWords(sk)[pos] := Flat(l);
+  l := [];
+  Add(l, outw);
+  fg := Flat([inw,outw]);
+  Add(l, ListWithIdenticalEntries(n,fg));
+    w := Flat(l);
     if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
-      ToRepWords(sk)[pos] := Reduce2StraightWord(ToRepWords(sk)[pos],
-                                     Generators(sk),
-                                     IdentityTransformation, OnRight);
+      w := Reduce2StraightWord(w,
+                               Generators(sk),
+                               IdentityTransformation, OnRight);
     fi;
-  fi;
-  return ToRepWords(sk)[pos];
+  return w;
 end);
 
 #evaluates the word as transformation and stores it
 InstallGlobalFunction(ToRep,
 function(sk, A)
-local pos;
-  pos := Position(ForwardOrbit(sk), A);
-  if not IsBound(ToRepMaps(sk)[pos]) then
-    ToRepMaps(sk)[pos] := EvalWordInSkeleton(sk,ToRepw(sk,A));
-  fi;
-  return ToRepMaps(sk)[pos];
+  return EvalWordInSkeleton(sk,ToRepw(sk,A));
 end);
 
 ################################################################################
