@@ -19,15 +19,16 @@ local pos, scc,o, w;
   o := ForwardOrbit(sk);
   pos := Position(o, A);
   scc := OrbSCCLookup(o)[pos];
-    w := Concatenation(
-          TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
-          TraceSchreierTreeOfSCCForward(o, scc, pos));
+  w := Concatenation(
+        TraceSchreierTreeOfSCCBack(o,scc,SkeletonTransversal(sk)[scc]),
+        TraceSchreierTreeOfSCCForward(o, scc, pos));
   if SgpDecOptionsRec.STRAIGHTWORD_REDUCTION then
-    w := Reduce2StraightWord(w,
-                             Generators(sk),
-                             IdentityTransformation, OnRight);
+    return Reduce2StraightWord(w,
+                               Generators(sk),
+                               IdentityTransformation, OnRight);
+  else
+    return w;
   fi;
-  return w;
 end);
 
 #evaluates the word as transformation and stores it
@@ -39,7 +40,7 @@ end);
 #returns a word  that takes A to its representative
 InstallGlobalFunction(ToRepw,
 function(sk, A)
-local w, pos, scc, n, outw, fg, inw, out,l,o;
+local w, pos, scc, n, outw, fg, inn, inw, out,l,o;
   o := ForwardOrbit(sk);
   pos := Position(o, A);
   scc := OrbSCCLookup(o)[pos];
@@ -49,9 +50,10 @@ local w, pos, scc, n, outw, fg, inw, out,l,o;
                     SkeletonTransversal(sk)[scc]));
   out := EvalWordInSkeleton(sk, outw);
   inw := FromRepw(sk,A);
+  inn := EvalWordInSkeleton(sk, inw);
   #now doing it properly (Lemma 5.9. in ENA PhD thesis)
   n := First(PositiveIntegers,
-             x-> IsIdentityOnFiniteSet( (FromRep(sk,A) * out)^(x+1),
+             x-> IsIdentityOnFiniteSet((inn * out)^(x+1),
                        RepresentativeSet(sk,A)));
   l := [];
   Add(l, outw);
