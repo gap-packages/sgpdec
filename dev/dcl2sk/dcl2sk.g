@@ -87,7 +87,7 @@ DotSurHom := function(ts)
   #drawing equivalence classes
   classes :=  RealImageSubductionClasses(sk);
   #this is a Hasse diagram
-  subduction := RepSubductionCoverBinaryRelation(sk);
+  subduction := SubductionEquivClassCoverRelation(sk);
   AppendTo(out, "subgraph cluster_S{\n");
   #nodes
   for i in [1..Length(classes)] do

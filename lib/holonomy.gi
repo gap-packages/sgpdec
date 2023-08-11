@@ -356,11 +356,11 @@ end);
 ################################################################################
 # test functions
 # testing the map down
-TestHolonomyEmulation := function(S)
+TestHolonomyEmulation := function(sk)
   local hom,hcs;
-  hcs := HolonomyCascadeSemigroup(S);
+  hcs := HolonomyCascadeSemigroup(sk);
   hom := HomomorphismTransformationSemigroup(hcs);
-  return AsSet(S) = AsSet(Range(hom));
+  return AsSet(TransSgp(sk)) = AsSet(Range(hom));
 end;
 
 TestHolonomyCascadeMultiplication := function(x,y,sk)
@@ -385,9 +385,9 @@ end;
 
 # checking the action on all holonomy  coordinate tuples
 # TODO - all lift cascades of semigorup elements
-TestHolonomyAction := function(S)
-  local sk, hcoords, p, s, xcs, p_;
-  sk := Skeleton(S);
+TestHolonomyAction := function(sk)
+  local S, hcoords, p, s, xcs, p_;
+  S := TransSgp(sk);
   hcoords := List([1..DegreeOfSkeleton(sk)], x->AllHolonomyCoords(x,sk));
   for s in S do
     xcs := AsHolonomyCascade(s,sk);
