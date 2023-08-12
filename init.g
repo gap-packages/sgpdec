@@ -5,6 +5,7 @@ ReadPackage("SgpDec","/lib/finiteset.gd");
 ReadPackage("SgpDec","/lib/linearnotation.gd");
 ReadPackage("SgpDec","/lib/words.gd");
 ReadPackage("SgpDec","/lib/skeleton.gd");
+ReadPackage("SgpDec","/lib/skeletonchains.gd");
 ReadPackage("SgpDec","/lib/skeletongroups.gd");
 ReadPackage("SgpDec","/lib/skeletonviz.gd");
 ReadPackage("SgpDec","/lib/depfunc.gd");

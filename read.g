@@ -7,6 +7,7 @@ ReadPackage("SgpDec","/lib/finiteset.gi");
 ReadPackage("SgpDec","/lib/linearnotation.gi");
 ReadPackage("SgpDec","/lib/words.gi");
 ReadPackage("SgpDec","/lib/skeleton.gi");
+ReadPackage("SgpDec","/lib/skeletonchains.gi");
 ReadPackage("SgpDec","/lib/skeletongroups.gi");
 ReadPackage("SgpDec","/lib/skeletonviz.gi");
 ReadPackage("SgpDec","/lib/depfunc.gi");
