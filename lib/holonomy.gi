@@ -323,26 +323,6 @@ function(S)
   return MappingByFunction(S,cS,f);
 end);
 
-#TODO does this work?
-#changing the representative
-#InstallGlobalFunction(ChangeCoveredSet,
-#function(sk, set)
-#local skeleton,oldrep, pos, depth,i, tiles;
-#  if IsSingleton(set) then
-#    Print("#W not changing singleton representative\n");return;
-#  fi;
-#  skeleton := sk;
-#  oldrep := RepresentativeSet(skeleton,set);
-#  ChangeRepresentativeSet(skeleton,set);
-#  depth := DepthOfSet(skeleton, set);
-#  pos := Position(sk.reps[depth], oldrep);
-#  sk.reps[depth][pos] := set;
-#  tiles := TilesOf(skeleton, set);
-#  for i in [1..Length(tiles)] do
-#    CoordVals(sk)[depth][Shifts(sk)[depth][pos]+i] := tiles[i];
-#  od;
-#end);
-
 ################################################################################
 # REIMPLEMENTED GAP OPERATIONS #################################################
 
