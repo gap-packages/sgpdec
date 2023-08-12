@@ -99,8 +99,6 @@ end);
 ################################################################################
 
 #the subduction Hasse diagram of representatives
-
-
 InstallMethod(SubductionEquivClassRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
@@ -278,7 +276,6 @@ function(sk)
     return Maximum(Depths(sk));
   fi;
 end);
-
 
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,
