@@ -26,8 +26,8 @@ For implementational details, the preprint [Cascade product of permutation group
 Please report any problem or request features by [creating on issue on the project page](https://github.com/gap-packages/sgpdec/issues).
 
 ## Who are you?
-|WEB | Twitter|
+|WEB | Social|
 |:----|:-------|
-|[Attila Egri-Nagy](http://www.egri-nagy.hu) | [@EgriNagy](https://twitter.com/EgriNagy)|
+|[Attila Egri-Nagy](http://www.egri-nagy.hu) | [mathstodon.xyz/@egrinagy](https://mathstodon.xyz/@egrinagy)|
 |[James D. Mitchell](https://jdbm.me/) | [@jdmjdmjdmjdm](https://twitter.com/jdmjdmjdmjdm)|
 |[Chrystopher L. Nehaniv](https://uwaterloo.ca/systems-design-engineering/profile/cnehaniv) | [@NehanivCL](https://twitter.com/NehanivCL)|
