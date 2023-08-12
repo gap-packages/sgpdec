@@ -15,6 +15,9 @@ The skeleton of a transformation semigroup is a data structure containing inform
 <#Include Label="ExtendedImageSet">
 <#Include Label="Singletons">
 <#Include Label="NonImageSingletons">
+<#Include Label="RepresentativeSets">
+<#Include Label="MakeRepresentative">
+
 <#Include Label="ImageWitness">
 <#Include Label="EvalWordInSkeleton">
 

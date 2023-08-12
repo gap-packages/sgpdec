@@ -752,6 +752,27 @@ Similarly to transformations and permutations we distinguish between transformat
 
 ##M
 
+<#GAPDoc Label="MakeRepresentative">
+  <ManSection>
+    <Func Name="MakeRepresentative" Arg="skeleton,set"/>
+    <Returns>A new skeleton in which the given set is a representative in its class.</Returns>
+    <Description>
+During the computation of a skeleton, the representative sets are chosen automatically (the first ones in the orbit). This function allows to change those, one at a time. It creates a new skeleton, but retains as much as possible from the old orbit (e.g., the orbit is not calculated again).
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := FullTransformationSemigroup(5);;
+gap> sk := Skeleton(S);;
+gap> RepresentativeSets(sk);
+[ [ {1,2,3,4,5} ], [ {1,2,3,4} ], [ {1,2,3} ], [ {1,3} ], [ {1}] ]
+gap> sk2 := MakeRepresentative(sk, FiniteSet([2,3,4],5));;
+gap> RepresentativeSets(sk2);
+[ [ {1,2,3,4,5} ], [ {1,2,3,4} ], [ {2,3,4} ], [ {1,3} ], [ {1}] ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 ##N
 
 <#GAPDoc Label="NonImageSingletons">
