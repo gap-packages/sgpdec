@@ -224,9 +224,9 @@ end);
 
 ################################################################################
 # HEIGHT, DEPTH ################################################################
-
-#height functions
-MinimalHeightValues := function(sk)
+################################################################################
+InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
   local leaves, leaf, o,reps,heights,RecHeight;
   o := ForwardOrbit(sk);
   reps := SkeletonTransversal(sk);
@@ -249,6 +249,7 @@ MinimalHeightValues := function(sk)
   #we start chains from the elements with no children
   leaves := Filtered([1..Length(reps)],
                     x->IsEmpty(Images(SubductionEquivClassCoverRelation(sk),x)));
+  #singleton leaves have height 0, others 1
   for leaf in leaves do
     if IsSingleton(o[reps[leaf]]) then
       heights[leaf] := 0;
@@ -259,11 +260,7 @@ MinimalHeightValues := function(sk)
     fi;
   od;
   return heights;
-end;
-MakeReadOnlyGlobal("MinimalHeightValues");
-
-InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
-        MinimalHeightValues);
+end);
 
 #calculating depth based on upside down height
 InstallMethod(Depths,
