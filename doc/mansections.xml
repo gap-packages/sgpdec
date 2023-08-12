@@ -524,17 +524,18 @@ Transformation( [ 1, 3, 1, 2 ] )
 <#GAPDoc Label="ExtendedImageSet">
   <ManSection>
     <Attr Name="ExtendedImageSet" Arg="skeleton"/>
-    <Returns>The set of images of the semigroup action.</Returns>
+    <Returns>The extended set of images of the semigroup action.</Returns>
     <Description>
 The state set, the singletons and all image sets <M>X^s, s\in S</M>.
+Stored in a HashSet, thus it is useful for quick checks for the existence of an image.
 <Example>
-gap> SgpDecFiniteSetDisplayOn();
 gap> S := Semigroup(Transformation([1,1,3,3]));
 &lt;commutative transformation semigroup of degree 4 with 1 generator&gt;
 gap> sk := Skeleton(S);;
-gap> ExtendedImageSet(sk);
-[ {1,2,3,4}, {1,3}, {1}, {2}, {3}, {4} ]
-gap> SgpDecFiniteSetDisplayOff();
+gap> FiniteSet([1,3],4) in ExtendedImageSet(sk);
+true
+gap> FiniteSet([2,3],4) in ExtendedImageSet(sk);
+false
 </Example>
     </Description>
   </ManSection>
@@ -1031,6 +1032,26 @@ gap> Skeleton(FullTransformationSemigroup(4));
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="SortedExtendedImageSet">
+  <ManSection>
+    <Func Name="SortedExtendedImageSet" Arg="skeleton"/>
+    <Returns>The extended set of images of the semigroup action sorted in descending order.</Returns>
+    <Description>
+The state set, the singletons and all image sets <M>X^s, s\in S</M>.
+<Example>
+gap> SgpDecFiniteSetDisplayOn();
+gap> S := Semigroup(Transformation([1,1,3,3]));
+&lt;commutative transformation semigroup of degree 4 with 1 generator&gt;
+gap> sk := Skeleton(S);;
+gap> SortedExtendedImageSet(sk);
+[ {1,2,3,4}, {1,3}, {1}, {2}, {3}, {4} ]
+gap> SgpDecFiniteSetDisplayOff();
+</Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
 
 ##T
 

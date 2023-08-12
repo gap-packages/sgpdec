@@ -2,7 +2,7 @@
 ##
 ## finiteset.gd           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -24,6 +24,7 @@ DeclareGlobalFunction("SgpDecFiniteSetDisplayOff");
 DeclareGlobalFunction("FiniteSet");
 DeclareSynonym("Cardinality",SizeBlist);
 DeclareSynonym("FiniteSetSize",SizeBlist);
+DeclareGlobalFunction("FiniteSetComparator");
 DeclareGlobalFunction("OnFiniteSet");
 DeclareGlobalFunction("IsIdentityOnFiniteSet");
 DeclareGlobalFunction("IsSingleton");

@@ -38,7 +38,7 @@ InstallGlobalFunction(CheckEssentialDependency, function(sk, d1, d2)
           
           skJ := Skeleton(Semigroup(CalI2));
 
-          if ContainsSet( skJ, x2 ) then
+          if x2 in ExtendedImageSet(skJ) then
             JGroup := PermutatorGroup(skJ, x2);
 
             if Size(JGroup) > 1 then # the stricter test is PermutatorGroup(sk, x2) = JGroup

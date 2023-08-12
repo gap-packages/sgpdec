@@ -2,7 +2,7 @@
 ##
 ## finiteset.gi           SgpDec package
 ##
-## Copyright (C) 2010-2013
+## Copyright (C) 2010-2023
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -60,6 +60,16 @@ local i;
     fi;
   od;
   return true;
+end);
+
+#for sorting finitesets, first by size, then by content
+InstallGlobalFunction(FiniteSetComparator,
+function(A,B)
+  if SizeBlist(A) <> SizeBlist(B) then
+    return SizeBlist(A)>SizeBlist(B);
+  else
+    return A<B;
+  fi;
 end);
 
 ################################################################################

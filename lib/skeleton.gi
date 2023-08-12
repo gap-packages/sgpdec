@@ -61,37 +61,25 @@ function(sk)
   return Filtered(Singletons(sk), x-> not x in ForwardOrbit(sk));
 end);
 
-#for sorting finitesets, first by size, then by content
-DescendingSizeSorter := function(v,w)
-  if SizeBlist(v) <> SizeBlist(w) then
-    return SizeBlist(v)>SizeBlist(w);
-  else
-    return v<w;
-  fi;
-end;
-MakeReadOnlyGlobal("DescendingSizeSorter");
-
 # the image set extended with singletons and ordered by descending size
 # we only need to add non-image singletons, as the base set is in the orbit
 InstallMethod(ExtendedImageSet, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  local imageset;
-  #we have to copy it
-  imageset := ShallowCopy(UnderlyingPlist(ForwardOrbit(sk)));
+  local extimgs;
+  extimgs := HashSet();
+  Perform(ForwardOrbit(sk), function(A) AddSet(extimgs,A);end);
   #add the missing singletons
-  Perform(NonImageSingletons(sk),
-          function(x) Add(imageset,x);end);
-  #now sorting descending by size
-  Sort(imageset,DescendingSizeSorter);
-  return imageset;
+  Perform(NonImageSingletons(sk), function(A) AddSet(extimgs,A);end);
+  return extimgs;
 end);
 
-InstallGlobalFunction(ContainsSet,
-function(sk, set)
-  #checking whether we have the set somewhere
-  return set in ForwardOrbit(sk)
-         or set = BaseSet(sk)
-         or set in NonImageSingletons(sk);
+#just to give a nice descending view of the sets
+InstallGlobalFunction(SortedExtendedImageSet,
+function(sk)
+local sets;
+  sets := ShallowCopy(AsSet(ExtendedImageSet(sk)));
+  Sort(sets,FiniteSetComparator);
+  return sets;
 end);
 
 ################################################################################
@@ -102,7 +90,7 @@ InstallMethod(InclusionCoverRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return HasseDiagramBinaryRelation(
-          PartialOrderByOrderingFunction(Domain(ExtendedImageSet(sk)),
+          PartialOrderByOrderingFunction(Domain(AsSet(ExtendedImageSet(sk))),
                                          IsSubsetBlist));
 end);
 
@@ -300,7 +288,7 @@ end);
 
 InstallGlobalFunction(TilesOf,
 function(sk,set)
-  if ContainsSet(sk,set) then
+  if set in ExtendedImageSet(sk) then
     return Images(InclusionCoverRelation(sk),set);
   else
     return fail;

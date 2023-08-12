@@ -123,7 +123,7 @@ end);
 InstallGlobalFunction(NontrivialRoundTripWords,
 function(sk,set)
 local roundtrips,rtws,nontrivs;
-  if not ContainsSet(sk,set) then return fail;fi;
+  if not (set in ExtendedImageSet(sk)) then return fail;fi;
   rtws := RoundTripWords(sk,set);
   roundtrips := List(rtws, w->EvalWordInSkeleton(sk,w));
   nontrivs := Filtered([1..Size(roundtrips)],

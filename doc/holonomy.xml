@@ -13,6 +13,8 @@ can create, display and act on finite sets.
 The skeleton of a transformation semigroup is a data structure containing information about the action on the state set. For instance, the set of images, their strongly connected components and mapping between and within these components. These details are calculated by the <Package>Semigrops</Package> package.
 <#Include Label="Skeleton">
 <#Include Label="ExtendedImageSet">
+<#Include Label="SortedExtendedImageSet">
+
 <#Include Label="Singletons">
 <#Include Label="NonImageSingletons">
 <#Include Label="RepresentativeSets">

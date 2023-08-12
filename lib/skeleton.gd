@@ -38,7 +38,7 @@ DeclareAttribute("RepresentativeSets",IsSkeleton);
 DeclareGlobalFunction("RepresentativeSetsOnDepth");
 
 #functions
-DeclareGlobalFunction("ContainsSet");
+DeclareGlobalFunction("SortedExtendedImageSet");
 DeclareGlobalFunction("TilesOf");
 DeclareGlobalFunction("TilesContaining");
 DeclareGlobalFunction("DepthOfSet");

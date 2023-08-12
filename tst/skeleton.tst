@@ -30,7 +30,7 @@ gap> S := Semigroup(Transformation([5,5,5,5,5]));;
 gap> sk := Skeleton(S);;
 gap> Display(sk);
 <skeleton of Semigroup( [ Transformation( [ 5, 5, 5, 5, 5 ] ) ] )>
-gap> ExtendedImageSet(sk);
+gap> SortedExtendedImageSet(sk);
 [ {1,2,3,4,5}, {1}, {2}, {3}, {4}, {5} ]
 gap> ImageWitness(sk, FiniteSet([1..5]), FiniteSet([5]));
 fail
@@ -62,7 +62,7 @@ gap> Q := FiniteSet([3,4],6);;
 gap> IsSubsetBlist(OnFiniteSet(Q, EvalWordInSkeleton(sk,
 >        SubductionWitness(sk,P,Q))),P);
 true
-gap> ExtendedImageSet(sk);
+gap> SortedExtendedImageSet(sk);
 [ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {4,5,6}, {1,2}, {1,3}, {1,4}, {2,3}, 
   {2,4}, {3,4}, {4,5}, {4,6}, {5,6}, {1}, {2}, {3}, {4}, {5}, {6} ]
 gap> Interpret(sk, 1,1);
@@ -77,7 +77,7 @@ gap> DominatingChains(sk, [FiniteSet([1],6)]);
   [ {1,2,3,4,5,6}, {1,2,3,4}, {1,2,3}, {1,3}, {1} ], 
   [ {1,2,3,4,5,6}, {1,2,3,4}, {1,4}, {1} ] ]
 gap> sk := Skeleton(Semigroup(Transformation([5,5,5,5,5])));;
-gap> ExtendedImageSet(sk);
+gap> SortedExtendedImageSet(sk);
 [ {1,2,3,4,5}, {1}, {2}, {3}, {4}, {5} ]
 gap> NonImageSingletonClasses(sk);
 [ [ {4} ], [ {3} ], [ {2} ], [ {1} ] ]
