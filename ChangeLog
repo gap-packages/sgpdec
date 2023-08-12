@@ -1,3 +1,5 @@
+0.9.6
+	MakeRepresentative added. To simplify the process of changing a representative, the primitve caching mechanism for the words navigating in the equivalence classes were removed. This makes computing the morphism for holonomy less performant. Proper memoization is to be added later.
 0.9.5
 	Adding preliminary support for calculating essential dependencies. Simplifying functions in skeleton.gi. Subduction relation checking is more efficient now, using the partial order of equivalence class representatives. Partial orbit calculation caching removed.
 0.9.4
