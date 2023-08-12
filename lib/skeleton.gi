@@ -381,7 +381,7 @@ end);
 InstallGlobalFunction(ChainRoot,
 function(tc)
   local singleton;
-  singleton := tc[Size(tc)]; #the last element
+  singleton := Last(tc);
   return First([1..Size(singleton)], x->singleton[x]);
 end);
 
