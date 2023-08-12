@@ -7,7 +7,7 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Skeleton of the semigroup action on a set. Subduction relation,
-## equivalence classes, tilechains.
+## equivalence classes.
 ##
 ## Some of the functions below use undocumented features of the Orb package,
 ## namely OrbSCC, OrbSCCLookup and !.schreierpos,
@@ -282,35 +282,6 @@ function(sk)
   fi;
 end);
 
-################################################################################
-# TILES, TILE CHAINS ###########################################################
-################################################################################
-
-InstallGlobalFunction(TilesOf,
-function(sk,set)
-  if set in ExtendedImageSet(sk) then
-    return Images(InclusionCoverRelation(sk),set);
-  else
-    return fail;
-  fi;
-end);
-
-#all tiles of A containing B
-InstallGlobalFunction(TilesContaining,
-function(sk, A,B)
-    return Filtered(Images(InclusionCoverRelation(sk),A),
-                   x->IsSubsetBlist(x,B));
-end);
-
-
-################################################################################
-InstallGlobalFunction(DepthOfSet,
-function(sk,A)
-  if IsSingleton(A) then return DepthOfSkeleton(sk); fi;
-  return Depths(sk)[
-                 OrbSCCLookup(ForwardOrbit(sk))[Position(ForwardOrbit(sk),A)]
-                 ];
-end);
 
 #returns the representative element of the scc of a finiteset
 InstallGlobalFunction(RepresentativeSet,

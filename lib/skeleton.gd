@@ -7,7 +7,7 @@
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## Skeleton of the semigroup action on a set. Subduction relation,
-## equivalence classes, tilechains.
+## equivalence classes.
 ##
 
 DeclareCategory("IsSkeleton", IsObject and IsAttributeStoringRep);
@@ -39,9 +39,6 @@ DeclareGlobalFunction("RepresentativeSetsOnDepth");
 
 #functions
 DeclareGlobalFunction("SortedExtendedImageSet");
-DeclareGlobalFunction("TilesOf");
-DeclareGlobalFunction("TilesContaining");
-DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RepresentativeSet");
 DeclareGlobalFunction("MakeRepresentative");
 DeclareGlobalFunction("IsSubductionEquivalent");

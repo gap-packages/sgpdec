@@ -9,6 +9,10 @@
 ## Tilechains in a skeleton of a transformation semigroup.
 ##
 
+# functions
+DeclareGlobalFunction("TilesOf");
+DeclareGlobalFunction("TilesContaining");
+DeclareGlobalFunction("DepthOfSet");
 DeclareGlobalFunction("RandomChain");
 DeclareGlobalFunction("ChainsBetween");
 DeclareGlobalFunction("Chains");

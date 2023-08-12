@@ -9,6 +9,37 @@
 ## Tilechains in a skeleton of a transformation semigroup.
 ##
 
+################################################################################
+# TILES ########################################################################
+################################################################################
+
+InstallGlobalFunction(TilesOf,
+function(sk,set)
+  if set in ExtendedImageSet(sk) then
+    return Images(InclusionCoverRelation(sk),set);
+  else
+    return fail;
+  fi;
+end);
+
+#all tiles of A containing B
+InstallGlobalFunction(TilesContaining,
+function(sk, A,B)
+    return Filtered(Images(InclusionCoverRelation(sk),A),
+                   x->IsSubsetBlist(x,B));
+end);
+
+
+################################################################################
+InstallGlobalFunction(DepthOfSet,
+function(sk,A)
+  if IsSingleton(A) then return DepthOfSkeleton(sk); fi;
+  return Depths(sk)[
+                 OrbSCCLookup(ForwardOrbit(sk))[Position(ForwardOrbit(sk),A)]
+                 ];
+end);
+
+
 # used by holonomy
 InstallGlobalFunction(RandomChain,
 function(sk,k)
