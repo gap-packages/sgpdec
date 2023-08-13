@@ -71,7 +71,7 @@ gap> TestHolonomyRelationalMorphism(skBEX);
 true
 gap> TestHolonomyAction(skBEX);
 true
-gap> ToRepLookup(skBEX);; ToRepwLookup(skBEX);; FromRepLookup(skBEX);; FromRepwLookup(skBEX);;
+gap> ComputeSkeletonNavigationTables(skBEX);; #precomputing all the words and transformation torep,fromrep
 gap> TestHolonomyEmulation(skBEX);
 true
 gap> TestHolonomyRelationalMorphism(skBEX);

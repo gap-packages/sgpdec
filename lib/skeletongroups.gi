@@ -32,15 +32,6 @@ local pos, scc,o, w;
   fi;
 end);
 
-InstallMethod(FromRepwLookup,
-        "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
-  local m;
-  m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRepw(sk,set);end);
-  return m;
-end);
-
 #evaluates the word as transformation and stores it
 InstallGlobalFunction(FromRep,
 function(sk, A)
@@ -48,21 +39,11 @@ function(sk, A)
   return EvalWordInSkeleton(sk, FromRepw(sk,A));
 end);
 
-InstallMethod(FromRepLookup,
-        "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
-  local m;
-  m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRep(sk,set);end);
-  return m;
-end);
-
-
 #returns a word  that takes A to its representative
 InstallGlobalFunction(ToRepw,
 function(sk, A)
 local w, pos, scc, n, outw, fg, inn, inw, out,l,o;
-  if HasToRepwLookup(sk) then return ToRepwLookup(sk)[A]; fi;
+  if HasToRepwLookup(sk) then return ToRepwLookup(sk)[A]; fi; #checking the cache
   o := ForwardOrbit(sk);
   pos := Position(o, A);
   scc := OrbSCCLookup(o)[pos];
@@ -90,6 +71,44 @@ local w, pos, scc, n, outw, fg, inn, inw, out,l,o;
   return w;
 end);
 
+#evaluates the word as transformation
+InstallGlobalFunction(ToRep,
+function(sk, A)
+  if HasToRepLookup(sk) then
+    return ToRepLookup(sk)[A];
+  else
+    return EvalWordInSkeleton(sk,ToRepw(sk,A));
+  fi;
+end);
+
+InstallGlobalFunction(ComputeSkeletonNavigationTables,
+function(sk)
+  FromRepwLookup(sk);
+  FromRepLookup(sk);
+  ToRepwLookup(sk);
+  ToRepLookup(sk);
+end);
+
+################################################
+# hashmaps for precomputing the above functions
+InstallMethod(FromRepwLookup,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  local m;
+  m := HashMap();
+  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRepw(sk,set);end);
+  return m;
+end);
+
+InstallMethod(FromRepLookup,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  local m;
+  m := HashMap();
+  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRep(sk,set);end);
+  return m;
+end);
+
 InstallMethod(ToRepwLookup,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
@@ -97,14 +116,6 @@ function(sk)
   m := HashMap();
   Perform(ForwardOrbit(sk), function(set) m[set] := ToRepw(sk,set);end);
   return m;
-end);
-
-
-#evaluates the word as transformation and stores it
-InstallGlobalFunction(ToRep,
-function(sk, A)
-  if HasToRepLookup(sk) then return ToRepLookup(sk)[A]; fi;
-  return EvalWordInSkeleton(sk,ToRepw(sk,A));
 end);
 
 InstallMethod(ToRepLookup,

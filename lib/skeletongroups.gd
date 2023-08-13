@@ -19,6 +19,7 @@ DeclareAttribute("FromRepLookup", IsSkeleton);
 DeclareAttribute("FromRepwLookup", IsSkeleton);
 DeclareAttribute("ToRepLookup", IsSkeleton);
 DeclareAttribute("ToRepwLookup", IsSkeleton);
+DeclareGlobalFunction("ComputeSkeletonNavigationTables");
 
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
