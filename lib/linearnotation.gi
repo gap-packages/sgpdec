@@ -11,6 +11,12 @@
 # TRANSFORMATION -> LINEAR NOTATION ############################################
 ################################################################################
 
+DotTransformation:=function(t)
+  return DotDigraph(DigraphByEdges(List([1..DegreeOfTransformation(t)],
+                                         i->[i,OnPoints(i,t)])));
+end;
+MakeReadOnlyGlobal("DotTransformation");
+
 # Finding the components of a transformation, i.e.  the disconnected subgraphs
 # of its functional digraph.
 # A component is a list of points, and the components are returned in a list.
@@ -92,10 +98,10 @@ local preimgs,p, conveyorbelt,s;
     str := Concatenation(str,"["); #starting the tree notation
     for p in preimgs do
       str := TreePrint2(p,t,cycle,str);
-      str := Concatenation(str,",");
+      str := Concatenation(str,"|");
     od;
-    if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
-    str := Concatenation(str,"|");
+    if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary |
+    str := Concatenation(str,",");
     str := Concatenation(str,String(point),"]"); # ending the tree notation
   fi;
   return str;
