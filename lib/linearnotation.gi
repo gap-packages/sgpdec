@@ -4,7 +4,7 @@
 ##
 ## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
-## 2009-2012
+## 2009-2012, 2023
 ## One line notation for transformations.
 
 ################################################################################
@@ -90,12 +90,13 @@ local preimgs,p, conveyorbelt,s;
     str := Concatenation(str,String(point),"]"); # ending the tree notation
   else
     str := Concatenation(str,"["); #starting the tree notation
+    Sort(preimgs); # to get canonical form
     for p in preimgs do
       str := TreePrint2(p,t,cycle,str);
-      str := Concatenation(str,",");
+      str := Concatenation(str,"|");
     od;
-    if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
-    str := Concatenation(str,"|");
+    if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary "or" 
+    str := Concatenation(str,",");
     str := Concatenation(str,String(point),"]"); # ending the tree notation
   fi;
   return str;
@@ -103,7 +104,7 @@ end;
 MakeReadOnlyGlobal("TreePrint2");
 
 #Returns the linear notation of the transformation in a string
-InstallGlobalFunction(CompactNotation,
+InstallGlobalFunction(AttractorCycleNotation,
 function(t)
   local comp,cycle,point,str;
   #this special case would be difficult to handle
