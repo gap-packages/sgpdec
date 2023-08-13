@@ -3,6 +3,7 @@
 	CompactNotation has different semantics now.
 	Other changes:
 	DotTransformation added.
+	ComputeSkeletonNavigationTables added. This replaces the previous caching mechanisms. With this all skeleton navigation functions can be precomputed.
 0.9.6
 	MakeRepresentative added. To simplify the process of changing a representative, the primitve caching mechanism for the words navigating in the equivalence classes were removed. This makes computing the morphism for holonomy less performant. Proper memoization is to be added later.
 0.9.5
