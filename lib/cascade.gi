@@ -467,7 +467,7 @@ function(arg)
     else
       PrintTo(out,Concatenation(nodename,
               BLACKLABELPREFIX,
-              SimplerCompactNotation(val),"\"];\n"));
+              SimplerAttractorCycleNotation(val),"\"];\n"));
       nontrivial := true;
     fi;
     if l+1 = n then return; fi;

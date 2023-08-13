@@ -137,12 +137,12 @@ function(t)
 end);
 
 #constant maps are further simplified
-InstallGlobalFunction(SimplerCompactNotation,
+InstallGlobalFunction(SimplerAttractorCycleNotation,
  function(t)
  if IsTransformation(t) and RankOfTransformation(t) = 1 then
   return String(1^t);
  else
-  return CompactNotation(t);
+  return AttractorCycleNotation(t);
  fi;
 end);
 

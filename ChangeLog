@@ -1,6 +1,6 @@
 0.9.7
 	BREAKING CHANGES: ContainsSet(sk, P) replaced with P in ExtendedImageSet(sk), since ExtendedImageSet is now a HashSet for faster lookup. SortedExtendedImageSet added for retaining the functionality of having a sorted list of the extended images.
-	CompactNotation has different semantics now.
+	CompactNotation has different semantics now and it is renamed to AttractorCycleNotation.
 	Other changes:
 	DotTransformation added.
 	ComputeSkeletonNavigationTables added. This replaces the previous caching mechanisms. With this all skeleton navigation functions can be precomputed.
