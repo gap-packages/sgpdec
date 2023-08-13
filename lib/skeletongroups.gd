@@ -14,6 +14,12 @@ DeclareGlobalFunction("FromRepw");
 DeclareGlobalFunction("ToRep");
 DeclareGlobalFunction("ToRepw");
 
+# lookup tables stored as attributes
+DeclareAttribute("FromRepLookup", IsSkeleton);
+DeclareAttribute("FromRepwLookup", IsSkeleton);
+DeclareAttribute("ToRepLookup", IsSkeleton);
+DeclareAttribute("ToRepwLookup", IsSkeleton);
+
 #PERMUTATORS
 DeclareGlobalFunction("RoundTripWords");
 DeclareGlobalFunction("NontrivialRoundTripWords");
