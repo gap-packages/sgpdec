@@ -1,3 +1,4 @@
+# TODO review code, is this still relevant?
 Read("demo.g");
 
 #LogTo("biglog");

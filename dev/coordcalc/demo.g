@@ -1,3 +1,5 @@
+# TODO: review, this codo may use old API
+
 #demonstrating the coordinate manipulation algorithm (like generalized arithmetic)
 
 #check actions for errors ('above'-actions) and carries

@@ -1,3 +1,5 @@
+#TODO review old code, do we need this?
+
 Read("actioncheck.g");
 #check actions for errors ('above'-actions) and carries
 checkActions4Trouble := function(level,actions)
