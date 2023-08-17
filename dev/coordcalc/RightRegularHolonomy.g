@@ -19,4 +19,9 @@ toRR := function(S)
                            s -> RightRegularTransRep(s,S));
 end;
 
+#T3 example
+toRRT3 := toRR(FullTransformationSemigroup(3));
+RRT3 := Range(toRRT3); #Source(toRRT3) gives the T3 itself
+fromRRT3 := InverseGeneralMapping(toRRT3);
+
 
