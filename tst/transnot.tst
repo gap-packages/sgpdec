@@ -3,28 +3,9 @@
 # the string representation
 gap> START_TEST("Sgpdec package: transnot.tst");
 gap> LoadPackage("sgpdec", false);;
-gap> ForAll([1..10],function(i)
->  local rnd;
->  rnd := RandomTransformation(931);
->  return rnd = AsTransformation(LinearNotation(rnd),931);
->  end);
-true
-gap> LinearNotation(Transformation([5,5,5,5,5]));
-"[1,2,3,4;5]"
-gap> SimplerLinearNotation(Transformation([5,5,5,5,5]));
-"[->5]"
-gap> SimplerLinearNotation(Transformation([4,5,4,5,4,5]));
-"([1,3;4],[2,6;5])"
-gap> SimplerLinearNotation(Transformation([1]));
-"()"
-gap> SimplerLinearNotation(Transformation([1,2]));
-"()"
-gap> SimplerLinearNotation(Transformation([2,1]));
-"(1,2)"
-gap> SimplerLinearNotation(Transformation([5,5,5,2,2,2]));
-"([1,3;5],[4,6;2])"
-gap> SimplerLinearNotation(Transformation([1,1,1,2,2,2]));
-"[[4,5,6;2],3;1]"
+gap> t := Transformation([1,7,14,4,3,10,5,10,10,9,14,9,13,6,8,11]);;
+gap> AttractorCycleNotation(t);
+"([[[[2,7,5,3]|[16,11],14],6]|[15,8],10],[12,9])"
 
 #
 gap> STOP_TEST( "Sgpdec package: transnot.tst", 10000);
