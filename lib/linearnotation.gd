@@ -8,9 +8,5 @@
 ##
 ## One line notation for transformations.
 
-DeclareGlobalFunction("LinearNotation");
-DeclareGlobalFunction("SimplerLinearNotation");
-
 DeclareGlobalFunction("AttractorCycleNotation");
 DeclareGlobalFunction("SimplerAttractorCycleNotation");
-

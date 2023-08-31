@@ -48,33 +48,6 @@ MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
 # cycle - the cycle of the component
 # str - the buffer string in which to print
 TreePrint := function(point, t,cycle, str)
-local preimgs,p;
-  #we reverse the arrows in the graph for the recursion, but not the cycle
-  preimgs := Difference(PreimagesOfTransformation(t, point),cycle);
-  if IsEmpty(preimgs) then   #if it is a terminal point, just print it
-    str := Concatenation(str,String(point));
-    return str;
-  fi;
-  str := Concatenation(str,"["); #starting the tree notation
-  for p in preimgs do
-    str := TreePrint(p,t,cycle,str);
-    str := Concatenation(str,",");
-  od;
-  if str[Length(str)] = ',' then Remove(str); fi; #removing unnecessary comma
-  str := Concatenation(str,";");
-  str := Concatenation(str,String(point),"]"); # ending the tree notation
-  return str;
-end;
-MakeReadOnlyGlobal("TreePrint");
-
-################################################################################
-# Recursively prints the tree incoming into a point. The point's cycle also
-# needs to be known to exclude tho preimages in the cycle.
-# point - the root of the tree,
-# t - transformation,
-# cycle - the cycle of the component
-# str - the buffer string in which to print
-TreePrint2 := function(point, t,cycle, str)
 local preimgs,p, conveyorbelt,s;
   #we reverse the arrows in the graph for the recursion, but not the cycle
   preimgs := Difference(PreimagesOfTransformation(t, point),cycle);
@@ -88,7 +61,7 @@ local preimgs,p, conveyorbelt,s;
       preimgs := Difference(PreimagesOfTransformation(t, preimgs[1]),cycle);
     od;
     str := Concatenation(str,"["); #starting the tree notation
-    str := TreePrint2(Remove(conveyorbelt),t,cycle,str);
+    str := TreePrint(Remove(conveyorbelt),t,cycle,str);
     str := Concatenation(str,",");
     s := String(Reversed(conveyorbelt));
     RemoveCharacters(s," ");
@@ -98,7 +71,7 @@ local preimgs,p, conveyorbelt,s;
     str := Concatenation(str,"["); #starting the tree notation
     Sort(preimgs); # to get canonical form
     for p in preimgs do
-      str := TreePrint2(p,t,cycle,str);
+      str := TreePrint(p,t,cycle,str);
       str := Concatenation(str,"|");
     od;
     if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary | 
@@ -107,7 +80,7 @@ local preimgs,p, conveyorbelt,s;
   fi;
   return str;
 end;
-MakeReadOnlyGlobal("TreePrint2");
+MakeReadOnlyGlobal("TreePrint");
 
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(AttractorCycleNotation,
@@ -116,42 +89,6 @@ function(t)
   #this special case would be difficult to handle
   if IsOne(t) then return "()";fi;
   if IsPerm(t) then return PrintString(t); fi;
-  str := "";
-  for comp in TransformationComponents(t) do
-    if Size(comp) = 1 then continue; fi;#fixed points are not displayed
-    #1-cycles are not displayed as cycles (but it can be a tree)
-    cycle := CycleOfTransformationFromPoint(t,comp[1]);
-    if (Length(cycle) > 1) then #if it is a permutation
-      str := Concatenation(str,"(");
-    fi;
-    for point in cycle do
-      str := TreePrint2(point,t,cycle,str);
-      str := Concatenation(str,",");
-    od;
-    Remove(str); #removing unnecessary last comma
-    if (Length(cycle) > 1 ) then
-      str := Concatenation(str,")");
-    fi;
-  od;
-  return str;
-end);
-
-#constant maps are further simplified
-InstallGlobalFunction(SimplerAttractorCycleNotation,
- function(t)
- if IsTransformation(t) and RankOfTransformation(t) = 1 then
-  return String(1^t);
- else
-  return AttractorCycleNotation(t);
- fi;
-end);
-
-#Returns the linear notation of the transformation in a string
-InstallGlobalFunction(LinearNotation,
-function(t)
-  local comp,cycle,point,str;
-  #this special case would be difficult to handle
-  if IsOne(t) then return "()";fi;
   str := "";
   for comp in TransformationComponents(t) do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
@@ -173,29 +110,29 @@ function(t)
 end);
 
 #constant maps are further simplified
-InstallGlobalFunction(SimplerLinearNotation,
+InstallGlobalFunction(SimplerAttractorCycleNotation,
  function(t)
- if RankOfTransformation(t) = 1 then
-  return Concatenation("[->", String(1^t),"]");
+ if IsTransformation(t) and RankOfTransformation(t) = 1 then
+  return String(1^t);
  else
-  return LinearNotation(t);
+  return AttractorCycleNotation(t);
  fi;
 end);
 
 #redefining display for transformations if user
-#wants linearnotaion
-if SgpDecOptionsRec.LINEAR_NOTATION then
+#wants the attractor-cycle notation
+if SgpDecOptionsRec.ATTRACTOR_CYCLE_NOTATION then
   InstallMethod( ViewObj,
-    "linear notation for transformations",
+    "attractor-cycle notation for transformations",
     true,
     [IsTransformation], 0,
   function(t)
-    Print(SimplerLinearNotation(t));
+    Print(AttractorCycleNotation(t));
   end);
 fi;
 
 ################################################################################
-# LINEAR NOTATION -> TRANSFORMATION ############################################
+# ATTRACTOR-CYCLE NOTATION -> TRANSFORMATION ###################################
 ################################################################################
 
 # assigns how many parentheses are open to each point, 0 means top level
@@ -217,7 +154,7 @@ local openers,closers,depth,i,depthvect;
 end;
 MakeReadOnlyGlobal("DepthVector");
 
-#splitting string at given positions
+#splitting string at given positions #TODO this is not splitting the last one, but works ok in the context as the last index is given
 SplitStringAtPositions := function(str, poss)
   local pieces, last,i;
   last := 0;
@@ -272,7 +209,7 @@ end;
 MakeReadOnlyGlobal("GetPreImgs");
 
 #recursively fills the list maps [point, image] tuples
-AllMapsFromLinNotComp := function(str,maps)
+AllMaps := function(str,maps)
   local l,i,comps,img;
   comps := [];
   if str[1] = '(' then      # permutation
@@ -289,10 +226,10 @@ AllMapsFromLinNotComp := function(str,maps)
     Perform([1..Size(l)], function(x)Add(maps,[l[x],img]);end);
   fi;
   #doing the recursion
-  Perform(comps,function(x)AllMapsFromLinNotComp(x,maps);end);
+  Perform(comps,function(x)AllMaps(x,maps);end);
   return maps;
 end;
-MakeReadOnlyGlobal("AllMapsFromLinNotComp");
+MakeReadOnlyGlobal("AllMaps");
 
 # the main method for the conversion
 InstallOtherMethod(AsTransformation,"for cascade and int",[IsString,IsPosInt],
@@ -301,7 +238,7 @@ local maps,scc,l,m;
   maps := [];
   l := [1..n];
   for scc in SplitStringAtPositions(s, Positions(DepthVector(s),0)) do
-    AllMapsFromLinNotComp(scc,maps);
+    AllMaps(scc,maps);
   od;
   # patching the identity map with the collected maps
   for m in maps do l[m[1]] := m[2];od;

@@ -5,7 +5,7 @@ BindGlobal("SgpDecOptionsRec",
   rec(  PARANOID:=true,
         STRAIGHTWORD_REDUCTION:=true,
         SMALLER_GENERATOR_SET:=false,
-        LINEAR_NOTATION:=false,
+        ATTRACTOR_CYCLE_NOTATION:=false,
         SMALL_GROUPS:=true));
 
 MakeReadWriteGlobal("SgpDecOptionsRec");
