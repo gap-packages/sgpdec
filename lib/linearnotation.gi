@@ -170,26 +170,15 @@ ACNComponents := function(s)
   return SplitStringAtPositions(s, Positions(DepthVector(s),0));
 end;
 
-# finding comma separated values (only at zero depth)
-CommaComps := function(str)
-  local cuts;
-  if IsEmpty(str) then return [];fi;
-  
-  Add(cuts, Size(str)); #to have the last piece as well
-  #post process: removing dangling commas
-  return List(SplitStringAtPositions(str, cuts),
-              function(s) if s[Size(s)]=',' then return s{[1..Size(s)-1]};
-                          else return s; fi;end);
+ACNTopLevelCuts := function(str)
+  return Intersection(Positions(DepthVector(str),0),
+                      Union(Positions(str,','),
+                            Positions(str,'|')));
 end;
-MakeReadOnlyGlobal("CommaComps");
 
 ACNInFlowComps := function(str)
-local cuts;
-  cuts := Intersection(Positions(DepthVector(str),0),
-                       Union(Positions(str,','),
-                             Positions(str,'|')));
   #post process: removing dangling commas
-  return List(SplitStringAtPositions(str, cuts),
+  return List(SplitStringAtPositions(str, ACNTopLevelCuts(str)),
               function(s) if Last(s) in ",|" then
                             return s{[1..Size(s)-1]};
                           else
@@ -218,27 +207,41 @@ local s, poss, lastpos;
     s := CutParentheses(str);
     poss := Positions(str, ',');
     lastpos := poss[Size(poss)];
-    return CommaComps(s{[1..lastpos-2]});
+    return 0;#CommaComps(s{[1..lastpos-2]});
 end;
 MakeReadOnlyGlobal("GetPreImgs");
 
 #recursively fills the list maps [point, image] tuples
 ACNAllMaps := function(str,maps)
-  local l,i,comps,img;
+  local l,i,comps,img, comps2, cut, spread, belt, NotSep;
+  NotSep := function(s) return not( (s = ",") or (s = "|")); end;
   comps := [];
   if str[1] = '(' then      # permutation
     comps := ACNInFlowComps(CutParentheses(str));
     l := List(comps, ACNSink);
-    if not IsEmpty(l) then Add(l, l[1]);fi; #closing the circle
+    if not IsEmpty(l) then Add(l, l[1]);fi; #closing the cycle
+    #registering the maps
     for i in [1..Size(l)-1] do
       Add(maps, [l[i],l[i+1]]);
     od;
   elif str[1] = '[' then     # in-flow
-
-    comps := (GetPreImgs(str));
-    l := List(comps, s->Int(ACNSink(s)));
-    img := Int(ACNSink(str));
-    Perform([1..Size(l)], function(x)Add(maps,[l[x],img]);end);
+    comps := ACNInFlowComps(CutParentheses(str));
+    comps2 := ACNComponents(CutParentheses(str));
+    #Print(comps2);
+    if not ("|" in comps2) then
+      l := List(comps, ACNSink);
+      for i in [1..Size(l)-1] do
+        Add(maps, [l[i],l[i+1]]);
+      od;
+    else
+      cut := First(Positions(comps2,","));
+      spread := List(Filtered(comps2{[1..cut]}, NotSep), ACNSink);
+      belt := List(Filtered(comps2{[cut+1..Size(comps2)]},NotSep), ACNSink);
+      img := First(belt);
+      #Print(belt); Print(spread);
+      Perform(spread, function(x)Add(maps,[x,img]);end);
+      Perform([1..Size(belt)-1], function(i) Add(maps, [belt[i], belt[i+1]]);end);
+    fi;  
   fi;
   #doing the recursion
   Perform(comps,function(x)ACNAllMaps(x,maps);end);
