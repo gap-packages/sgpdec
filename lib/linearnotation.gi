@@ -5,7 +5,7 @@
 ## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## 2009-2012, 2023
-## One line notation for transformations.
+## Attractor-cycle notation for transformations.
 
 ################################################################################
 # TRANSFORMATION -> LINEAR NOTATION ############################################
@@ -155,25 +155,27 @@ end;
 MakeReadOnlyGlobal("DepthVector");
 
 #splitting string at given positions #TODO this is not splitting the last one, but works ok in the context as the last index is given
-SplitStringAtPositions := function(str, poss)
-  local pieces, last,i;
-  last := 0;
-  pieces := [];
-  for i in [1..Size(poss)] do
-    Add(pieces, str{[last+1..poss[i]]});
-    last := poss[i];
-  od;
-  return pieces;
+SplitStringAtPositions := function(str, positions)
+  local poss;
+  #adding the beginning and the end to the cutting positions
+  poss := Set(Concatenation(positions,[0,Size(str)]));
+  #producing the pieces
+  return List([1..Size(poss)-1],
+              x -> str{[poss[x]+1..poss[x+1]]});
 end;
 MakeReadOnlyGlobal("SplitStringAtPositions");
+
+# components of the transformation 
+ACNComponents := function(s)
+  return SplitStringAtPositions(s, Positions(DepthVector(s),0));
+end;
 
 # finding comma separated values (only at zero depth)
 CommaComps := function(str)
   local cuts;
   if IsEmpty(str) then return [];fi;
-  cuts := Intersection(Positions(DepthVector(str),0),
-                  Positions(str,','));
-  Add(cuts, Size(str)); #to have the last pieve as well
+  
+  Add(cuts, Size(str)); #to have the last piece as well
   #post process: removing dangling commas
   return List(SplitStringAtPositions(str, cuts),
               function(s) if s[Size(s)]=',' then return s{[1..Size(s)-1]};
@@ -181,65 +183,78 @@ CommaComps := function(str)
 end;
 MakeReadOnlyGlobal("CommaComps");
 
+ACNInFlowComps := function(str)
+local cuts;
+  cuts := Intersection(Positions(DepthVector(str),0),
+                       Union(Positions(str,','),
+                             Positions(str,'|')));
+  #post process: removing dangling commas
+  return List(SplitStringAtPositions(str, cuts),
+              function(s) if Last(s) in ",|" then
+                            return s{[1..Size(s)-1]};
+                          else
+                            return s; fi;
+                          end);
+end;
+MakeReadOnlyGlobal("ACNInFlowComps");
+
 #just remove outer parentheses
 CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
 MakeReadOnlyGlobal("CutParentheses");
 
-#this gets the last image from w or [x,y,z;w]
-GetImgVal := function(str)
-local s, poss, lastpos;
-  if not('[' in str)  then return str;
+#this gets the last point w from [x,y,z,w] or [x|y|z,w], where everything is flowing into 
+ACNSink := function(str)
+  if not('[' in str)  then
+    return Int(str);
   else
-    s := CutParentheses(str);
-    poss := Positions(str, ';');
-    lastpos := poss[Size(poss)];
-    return s{[lastpos..Size(s)]};
+    return ACNSink(Last(ACNInFlowComps(CutParentheses(str))));
   fi;
 end;
-MakeReadOnlyGlobal("GetImgVal");
+MakeReadOnlyGlobal("ACNSink");
 
 #this gets the preimages [x,y,z] from [x,y,z;w]
 GetPreImgs := function(str)
 local s, poss, lastpos;
     s := CutParentheses(str);
-    poss := Positions(str, ';');
+    poss := Positions(str, ',');
     lastpos := poss[Size(poss)];
     return CommaComps(s{[1..lastpos-2]});
 end;
 MakeReadOnlyGlobal("GetPreImgs");
 
 #recursively fills the list maps [point, image] tuples
-AllMaps := function(str,maps)
+ACNAllMaps := function(str,maps)
   local l,i,comps,img;
   comps := [];
   if str[1] = '(' then      # permutation
-    comps := CommaComps(CutParentheses(str));
-    l := List(comps, s->Int(GetImgVal(s)));
+    comps := ACNInFlowComps(CutParentheses(str));
+    l := List(comps, ACNSink);
     if not IsEmpty(l) then Add(l, l[1]);fi; #closing the circle
     for i in [1..Size(l)-1] do
       Add(maps, [l[i],l[i+1]]);
     od;
-  elif str[1] = '[' then     # transformation
+  elif str[1] = '[' then     # in-flow
+
     comps := (GetPreImgs(str));
-    l := List(comps, s->Int(GetImgVal(s)));
-    img := Int(GetImgVal(str));
+    l := List(comps, s->Int(ACNSink(s)));
+    img := Int(ACNSink(str));
     Perform([1..Size(l)], function(x)Add(maps,[l[x],img]);end);
   fi;
   #doing the recursion
-  Perform(comps,function(x)AllMaps(x,maps);end);
+  Perform(comps,function(x)ACNAllMaps(x,maps);end);
   return maps;
 end;
-MakeReadOnlyGlobal("AllMaps");
+MakeReadOnlyGlobal("ACNAllMaps");
 
 # the main method for the conversion
-InstallOtherMethod(AsTransformation,"for cascade and int",[IsString,IsPosInt],
+# inputs: string and the degree of the resulting transformation
+# the function crashes if the degree is smaller than needed
+InstallOtherMethod(AsTransformation,"for an attractor-cycle notation string and int",[IsString,IsPosInt],
 function(s,n)
 local maps,scc,l,m;
   maps := [];
-  l := [1..n];
-  for scc in SplitStringAtPositions(s, Positions(DepthVector(s),0)) do
-    AllMaps(scc,maps);
-  od;
+  l := [1..n]; #identity is the default
+  Perform(ACNComponents(s), function(C) ACNAllMaps(C, maps);end);
   # patching the identity map with the collected maps
   for m in maps do l[m[1]] := m[2];od;
   return Transformation(l);
