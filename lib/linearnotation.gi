@@ -136,6 +136,7 @@ fi;
 ################################################################################
 
 # assigns how many parentheses are open to each point, 0 means top level
+# when generating the maps we go down recursively, this is used to find the right level
 DepthVector := function(str)
 local openers,closers,depth,i,depthvect;
   openers := "[(";
@@ -154,7 +155,7 @@ local openers,closers,depth,i,depthvect;
 end;
 MakeReadOnlyGlobal("DepthVector");
 
-#splitting string at given positions #TODO this is not splitting the last one, but works ok in the context as the last index is given
+#splitting string at given positions
 SplitStringAtPositions := function(str, positions)
   local poss;
   #adding the beginning and the end to the cutting positions
@@ -165,17 +166,19 @@ SplitStringAtPositions := function(str, positions)
 end;
 MakeReadOnlyGlobal("SplitStringAtPositions");
 
-# components of the transformation 
+# components of the transformation, the strongly connected components of the graph 
 ACNComponents := function(s)
   return SplitStringAtPositions(s, Positions(DepthVector(s),0));
 end;
 
+# we cannot by all separators , and |, only on top level 
 ACNTopLevelCuts := function(str)
   return Intersection(Positions(DepthVector(str),0),
                       Union(Positions(str,','),
                             Positions(str,'|')));
 end;
 
+# the components of an in-flow
 ACNInFlowComps := function(str)
   #post process: removing dangling commas
   return List(SplitStringAtPositions(str, ACNTopLevelCuts(str)),
@@ -191,7 +194,7 @@ MakeReadOnlyGlobal("ACNInFlowComps");
 CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
 MakeReadOnlyGlobal("CutParentheses");
 
-#this gets the last point w from [x,y,z,w] or [x|y|z,w], where everything is flowing into 
+#this gets the last point w from [x,y,z,w] or [x|y|z,w], where everything is flowing into
 ACNSink := function(str)
   if not('[' in str)  then
     return Int(str);
@@ -201,47 +204,33 @@ ACNSink := function(str)
 end;
 MakeReadOnlyGlobal("ACNSink");
 
-#this gets the preimages [x,y,z] from [x,y,z;w]
-GetPreImgs := function(str)
-local s, poss, lastpos;
-    s := CutParentheses(str);
-    poss := Positions(str, ',');
-    lastpos := poss[Size(poss)];
-    return 0;#CommaComps(s{[1..lastpos-2]});
-end;
-MakeReadOnlyGlobal("GetPreImgs");
-
 #recursively fills the list maps [point, image] tuples
 ACNAllMaps := function(str,maps)
-  local l,i,comps,img, comps2, cut, spread, belt, NotSep;
+  local i,comps,img, compswithseps, cut, spread, belt, NotSep, RegisterBelt;
   NotSep := function(s) return not( (s = ",") or (s = "|")); end;
-  comps := [];
+  RegisterBelt := function(belt) #registering the maps
+                    Perform([1..Size(belt)-1],
+                            function(i) Add(maps, [belt[i],belt[i+1]]);end);
+                  end;
+  comps := ACNInFlowComps(CutParentheses(str));
   if str[1] = '(' then      # permutation
-    comps := ACNInFlowComps(CutParentheses(str));
-    l := List(comps, ACNSink);
-    if not IsEmpty(l) then Add(l, l[1]);fi; #closing the cycle
-    #registering the maps
-    for i in [1..Size(l)-1] do
-      Add(maps, [l[i],l[i+1]]);
-    od;
+    belt := List(comps, ACNSink);
+    if not IsEmpty(belt) then Add(belt, First(belt));fi; #closing the cycle
+    RegisterBelt(belt);
   elif str[1] = '[' then     # in-flow
-    comps := ACNInFlowComps(CutParentheses(str));
-    comps2 := ACNComponents(CutParentheses(str));
-    #Print(comps2);
-    if not ("|" in comps2) then
-      l := List(comps, ACNSink);
-      for i in [1..Size(l)-1] do
-        Add(maps, [l[i],l[i+1]]);
-      od;
-    else
-      cut := First(Positions(comps2,","));
-      spread := List(Filtered(comps2{[1..cut]}, NotSep), ACNSink);
-      belt := List(Filtered(comps2{[cut+1..Size(comps2)]},NotSep), ACNSink);
+    compswithseps := ACNComponents(CutParentheses(str));
+    if not ("|" in compswithseps) then
+      RegisterBelt(List(comps, ACNSink));
+    else # we have the |, so we have the spread of alternatives
+      cut := First(Positions(compswithseps,","));
+      spread := List(Filtered(compswithseps{[1..cut]}, NotSep), ACNSink);
+      belt := List(Filtered(compswithseps{[cut+1..Size(compswithseps)]},NotSep), ACNSink);
       img := First(belt);
-      #Print(belt); Print(spread);
       Perform(spread, function(x)Add(maps,[x,img]);end);
-      Perform([1..Size(belt)-1], function(i) Add(maps, [belt[i], belt[i+1]]);end);
-    fi;  
+      RegisterBelt(belt);
+    fi;
+  else
+    return maps; #we are down to a point, nothing to do
   fi;
   #doing the recursion
   Perform(comps,function(x)ACNAllMaps(x,maps);end);
