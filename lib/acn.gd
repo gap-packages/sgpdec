@@ -11,4 +11,8 @@
 DeclareGlobalFunction("AttractorCycleNotation");
 DeclareGlobalFunction("SimplerAttractorCycleNotation");
 
+DeclareGlobalFunction("CycleOfTransformationFromPoint");
+
+DeclareGlobalFunction("SplitStringAtPositions");
+
 DeclareGlobalFunction("DotTransformation");

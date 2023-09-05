@@ -12,7 +12,8 @@
 ###############################################################################
 
 #Find the points in the cycle in a component containing the initial point.
-CycleOfTransformationFromPoint := function(t,p)
+InstallGlobalFunction(CycleOfTransformationFromPoint,
+function(t,p)
 local orbit;
   orbit := []; #we generate the orbit
   while not (p in orbit) do
@@ -21,8 +22,7 @@ local orbit;
   od;
   #p is repeated so we can  cut out the cycle
   return orbit{[Position(orbit,p)..Length(orbit)]};
-end;
-MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
+end);
 
 ################################################################################
 # Recursively prints the tree incoming into a point. The point's cycle also
@@ -31,7 +31,7 @@ MakeReadOnlyGlobal("CycleOfTransformationFromPoint");
 # t - transformation,
 # cycle - the cycle of the component
 # str - the buffer string in which to print
-TreePrint := function(point, t,cycle, str)
+ACNTreePrint := function(point, t,cycle, str)
 local preimgs,p, conveyorbelt,s;
   #we reverse the arrows in the graph for the recursion, but not the cycle
   preimgs := Difference(PreimagesOfTransformation(t, point),cycle);
@@ -45,7 +45,7 @@ local preimgs,p, conveyorbelt,s;
       preimgs := Difference(PreimagesOfTransformation(t, preimgs[1]),cycle);
     od;
     str := Concatenation(str,"["); #starting the tree notation
-    str := TreePrint(Remove(conveyorbelt),t,cycle,str);
+    str := ACNTreePrint(Remove(conveyorbelt),t,cycle,str);
     str := Concatenation(str,",");
     s := String(Reversed(conveyorbelt));
     RemoveCharacters(s," ");
@@ -55,7 +55,7 @@ local preimgs,p, conveyorbelt,s;
     str := Concatenation(str,"["); #starting the tree notation
     Sort(preimgs); # to get canonical form
     for p in preimgs do
-      str := TreePrint(p,t,cycle,str);
+      str := ACNTreePrint(p,t,cycle,str);
       str := Concatenation(str,"|");
     od;
     if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary | 
@@ -64,7 +64,7 @@ local preimgs,p, conveyorbelt,s;
   fi;
   return str;
 end;
-MakeReadOnlyGlobal("TreePrint");
+MakeReadOnlyGlobal("ACNTreePrint");
 
 #Returns the linear notation of the transformation in a string
 InstallGlobalFunction(AttractorCycleNotation,
@@ -77,12 +77,12 @@ function(t)
   for comp in ComponentsOfTransformation(t) do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
     #1-cycles are not displayed as cycles (but it can be a tree)
-    cycle := CycleOfTransformationFromPoint(t,comp[1]);
+    cycle := CycleOfTransformationFromPoint(t,First(comp));
     if (Length(cycle) > 1) then #if it is a permutation
       str := Concatenation(str,"(");
     fi;
     for point in cycle do
-      str := TreePrint(point,t,cycle,str);
+      str := ACNTreePrint(point,t,cycle,str);
       str := Concatenation(str,",");
     od;
     Remove(str); #removing unnecessary last comma
@@ -140,15 +140,15 @@ end;
 MakeReadOnlyGlobal("DepthVector");
 
 #splitting string at given positions
-SplitStringAtPositions := function(str, positions)
+InstallGlobalFunction(SplitStringAtPositions,
+function(str, positions)
   local poss;
   #adding the beginning and the end to the cutting positions
   poss := Set(Concatenation(positions,[0,Size(str)]));
   #producing the pieces
   return List([1..Size(poss)-1],
               x -> str{[poss[x]+1..poss[x+1]]});
-end;
-MakeReadOnlyGlobal("SplitStringAtPositions");
+end);
 
 # components of the transformation, the strongly connected components of the graph 
 ACNComponents := function(s)
@@ -175,15 +175,15 @@ end;
 MakeReadOnlyGlobal("ACNInFlowComps");
 
 #just remove outer parentheses
-CutParentheses := function(str) return str{[2..Size(str)-1]}; end;
-MakeReadOnlyGlobal("CutParentheses");
+ACNCutParentheses := function(str) return str{[2..Size(str)-1]}; end;
+MakeReadOnlyGlobal("ACNCutParentheses");
 
 #this gets the last point w from [x,y,z,w] or [x|y|z,w], where everything is flowing into
 ACNSink := function(str)
   if not('[' in str)  then
     return Int(str);
   else
-    return ACNSink(Last(ACNInFlowComps(CutParentheses(str))));
+    return ACNSink(Last(ACNInFlowComps(ACNCutParentheses(str))));
   fi;
 end;
 MakeReadOnlyGlobal("ACNSink");
@@ -196,13 +196,13 @@ ACNAllMaps := function(str,maps)
                     Perform([1..Size(belt)-1],
                             function(i) Add(maps, [belt[i],belt[i+1]]);end);
                   end;
-  comps := ACNInFlowComps(CutParentheses(str));
+  comps := ACNInFlowComps(ACNCutParentheses(str));
   if str[1] = '(' then      # permutation
     belt := List(comps, ACNSink);
     if not IsEmpty(belt) then Add(belt, First(belt));fi; #closing the cycle
     RegisterBelt(belt);
   elif str[1] = '[' then     # in-flow
-    compswithseps := ACNComponents(CutParentheses(str));
+    compswithseps := ACNComponents(ACNCutParentheses(str));
     if not ("|" in compswithseps) then
       RegisterBelt(List(comps, ACNSink));
     else # we have the |, so we have the spread of alternatives
