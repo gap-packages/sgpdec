@@ -1,21 +1,15 @@
-##########################################################################
+###############################################################################
 ##
-## linearnotation.gi           SgpDec package
+## acn.gi           SgpDec package
 ##
 ## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
 ## 2009-2012, 2023
 ## Attractor-cycle notation for transformations.
 
-################################################################################
-# TRANSFORMATION -> LINEAR NOTATION ############################################
-################################################################################
-
-DotTransformation:=function(t)
-  return DotDigraph(DigraphByEdges(List([1..DegreeOfTransformation(t)],
-                                         i->[i,OnPoints(i,t)])));
-end;
-MakeReadOnlyGlobal("DotTransformation");
+###############################################################################
+# TRANSFORMATION -> ATTRACTOR-CYCLE NOTATION ##################################
+###############################################################################
 
 # Finding the components of a transformation, i.e.  the disconnected subgraphs
 # of its functional digraph.
@@ -250,4 +244,13 @@ local maps,scc,l,m;
   # patching the identity map with the collected maps
   for m in maps do l[m[1]] := m[2];od;
   return Transformation(l);
+end);
+
+###############################################################################
+## VISUALIZATION ##############################################################
+###############################################################################
+InstallGlobalFunction(DotTransformation,
+function(t)
+  return DotDigraph(DigraphByEdges(List([1..DegreeOfTransformation(t)],
+                                         i->[i,OnPoints(i,t)])));
 end);

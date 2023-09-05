@@ -2,7 +2,7 @@ ReadPackage("SgpDec","config");
 
 ReadPackage("SgpDec","/lib/disjointuniongroups.gd");
 ReadPackage("SgpDec","/lib/finiteset.gd");
-ReadPackage("SgpDec","/lib/linearnotation.gd");
+ReadPackage("SgpDec","/lib/acn.gd");
 ReadPackage("SgpDec","/lib/words.gd");
 ReadPackage("SgpDec","/lib/skeleton.gd");
 ReadPackage("SgpDec","/lib/skeletonchains.gd");

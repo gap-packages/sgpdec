@@ -4,7 +4,7 @@ ReadPackage("SgpDec","/makedoc.g");
 
 ReadPackage("SgpDec","/lib/disjointuniongroups.gi");
 ReadPackage("SgpDec","/lib/finiteset.gi");
-ReadPackage("SgpDec","/lib/linearnotation.gi");
+ReadPackage("SgpDec","/lib/acn.gi");
 ReadPackage("SgpDec","/lib/words.gi");
 ReadPackage("SgpDec","/lib/skeleton.gi");
 ReadPackage("SgpDec","/lib/skeletonchains.gi");
