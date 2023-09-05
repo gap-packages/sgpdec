@@ -54,7 +54,7 @@ InstallMethod(AsPoint, "for coordinates, componentdomains and domain",
 [IsList, IsList, IsList],
 function(coords, compdoms, dom)
   local l;
-  if (Length(coords) = Size(compdoms)) and (Minimum(coords) > 0) then
+  if (Length(coords) = Size(compdoms)) and IsPosInt(Minimum(coords)) then
     #if not abstract just return a point
     return PositionCanonical(dom,coords);
   else

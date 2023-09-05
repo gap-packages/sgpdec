@@ -16,7 +16,7 @@
 # Component domains are the sets of integers [1..n] that the components of a
 # (de)composition act on. This functions creates these domains when a list of
 # components is given. These can be transformation semigroups, permutation
-# groups or simply the size of the domain.
+# groups or simply the size of the domain, or the domain itself.
 InstallGlobalFunction(CreateComponentDomains,
 function(comps)
   local domains, comp;
@@ -64,7 +64,7 @@ function(comps, deps)
 end);
 
 # a simple constructor that populates the object's members
-# not menat for the end user at the commandline
+# not meant for the end user at the commandline
 InstallGlobalFunction(CreateCascade,
 function(dom, compdoms, depfuncs, depdom, type)
   local f;
