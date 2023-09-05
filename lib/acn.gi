@@ -11,16 +11,6 @@
 # TRANSFORMATION -> ATTRACTOR-CYCLE NOTATION ##################################
 ###############################################################################
 
-# Finding the components of a transformation, i.e.  the disconnected subgraphs
-# of its functional digraph.
-# A component is a list of points, and the components are returned in a list.
-TransformationComponents := function(t)
-  return DigraphConnectedComponents(
-            DigraphByEdges(List([1..DegreeOfTransformation(t)],
-            i->[i,OnPoints(i,t)]))).comps;
-end;
-MakeReadOnlyGlobal("TransformationComponents");
-
 #Find the points in the cycle in a component containing the initial point.
 CycleOfTransformationFromPoint := function(t,p)
 local orbit;
@@ -84,7 +74,7 @@ function(t)
   if IsOne(t) then return "()";fi;
   if IsPerm(t) then return PrintString(t); fi;
   str := "";
-  for comp in TransformationComponents(t) do
+  for comp in ComponentsOfTransformation(t) do
     if Size(comp) = 1 then continue; fi;#fixed points are not displayed
     #1-cycles are not displayed as cycles (but it can be a tree)
     cycle := CycleOfTransformationFromPoint(t,comp[1]);
