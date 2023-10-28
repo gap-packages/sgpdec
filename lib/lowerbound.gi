@@ -74,15 +74,15 @@ InstallGlobalFunction(MaxChainOfEssentialDependency, function(sk)
 
   N := Length(levels);
 
-  if Length(levels) < 2 then
+  if N < 2 then
     return levels;
   fi;
 
   # run the chaining algorithm, equivalent to the following
-  mem := List([1..N], i -> 1);
-  links := List([1..N], i -> i);
-  for i in List([2..N], i -> N+1-i) do # [N-1, ..., 1]
-    for j in [i+1..N] do # [i+1, ..., N]
+  mem := ListWithIdenticalEntries(N, 1);
+  links := [1..N];
+  for i in [N-1, N-2 .. 1] do
+    for j in [i+1..N] do
       if IsTrivial(CheckEssentialDependency(sk, levels[i], levels[j])) then
         continue;
       fi;
