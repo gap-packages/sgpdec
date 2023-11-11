@@ -86,12 +86,51 @@ end);
 # INCLUSION RELATION ###########################################################
 ################################################################################
 
+# returns the maximal subsets of the given set found in the given ordered set
+# of sets, for the skeleton the extended set of images
+#TODO this was removed and added back as general HasseDiagramBinary Relation is slow
+MaximalSubsets := function(sk, set)
+local covers, pos, orderedsubsets;
+  #singletons have no covers
+  if SizeBlist(set) = 1 then return []; fi;
+  covers := [];
+  #we search only from this position in the descending order
+  orderedsubsets := SortedExtendedImageSet(sk);
+  pos := Position(orderedsubsets, set) + 1;
+  while pos <= Size(orderedsubsets) do
+    if IsProperFiniteSubset(set, orderedsubsets[pos])
+       and
+       not ForAny(covers,x->IsProperFiniteSubset(x,orderedsubsets[pos])) then
+      Add(covers,orderedsubsets[pos]);
+    fi;
+    pos := pos + 1;
+  od;
+  return covers;
+end;
+MakeReadOnlyGlobal("MaximalSubsets");
+
+# binary relation defined by covering elements (sort of HasseDiagram)
+BinaryRelationByCoverFuncNC := function(set, coverfunc)
+local x,y,dom,tups;
+  dom := Domain(set);
+  tups := [];
+  for x in dom do
+    for y in coverfunc(x) do
+      Add(tups, Tuple([x, y]));
+    od;
+  od;
+  return BinaryRelationByElements(dom, tups);
+end;
+MakeReadOnlyGlobal("BinaryRelationByCoverFuncNC");
+
 InstallMethod(InclusionCoverRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return HasseDiagramBinaryRelation(
-          PartialOrderByOrderingFunction(Domain(AsSet(ExtendedImageSet(sk))),
-                                         IsSubsetBlist));
+  # return HasseDiagramBinaryRelation( #this is super slow!
+  #         PartialOrderByOrderingFunction(Domain(AsSet(ExtendedImageSet(sk))),
+  #                                        IsSubsetBlist));
+  return BinaryRelationByCoverFuncNC(SortedExtendedImageSet(sk),
+                                     set->MaximalSubsets(sk,set));
 end);
 
 ################################################################################
