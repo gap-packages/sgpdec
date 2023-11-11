@@ -15,10 +15,10 @@ DeclareGlobalFunction("ToRep");
 DeclareGlobalFunction("ToRepw");
 
 # lookup tables stored as attributes
-DeclareAttribute("FromRepLookup", IsSkeleton);
-DeclareAttribute("FromRepwLookup", IsSkeleton);
-DeclareAttribute("ToRepLookup", IsSkeleton);
-DeclareAttribute("ToRepwLookup", IsSkeleton);
+DeclareAttribute("FromRepLookup", IsSkeleton,false);
+DeclareAttribute("FromRepwLookup", IsSkeleton,false);
+DeclareAttribute("ToRepLookup", IsSkeleton,false);
+DeclareAttribute("ToRepwLookup", IsSkeleton,false);
 DeclareGlobalFunction("ComputeSkeletonNavigationTables");
 
 #PERMUTATORS
