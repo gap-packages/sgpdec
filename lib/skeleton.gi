@@ -137,9 +137,7 @@ end);
 # SUBDUCTION ###################################################################
 ################################################################################
 
-#the subduction Hasse diagram of representatives
-InstallMethod(SubductionEquivClassRelation,
-        "for a skeleton (SgpDec)", [IsSkeleton],
+ComputeSubductionEquivClassRelation :=
 function(sk)
   local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
@@ -149,15 +147,22 @@ function(sk)
   DirectImages := x -> Union(List(SCCOf(x),  y -> OrbitGraph(o)[y])); #direct descendants in the orbit graph
   NonFailing := x -> x <> fail; #predicate function for not being fail
   Set2Index := x -> Position(o,x);
-  reps := SkeletonTransversal(sk);
   SubSets := x -> Union(List(SCCOf(x), y -> Images(InclusionCoverRelation(sk),o[y])));
-  #subduction is image of and subset of relation combined
+  #subduction is image of and subset of relation combined, computed for the representatives
+  reps := SkeletonTransversal(sk);
   imgs := List(reps, DirectImages); #direct images of representatives
   subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
-  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i]));
-  return TransitiveClosureBinaryRelation(
+  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i])); #TODO not a union! 
+  return BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup)))); #TODO what is missing from this to be the cover relation?
+end;
+
+#the subduction Hasse diagram of representatives
+InstallMethod(SubductionEquivClassRelation,
+        "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+return TransitiveClosureBinaryRelation(
            ReflexiveClosureBinaryRelation(
-             BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup))))));
+             ComputeSubductionEquivClassRelation(sk)));
 end);
 
 InstallMethod(SubductionEquivClassCoverRelation,
