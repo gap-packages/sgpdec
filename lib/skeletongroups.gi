@@ -11,12 +11,22 @@
 
 ################################################################################
 ### words and transformation for moving between sets and representatives
-
-#returns a word  that takes the representative to the set A
 InstallGlobalFunction(FromRepw,
-function(sk, A)
+function(sk, A) return FromRepwLookup(sk)[A];end);
+
+InstallGlobalFunction(FromRep,
+function(sk, A) return FromRepLookup(sk)[A];end);
+
+InstallGlobalFunction(ToRepw,
+function(sk, A) return ToRepwLookup(sk)[A];end);
+
+InstallGlobalFunction(ToRep,
+function(sk, A) return ToRepLookup(sk)[A];end);
+
+
+#returns a word that takes the representative to the set A
+ComputeFromRepw := function(sk, A)
 local pos, scc,o, w;
-  if HasFromRepwLookup(sk) then return FromRepwLookup(sk)[A]; fi;
   o := ForwardOrbit(sk);
   pos := Position(o, A);
   scc := OrbSCCLookup(o)[pos];
@@ -30,20 +40,16 @@ local pos, scc,o, w;
   else
     return w;
   fi;
-end);
+end;
 
-#evaluates the word as transformation and stores it
-InstallGlobalFunction(FromRep,
-function(sk, A)
-  if HasFromRepLookup(sk) then return FromRepLookup(sk)[A]; fi;
+#returns a transformation that takes the representative to the set A
+ComputeFromRep := function(sk, A)
   return EvalWordInSkeleton(sk, FromRepw(sk,A));
-end);
+end;
 
 #returns a word  that takes A to its representative
-InstallGlobalFunction(ToRepw,
-function(sk, A)
+ComputeToRepw := function(sk, A)
 local w, pos, scc, n, outw, fg, inn, inw, out,l,o;
-  if HasToRepwLookup(sk) then return ToRepwLookup(sk)[A]; fi; #checking the cache
   o := ForwardOrbit(sk);
   pos := Position(o, A);
   scc := OrbSCCLookup(o)[pos];
@@ -69,17 +75,12 @@ local w, pos, scc, n, outw, fg, inn, inw, out,l,o;
                                IdentityTransformation, OnRight);
     fi;
   return w;
-end);
+end;
 
-#evaluates the word as transformation
-InstallGlobalFunction(ToRep,
-function(sk, A)
-  if HasToRepLookup(sk) then
-    return ToRepLookup(sk)[A];
-  else
+#returns a transformation that takes A to the representative
+ComputeToRep := function(sk, A)
     return EvalWordInSkeleton(sk,ToRepw(sk,A));
-  fi;
-end);
+end;
 
 InstallGlobalFunction(ComputeSkeletonNavigationTables,
 function(sk)
@@ -96,7 +97,8 @@ InstallMethod(FromRepwLookup,
 function(sk)
   local m;
   m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRepw(sk,set);end);
+  Perform(ForwardOrbit(sk),
+    function(set) m[set]:=ComputeFromRepw(sk,set);end);
   return m;
 end);
 
@@ -105,7 +107,7 @@ InstallMethod(FromRepLookup,
 function(sk)
   local m;
   m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set]:=FromRep(sk,set);end);
+  Perform(ForwardOrbit(sk), function(set) m[set]:=ComputeFromRep(sk,set);end);
   return m;
 end);
 
@@ -114,7 +116,7 @@ InstallMethod(ToRepwLookup,
 function(sk)
   local m;
   m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set] := ToRepw(sk,set);end);
+  Perform(ForwardOrbit(sk), function(set) m[set] := ComputeToRepw(sk,set);end);
   return m;
 end);
 
@@ -123,7 +125,7 @@ InstallMethod(ToRepLookup,
 function(sk)
   local m;
   m := HashMap();
-  Perform(ForwardOrbit(sk), function(set) m[set] := ToRep(sk,set);end);
+  Perform(ForwardOrbit(sk), function(set) m[set] := ComputeToRep(sk,set);end);
   return m;
 end);
 
