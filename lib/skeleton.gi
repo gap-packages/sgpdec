@@ -42,7 +42,7 @@ end);
 # the list of representatives as indices
 InstallMethod(SkeletonTransversal, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(OrbSCC(ForwardOrbit(sk)), First); #TODO choice for representatives made here 
+  return List(OrbSCC(ForwardOrbit(sk)), First); #representatives chosen by Orb
 end);
 
 ################################################################################
@@ -137,7 +137,7 @@ end);
 # SUBDUCTION ###################################################################
 ################################################################################
 
-ComputeSubductionEquivClassRelation :=
+ComputeSubductionEquivClassRelation := #TODO this is surduction
 function(sk)
   local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
   o := ForwardOrbit(sk);
@@ -152,7 +152,7 @@ function(sk)
   reps := SkeletonTransversal(sk);
   imgs := List(reps, DirectImages); #direct images of representatives
   subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
-  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i])); #TODO not a union! 
+  l := List([1..Size(reps)], i -> Union(imgs[i], subs[i]));
   return BinaryRelationOnPoints(List(l, z -> Unique(List(z, SCCLookup)))); #TODO what is missing from this to be the cover relation?
 end;
 
@@ -186,7 +186,7 @@ InstallGlobalFunction(IsSubductionLessOrEquivalent,
 function(sk, P, Q)
   local o, Pbar, Qbar;
   o := ForwardOrbit(sk);
-  Pbar := OrbSCCLookup(o)[Position(o,P)];
+  Pbar := OrbSCCLookup(o)[Position(o,P)]; #get the representatives
   Qbar := OrbSCCLookup(o)[Position(o,Q)];
   return Pbar in Images(SubductionEquivClassRelation(sk), Qbar);
 end);
