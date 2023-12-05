@@ -143,7 +143,7 @@ function(sk)
   o := ForwardOrbit(sk);
   # functions are defined for better readability and separating technical (Orb) code
   SCCLookup := x -> OrbSCCLookup(o)[x]; #finds SCC of an orbit element (the index of it)
-  SCCOf := x -> OrbSCC(o)[OrbSCCLookup(o)[x]]; #finds the SCC and return the whole class
+  SCCOf := x -> OrbSCC(o)[SCCLookup(x)]; #finds the SCC and return the whole class
   DirectImages := x -> Union(List(SCCOf(x),  y -> OrbitGraph(o)[y])); #direct descendants in the orbit graph
   NonFailing := x -> x <> fail; #predicate function for not being fail
   Set2Index := x -> Position(o,x);
