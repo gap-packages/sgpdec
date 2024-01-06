@@ -207,10 +207,10 @@ The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
     <Description>
 The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains" BookName="sgpdec"/>.
 <Example>
-gap> FF := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
+gap> FlipFlop := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
 >              Transformation([1,2])]);;
 gap> T3 := FullTransformationSemigroup(3);;
-gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+gap> c := Cascade([FlipFlop,T3],[ [[],Transformation([1,1])],
 >               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
 &lt;trans cascade with 2 levels with (2, 3) pts, 3 dependencies&gt;
 gap> Display(c);
