@@ -56,3 +56,60 @@ InstallGlobalFunction(CheckEssentialDependency, function(sk, d1, d2)
   od;
   return Group(());
 end);
+
+InstallGlobalFunction(MaxChainOfEssentialDependency, function(sk)
+  # find all levels with groups
+  local levels, level, i, j, groups, N, mem, links, newval, ChainOfLevels;
+
+  levels := [];
+  for level in [1..DepthOfSkeleton(sk)-1] do
+    groups := GroupComponents(sk)[level];
+    for i in [1..Length(groups)] do
+      if not IsTrivial(groups[i]) then
+        Add(levels, level);
+        break;
+      fi;
+    od;
+  od;
+
+  N := Length(levels);
+
+  if N < 2 then
+    return levels;
+  fi;
+
+  # run the chaining algorithm, equivalent to the following
+  mem := ListWithIdenticalEntries(N, 1);
+  links := [1..N];
+  for i in [N-1, N-2 .. 1] do
+    for j in [i+1..N] do
+      if IsTrivial(CheckEssentialDependency(sk, levels[i], levels[j])) then
+        continue;
+      fi;
+
+      newval := mem[j] + 1;
+      if newval > mem[i] then
+        mem[i] := newval;
+        links[i] := j;
+      fi;
+    od;
+  od;
+
+  # find max in mem
+  i := 1;
+  for j in [2..N] do
+    if mem[j] > mem[i] then
+      i := j;
+    fi;
+  od;
+
+  # find the longest chain
+  ChainOfLevels := [];
+  while i <> links[i] do
+    Add(ChainOfLevels, levels[i]);
+    i := links[i];
+  od;
+  Add(ChainOfLevels, levels[i]);
+
+  return ChainOfLevels;
+end);
