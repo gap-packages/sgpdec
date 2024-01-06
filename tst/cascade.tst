@@ -14,7 +14,7 @@ gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 # Cascade
 # creating a cascade is done by giving the domains of the dependency
 # domains and a list of individual dependencies
-gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+gap> c := Cascade([FlipFlop,T3],[ [[],Transformation([1,1])],
 >               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);
 <trans cascade with 2 levels with (2, 3) pts, 3 dependencies>
 gap> Display(c);
@@ -220,7 +220,7 @@ gap> AsList(AllConcreteCoords([[1..2],[1..3], [1..4]],[1,0,2]));
 [ [ 1, 1, 2 ], [ 1, 2, 2 ], [ 1, 3, 2 ] ]
 gap> Concretize([[1..2],[1..3]],[0,1]);
 [ 1, 1 ]
-gap> W := FullCascadeSemigroup([FF, FF, FF]);;
+gap> W := FullCascadeSemigroup([FlipFlop, FlipFlop, FlipFlop]);;
 gap> AsCoords(6,W);
 [ 2, 1, 2 ]
 gap> AsPoint([2,2,2],W);
@@ -240,7 +240,7 @@ gap> AsCoords(5,dom);
 gap> randomcascades := List([1..13],i->RandomCascade(comps,Random([1..42])));;
 gap> ForAll(randomcascades,c -> c=Cascade(comps,DependenciesOfCascade(c)));
 true
-gap> c := Cascade([FF,T3],[ [[],Transformation([1,1])],
+gap> c := Cascade([FlipFlop,T3],[ [[],Transformation([1,1])],
 >               [[1],Transformation([3,3,2])],[[2],Transformation([2,3,2])]]);;
 gap> DotCascade(c);
 "//dot\ngraph ct{\n node[color=grey,width=0.1,height=0.1,fontsize=11,label=\"\

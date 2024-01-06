@@ -12,5 +12,5 @@ D5 := DihedralGroup(IsPermGroup,2*5);
 D8 := DihedralGroup(IsPermGroup,2*8);
 
 T3 := FullTransformationSemigroup(3);
-FF := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
+FlipFlop := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
               Transformation([1,2])]);

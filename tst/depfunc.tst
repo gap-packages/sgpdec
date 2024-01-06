@@ -9,7 +9,7 @@ gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 # 2. by a list of domains of transformations in components
 # 3. by a list of containing domain sizes
 # We create all domains in one shot, since we need them all for cascades.
-gap> depdoms := DependencyDomains([Z5,T3,FF,S4]);;
+gap> depdoms := DependencyDomains([Z5,T3,FlipFlop,S4]);;
 gap> depdoms2 := DependencyDomains([[1..5],[1..3],[1,2],[1..4]]);;
 gap> depdoms3 := DependencyDomains([5,3,2,4]);;
 gap> depdoms = depdoms2;

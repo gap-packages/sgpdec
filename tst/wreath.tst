@@ -37,7 +37,7 @@ gap> ForAll(triples, function(t)
 >         and
 >         IsomorphismGroups(ABC,AB_C)<>fail; end);
 true
-gap> W := FullCascadeSemigroup([FF,Z2]);;
+gap> W := FullCascadeSemigroup([FlipFlop,Z2]);;
 gap> Size(W);
 12
 gap> Size(AsList(W));
