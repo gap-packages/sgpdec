@@ -8,6 +8,7 @@ gap> StructureDescription(CheckEssentialDependency(sk, 1,2));
 "S3"
 gap> StructureDescription(CheckEssentialDependency(sk, 2,3));
 "C2"
+
 # testing max chain of essential dependency
 gap> S := FullTransformationSemigroup(6);;
 gap> sk := Skeleton(S);;
