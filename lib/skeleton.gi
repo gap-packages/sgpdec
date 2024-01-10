@@ -139,7 +139,7 @@ end);
 
 ComputeSubductionEquivClassRelation := #TODO this is surduction
 function(sk)
-  local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l;
+  local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l, r;
   o := ForwardOrbit(sk);
   # functions are defined for better readability and separating technical (Orb) code
   SCCLookup := x -> OrbSCCLookup(o)[x]; #finds SCC of an orbit element (the index of it)
@@ -153,7 +153,8 @@ function(sk)
   imgs := List(reps, DirectImages); #direct images of representatives
   subs := List(reps, rep -> Filtered( List(SubSets(rep),Set2Index), NonFailing));
   l := List([1..Size(reps)], i -> Union(imgs[i], subs[i]));
-  return  AsBinaryRelation(DigraphTransitiveReduction(Digraph(List(l, z -> Unique(List(z, SCCLookup))))));
+  r := List([1..Size(reps)], i -> Difference(Unique(List(l[i], SCCLookup)),[i]));
+  return  AsBinaryRelation(DigraphTransitiveReduction(Digraph(r)));#List(l, z -> Unique(List(z, SCCLookup))))));
 end;
 
 #the subduction Hasse diagram of representatives
