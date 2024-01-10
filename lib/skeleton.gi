@@ -137,7 +137,7 @@ end);
 # SUBDUCTION ###################################################################
 ################################################################################
 
-ComputeSubductionEquivClassRelation := #TODO this is surduction
+ComputeSubductionEquivClassRelation := #TODO this is surduction and cover!
 function(sk)
   local o, SCCLookup, SCCOf, DirectImages, NonFailing, Set2Index, SubSets, reps, imgs, subs, l, r;
   o := ForwardOrbit(sk);
@@ -163,13 +163,13 @@ InstallMethod(SubductionEquivClassRelation,
 function(sk)
 return TransitiveClosureBinaryRelation(
            ReflexiveClosureBinaryRelation(
-             ComputeSubductionEquivClassRelation(sk)));
+             SubductionEquivClassCoverRelation(sk)));
 end);
 
 InstallMethod(SubductionEquivClassCoverRelation,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return HasseDiagramBinaryRelation(SubductionEquivClassRelation(sk));
+  return ComputeSubductionEquivClassRelation(sk);
 end);
 
 InstallGlobalFunction(IsSubductionEquivalent,
