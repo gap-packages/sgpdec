@@ -33,7 +33,13 @@ end);
 ################################################################################
 InstallGlobalFunction(DepthOfSet,
 function(sk,A)
-  if IsSingleton(A) then return DepthOfSkeleton(sk); fi;
+  if IsSingleton(A) then 
+    if A in NonImageSingletons(sk) then
+      return DepthOfSkeleton(sk)+1;
+    else
+      return DepthOfSkeleton(sk);
+    fi;
+  fi;
   return Depths(sk)[
                  OrbSCCLookup(ForwardOrbit(sk))[Position(ForwardOrbit(sk),A)]
                  ];

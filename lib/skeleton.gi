@@ -291,14 +291,11 @@ function(sk)
     return depths;
 end);
 
+#this will report the lengths of the longest subduction chains - may not go down to singletons
 InstallMethod(DepthOfSkeleton,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  if Size(Singletons(sk)) = Size(NonImageSingletons(sk)) then
-    return Maximum(Depths(sk))+1;
-  else
-    return Maximum(Depths(sk));
-  fi;
+  return Maximum(Depths(sk));
 end);
 
 #returns the representative element of the scc of a finiteset

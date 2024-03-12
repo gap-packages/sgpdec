@@ -183,7 +183,7 @@ end);
 # creating graphviz file for drawing the
 InstallGlobalFunction(DotSkeleton,
 function(arg)
-local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstring,witness;
+local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstring,witness,nonimg_singletons,depth;
   #getting local variables for the arguments
   sk := arg[1];
   if IsBound(arg[2]) then
@@ -206,15 +206,22 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
   else
     symbols := [];
   fi;
+  #figuring out whether there are any non-image singletons or not
+  nonimg_singletons :=  not IsEmpty(NonImageSingletons(sk));
+  depth := DepthOfSkeleton(sk);
   #defining the hierarchical levels - the nodes are named only by integers
   #these numbers appear on the side
   AppendTo(out, "{node [shape=plaintext]\n edge [style=invis]\n");
-  for i in [1..DepthOfSkeleton(sk)-1] do
+  for i in [1..depth] do
     AppendTo(out,Concatenation(String(i),"\n"));
-    if i <= DepthOfSkeleton(sk) then
+    if i < depth then
       AppendTo(out,Concatenation(String(i),"->",String(i+1),"\n"));
     fi;
   od;
+  if nonimg_singletons then
+    AppendTo(out,Concatenation(String(depth+1),"[style=invis]\n"));
+    AppendTo(out,Concatenation(String(depth),"->",String(depth+1),"\n"));
+  fi;
   AppendTo(out,"}\n");
   #drawing equivalence classes
   classes :=  SubductionClasses(sk);
@@ -224,7 +231,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
       AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
     od;
     AppendTo(out,"color=\"black\";");
-    if DepthOfSet(sk, node) < DepthOfSkeleton(sk) then
+    if DepthOfSet(sk, node) <= depth then
       G := HolonomyGroup@(sk, node);
       if not IsTrivial(G) then
         AppendTo(out,"style=\"filled\";fillcolor=\"lightgrey\";");
@@ -242,7 +249,7 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     fi;
   od;
   #drawing the the same level elements
-  for i in [1..DepthOfSkeleton(sk)-1] do
+  for i in [1..depth] do
     AppendTo(out, "{rank=same;",String(i),";");
     for class in SubductionClassesOnDepth(sk,i) do
       for node in class do
@@ -252,11 +259,13 @@ local  str, i,label,node,out,class,classes,set,states,symbols,G,sk,params,tmpstr
     AppendTo(out,"}\n");
   od;
   #singletons
-  AppendTo(out, "{rank=same;",String(DepthOfSkeleton(sk)),";");
-  for node in Singletons(sk) do
-    AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
-  od;
+  if nonimg_singletons then
+    AppendTo(out, "{rank=same;",String(depth+1),";");
+    for node in NonImageSingletons(sk) do
+      AppendTo(out,"\"",TrueValuePositionsBlistString(node,states),"\";");
+    od;
   AppendTo(out,"}\n");
+  fi;
   #drawing the representatives as rectangles and their covers
   for class in Union(RepresentativeSets(sk)) do
     AppendTo(out,"\"",TrueValuePositionsBlistString(class,states),
