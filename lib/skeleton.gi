@@ -265,51 +265,30 @@ function(sk, X, Y)
 end);
 
 
-################################################################################
-# HEIGHT, DEPTH ################################################################
-################################################################################
-InstallMethod(Heights, "for a skeleton (SgpDec)", [IsSkeleton],
-function(sk)
-  local leaves, leaf, o,reps,heights,RecHeight;
-  o := ForwardOrbit(sk);
-  reps := SkeletonTransversal(sk);
-  heights := ListWithIdenticalEntries(Size(reps),0);
-  #-----------------------------------------------------------------------------
-  RecHeight := function(sk, eqclassindx ,height)
-    local p,parents;
-    parents := PreImages(SubductionEquivClassCoverRelation(sk), eqclassindx);
-    for p in parents do
-      if not IsSingleton(o[reps[p]]) then #if it is not a singleton
-        if heights[p] < height+1 then
-          heights[p] := height+1;
-          #only call when the height is raised (this saves a lot of calls)
-          RecHeight(sk,p,height+1);
-        fi;
-      fi;
-    od;
-  end;
-  #-----------------------------------------------------------------------------
-  #we start chains from the elements with no children
-  leaves := Filtered([1..Length(reps)],
-                    x->IsEmpty(Images(SubductionEquivClassCoverRelation(sk),x)));
-  #singleton leaves have height 0, others 1
-  for leaf in leaves do
-    if IsSingleton(o[reps[leaf]]) then
-      heights[leaf] := 0;
-      RecHeight(sk,leaf,0);
-    else
-      heights[leaf] := 1;
-      RecHeight(sk,leaf,1);
-    fi;
-  od;
-  return heights;
-end);
+###############################################################################
+# DEPTH #######################################################################
+###############################################################################
 
-#calculating depth based on upside down height
+#calculating depth directly
 InstallMethod(Depths,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return List(Heights(sk), x-> Heights(sk)[1]-x + 1);
+  local recdepth, depths, binrel;
+  binrel := SubductionEquivClassCoverRelation(sk);
+  #default value 0 means depth is not computed
+  depths := ListWithIdenticalEntries(DegreeOfBinaryRelation(binrel),0);
+  #recursive function to traverse
+  recdepth := function(point, depth)
+    if (depth > depths[point]) then #in case we came a longer way
+      depths[point] := depth; #updating the value
+      Perform(Successors(binrel)[point],
+              function(x) recdepth(x,depth+1);end);
+    else
+        return;
+    fi;
+    end;
+    recdepth(1,1); #the top level is in the first position, depth 1
+    return depths;
 end);
 
 InstallMethod(DepthOfSkeleton,

@@ -1,4 +1,5 @@
 upcoming
+	Direct depth calculation - height computation removed. Some decomposition may change as the loose components are pushed upwards.
 	MaxChainOfEssentialDependency added.
 
 0.9.7

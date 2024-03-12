@@ -22,21 +22,23 @@ gap> S := Semigroup([
 > Transformation([4,4,4,1,2,3]),
 > Transformation([2,3,1,4,4,4])]);;
 > sk := Skeleton(S);;
+gap> TestHolonomyAction(sk);
+true
 gap> AllHolonomyCoords(1,sk);
-[ [ 1, 1, 1, 1, 2 ], [ 1, 1, 1, 2, 1 ], [ 1, 2, 4, 1, 1 ] ]
+[ [ 1, 4, 1, 1, 2 ], [ 1, 4, 2, 1, 1 ], [ 1, 5, 4, 1, 1 ] ]
 gap> ForAll([1..6], x -> x=AsPoint(AsHolonomyCoords(x,sk),sk));
 true
 gap> hcs := HolonomyCascadeSemigroup(S);
-<cascade semigroup with 6 generators, 5 levels with (2, 4, 5, 5, 2) pts>
+<cascade semigroup with 6 generators, 5 levels with (2, 7, 5, 2, 2) pts>
 gap> Display(hcs);
 1: 2
-2: (4,C3)
-3: (3,S3) (2,C2)
-4: (3,C3) (2,C2)
+2: (3,S3) (4,C3)
+3: (3,C3) (2,C2)
+4: (2,C2)
 5: 2
 gap> hom := HomomorphismTransformationSemigroup(hcs);
-MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (2, 4, \
-5, 5, 2) pts>, <transformation semigroup of degree 6 with 6 generators>
+MappingByFunction( <cascade semigroup with 6 generators, 5 levels with (2, 7, \
+5, 2, 2) pts>, <transformation semigroup of degree 6 with 6 generators>
  , function( ct ) ... end )
 gap> AsSortedList(S) = AsSortedList(Range(hom));
 true
