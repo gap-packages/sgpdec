@@ -1,5 +1,5 @@
 gap> START_TEST("Sgpdec package: cascade.tst");
-gap> LoadPackage("sgpdec", false);;
+gap> LoadPackage("sgpdec");;
 gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
 > "/tst/variables.g"));;
 
@@ -19,7 +19,7 @@ gap> c := Cascade([FlipFlop,T3],[ [[],Transformation([1,1])],
 <trans cascade with 2 levels with (2, 3) pts, 3 dependencies>
 gap> Display(c);
 Dependency function of depth 1 with 1 dependencies.
-[ ] -> Transformation( [ 1, 1 ] )
+[  ] -> Transformation( [ 1, 1 ] )
 Dependency function of depth 2 with 2 dependencies.
 [ 1 ] -> Transformation( [ 3, 3, 2 ] )
 [ 2 ] -> Transformation( [ 2, 3, 2 ] )
@@ -29,7 +29,7 @@ gap> c := Cascade([Z2,Z3], [ [[],(1,2)], [[1],(1,2,3)] ]);
 <perm cascade with 2 levels with (2, 3) pts, 2 dependencies>
 gap> Display(c);
 Dependency function of depth 1 with 1 dependencies.
-[ ] -> (1,2)
+[  ] -> (1,2)
 Dependency function of depth 2 with 1 dependencies.
 [ 1 ] -> (1,2,3)
 gap> IsPermCascade(c);
@@ -42,7 +42,7 @@ gap> ic := Inverse(c);
 <perm cascade with 2 levels with (2, 3) pts, 2 dependencies>
 gap> Display(ic);
 Dependency function of depth 1 with 1 dependencies.
-[ ] -> (1,2)
+[  ] -> (1,2)
 Dependency function of depth 2 with 1 dependencies.
 [ 2 ] -> (1,3,2)
 gap> Order(c);
@@ -194,26 +194,26 @@ gap> d:=
 gap> c*d;
 <trans cascade with 3 levels with (3, 8, 5) pts, 28 dependencies>
 gap> PrintString(c*d);
-"Cascade( [ [ 1 .. 3 ], [ 1 .. 8 ], [ 1 .. 5 ] ], [ [ [ ], Transformation( [ 1\
-, 1, 1 ] ) ], [ [ 1 ], Transformation( [ 2, 2, 5, 6, 6, 6, 5, 6 ] ) ], [ [ 2 ]\
-, Transformation( [ 2, 2, 6, 6, 6, 6, 6, 6 ] ) ], [ [ 3 ], Transformation( [ 2\
-, 2, 5, 5, 5, 5, 5, 5 ] ) ], [ [ 1, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
-, [ [ 1, 2 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 3 ], Transformatio\
-n( [ 2, 2, 3, 3, 3 ] ) ], [ [ 1, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [\
- [ 1, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 6 ], Transformation( \
-[ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ \
-1, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 1 ], Transformation( [ 3\
-, 3, 3 ] ) ], [ [ 2, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], [ [ 2, 3 ], T\
-ransformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 4 ], Transformation( [ 3, 3, 3, 3\
-, 3 ] ) ], [ [ 2, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 6 ], Tran\
-sformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 7 ], Transformation( [ 3, 3, 3, 3, 3\
- ] ) ], [ [ 2, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 1 ], Transfo\
-rmation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] \
-) ], [ [ 3, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 4 ], Transforma\
-tion( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ]\
-, [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 7 ], Transformatio\
-n( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ] \
-)"
+"Cascade( [ [ 1 .. 3 ], [ 1 .. 8 ], [ 1 .. 5 ] ], [ [ [  ], Transformation( [ \
+1, 1, 1 ] ) ], [ [ 1 ], Transformation( [ 2, 2, 5, 6, 6, 6, 5, 6 ] ) ], [ [ 2 \
+], Transformation( [ 2, 2, 6, 6, 6, 6, 6, 6 ] ) ], [ [ 3 ], Transformation( [ \
+2, 2, 5, 5, 5, 5, 5, 5 ] ) ], [ [ 1, 1 ], Transformation( [ 3, 3, 3, 3, 3 ] ) \
+], [ [ 1, 2 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 3 ], Transformati\
+on( [ 2, 2, 3, 3, 3 ] ) ], [ [ 1, 4 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], \
+[ [ 1, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 6 ], Transformation(\
+ [ 3, 3, 3, 3, 3 ] ) ], [ [ 1, 7 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [\
+ 1, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 1 ], Transformation( [ \
+3, 3, 3 ] ) ], [ [ 2, 2 ], Transformation( [ 2, 2, 3, 3, 3 ] ) ], [ [ 2, 3 ], \
+Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 4 ], Transformation( [ 3, 3, 3, \
+3, 3 ] ) ], [ [ 2, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 6 ], Tra\
+nsformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 2, 7 ], Transformation( [ 3, 3, 3, 3, \
+3 ] ) ], [ [ 2, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 1 ], Transf\
+ormation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 2 ], Transformation( [ 2, 2, 3, 3, 3 ]\
+ ) ], [ [ 3, 3 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 4 ], Transform\
+ation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 5 ], Transformation( [ 3, 3, 3, 3, 3 ] ) \
+], [ [ 3, 6 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 7 ], Transformati\
+on( [ 3, 3, 3, 3, 3 ] ) ], [ [ 3, 8 ], Transformation( [ 3, 3, 3, 3, 3 ] ) ] ]\
+ )"
 
 # bit of coordinate manipulation
 gap> AsList(AllConcreteCoords([[1..2],[1..3], [1..4]],[1,0,2]));
