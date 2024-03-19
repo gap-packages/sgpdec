@@ -45,7 +45,6 @@ function(sk,A)
                  ];
 end);
 
-
 # used by holonomy
 InstallGlobalFunction(RandomChain,
 function(sk,k)
