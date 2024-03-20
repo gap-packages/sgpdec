@@ -26,12 +26,23 @@ f := x -> OnDepArg([],DependencyFunctionsOf(AsHolonomyCascade(x,sk))[1]);
  return Classify(S, f);
 end;
 
+#based on the previous hashmap, we map top level actions to set of image set of the preimage transformations 
+TopLevelPreImageImageSets := function(m)
+local nm;
+nm := HashMap();
+Perform(Keys(m),
+        function(k)
+          nm[k] := AsSet(List(m[k], ImageSetOfTransformation));
+        end);
+return nm;      
+end;
+
 PrintHashMap := function(m)
 local k;
 for k in Keys(m) do
   Print(k);
   Print("->");
-  Display(m[k]);
+  Print(m[k]);
   Print("\n");
 od;
 end;
