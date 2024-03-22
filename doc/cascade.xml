@@ -19,7 +19,7 @@ Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependen
 
 <Section Label="cascadeaction"><Heading>Cascade operations</Heading>
     <#Include Label="OnCoordinates">
-    <#Include Label="OnCascade">
+    <#Include Label="CascadeComposition">
 </Section>
 
 <Section Label="cascadechangerepresentation"><Heading>Changing representation</Heading>

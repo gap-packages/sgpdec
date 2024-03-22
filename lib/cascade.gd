@@ -52,7 +52,7 @@ DeclareAttribute("RestrictedDomain", IsCascade);
 DeclareGlobalFunction("DependenciesOfCascade");
 
 #cascade multiplication
-DeclareGlobalFunction("OnCascade");
+DeclareGlobalFunction("CascadeComposition");
 
 #the action on coordinates
 DeclareGlobalFunction("OnCoordinates");

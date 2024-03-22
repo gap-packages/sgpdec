@@ -300,8 +300,9 @@ end);
 InstallOtherMethod(\^, "for coordinate list and cascade",
 [IsList, IsCascade], OnCoordinates);
 
-# cascade composition (wreath product multiplication)
-InstallGlobalFunction(OnCascade,
+# cascade composition (wreath product multiplication), registered as *
+# assuming that they have the same dependency domains TODO: shall we check?
+InstallGlobalFunction(CascadeComposition,
 function(f,g)
   local dep_f, dep_g, depdoms, vals, x, i, j, depfuncs,type;
 
@@ -310,12 +311,16 @@ function(f,g)
   depdoms:=DependencyDomainsOf(f);
   #empty values lookup table based on the sizes of depdoms
   vals:=List(depdoms, x-> EmptyPlist(Length(x)));
-  #going through all depdoms
+  #going through all depency domains
   for i in [1..Length(depdoms)] do
+    #and for all coordinate prefixes in the domain
     for j in [1..Length(depdoms[i])] do
-      x:= OnDepArg(depdoms[i][j],dep_f[i])
-          * OnDepArg(OnCoordinates(depdoms[i][j],f),dep_g[i]);
-      if not IsOne(x) then
+      x:= OnDepArg(depdoms[i][j],
+                   dep_f[i]) #the acion of f on the coordinate prefix
+          *  #permutation or transformation composition
+          OnDepArg(OnCoordinates(depdoms[i][j],f), #transformed by f
+                   dep_g[i]); #the action of g on those
+      if not IsOne(x) then #identity is the defualt, no need to store
         vals[i][j]:=x;
       fi;
     od;
@@ -332,8 +337,8 @@ function(f,g)
   type);
 end);
 
-# registering the above action as a method for *
-InstallMethod(\*, "for cascades", [IsCascade, IsCascade], OnCascade);
+# registering the above compsition as a method for *
+InstallMethod(\*, "for cascades", [IsCascade, IsCascade], CascadeComposition);
 
 InstallMethod(\<, "for cascade and cascade", IsIdenticalObj,
 [IsCascade, IsCascade],
