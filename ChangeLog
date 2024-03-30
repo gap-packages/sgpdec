@@ -1,5 +1,7 @@
 upcoming
-  Skeleton visualisation: non-image singletons visually separated to an additional level, but not contributing to depth.  
+
+	Cascades now have a partially implemented List interface. This was needed to be able use them in HashMaps. BREAKING CHANGE: as a consequence, the ^ operation is not registered any more for OnCoordinates.
+	Skeleton visualisation: non-image singletons visually separated to an additional level, but not contributing to depth.
 	Direct depth calculation - height computation removed. Some decomposition may change as the loose components are pushed upwards.
 	MaxChainOfEssentialDependency added.
 
