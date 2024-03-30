@@ -356,8 +356,8 @@ TestFLAction := function(states, G, FL)
     for g in Generators(G) do
       FLx := AsFLCoords(x,FL);
       FLg := AsFLCascade(g,FL);
-      if (x^g) <> AsFLPoint(FLx^FLg, FL) then
-        Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+      if OnPoints(x,g) <> AsFLPoint(OnCoordinates(FLx,FLg), FL) then
+        Print(OnPoints(x,g)," expected, found: ", AsFLPoint(OnCoordinates(FLx,FLg),FL),"\n" );
         return false;
       fi;
     od;
@@ -374,8 +374,8 @@ TestFLActionAllCoords := function(G, FL)
     for g in Generators(G) do
       x := AsFLPoint(FLx,FL);
       FLg := AsFLCascade(g,FL);
-      if (x^g) <> AsFLPoint(FLx^FLg, FL) then
-        Print(x^g," expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+      if OnPoints(x,g) <> AsFLPoint(OnCoordinates(FLx,FLg), FL) then
+        Print(OnPoints(x,g)," expected, found: ",  AsFLPoint(OnCoordinates(FLx,FLg), FL),"\n" );
         return false;
       fi;
     od;
@@ -393,9 +393,9 @@ TestFLCosetAction := function(G, FL)
     for g in Generators(G) do
       FLx := Perm2FLCoords(x,TransversalsOf(FL));
       FLg := AsFLCascade(g,FL);
-      if PositionCanonical(BottomCosetActionRepsOf(FL), x*g) <> AsFLPoint(FLx^FLg, FL) then
+      if PositionCanonical(BottomCosetActionRepsOf(FL), x*g) <> AsFLPoint(OnCoordinates(FLx,FLg), FL) then
         Print(PositionCanonical(BottomCosetActionRepsOf(FL), x*g),
-              " expected, found: ",  AsFLPoint(FLx^FLg, FL),"\n" );
+              " expected, found: ",  AsFLPoint(OnCoordinates(FLx,FLg), FL),"\n" );
         return false;
       fi;
     od;
