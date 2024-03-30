@@ -37,7 +37,7 @@ end);
 
 # create a cascade for a given list of components (see ComponentDomains) for
 # valid inputs and a list of dependencies
-InstallGlobalFunction(Cascade,
+ InstallGlobalFunction(Cascade,
 function(comps, deps)
   local compdoms, depdom, depfuncs, o;
 
@@ -285,20 +285,20 @@ function(coords, ct)
 
   dfs:=DependencyFunctionsOf(ct);
   len:=Length(coords);
-  # prefix contains the dependnecy function arguments, built one by one
+  # prefix contains the dependency function arguments, built one by one
   prefix:=EmptyPlist(len);
   out:=EmptyPlist(len);
 
   for i in [1..len] do
-    out[i]:=coords[i]^(prefix^dfs[i]);
+    out[i]:=OnPoints(coords[i], OnDepArg(prefix, dfs[i]));
     prefix[i]:=coords[i];
   od;
   return out;
 end);
 
 # registering the above action as a method for ^
-InstallOtherMethod(\^, "for coordinate list and cascade",
-[IsList, IsCascade], OnCoordinates);
+#InstallOtherMethod(\^, "for coordinate list and cascade", #TODO after Cascade became List this caused trouble
+#[IsList, IsCascade], OnCoordinates);
 
 # cascade composition (wreath product multiplication), registered as *
 # assuming that they have the same dependency domains TODO: shall we check?
@@ -438,6 +438,26 @@ InstallMethod(Display, "for a cascade",
 function(c)
   Perform(DependencyFunctionsOf(c),Display);
   return;
+end);
+
+##### IsList methods #### implementing some minimal list functionality
+# just for being hashed by HashBasic in datastructures
+InstallMethod(Length, "for a cascade",
+[IsCascade],
+function(c)
+  return Length(DependencyFunctionsOf(c));
+end);
+
+InstallOtherMethod(IsBound\[\], "for a casacde and an index",
+[IsCascade,IsInt],
+function(c,i)
+  return IsBound(DependencyFunctionsOf(c)[i]);
+end);
+
+InstallOtherMethod(\[\], "for a cascade and an index",
+[IsCascade,IsInt],
+function(c,i)
+  return Dependencies(DependencyFunctionsOf(c)[i]);
 end);
 
 ################################################################################

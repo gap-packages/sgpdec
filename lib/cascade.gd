@@ -11,7 +11,8 @@
 
 DeclareCategory("IsCascade", IsMultiplicativeElementWithOne
         and IsAssociativeElement and IsAttributeStoringRep
-        and IsMultiplicativeElementWithInverse);
+        and IsMultiplicativeElementWithInverse
+        and IsList); #to make it hashable
 DeclareCategoryCollections("IsCascade");
 
 DeclareCategory("IsPermCascade", IsCascade);
