@@ -448,6 +448,13 @@ function(c)
   return Length(DependencyFunctionsOf(c));
 end);
 
+InstallMethod(IsFinite, "for a cascade",
+[IsCascade],
+function(c)
+  return true;
+end);
+
+
 InstallOtherMethod(IsBound\[\], "for a casacde and an index",
 [IsCascade,IsInt],
 function(c,i)
