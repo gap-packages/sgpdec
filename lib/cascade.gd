@@ -34,12 +34,13 @@ BindGlobal("TransCascadeType", NewType(TransCascadeFamily, IsTransCascade));
 
 #constructors
 #DeclareGlobalFunction("CascadeNC"); # TODO doing an NC version later
-DeclareGlobalFunction("Cascade");
 DeclareGlobalFunction("CreateCascade");
 DeclareGlobalFunction("CreateComponentDomains");
 DeclareGlobalFunction("IdentityCascade");
 DeclareGlobalFunction("RandomCascade");
 DeclareOperation("AsCascade", [IsTransformation, IsDenseList]);
+
+DeclareOperation("Cascade", [IsList, IsList, IsType]);
 
 #accessing cascade internals
 DeclareAttribute("DomainOf", IsCascade);

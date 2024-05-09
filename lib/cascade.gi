@@ -35,21 +35,30 @@ function(comps)
   return domains;
 end);
 
-# create a cascade for a given list of components (see ComponentDomains) for
-# valid inputs and a list of dependencies
- InstallGlobalFunction(Cascade,
-function(comps, deps)
-  local compdoms, depdom, depfuncs, o;
-
-  # figuring out whether we have a permutation cascade or not
+#todo: temporary naming
+# figuring out whether we have a permutation cascade or not
+FigureTypeOfCascade := function(comps,deps)
   if ForAll(comps, IsGroup)
      or
      ((not ForAny(comps, IsSemigroup))
-       and ForAll(deps, x -> IsPerm(x[2]))) then
-    o:=Objectify(PermCascadeType, rec());
+      and ForAll(deps, x -> IsPerm(x[2]))) then
+    return PermCascadeType;
   else
-    o:=Objectify(TransCascadeType, rec());
+    return TransCascadeType;
   fi;
+end;
+
+InstallOtherMethod(Cascade, "for components and dependencies", [IsList, IsList],
+function(comps, deps)
+  return Cascade(comps, deps, FigureTypeOfCascade(comps, deps));
+end);
+
+# create a cascade for a given list of components (see ComponentDomains) for
+# valid inputs and a list of dependencies
+InstallMethod(Cascade, "for components and dependencies", [IsList, IsList, IsType],
+function(comps, deps, type)
+  local compdoms, depdom, depfuncs, o;
+  o := Objectify(type, rec());
   compdoms:=CreateComponentDomains(comps);
   #TODO maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
