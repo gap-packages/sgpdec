@@ -2,7 +2,7 @@
 ##
 ## cascade.gd           SgpDec package
 ##
-## Copyright (C) 2008-2021
+## Copyright (C) 2008-2024
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##

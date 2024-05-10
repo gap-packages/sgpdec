@@ -2,7 +2,7 @@
 ##
 ## cascade.gi           SgpDec package
 ##
-## Copyright (C) 2008-2022
+## Copyright (C) 2008-2024
 ##
 ## Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
 ##
@@ -37,7 +37,7 @@ end);
 
 #todo: temporary naming
 # figuring out whether we have a permutation cascade or not
-FigureTypeOfCascade := function(comps,deps)
+DetectCascadeType := function(comps,deps)
   if ForAll(comps, IsGroup)
      or
      ((not ForAny(comps, IsSemigroup))
@@ -47,10 +47,11 @@ FigureTypeOfCascade := function(comps,deps)
     return TransCascadeType;
   fi;
 end;
+MakeReadOnlyGlobal("DetectCascadeType");
 
 InstallOtherMethod(Cascade, "for components and dependencies", [IsList, IsList],
 function(comps, deps)
-  return Cascade(comps, deps, FigureTypeOfCascade(comps, deps));
+  return Cascade(comps, deps, DetectCascadeType(comps, deps));
 end);
 
 # create a cascade for a given list of components (see ComponentDomains) for
@@ -63,13 +64,11 @@ function(comps, deps, type)
   #TODO maybe there should be a ShallowCopy here? JDM
   depdom:=DependencyDomains(compdoms);
   depfuncs:=DependencyFunctions(depdom, deps);
-  # setting the stored attributes of the newly created cascade
-  SetDomainOf(o, EnumeratorOfCartesianProduct(compdoms));
-  SetComponentDomains(o, compdoms);
-  SetDependencyDomainsOf(o, depdom);
-  SetDependencyFunctionsOf(o, depfuncs);
-  SetNrComponents(o, Length(compdoms));
-  return o;
+  return CreateCascade(EnumeratorOfCartesianProduct(compdoms),
+                       compdoms,
+                       depfuncs,
+                       depdom,
+                       type);
 end);
 
 # a simple constructor that populates the object's members
