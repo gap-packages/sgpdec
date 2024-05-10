@@ -74,7 +74,7 @@ end);
 
 # a simple constructor that populates the object's members
 # not meant for the end user at the commandline
-InstallGlobalFunction(CreateCascade,
+InstallGlobalFunction(CreateCascade, #TODO call this from Cascade
 function(dom, compdoms, depfuncs, depdom, type)
   local f;
   f:=Objectify(type, rec());
