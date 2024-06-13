@@ -28,3 +28,6 @@ SgpDecRunManualExamples := function()
       "Section"),
     rec(width:=80,compareFunction:="uptowhitespace"));
 end;
+
+#the actual call
+SgpDecMakeDoc();
