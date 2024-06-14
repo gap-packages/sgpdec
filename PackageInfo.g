@@ -1,5 +1,5 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "0.9.8">
+##  <!ENTITY VERSION "1.0.0-dev">
 ##  <!ENTITY COPYRIGHTYEARS "2008-2024">
 ##  <#/GAPDoc>
 
@@ -7,9 +7,9 @@ SetPackageInfo(rec(
 
 PackageName := "SgpDec",
 
-Subtitle := "Hierarchical Coordinatizations of Finite Groups and Semigroups",
+Subtitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
 
-Version := "0.9.8",
+Version := "1.0.0-dev",
 
 Date := "13/06/2024", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
@@ -87,7 +87,7 @@ PackageDoc := rec(
   HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
-  LongTitle := "Hierarchical Decompositions and Coordinate Systems",
+  LongTitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
   Autoload  := true
 ),
 
