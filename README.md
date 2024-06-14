@@ -21,6 +21,11 @@ To get some idea what can be computed with SgpDec, check this paper: [SgpDec: Ca
 
 For implementational details, the preprint [Cascade product of permutation groups](https://arxiv.org/abs/1303.0091) describes the cascade product (explicitly constructed substructures of the wreath product), and the [Computational Holonomy Decomposition of Transformation Semigroups](https://arxiv.org/abs/1508.06345) contains a constructive proof of the holonomy decomposition, which is in close correspondence to the implementation (work in progress).
 
+## Versioning policy
+
+From 1.0.0 we follow BreakVer (see [Break Versioning](https://www.taoensso.com/break-versioning)). Briefy, for x.y.z, change in z means that everyone can just safely upgrade, nothing is expected to break. Change in y means some minor breaking changes (e.g., renaming, or some other API change). Change in x means breaking changes for all users, i.e., major architectural change.
+For changes in x.y, check the ChangeLog!
+
 ## Where to complain when something goes wrong?
 
 Please report any problem or request features by [creating on issue on the project page](https://github.com/gap-packages/sgpdec/issues).
