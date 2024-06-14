@@ -19,5 +19,6 @@ ReadPackage("SgpDec","/lib/fl.gi");
 ReadPackage("SgpDec","/lib/holonomy.gi");
 ReadPackage("SgpDec","/lib/lowerbound.gi");
 ReadPackage("SgpDec","/lib/hashmaprel.gi");
+ReadPackage("SgpDec","/lib/relmorph.gi");
 #just the test calling functions
 ReadPackage("SgpDec","/tst/testfunctions.g");

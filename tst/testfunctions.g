@@ -1,7 +1,8 @@
 SgpDecTestInstall := function()
 local test;
   for test in
-      ["hashmaprel",
+      ["relmorph",
+       "hashmaprel",
        "lowerbound",
        "disjointuniongroup",
        "WeakControlWords",

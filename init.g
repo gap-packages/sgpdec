@@ -17,3 +17,4 @@ ReadPackage("SgpDec","/lib/coords.gd");
 ReadPackage("SgpDec","/lib/holonomy.gd");
 ReadPackage("SgpDec","/lib/lowerbound.gd");
 ReadPackage("SgpDec","/lib/hashmaprel.gd");
+ReadPackage("SgpDec","/lib/relmorph.gd");
