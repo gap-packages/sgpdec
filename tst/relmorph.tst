@@ -15,4 +15,6 @@ gap> ex1phi := HashMap([[Transformation([1,2,3]), [Transformation([1,2])]],
 >                   [Transformation([2,2,2]), [Transformation([2,2])]],
 >                   [Transformation([3,3,3]), [Transformation([2,2])]],
 >                   [Transformation([1,3,2]), [Transformation([1,2])]]]);;
+gap> IsTSRelMorph(ex1theta, ex1phi, OnPoints, OnPoints);
+true
 gap> STOP_TEST( "Relational morphisms");
