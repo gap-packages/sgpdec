@@ -19,6 +19,7 @@ W := function(A)
   Perform(List([1..Size(sA)]), function(i) m[sA[i]]:=i;end);
   return x -> m[x];
 end;
+MakeReadOnlyGlobal("W");
 
 # the inverse of W, decodes the states in U back to ones from X
 Winv := function(A)
@@ -28,6 +29,7 @@ Winv := function(A)
   Perform(List([1..Size(sA)]), function(i) m[i]:=sA[i];end);
   return x -> m[x];
 end;
+MakeReadOnlyGlobal("Winv");
 
 # the lifts in the decomposition for the states in the original ts
 # idea: take a state x, and for all of its images y (the top level coordinate),
@@ -40,8 +42,10 @@ PsiFunc := function(x, theta, thetainv)
                return [y,w(x)];
              end);
 end;
+MakeReadOnlyGlobal("PsiFunc");
 
-Psi := function(theta)
+InstallGlobalFunction(Psi,
+function(theta)
   local x,YtoX, psi;
   psi := HashMap();
   YtoX := InvertHashMapRelation(theta);
@@ -49,7 +53,7 @@ Psi := function(theta)
       psi[x] := PsiFunc(x, theta, YtoX);
   od;
   return psi;
-end;
+end);
 
 # for the coordinates we return the original state
 # Where does z go? It depends on the top level state.
@@ -60,6 +64,7 @@ PsiInvFunc := function(coords,thetainv)
   winv := Winv(thetainv[y]); # thetainv: Y -> X
   return winv(z);
 end;
+MakeReadOnlyGlobal("PsiInvFunc");
 
 # checking to coordinatized states by mapping them back to X
 PsiCheck := function(theta)
@@ -73,6 +78,7 @@ PsiCheck := function(theta)
   od;
   return true;
 end;
+MakeReadOnlyGlobal("PsiCheck");
 
 # TRANSFORMATIONS
 # given the context y, the top level state, we want to know
@@ -93,6 +99,7 @@ LocalTransformation := function(y,s,t, YtoX)
          end);
   return Transformation(l);
 end;
+MakeReadOnlyGlobal("LocalTransformation");
 
 # creating a cascade for s when lifted to t
 MuLift := function(s,t,theta,n)
@@ -109,15 +116,18 @@ MuLift := function(s,t,theta,n)
   if not IsOne(t) then Add(deps, [[],t]); fi; #top level is t
   return Cascade([n,k], deps, TransCascadeType);
 end;
+MakeReadOnlyGlobal("MuLift");
 
 # needed for MuCheck
 MuFunc := function(s, ts, theta, n)
   return List(ts, t-> MuLift(s,t,theta, n));
 end;
+MakeReadOnlyGlobal("MuFunc");
 
 # the complete map from S to the cascade product
 # just lift every s with respect to all of its lifts
-Mu := function(theta, phi)
+InstallGlobalFunction(Mu,
+function(theta, phi)
   local mu, t, y, s, cs, deps, nt, n;
   n := Size(ImageOfHashMapRelation(theta)); # #states of top level
   mu := HashMap();
@@ -125,7 +135,7 @@ Mu := function(theta, phi)
     mu[s] := MuFunc(s, phi[s], theta,n);
   od;#s
   return mu;
-end;
+end);
 
 #returns a transformation in S
 MuInvFunc := function(cs, theta)
@@ -151,6 +161,7 @@ MuInvFunc := function(cs, theta)
   od;
   return Transformation(List([1..n], i -> m[i]));
 end;
+MakeReadOnlyGlobal("MuInvFunc");
 
 # checks whether the emulation composed with interpretation IE
 # is the identity on S
@@ -166,11 +177,13 @@ MuCheck := function(theta, phi)
   od;
   return true;
 end;
+MakeReadOnlyGlobal("MuCheck");
 
 # Detailed testing script for emulating by a cascade product
 # creates a 2-level decomposition for the given semigroup and input
 # surjective morphism and tests the emulation and interpretations
-TestEmulationWithMorphism := function(S,theta, phi)
+InstallGlobalFunction(TestEmulationWithMorphism,
+function(S,theta, phi)
   local psi, mu, lifts;
   #1st to double check that we have a relational morphism
   Print("Surjective morphism works? ",
@@ -196,15 +209,15 @@ TestEmulationWithMorphism := function(S,theta, phi)
         Size(Semigroup(lifts)), ",",
         Size(Semigroup(Concatenation(List(Generators(S), s-> mu[s])))),
         ") (#lifts, #Sgp(lifts), #Sgp(mu(Sgens)))");
-end;
+end);
 
 # creates the default n(n-1) covering
-TestEmulation := function(S)
+InstallGlobalFunction(TestEmulation,
+function(S)
 local n, theta, phi;
   n := DegreeOfTransformationSemigroup(S);
   #the standard covering map described in the Covering Lemma paper
   theta := ThetaForPermutationResets(n);
   phi := PhiForPermutationResets(S);
   TestEmulationWithMorphism(S, theta, phi);
-end;
-
+end);
