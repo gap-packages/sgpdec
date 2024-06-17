@@ -12,3 +12,5 @@ DeclareGlobalFunction("ThetaForConstant");
 DeclareGlobalFunction("PhiForConstant");
 DeclareGlobalFunction("ThetaForLocalMonoid");
 DeclareGlobalFunction("PhiForLocalMonoid");
+DeclareGlobalFunction("ThetaForHolonomy");
+DeclareGlobalFunction("PhiForHolonomy");

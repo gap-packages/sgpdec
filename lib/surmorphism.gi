@@ -102,3 +102,34 @@ InstallGlobalFunction(PhiForLocalMonoid,
 function(transformations, e)
   return HashMap(List(transformations, s-> [s,[e*s*e]]));
 end);
+
+################################################################################
+### For Holonomy ###############################################################
+InstallGlobalFunction(ThetaForHolonomy,
+function(sk)
+  local theta;
+  theta := HashMap();
+  Perform([1..DegreeOfSkeleton(sk)],
+         function(x)
+           theta[x] := AsSet(List(AllHolonomyCoords(x,sk), First));
+         end);
+  return theta;
+end);
+
+InstallGlobalFunction(PhiForHolonomy,
+function(sk)
+  local phi;
+  phi := HashMap();
+  Perform(TransSgp(sk),
+         function(s)
+           local top;
+           top := AsHolonomyCascade(s,sk)[1];
+           if IsEmpty(top) then
+             phi[s] := [IdentityTransformation];
+           else
+             phi[s] := [top[1][2]];
+           fi;
+         end);
+  return phi;
+end);
+

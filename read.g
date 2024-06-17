@@ -22,5 +22,6 @@ ReadPackage("SgpDec","/lib/hashmaprel.gi");
 ReadPackage("SgpDec","/lib/relmorph.gi");
 ReadPackage("SgpDec","/lib/statecong.gi");
 ReadPackage("SgpDec","/lib/surmorphism.gi");
+ReadPackage("SgpDec","/lib/emulation.gi");
 #just the test calling functions
 ReadPackage("SgpDec","/tst/testfunctions.g");

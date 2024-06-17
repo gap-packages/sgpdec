@@ -20,3 +20,4 @@ ReadPackage("SgpDec","/lib/hashmaprel.gd");
 ReadPackage("SgpDec","/lib/relmorph.gd");
 ReadPackage("SgpDec","/lib/statecong.gd");
 ReadPackage("SgpDec","/lib/surmorphism.gd");
+ReadPackage("SgpDec","/lib/emulation.gd");
