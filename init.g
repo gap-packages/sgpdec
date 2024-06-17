@@ -19,3 +19,4 @@ ReadPackage("SgpDec","/lib/lowerbound.gd");
 ReadPackage("SgpDec","/lib/hashmaprel.gd");
 ReadPackage("SgpDec","/lib/relmorph.gd");
 ReadPackage("SgpDec","/lib/statecong.gd");
+ReadPackage("SgpDec","/lib/surmorphism.gd");
