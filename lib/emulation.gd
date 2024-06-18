@@ -8,3 +8,5 @@ DeclareGlobalFunction("Mu");
 
 DeclareGlobalFunction("TestEmulationWithMorphism");
 DeclareGlobalFunction("TestEmulation");
+
+DeclareInfoClass("EmulationInfoClass");

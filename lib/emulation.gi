@@ -186,29 +186,35 @@ InstallGlobalFunction(TestEmulationWithMorphism,
 function(S,theta, phi)
   local psi, mu, lifts;
   #1st to double check that we have a relational morphism
-  Print("Surjective morphism works? ",
-        IsTSRelMorph(theta, phi, OnPoints, OnPoints),
-        "\n");
+  if not IsTSRelMorph(theta, phi, OnPoints, OnPoints) then
+    Info(EmulationInfoClass, 1, "Surjective Morphism failed!");
+    return false;
+  fi;
   #now creating the coordinatized version
   psi := Psi(theta);
   mu := Mu(theta, phi);
   # Can the cascade emulation the original
-  Print("Emulation works? ",
-        IsTSRelMorph(psi, mu, OnPoints, OnCoordinates),
-        "\n");
-  Print("Interpretation works? ",
-        IsTSRelMorph(InvertHashMapRelation(psi),
-                             InvertHashMapRelation(mu),
-                             OnCoordinates,
-                             OnPoints),
-        "\n");
+
+  if not IsTSRelMorph(psi, mu, OnPoints, OnCoordinates) then
+    Info(EmulationInfoClass, 1, "Emulation failed!");
+    return false;
+  fi;
+  if not IsTSRelMorph(InvertHashMapRelation(psi),
+                      InvertHashMapRelation(mu),
+                      OnCoordinates,
+                      OnPoints) then
+    Info(EmulationInfoClass, 1, "Interpretation failed!");
+    return false;
+  fi;
   lifts := ImageOfHashMapRelation(mu);
   #the size calculation might be heavy for bigger cascade products
-  Print("|S|=", Size(S), " -> (",
-        Size(lifts) , ",",
-        Size(Semigroup(lifts)), ",",
-        Size(Semigroup(Concatenation(List(Generators(S), s-> mu[s])))),
-        ") (#lifts, #Sgp(lifts), #Sgp(mu(Sgens)))");
+  Info(EmulationInfoClass, 1,
+       Concatenation("|S|=", Size(S), " -> (",
+                     Size(lifts) , ",",
+                     Size(Semigroup(lifts)), ",",
+                     Size(Semigroup(Concatenation(List(Generators(S), s-> mu[s])))),
+                     ") (#lifts, #Sgp(lifts), #Sgp(mu(Sgens)))"));
+  return true;
 end);
 
 # creates the default n(n-1) covering
@@ -219,5 +225,5 @@ local n, theta, phi;
   #the standard covering map described in the Covering Lemma paper
   theta := ThetaForPermutationResets(n);
   phi := PhiForPermutationResets(S);
-  TestEmulationWithMorphism(S, theta, phi);
+  return TestEmulationWithMorphism(S, theta, phi);
 end);
