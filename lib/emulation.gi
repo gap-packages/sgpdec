@@ -209,11 +209,12 @@ function(S,theta, phi)
   lifts := ImageOfHashMapRelation(mu);
   #the size calculation might be heavy for bigger cascade products
   Info(EmulationInfoClass, 1,
-       Concatenation("|S|=", Size(S), " -> (",
-                     Size(lifts) , ",",
-                     Size(Semigroup(lifts)), ",",
-                     Size(Semigroup(Concatenation(List(Generators(S), s-> mu[s])))),
-                     ") (#lifts, #Sgp(lifts), #Sgp(mu(Sgens)))"));
+       JoinStringsWithSeparator(
+           ["|S|=", Size(S), " -> (",
+            Size(lifts) , ",",
+            Size(Semigroup(lifts)), ",",
+            Size(Semigroup(Concatenation(List(Generators(S), s-> mu[s])))),
+            ") (#lifts, #Sgp(lifts), #Sgp(mu(Sgens)))"],""));
   return true;
 end);
 
