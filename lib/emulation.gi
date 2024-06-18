@@ -12,24 +12,24 @@
 # A - a set of states (positive integers)
 # it returns fail if the input is undefined (by the hashmap inside)
 # intuition: this encodes the original states in X into Z
-W := function(A)
+wyLabel := function(A)
   local m, sA;
   sA := AsSortedList(A); #to make sure they are in order
   m := HashMap();
   Perform(List([1..Size(sA)]), function(i) m[sA[i]]:=i;end);
   return x -> m[x];
 end;
-MakeReadOnlyGlobal("W");
+MakeReadOnlyGlobal("wyLabel");
 
-# the inverse of W, decodes the states in U back to ones from X
-Winv := function(A)
+# the inverse of wyLabel, decodes the states in U back to ones from X
+wyLabelInv := function(A)
   local m, sA;
   sA := AsSortedList(A);
   m := HashMap();
   Perform(List([1..Size(sA)]), function(i) m[i]:=sA[i];end);
   return x -> m[x];
 end;
-MakeReadOnlyGlobal("Winv");
+MakeReadOnlyGlobal("wyLabelInv");
 
 # the lifts in the decomposition for the states in the original ts
 # idea: take a state x, and for all of its images y (the top level coordinate),
@@ -38,7 +38,7 @@ PsiFunc := function(x, theta, thetainv)
   return List(theta[x],
              function(y)
                local w;
-               w := W(thetainv[y]);
+               w := wyLabel(thetainv[y]);
                return [y,w(x)];
              end);
 end;
@@ -61,7 +61,7 @@ PsiInvFunc := function(coords,thetainv)
   local y,z,winv;
   y := coords[1];
   z:= coords[2];
-  winv := Winv(thetainv[y]); # thetainv: Y -> X
+  winv := wyLabelInv(thetainv[y]); # thetainv: Y -> X
   return winv(z);
 end;
 MakeReadOnlyGlobal("PsiInvFunc");
@@ -89,8 +89,8 @@ LocalTransformation := function(y,s,t, YtoX)
   ypre := YtoX[y]; #preimages
   ytpre := YtoX[OnPoints(y,t)];
   l := [1..Maximum(Size(ypre),Size(ytpre))];#k]; #we need to prefill the action with identities, |ypre| may not equal |ytpre|
-  wyinv := Winv(ypre);
-  wyt := W(ytpre);
+  wyinv := wyLabelInv(ypre);
+  wyt := wyLabel(ytpre);
   Perform([1..Size(ypre)],
          function(z)
            # map z back from the current context,
@@ -144,9 +144,9 @@ MuInvFunc := function(cs, theta)
   m := HashMap();
   n := Size(Keys(theta)); # |X|
   for y in ImageOfHashMapRelation(theta) do
-    wy := W(thetainv[y]);
+    wy := wyLabel(thetainv[y]);
     t := OnDepArg([], DependencyFunctionsOf(cs)[1]);
-    wytinv := Winv(thetainv[OnPoints(y,t)]);
+    wytinv := wyLabelInv(thetainv[OnPoints(y,t)]);
     u := OnDepArg([y], DependencyFunctionsOf(cs)[2]);
     #Print(wy*u*wytinv);
     for x in thetainv[y] do
