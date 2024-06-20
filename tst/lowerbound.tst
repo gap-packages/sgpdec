@@ -13,7 +13,6 @@ gap> beckspp := [
 > Transformation([2,3,1,4,4,4]),
 > Transformation([2,1,3,4,2,2]),
 > Transformation([1,2,2,2,2,2])];;#makes H({1,2,3}) nontrivia
-gap>
 gap> BECKSPP := Semigroup(beckspp);;
 gap> skel := Skeleton(BECKSPP);;
 gap> EssentialDependencyGroup(skel, FiniteSet([1,2,3], 6), FiniteSet([1,2], 6));
