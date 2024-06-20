@@ -38,10 +38,6 @@ gap> StructureDescription(EssentialDependencyGroup(sk, FiniteSet([1,2,3,4], 4), 
 "S3"
 
 # Testing Krebs cycle example
-gap> S := FullTransformationSemigroup(6);;
-gap> sk := Skeleton(S);;
-gap> MaxChainOfEssentialDependency(sk);
-[ 1, 2, 3, 4, 5 ]
 gap> alpha:=   Transformation([2,2,4,4,5,2]);;  #NAD
 gap> beta:=     Transformation([1,3,3,4,5,6]);;  #NADP
 gap> gamma:=Transformation([1,2,3,5,5,6]);;  #GDP
