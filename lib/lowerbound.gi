@@ -15,101 +15,141 @@ function(sk, set)
                   e -> OnFiniteSet(BaseSet(sk), e) = set);
 end);
 
-InstallGlobalFunction(CheckEssentialDependency, function(sk, d1, d2)
-  # d1 is lower than d2 so larger set
-  local G1, CalX2, CalI2, skJ, x1, x2, e1, JGroup, S;
+# EssentialDependencyGroup
+InstallGlobalFunction(EssentialDependencyGroup, function(sk, x1, x2)
+  local G1, CalX2, CalI2, skJ, e1, JGroup, S;
   S := TransSgp(sk);
 
-  for x1 in Concatenation(SubductionClassesOnDepth(sk, d1)) do
-    for x2 in Concatenation(SubductionClassesOnDepth(sk, d2)) do
-      if IsSubsetBlist(x1, x2) then
+  if IsSubsetBlist(x1, x2) then
+    for e1 in IdempotentsForSubset(sk, x1) do
+      G1 := SchutzenbergerGroup(HClass(S, e1));
 
-        for e1 in IdempotentsForSubset(sk, x1) do
-          G1 := SchutzenbergerGroup(HClass(S, e1));
+      CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet));
 
-          CalX2 := Enumerate(Orb(G1, x2, OnFiniteSet));
+      # Get all idempotents with images that are members of CalX2;
+      CalI2 := Concatenation(List(CalX2, Xt -> IdempotentsForSubset(sk, Xt)));
 
-          #all idempotents with images that are members of CalX2;
-          CalI2 := Concatenation(List(CalX2, Xt -> IdempotentsForSubset(sk, Xt)));
+      if IsEmpty(CalI2) then
+        continue;
+      fi;
+      
+      skJ := Skeleton(Semigroup(CalI2));
 
-          if IsEmpty(CalI2) then
-            continue;
-          fi;
-          
-          skJ := Skeleton(Semigroup(CalI2));
+      if x2 in ExtendedImageSet(skJ) then
+        JGroup := PermutatorGroup(skJ, x2);
 
-          if x2 in ExtendedImageSet(skJ) then
-            JGroup := PermutatorGroup(skJ, x2);
-
-            if Size(JGroup) > 1 then # the stricter test is PermutatorGroup(sk, x2) = JGroup
-              Assert( 1, PermutatorGroup(sk, x2) = JGroup, 
-                Concatenation("PermutatorGroup(sk, x2) <> JGroup\nx2 = ", 
-                  TrueValuePositionsBlistString(x2), "\nx1 = ",
-                  TrueValuePositionsBlistString(x1), "\n") );
-              return JGroup;
-            fi;
-          fi;
-        od;
-
+        if Size(JGroup) > 1 then # The stricter test is PermutatorGroup(sk, x2) = JGroup
+          Assert( 1, PermutatorGroup(sk, x2) = JGroup, 
+            Concatenation("PermutatorGroup(sk, x2) <> JGroup\nx2 = ", 
+              TrueValuePositionsBlistString(x2), "\nx1 = ",
+              TrueValuePositionsBlistString(x1), "\n") );
+          return JGroup;
+        fi;
       fi;
     od;
-  od;
+  fi;
   return Group(());
 end);
 
+
 InstallGlobalFunction(MaxChainOfEssentialDependency, function(sk)
-  # find all levels with groups
-  local levels, level, i, j, groups, N, mem, links, newval, ChainOfLevels;
+  local o, Set2Index, Index2Set, maxChild, chainSizes, DFS, classesOnDepth,
+      finalMax, idxFinalMax, pos;
 
-  levels := [];
-  for level in [1..DepthOfSkeleton(sk)-1] do
-    groups := GroupComponents(sk)[level];
-    for i in [1..Length(groups)] do
-      if not IsTrivial(groups[i]) then
-        Add(levels, level);
-        break;
+  o := ForwardOrbit(sk);
+  Set2Index := x -> Position(o,x);
+  Index2Set := x -> o[x];
+
+  maxChild := List(o, c -> -1); # Used for tracing the longest chain
+  chainSizes := List(o, c -> -1);
+
+  # Define the recursion function
+  DFS := function(set_idx) # Input class is int
+    local children, descendents, trivial, desc_idx, i, chainLengths, chainTemp, maxChainTemp;
+
+    # Base Case: first check if the class is already in the list, return chain length if it is
+    if chainSizes[set_idx] <> -1 then
+      return chainSizes[set_idx];
+    fi;
+
+    # Use immediate child *sets* below a set with set_idx for more memory-efficient DFS
+    children := Images(InclusionCoverRelation(sk), Index2Set(set_idx));
+    children := Filtered(children, c -> SizeBlist(c) > 1);     # Remove singleton sets
+    children := List(children, c -> Set2Index(c));
+
+    # If the class has no nontrivial permutator group, return 0
+    trivial := false;
+    if IsTrivial(PermutatorGroup(sk, Index2Set(set_idx))) then
+      chainSizes[set_idx] := 0;
+      trivial := true;
+    fi;
+
+    # Base Case: if no children, return 1
+    if IsEmpty(children) then
+      if trivial then
+        return 0;
       fi;
-    od;
-  od;
+      chainSizes[set_idx] := 1;
+      return 1;
+    fi;
 
-  N := Length(levels);
+    # If there are children, find the chain length of each child
+    List(children, c -> DFS(c)); # DFS first
 
-  if N < 2 then
-    return levels;
-  fi;
+    # If trivial, no need to check essential dependency
+    if trivial then
+      return 0;
+    fi;
 
-  # run the chaining algorithm, equivalent to the following
-  mem := ListWithIdenticalEntries(N, 1);
-  links := [1..N];
-  for i in [N-1, N-2 .. 1] do
-    for j in [i+1..N] do
-      if IsTrivial(CheckEssentialDependency(sk, levels[i], levels[j])) then
+    # This gives all the set IDs? lower than and equal to itself
+    descendents := Images(TransitiveClosureBinaryRelation(InclusionCoverRelation(sk)), Index2Set(set_idx));
+    descendents := Filtered(descendents, d -> SizeBlist(d) > 1);     # Remove singleton sets
+    descendents := List(descendents, d -> Set2Index(d));
+
+    # If classes in descendent has essential dependency with the input class ID, 
+    # add 1 to the chain length
+    maxChainTemp := 1;
+    for i in [1..Length(descendents)] do
+      desc_idx := descendents[i];
+
+      # Since all descendent classes have been searched, they all must have chain lengths <> -1.
+      # Ignore descendent classes with trivial permutator groups
+      if chainSizes[desc_idx] = 0 then
         continue;
       fi;
 
-      newval := mem[j] + 1;
-      if newval > mem[i] then
-        mem[i] := newval;
-        links[i] := j;
+      # If there is an essential dependency, add 1 to the chain length
+      if not IsTrivial(EssentialDependencyGroup(sk,
+            Index2Set(set_idx),
+            Index2Set(desc_idx))) then
+        chainTemp := chainSizes[desc_idx] + 1;
+        if chainTemp > maxChainTemp then
+          maxChainTemp := chainTemp;
+          maxChild[set_idx] := desc_idx;
+        fi;
       fi;
     od;
-  od;
 
-  # find max in mem
-  i := 1;
-  for j in [2..N] do
-    if mem[j] > mem[i] then
-      i := j;
-    fi;
-  od;
+    # Find the max chain length
+    chainSizes[set_idx] := maxChainTemp;
+    return chainSizes[set_idx];
+  end;
 
-  # find the longest chain
-  ChainOfLevels := [];
-  while i <> links[i] do
-    Add(ChainOfLevels, levels[i]);
-    i := links[i];
-  od;
-  Add(ChainOfLevels, levels[i]);
+  # Start the recursion
+  List([1..Length(o)], i -> DFS(i));
 
-  return ChainOfLevels;
+  # Find the maximum chain length
+  finalMax := Maximum(chainSizes);
+  idxFinalMax := Position(chainSizes, finalMax);
+  pos := idxFinalMax;
+
+  # Trace the chain, and print the chain of subsets
+  Print("Maximum Chain Found:");
+  while maxChild[pos] <> -1 do
+    Print(TrueValuePositionsBlistString(Index2Set(pos)), " -> ");
+    pos := maxChild[pos];
+  od;
+  Print(TrueValuePositionsBlistString(Index2Set(pos)), "\n");
+
+  return Maximum(chainSizes);
 end);
