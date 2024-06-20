@@ -10,5 +10,5 @@
 ##
 
 DeclareGlobalFunction("IdempotentsForSubset");
-DeclareGlobalFunction("CheckEssentialDependency");
+DeclareGlobalFunction("EssentialDependencyGroup");
 DeclareGlobalFunction("MaxChainOfEssentialDependency");
