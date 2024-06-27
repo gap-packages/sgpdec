@@ -55,7 +55,7 @@ local preimgs,p, conveyorbelt,s;
       str := ACNTreePrint(p,t,cycle,str);
       str := Concatenation(str,"|");
     od;
-    if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary | 
+    if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary |
     str := Concatenation(str,",");
     str := Concatenation(str,String(point),"]"); # ending the tree notation
   fi;
@@ -116,121 +116,84 @@ fi;
 # ATTRACTOR-CYCLE NOTATION -> TRANSFORMATION ###################################
 ################################################################################
 
-# assigns how many parentheses are open to each point, 0 means top level
-# when generating the maps we go down recursively, this is used to find the right level
-DepthVector := function(str)
-local openers,closers,depth,i,depthvect;
-  openers := "[(";
-  closers := ")]";
-  depth := 0;
-  depthvect := EmptyPlist(Size(str));
-  for i in [1..Size(str)] do
-    if str[i] in openers then
-      depth := depth + 1;
-    elif str[i] in closers then
-      depth := depth - 1;
-    fi;
-    depthvect[i]:= depth;
-  od;
-  return depthvect;
-end;
-MakeReadOnlyGlobal("DepthVector");
-
-#splitting string at given positions
-InstallGlobalFunction(SplitStringAtPositions,
-function(str, positions)
-  local poss;
-  #adding the beginning and the end to the cutting positions
-  poss := Set(Concatenation(positions,[0,Size(str)]));
-  #producing the pieces
-  return List([1..Size(poss)-1],
-              x -> str{[poss[x]+1..poss[x+1]]});
-end);
-
-# components of the transformation, the strongly connected components of the graph
-ACNComponents := function(s)
-  return SplitStringAtPositions(s, Positions(DepthVector(s),0));
-end;
-
-# we cannot by all separators , and |, only on top level
-ACNTopLevelCuts := function(str)
-  return Intersection(Positions(DepthVector(str),0),
-                      Union(Positions(str,','),
-                            Positions(str,'|')));
-end;
-
-# the components of an in-flow
-ACNInFlowComps := function(str)
-  #post process: removing dangling commas
-  return List(SplitStringAtPositions(str, ACNTopLevelCuts(str)),
-              function(s) if Last(s) in ",|" then
-                            return s{[1..Size(s)-1]};
-                          else
-                            return s; fi;
-                          end);
-end;
-MakeReadOnlyGlobal("ACNInFlowComps");
-
-#just remove outer parentheses
-ACNCutParentheses := function(str) return str{[2..Size(str)-1]}; end;
-MakeReadOnlyGlobal("ACNCutParentheses");
-
-#this gets the last point w from [x,y,z,w] or [x|y|z,w], where everything is flowing into
-ACNSink := function(str)
-  if not('[' in str)  then
-    return Int(str);
-  else
-    return ACNSink(Last(ACNInFlowComps(ACNCutParentheses(str))));
-  fi;
-end;
-MakeReadOnlyGlobal("ACNSink");
-
-#recursively fills the list maps [point, image] tuples
-ACNAllMaps := function(str,maps)
-  local i,comps,img, compswithseps, cut, spread, belt, NotSep, RegisterBelt;
-  NotSep := function(s) return not( (s = ",") or (s = "|")); end;
+# It returns the sink of the expression, or nothing for a permutation.
+# The important thing is the side-effect: collecting the individual maps.
+# q - a queue storing the characters
+# maps - utable list collecting pairs
+ACNParse := function(q, maps)
+  local digits, belt, RegisterBelt, choices, sink;
   RegisterBelt := function(belt) #registering the maps
-                    Perform([1..Size(belt)-1],
-                            function(i) Add(maps, [belt[i],belt[i+1]]);end);
-                  end;
-  comps := ACNInFlowComps(ACNCutParentheses(str));
-  if str[1] = '(' then      # permutation
-    belt := List(comps, ACNSink);
-    if not IsEmpty(belt) then Add(belt, First(belt));fi; #closing the cycle
-    RegisterBelt(belt);
-  elif str[1] = '[' then     # in-flow
-    compswithseps := ACNComponents(ACNCutParentheses(str));
-    if not ("|" in compswithseps) then
-      RegisterBelt(List(comps, ACNSink));
-    else # we have the |, so we have the spread of alternatives
-      cut := First(Positions(compswithseps,","));
-      spread := List(Filtered(compswithseps{[1..cut]}, NotSep), ACNSink);
-      belt := List(Filtered(compswithseps{[cut+1..Size(compswithseps)]},NotSep), ACNSink);
-      img := First(belt);
-      Perform(spread, function(x)Add(maps,[x,img]);end);
+    Perform([1..Size(belt)-1],
+            function(i) Add(maps, [belt[i],belt[i+1]]);end);
+  end;
+  # getting a number ########################
+  if IsDigitChar(PlistDequePeekFront(q)) then
+    digits := [];
+    while (IsDigitChar(PlistDequePeekFront(q))) do
+      Add(digits, PopFront(q));
+    od;
+    return Int(digits);
+  # building a permutation ##################
+  elif '(' = PlistDequePeekFront(q) then
+    PlistDequePopFront(q); #drop the opening paren
+    if not (')' = PlistDequePeekFront(q)) then # in case of identity
+      belt := [ACNParse(q,maps)];
+      while (',' = PlistDequePopFront(q)) do
+        #PlistDequePopFront(q); #drop the comma
+        Add(belt, ACNParse(q,maps));
+      od;
+      Add(belt, First(belt)); #closing the cycle
       RegisterBelt(belt);
+    else
+      PlistDequePopFront(q); #drop the closing paren )
     fi;
-  else
-    return maps; #we are down to a point, nothing to do
+  # building an inflow ##################
+  elif '[' = PlistDequePeekFront(q) then
+    PlistDequePopFront(q); #drop the opening paren
+    belt := [ACNParse(q,maps)];
+    # conveyor belt ######################
+    if ',' = PlistDequePeekFront(q) then
+      while (',' = PlistDequePopFront(q)) do
+        Add(belt, ACNParse(q,maps));
+      od;
+      RegisterBelt(belt);
+      return Last(belt);
+    # choice #####################
+    else
+      choices := belt; #ok, we choices instead of a belt
+      while ('|' = PlistDequePopFront(q)) do
+        Add(choices, ACNParse(q,maps));
+      od;
+      #we hit the ,
+      sink := ACNParse(q,maps);
+      PlistDequePopFront(q); #drop the closing paren ]
+      #register choices
+      Perform(choices, function(i) Add(maps,[i,sink]);end);
+      return sink;
+    fi;
   fi;
-  #doing the recursion
-  Perform(comps,function(x)ACNAllMaps(x,maps);end);
-  return maps;
 end;
-MakeReadOnlyGlobal("ACNAllMaps");
+MakeReadOnlyGlobal("ACNParse");
 
 # the main method for the conversion
 # inputs: string and the degree of the resulting transformation
 # the function crashes if the degree is smaller than needed
-InstallOtherMethod(AsTransformation,"for an attractor-cycle notation string and int",[IsString,IsPosInt],
-function(s,n)
-local maps,scc,l,m;
+InstallOtherMethod(AsTransformation,
+                   "for an attractor-cycle notation string and int",
+                   [IsString,IsPosInt],
+function(s,n) #TODO: remove whitespaces
+local maps,t,m, q;
   maps := [];
-  l := [1..n]; #identity is the default
-  Perform(ACNComponents(s), function(C) ACNAllMaps(C, maps);end);
+  t := [1..n]; #identity is the default
+  q := PlistDeque(Size(s)); #the queue for parsing
+  Perform(s, function(c) PushBack(q,c);end);
+  #do all components
+  while (fail <> PlistDequePeekFront(q)) do
+    ACNParse(q,maps); # continue with the next component
+  od;
   # patching the identity map with the collected maps
-  for m in maps do l[m[1]] := m[2];od;
-  return Transformation(l);
+  for m in maps do t[m[1]] := m[2];od;
+  return Transformation(t);
 end);
 
 ###############################################################################
@@ -241,3 +204,10 @@ function(t)
   return DotDigraph(DigraphByEdges(List([1..DegreeOfTransformation(t)],
                                          i->[i,OnPoints(i,t)])));
 end);
+
+##############
+ACNTestFullTransformationSemigroup := function(n)
+  return ForAll(FullTransformationSemigroup(n),
+                t-> t=AsTransformation(AttractorCycleNotation(t),n));
+end;
+MakeReadOnlyGlobal("ACNTestFullTransformationSemigroup");

@@ -9,7 +9,7 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
 
-Version := "1.0.0",
+Version := "1.0.0-dev",
 
 Date := "20/06/2024", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
