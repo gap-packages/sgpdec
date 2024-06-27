@@ -1,17 +1,14 @@
-###############################################################################
-##
-## acn.gi           SgpDec package
-##
-## Copyright (C)  Attila Egri-Nagy, Chrystopher L. Nehaniv, James D. Mitchell
-##
-## 2009-2012, 2023
-## Attractor-cycle notation for transformations.
+################################################################################
+##  SgpDec                        Attractor-cycle notation for transformations
+##  Copyright (C) 2009-2024                             Attila Egri-Nagy et.al
+################################################################################
 
 ###############################################################################
 # TRANSFORMATION -> ATTRACTOR-CYCLE NOTATION ##################################
 ###############################################################################
 
-#Find the points in the cycle in a component containing the initial point.
+# Find the points in the cycle in a component containing the initial point.
+# It terminates with the first repeated point.
 InstallGlobalFunction(CycleOfTransformationFromPoint,
 function(t,p)
 local orbit;
@@ -150,12 +147,12 @@ function(str, positions)
               x -> str{[poss[x]+1..poss[x+1]]});
 end);
 
-# components of the transformation, the strongly connected components of the graph 
+# components of the transformation, the strongly connected components of the graph
 ACNComponents := function(s)
   return SplitStringAtPositions(s, Positions(DepthVector(s),0));
 end;
 
-# we cannot by all separators , and |, only on top level 
+# we cannot by all separators , and |, only on top level
 ACNTopLevelCuts := function(str)
   return Intersection(Positions(DepthVector(str),0),
                       Union(Positions(str,','),
