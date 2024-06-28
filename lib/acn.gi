@@ -206,9 +206,18 @@ function(t)
                                          i->[i,OnPoints(i,t)])));
 end);
 
-##############
+################################################################################
+## TESTING #####################################################################
+################################################################################
 ACNTestFullTransformationSemigroup := function(n)
   return ForAll(FullTransformationSemigroup(n),
                 t-> t=AsTransformation(AttractorCycleNotation(t),n));
 end;
 MakeReadOnlyGlobal("ACNTestFullTransformationSemigroup");
+
+ACNTestRandomTransformation := function(n, rank)
+  local t;
+  t := RandomTransformation(n,rank);
+  return t = AsTransformation(AttractorCycleNotation(t),n);
+end;
+MakeReadOnlyGlobal("ACNTestRandomTransformation");
