@@ -12,7 +12,7 @@ Transformation( [ 3, 3, 4, 4 ] )
 #
 #gap> AsTransformation("[1|2,3,4]",4); #now we consider this malformed, it does not work with a clean parsing algorithm
 #Transformation( [ 3, 3, 4, 4 ] )
-# full check for T5
+# full check for T6
 gap> ACNTestFullTransformationSemigroup(6); 
 true
 
@@ -22,6 +22,9 @@ gap> t = AsTransformation(AttractorCycleNotation(t),2^12);
 true
 gap> t := RandomTransformation(2^12,2^5);;
 gap> t = AsTransformation(AttractorCycleNotation(t),2^12);
+true
+gap> t := RandomTransformation(2^15,2^11);;
+gap> t = AsTransformation(AttractorCycleNotation(t),2^15);
 true
 
 # simplified constant
