@@ -6,6 +6,7 @@ local test;
        "statecong",
        "relmorph",
        "hashmaprel",
+       "acn",
        "lowerbound",
        "disjointuniongroup",
        "WeakControlWords",
@@ -16,7 +17,6 @@ local test;
        "skeleton",
        "holonomy",
        "cartesianenum",
-       "transnot",
        "viz",
        "straightword",
        "manual"
