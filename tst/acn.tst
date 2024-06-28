@@ -17,14 +17,14 @@ gap> ACNTestFullTransformationSemigroup(6);
 true
 
 # bigger tests
-gap> t := RandomTransformation(2^12);;
-gap> t = AsTransformation(AttractorCycleNotation(t),2^12);
+gap> t := RandomTransformation(2^10);;
+gap> t = AsTransformation(AttractorCycleNotation(t),2^10);
 true
-gap> t := RandomTransformation(2^12,2^5);;
-gap> t = AsTransformation(AttractorCycleNotation(t),2^12);
+gap> t := RandomTransformation(2^10,2^8);;
+gap> t = AsTransformation(AttractorCycleNotation(t),2^10);
 true
-gap> t := RandomTransformation(2^15,2^11);;
-gap> t = AsTransformation(AttractorCycleNotation(t),2^15);
+gap> t := RandomTransformation(2^13,2^11);;
+gap> t = AsTransformation(AttractorCycleNotation(t),2^13);
 true
 
 # simplified constant

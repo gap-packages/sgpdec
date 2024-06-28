@@ -1,3 +1,4 @@
+#this gives some readable titles
 SgpDecTestInstall := function()
 local test;
   for test in
@@ -24,7 +25,15 @@ local test;
     Test(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
                        "/tst/",test,
                        ".tst"),
-        rec(compareFunction := "uptowhitespace"));;
+         rec(compareFunction := "uptowhitespace",
+             showProgess:=true));;
   od;
 end;
 MakeReadOnlyGlobal("SgpDecTestInstall");
+
+#this version provides memory consumption information
+SgpDecTestInstall2 := function()
+  Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
+                     "/tst/testall.g"));
+end;
+
