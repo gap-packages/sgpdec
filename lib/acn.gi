@@ -17,13 +17,13 @@ local orbit;
     Add(orbit,p);
     p := p ^ t;
   od;
-  #p is repeated so we can  cut out the cycle
+  #p is repeated so we know where to cut out the cycle
   return orbit{[Position(orbit,p)..Length(orbit)]};
 end);
 
 ################################################################################
 # Recursively prints the tree incoming into a point. The point's cycle also
-# needs to be known to exclude tho preimages in the cycle.
+# needs to be known to exclude the preimages in the cycle.
 # point - the root of the tree,
 # t - transformation,
 # cycle - the cycle of the component
@@ -35,7 +35,7 @@ local preimgs,p, conveyorbelt,s;
   if IsEmpty(preimgs) then   #if it is a terminal point, just print it
     str := Concatenation(str,String(point));
     return str;
-  elif Size(preimgs) = 1 then
+  elif Size(preimgs) = 1 then #we do a belt
     conveyorbelt := [];
     while Size(preimgs) = 1 do
       Add(conveyorbelt,preimgs[1]);
@@ -48,7 +48,7 @@ local preimgs,p, conveyorbelt,s;
     RemoveCharacters(s," ");
     if Size(s) > 2 then str := Concatenation(str, s{[2..Size(s)-1]},",");fi;
     str := Concatenation(str,String(point),"]"); # ending the tree notation
-  else
+  else # we have choices
     str := Concatenation(str,"["); #starting the tree notation
     Sort(preimgs); # to get canonical form
     for p in preimgs do
@@ -90,7 +90,8 @@ function(t)
   return str;
 end);
 
-#constant maps are further simplified
+# constant maps are further simplified
+# useful for diagram labels with many constant transformations
 InstallGlobalFunction(SimplerAttractorCycleNotation,
  function(t)
  if IsTransformation(t) and RankOfTransformation(t) = 1 then
@@ -181,10 +182,11 @@ MakeReadOnlyGlobal("ACNParse");
 InstallOtherMethod(AsTransformation,
                    "for an attractor-cycle notation string and int",
                    [IsString,IsPosInt],
-function(s,n) #TODO: remove whitespaces
+function(s,n)
 local maps,t,m, q;
   maps := [];
   t := [1..n]; #identity is the default
+  RemoveCharacters(s, " \n\t\r"); # sanitize TODO: this works with immutable strings, how?!
   q := PlistDeque(Size(s)); #the queue for parsing
   Perform(s, function(c) PushBack(q,c);end);
   #do all components
