@@ -2,6 +2,7 @@
 ##  SgpDec                        Attractor-cycle notation for transformations
 ##  Copyright (C) 2009-2024                             Attila Egri-Nagy et.al
 ################################################################################
+# Functions only used here are prefixed by ACN.
 
 ###############################################################################
 # TRANSFORMATION -> ATTRACTOR-CYCLE NOTATION ##################################
