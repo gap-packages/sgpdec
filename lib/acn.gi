@@ -55,7 +55,7 @@ local preimgs,p, conveyorbelt,s;
       str := ACNTreePrint(p,t,cycle,str);
       str := Concatenation(str,"|");
     od;
-    if str[Length(str)] = '|' then Remove(str); fi; #removing unnecessary |
+    if Last(str) = '|' then Remove(str); fi; #removing unnecessary |
     str := Concatenation(str,",");
     str := Concatenation(str,String(point),"]"); # ending the tree notation
   fi;
