@@ -1,5 +1,5 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION "1.0.0">
+##  <!ENTITY VERSION "1.1.0">
 ##  <!ENTITY COPYRIGHTYEARS "2008-2024">
 ##  <#/GAPDoc>
 
@@ -9,9 +9,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
 
-Version := "1.0.0-dev",
+Version := "1.1.0",
 
-Date := "20/06/2024", # dd/mm/yyyy format
+Date := "28/06/2024", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [

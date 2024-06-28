@@ -1,5 +1,5 @@
-upcoming
-	New parsing algorithm for the attractor-cycle notation. The previous convoluted solution did not always work for more than 9 states. Breaking change: the expression "[1|2,3,4]" is now treated as malformed, since it does not follow the grammar's definition.
+1.1.0
+	New parsing algorithm for the attractor-cycle notation. The previous convoluted solution did not always work for more than 9 states. Breaking change: the implementation now strictly follows the context-free grammar specification, thus the expression "[1|2,3,4]" is now treated as malformed.
 1.0.0
 	Covering Lemma implementation. Code for essential dependencies revised and corrected. Switching to Break Versioning.
 0.9.8
