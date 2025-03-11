@@ -88,7 +88,6 @@ PackageDoc := rec(
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
-  Autoload  := true
 ),
 
 
@@ -105,7 +104,6 @@ Dependencies := rec(
 
 AvailabilityTest := ReturnTrue,
 
-Autoload := false,
 
 TestFile := "tst/testall.g",
 
