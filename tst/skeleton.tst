@@ -40,7 +40,7 @@ gap> ImageWitness(sk, FiniteSet([5]), FiniteSet([1..5]));
 #testing for a semigroup with no singleton image - they should not be reported in the depth
 gap> sk := Skeleton(Semigroup(Transformation([4,2,4,4])));;
 gap> DepthOfSkeleton(sk);
-2
+3
 gap> TilesOf(sk, FiniteSet([1,3],4));
 fail
 

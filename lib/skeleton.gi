@@ -295,7 +295,12 @@ end);
 InstallMethod(DepthOfSkeleton,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-  return Maximum(Depths(sk));
+#quick fix for losing one level due to nonimage singletons
+  if Size(BaseSet(sk)) = Length(NonImageSingletons(sk)) then
+    return Maximum(Depths(sk)) + 1;
+  else
+    return Maximum(Depths(sk));
+  fi;
 end);
 
 #returns the representative element of the scc of a finiteset
