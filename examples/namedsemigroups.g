@@ -198,6 +198,12 @@ transposition := function(l) local t;
            return Transformation(t);
          end;
 
+# reported by Hanna Derets in 2025
+nosingletonimage := [Transformation([5,6,7,8,3,4,6,7]),
+                     Transformation([3,4,6,7,7,8,4,6]),
+                     Transformation([2,3,4,6,6,7,8,4])];
+NOSINGLETONIMAGE := Semigroup(nosingletonimage);
+
 transpositions := List(Combinations([1..6],3), transposition);
 cycles := List(Combinations([1..6],3), cycle);
 collapsers := List(Combinations([1..6],3), collapser);
