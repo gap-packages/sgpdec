@@ -103,8 +103,14 @@ ovlcovers := [Transformation([4,3,4,2]),
 OVLCOVERS := Semigroup(ovlcovers);
 SetName(OVLCOVERS,"OVLCOVERS");
 
+# No singleton image
 nosingleton := [Transformation([5,1,3,5,1]), Transformation([5,4,5,2,4])];
 NOSINGLETON := Monoid(nosingleton);
+# bigger example reported by Hanna Derets in 2025
+nosingleton2 := [Transformation([5,6,7,8,3,4,6,7]),
+                 Transformation([3,4,6,7,7,8,4,6]),
+                 Transformation([2,3,4,6,6,7,8,4])];
+NOSINGLETON2 := Semigroup(nosingleton2);
 
 #X's wide examples never coded before
 # l is a triple (list)

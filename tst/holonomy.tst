@@ -1,6 +1,8 @@
 # testing holonomy  decomposition
-gap> START_TEST("Sgpdec package: holonomy.tst");
+gap> START_TEST("Holonomy Decomposition");
 gap> LoadPackage("sgpdec", false);;
+gap> Read(Concatenation(PackageInfo("sgpdec")[1]!.InstallationPath,
+> "/tst/bestiary.g"));;
 gap> hcs := HolonomyCascadeSemigroup(FullTransformationSemigroup(3));
 <cascade semigroup with 3 generators, 2 levels with (3, 2) pts>
 gap> hom := HomomorphismTransformationSemigroup(hcs);
@@ -80,6 +82,12 @@ gap> TestHolonomyRelationalMorphism(skBEX);
 true
 gap> TestHolonomyAction(skBEX);
 true
+gap> TestHolonomyEmulation(Skeleton(NOSINGLETON2));
+true
+gap> TestHolonomyRelationalMorphism(Skeleton(NOSINGLETON2));
+true
+gap> TestHolonomyRelationalMorphism(Skeleton(NOSINGLETON));
+true
 
 #
-gap> STOP_TEST( "Sgpdec package: holonomy.tst", 10000);
+gap> STOP_TEST( "Holonomy Decomposition", 10000);
