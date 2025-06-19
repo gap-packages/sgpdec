@@ -55,7 +55,13 @@ function(sk)
               i -> FiniteSet([i], DegreeOfSkeleton(sk)));
 end);
 
-# those singletons that are not images
+# those singletons that are images
+InstallMethod(ImageSingletons, "for a skeleton (SgpDec)", [IsSkeleton],
+function(sk)
+  return Filtered(Singletons(sk), x-> x in ForwardOrbit(sk));
+end);
+
+# those singletons that are NOT images
 InstallMethod(NonImageSingletons, "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
   return Filtered(Singletons(sk), x-> not x in ForwardOrbit(sk));
@@ -291,12 +297,14 @@ function(sk)
     return depths;
 end);
 
-#this will report the lengths of the longest subduction chains - may not go down to singletons
+#this will report the lengths of the longest subduction chains
+# as the cahins may not go down to singletons, correction is needed
 InstallMethod(DepthOfSkeleton,
         "for a skeleton (SgpDec)", [IsSkeleton],
 function(sk)
-#quick fix for losing one level due to nonimage singletons
-  if Size(BaseSet(sk)) = Length(NonImageSingletons(sk)) then
+  if IsEmpty(ImageSingletons(sk)) then
+    # the equivalence class cover relation may not reach singletons
+    # so we need to correct the maximum depth value
     return Maximum(Depths(sk)) + 1;
   else
     return Maximum(Depths(sk));

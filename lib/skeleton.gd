@@ -23,6 +23,7 @@ DeclareAttribute("BaseSet",IsSkeleton);
 DeclareAttribute("Generators",IsSkeleton);
 DeclareAttribute("DegreeOfSkeleton",IsSkeleton);
 DeclareAttribute("Singletons",IsSkeleton);
+DeclareAttribute("ImageSingletons",IsSkeleton);
 DeclareAttribute("NonImageSingletons",IsSkeleton);
 DeclareAttribute("NonImageSingletonClasses",IsSkeleton);
 DeclareAttribute("ForwardOrbit",IsSkeleton);
