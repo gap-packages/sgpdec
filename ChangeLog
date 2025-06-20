@@ -1,3 +1,5 @@
+1.2.0
+	Fixing an issue in the holonomy skeleton: when the orbit of the state set did not contain any singleton set, DepthOfSkeleton missed the last level. Consequently, DisplayHolonomyComponents missed the last level too, and the emulation did not work. BREAKING: some previous examples may report an extra level.
 1.1.0
 	New parsing algorithm for the attractor-cycle notation. The previous convoluted solution did not always work for more than 9 states. Breaking change: the implementation now strictly follows the context-free grammar specification, thus the expression "[1|2,3,4]" is now treated as malformed. Adding more tests for the notation. Technical function SgpDecTestInstall2 added to get some information on memory usage of tests.
 1.0.0

@@ -1,6 +1,6 @@
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY VERSION "1.1.0">
-##  <!ENTITY COPYRIGHTYEARS "2008-2024">
+##  <!ENTITY COPYRIGHTYEARS "2008-2025">
 ##  <#/GAPDoc>
 
 SetPackageInfo(rec(
@@ -9,9 +9,9 @@ PackageName := "SgpDec",
 
 Subtitle := "Hierarchical Decompositions of Finite Groups and Semigroups",
 
-Version := "1.1.0",
+Version := "1.2.0",
 
-Date := "28/06/2024", # dd/mm/yyyy format
+Date := "20/06/2025", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -36,15 +36,12 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "C.L.Nehaniv@herts.ac.uk",
-    WWWHome       := "http://homepages.feis.herts.ac.uk/~comqcln/",
+    WWWHome       := "https://uwaterloo.ca/systems-design-engineering/profile/cnehaniv",
     PostalAddress := Concatenation( [
-                       "University of Hertfordshire\n",
-                       "STRI\n",
-                       "College Lane\n",
-                       "AL10 9AB\n",
-                       "United Kingdom" ] ),
-    Place         := "Hatfield, Herts",
-    Institution   := "UH"
+                       "University of Waterloo\n",
+                       "Waterloo Institute for Complexity and Innovation (WICI)" ] ),
+    Place         := "Waterloo, Canada",
+    Institution   := "UW"
   ),
   rec(
     LastName      := "Mitchell",
@@ -52,7 +49,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-and.ac.uk",
-    WWWHome       := "http://tinyurl.com/jdmitchell",
+    WWWHome       := "https://jdbm.me/",
     PostalAddress := Concatenation( [
                        "Mathematical Institute,",
                        " North Haugh,", " St Andrews,", " Fife,", " KY16 9SS,",
