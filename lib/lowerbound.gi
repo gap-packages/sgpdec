@@ -38,7 +38,8 @@ InstallGlobalFunction(EssentialDependencyGroup, function(sk, x1, x2)
       if x2 in ExtendedImageSet(skJ) then
         JGroup := PermutatorGroup(skJ, x2);
 
-        if Size(JGroup) > 1 then # The stricter test is PermutatorGroup(sk, x2) = JGroup
+#  Test for Essential Dependency of J. Rhodes: 
+        if IsSubgroup(JGroup,PermutatorGroup(sk, x2)) then 
           Assert( 1, PermutatorGroup(sk, x2) = JGroup, 
             Concatenation("PermutatorGroup(sk, x2) <> JGroup\nx2 = ", 
               TrueValuePositionsBlistString(x2), "\nx1 = ",
