@@ -30,7 +30,7 @@ Elements of cascade products are <E>cascades</E>, that are tuples of <E>dependen
 
 <Section Label="cascadesgp"><Heading>Cascade semigroups and groups</Heading>
 Cascades can be multiplied together, there exists an identity element for each list of dependency domains and for a permutation cascade the inverse element is also defined. Therefore cascades can be used to form semigroups and groups.
-Cascade semigroups can then be turned into transformation semigroups by using <Ref Func="IsomorphismTransformationSemigroup" BookName="semigroups"/>
+Cascade semigroups can then be turned into transformation semigroups by using <Ref Func="IsomorphismTransformationSemigroup" BookName="ref"/>
 <Example>
 gap> c := Cascade([2,3], [ [[],Transformation([2,2])],
 >                          [[2],Transformation([3,2,3])] ]);;
