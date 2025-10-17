@@ -114,7 +114,7 @@ gap> AsFLPoint([1,1],FLD4);
     <Func Name="AsFLPermutation" Arg="cp, FLG"/>
     <Returns>Mapping a permutation cascade down to a permutation. </Returns>
     <Description>
-      The inverse of <Ref Func="AsFLCascade" BookName="sgpdec"/>.
+      The inverse of <Ref Func="AsFLCascade"/>.
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -124,7 +124,7 @@ gap> AsFLPoint([1,1],FLD4);
     <Func Name="AsFLPoint" Arg="coords, FLG"/>
     <Returns>State x that the given coordinates map down to in an FL cascade group.</Returns>
     <Description>
-      The inverse of <Ref Func="AsFLCoords" BookName="sgpdec"/>
+      The inverse of <Ref Func="AsFLCoords"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -168,7 +168,7 @@ gap> AsHolonomyPoint(AsHolonomyCoords(1,sk),sk);
     <Func Name="AsHolonomyPoint" Arg="coords, skeleton"/>
     <Returns>The state the coordinates map down to.</Returns>
     <Description>
-The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
+The inverse of <Ref Func="AsHolonomyCoords"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -178,7 +178,7 @@ The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
     <Func Name="AsHolonomyTransformation" Arg="ct, skeleton"/>
     <Returns>Transformation as a result of mapping down a cascade transformation  <Arg>ct</Arg> in a holonomy decomposition described by its skeleton.</Returns>
     <Description>
-      The inverse of <Ref Func="AsHolonomyCascade" BookName="sgpdec"/>
+      The inverse of <Ref Func="AsHolonomyCascade"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -190,7 +190,7 @@ The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
     <Oper Name="AsPoint" Arg="coords, cascadesemigroup" Label="AsPointForCascadeProds"/>
     <Returns></Returns>
     <Description>
-The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
+The `inverse' of <Ref Oper="AsCoords"/>.
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -205,7 +205,7 @@ The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
     lazily evaluated list enumerators.
     </Returns>
     <Description>
-The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains" BookName="sgpdec"/>.
+The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains"/>.
 <Example>
 gap> FlipFlop := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
 >              Transformation([1,2])]);;
@@ -639,7 +639,7 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
       <Oper Name="FLCoords2Perm" Arg="coords, FLG"/>
     <Returns>The permutation corresponding to  <Arg>coords</Arg>.</Returns>
     <Description>
-        The combination of <Ref Func="FLCoords2Reps" BookName="sgpdec"/> and <Ref Func="Reps2Perm" BookName="sgpdec"/>.
+        The combination of <Ref Func="FLCoords2Reps"/> and <Ref Func="Reps2Perm"/>.
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -651,7 +651,7 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
       <Oper Name="FLCoords2Reps" Arg="coords, FLG"/>
     <Returns>Coset representatives for  <Arg>coords</Arg>.</Returns>
     <Description>
-        Inverse of <Ref Func="Reps2FLCoords" BookName="sgpdec"/>
+        Inverse of <Ref Func="Reps2FLCoords"/>
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -883,7 +883,7 @@ gap> OnFiniteSet(P,t*t);
       <Oper Name="Perm2FLCoords" Arg="g, FLG"/>
     <Returns>Encoded integer coordinates corresponding to  <Arg>g</Arg>.</Returns>
     <Description>
-        The combination of <Ref Func="Perm2Reps" BookName="sgpdec"/> and <Ref Func="Reps2FLCoords" BookName="sgpdec"/>.
+        The combination of <Ref Func="Perm2Reps"/> and <Ref Func="Reps2FLCoords"/>.
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -960,7 +960,7 @@ gap> SgpDecFiniteSetDisplayOff();
 <Func Name="Reps2Perm" Arg="reps"/>
     <Returns>A permutation coordinatized by <Arg>reps</Arg>.</Returns>
     <Description>
-        Inverse of <Ref Func="Perm2Reps" BookName="sgpdec"/>
+        Inverse of <Ref Func="Perm2Reps"/>
 </Description>
   </ManSection>
 <#/GAPDoc>
