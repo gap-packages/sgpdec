@@ -24,6 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: gap-actions/setup-gap@v3
+      - run: |
+          cd $GAPROOT/pkg
+          ../bin/BuildPackages.sh --strict datastructures digraphs orb semigroups
       - uses: gap-actions/build-pkg-docs@v2
         with:
           use-latex: 'true'
