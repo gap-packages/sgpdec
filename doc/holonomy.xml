@@ -40,7 +40,7 @@ The skeleton of a transformation semigroup is a data structure containing inform
 </Section>
 
 <Section Label="holonomy"><Heading>Holonomy Decomposition</Heading>
-The <Ref Func="Skeleton" BookName="sgpdec"/> already contains lots of information on the components of the decomposition but we still need to put them together in a form of a cascade semigroup.
+The <Ref Func="Skeleton"/> already contains lots of information on the components of the decomposition but we still need to put them together in a form of a cascade semigroup.
 <#Include Label="HolonomyCascadeSemigroup">
 
 
