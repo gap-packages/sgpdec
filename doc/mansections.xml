@@ -114,7 +114,7 @@ gap> AsFLPoint([1,1],FLD4);
     <Func Name="AsFLPermutation" Arg="cp, FLG"/>
     <Returns>Mapping a permutation cascade down to a permutation. </Returns>
     <Description>
-      The inverse of <Ref Func="AsFLCascade" BookName="sgpdec"/>.
+      The inverse of <Ref Func="AsFLCascade"/>.
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -124,7 +124,7 @@ gap> AsFLPoint([1,1],FLD4);
     <Func Name="AsFLPoint" Arg="coords, FLG"/>
     <Returns>State x that the given coordinates map down to in an FL cascade group.</Returns>
     <Description>
-      The inverse of <Ref Func="AsFLCoords" BookName="sgpdec"/>
+      The inverse of <Ref Func="AsFLCoords"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -168,7 +168,7 @@ gap> AsHolonomyPoint(AsHolonomyCoords(1,sk),sk);
     <Func Name="AsHolonomyPoint" Arg="coords, skeleton"/>
     <Returns>The state the coordinates map down to.</Returns>
     <Description>
-The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
+The inverse of <Ref Func="AsHolonomyCoords"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -178,7 +178,7 @@ The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
     <Func Name="AsHolonomyTransformation" Arg="ct, skeleton"/>
     <Returns>Transformation as a result of mapping down a cascade transformation  <Arg>ct</Arg> in a holonomy decomposition described by its skeleton.</Returns>
     <Description>
-      The inverse of <Ref Func="AsHolonomyCascade" BookName="sgpdec"/>
+      The inverse of <Ref Func="AsHolonomyCascade"/>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -190,7 +190,7 @@ The inverse of <Ref Func="AsHolonomyCoords" BookName="sgpdec"/>
     <Oper Name="AsPoint" Arg="coords, cascadesemigroup" Label="AsPointForCascadeProds"/>
     <Returns></Returns>
     <Description>
-The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
+The `inverse' of <Ref Oper="AsCoords"/>.
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -205,7 +205,7 @@ The `inverse' of <Ref Oper="AsCoords" BookName="sgpdec"/>.
     lazily evaluated list enumerators.
     </Returns>
     <Description>
-The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains" BookName="sgpdec"/>.
+The <C>list</C> argument is the same as the for <Ref Func="DependencyDomains"/>.
 <Example>
 gap> FlipFlop := SemigroupByGenerators([Transformation([1,1]),Transformation([2,2]),
 >              Transformation([1,2])]);;
@@ -472,7 +472,7 @@ gap> DependencyValues(df);
 <#GAPDoc Label="DisplayFLComponents">
   <ManSection>
     <Func Name="DisplayFLComponents" Arg="FLG"/>
-    <Func Name="DisplayFLComponents" Arg="subgroup_chain"/>
+    <Func Name="DisplayFLComponents" Arg="subgroup_chain" Label="DisplayFLComponentsSubChain"/>
     <Description>
 Display a concise textual summary of the FL decomposition components. Works both with a cascade group (that is a result of an FL decomposition) and simply with a subgroup chain.
 <Example><![CDATA[
@@ -613,8 +613,8 @@ gap> Size(P);
 <#GAPDoc Label="FLCascadeGroup">
   <ManSection>
     <Oper Name="FLCascadeGroup" Arg="chain, point"/>
-    <Oper Name="FLCascadeGroup" Arg="chain"/>
-    <Oper Name="FLCascadeGroup" Arg="group"/>
+    <Oper Name="FLCascadeGroup" Arg="chain" Label="FLCascadeGroupOnlyChain"/>
+    <Oper Name="FLCascadeGroup" Arg="group" Label="FLCascadeGroupOnlyGroup"/>
     <Returns>Cascade group isomorphic to <C>G</C>.</Returns>
     <Description>
       The decomposition is done based on a subgroup chain. If the subgroup chain ends in a stabilizer of a point, then the decomposition is isomorphic as a permutation group, i.e. the states are coordinatized as well. In that case the stabilized point needs to be explicitly given. the decomposition will only contain the orbit of this point, so for non-transitive actions the orbits have to be handled separately.
@@ -636,10 +636,10 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 <#GAPDoc Label="FLCoords2Perm">
   <ManSection>
       <Oper Name="FLCoords2Perm" Arg="coords, transversals"/>
-      <Oper Name="FLCoords2Perm" Arg="coords, FLG"/>
+      <Oper Name="FLCoords2Perm" Arg="coords, FLG" Label="FLCoords2PermFLG"/>
     <Returns>The permutation corresponding to  <Arg>coords</Arg>.</Returns>
     <Description>
-        The combination of <Ref Func="FLCoords2Reps" BookName="sgpdec"/> and <Ref Func="Reps2Perm" BookName="sgpdec"/>.
+        The combination of <Ref Func="FLCoords2Reps"/> and <Ref Func="Reps2Perm"/>.
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -648,10 +648,10 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 <#GAPDoc Label="FLCoords2Reps">
   <ManSection>
       <Oper Name="FLCoords2Reps" Arg="coords, transversals"/>
-      <Oper Name="FLCoords2Reps" Arg="coords, FLG"/>
+      <Oper Name="FLCoords2Reps" Arg="coords, FLG" Label="FLCoords2RepsFLG"/>
     <Returns>Coset representatives for  <Arg>coords</Arg>.</Returns>
     <Description>
-        Inverse of <Ref Func="Reps2FLCoords" BookName="sgpdec"/>
+        Inverse of <Ref Func="Reps2FLCoords"/>
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -686,7 +686,7 @@ gap> List(ComponentsOfCascadeProduct(flS4),StructureDescription);
 <#GAPDoc Label="HolonomyCascadeSemigroup">
 <ManSection>
     <Oper Name="HolonomyCascadeSemigroup" Arg="skeleton"/>
-    <Oper Name="HolonomyCascadeSemigroup" Arg="ts"/>
+    <Oper Name="HolonomyCascadeSemigroup" Arg="ts" Label="HolonomyCascadeSemigroupTransSemi"/>
     <Returns>Cascade semigroup that has a surjective homomorphism to <C>ts</C>.</Returns>
     <Description>
     It can take a precomputed skeleton, or a transformation semigroup (computes the skeleton).
@@ -761,7 +761,7 @@ Similarly to transformations and permutations we distinguish between transformat
 <#GAPDoc Label="LevelBuilders">
   <ManSection>
       <Oper Name="LevelBuilders" Arg="coords, transversals"/>
-      <Oper Name="LevelBuilders" Arg="coords, FLG"/>
+      <Oper Name="LevelBuilders" Arg="coords, FLG" Label="LevelBuildersFLG"/>
     <Returns></Returns>
     <Description>
     </Description>
@@ -772,7 +772,7 @@ Similarly to transformations and permutations we distinguish between transformat
 <#GAPDoc Label="LevelKillers">
   <ManSection>
       <Oper Name="LevelKillers" Arg="coords, transversals"/>
-      <Oper Name="LevelKillers" Arg="coords, FLG"/>
+      <Oper Name="LevelKillers" Arg="coords, FLG" Label="LevelKillersFLG"/>
     <Returns></Returns>
     <Description>
     </Description>
@@ -880,10 +880,10 @@ gap> OnFiniteSet(P,t*t);
 <#GAPDoc Label="Perm2FLCoords">
   <ManSection>
       <Oper Name="Perm2FLCoords" Arg="g, transversals"/>
-      <Oper Name="Perm2FLCoords" Arg="g, FLG"/>
+      <Oper Name="Perm2FLCoords" Arg="g, FLG" Label="Perm2FLCoordsFLG"/>
     <Returns>Encoded integer coordinates corresponding to  <Arg>g</Arg>.</Returns>
     <Description>
-        The combination of <Ref Func="Perm2Reps" BookName="sgpdec"/> and <Ref Func="Reps2FLCoords" BookName="sgpdec"/>.
+        The combination of <Ref Func="Perm2Reps"/> and <Ref Func="Reps2FLCoords"/>.
 </Description>
   </ManSection>
 <#/GAPDoc>
@@ -892,7 +892,7 @@ gap> OnFiniteSet(P,t*t);
 <#GAPDoc Label="Perm2Reps">
   <ManSection>
       <Oper Name="Perm2Reps" Arg="g, transversals"/>
-      <Oper Name="Perm2Reps" Arg="g, FLG"/>
+      <Oper Name="Perm2Reps" Arg="g, FLG" Label="Perm2RepsFLG"/>
     <Returns>List of coset representatives at each level corresponding to the permutation <Arg>g</Arg></Returns>
 <Description>
 </Description>
@@ -947,7 +947,7 @@ gap> SgpDecFiniteSetDisplayOff();
 <#GAPDoc Label="Reps2FLCoords">
   <ManSection>
       <Oper Name="Reps2FLCoords" Arg="reps, transversals"/>
-      <Oper Name="Reps2FLCoords" Arg="reps, FLG"/>
+      <Oper Name="Reps2FLCoords" Arg="reps, FLG" Label="Reps2FLCoordsFLG"/>
     <Returns>Encoded integer coordinates for  <Arg>reps</Arg>.</Returns>
     <Description>
 </Description>
@@ -960,7 +960,7 @@ gap> SgpDecFiniteSetDisplayOff();
 <Func Name="Reps2Perm" Arg="reps"/>
     <Returns>A permutation coordinatized by <Arg>reps</Arg>.</Returns>
     <Description>
-        Inverse of <Ref Func="Perm2Reps" BookName="sgpdec"/>
+        Inverse of <Ref Func="Perm2Reps"/>
 </Description>
   </ManSection>
 <#/GAPDoc>
