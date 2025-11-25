@@ -32,7 +32,7 @@ jobs:
           - stable-4.12
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_BUILD: "datastructures digraphs json io profiling orb semigroups"
