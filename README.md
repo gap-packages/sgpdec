@@ -24,7 +24,7 @@ For implementational details, the preprint [Cascade product of permutation group
 ## Versioning policy
 
 From 1.0.0 we follow BreakVer (see [Break Versioning](https://www.taoensso.com/break-versioning)). Briefy, for x.y.z, change in z means that everyone can just safely upgrade, nothing is expected to break. Change in y means some minor breaking changes (e.g., renaming, or some other API change). Change in x means breaking changes for all users, i.e., major architectural change.
-For changes in x.y, check the ChangeLog!
+For changes in x.y, check the CHANGES.md!
 
 For the Git repository, x.y.z-dev means further development is done on top of the x.y.z release, and breaks and disruptive changes can be expected.
 
